@@ -1,0 +1,36 @@
+{
+  "name": "@dawlyy/core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Pure domain logic for DAWLYY: document schemas, schedule generation, entitlements, state machines, versioning, workout and nutrition math, form logic, authorization matrix. No database, no React.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types/index.ts",
+    "./schedule": "./src/schedule/index.ts",
+    "./entitlements": "./src/entitlements/index.ts",
+    "./state": "./src/state/index.ts",
+    "./versioning": "./src/versioning/index.ts",
+    "./workout": "./src/workout/index.ts",
+    "./nutrition": "./src/nutrition/index.ts",
+    "./forms": "./src/forms/index.ts",
+    "./authz": "./src/authz/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@date-fns/tz": "^1.5.0",
+    "date-fns": "^4.4.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

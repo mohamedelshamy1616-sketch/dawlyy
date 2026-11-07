@@ -1,0 +1,36 @@
+{
+  "name": "@dawlyy/db",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Drizzle schema, SQL migrations, RLS policies, database access helpers (withAuthTx / withServiceTx) and seeds for DAWLYY.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "seed": "node --env-file=.env --import tsx ./seed/index.ts",
+    "test:rls": "vitest run test/rls.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@dawlyy/core": "workspace:*",
+    "drizzle-orm": "^0.45.4",
+    "postgres": "^4.1.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

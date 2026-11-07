@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# env — never commit secrets
+.env
+.env.*
+!.env.example
+
+# tooling
+.vercel/
+.turbo/
+playwright-report/
+test-results/
+.vitest/
+
+# os / editors
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# codex / agent scratch
+tools/.codex-answers/

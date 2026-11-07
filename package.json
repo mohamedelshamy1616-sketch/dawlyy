@@ -1,0 +1,22 @@
+{
+  "name": "dawlyy",
+  "private": true,
+  "version": "0.0.1",
+  "description": "DAWLYY — Online Coaching Operating System (web-first, API-first, Arabic/English).",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @dawlyy/web dev",
+    "build": "pnpm --filter @dawlyy/web build",
+    "start": "pnpm --filter @dawlyy/web start",
+    "test": "pnpm -r --if-present test",
+    "test:rls": "pnpm --filter @dawlyy/db test:rls",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "pnpm -r --if-present lint",
+    "db:generate": "pnpm --filter @dawlyy/db generate",
+    "db:migrate": "pnpm --filter @dawlyy/db migrate",
+    "db:seed": "pnpm --filter @dawlyy/db seed"
+  }
+}
