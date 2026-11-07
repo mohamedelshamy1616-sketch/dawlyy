@@ -1,0 +1,71 @@
+{
+  "common": {
+    "appName": "DAWLYY",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "search": "Search",
+    "noResults": "No results",
+    "syncNow": "Sync now",
+    "unsynced": "Not synced yet",
+    "language": "Language"
+  },
+  "nav": {
+    "coach": {
+      "dashboard": "Dashboard",
+      "clients": "Clients",
+      "programs": "Programs",
+      "nutrition": "Nutrition",
+      "checkins": "Check-ins",
+      "calendar": "Calendar",
+      "messages": "Messages",
+      "packages": "Packages",
+      "billing": "Billing",
+      "settings": "Settings"
+    },
+    "client": {
+      "today": "Today",
+      "program": "Program",
+      "nutrition": "Nutrition",
+      "tracking": "Tracking",
+      "checkins": "Check-ins",
+      "messages": "Messages",
+      "profile": "Profile"
+    }
+  },
+  "auth": {
+    "login": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "magicLink": "Email me a sign-in link",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "invalidCredentials": "Incorrect email or password",
+    "magicLinkSent": "We sent a sign-in link to your email",
+    "emailRequired": "Enter your email first",
+    "genericError": "Something went wrong, please try again"
+  },
+  "status": {
+    "complete": "Complete",
+    "due": "Due",
+    "overdue": "Overdue",
+    "waitingForCoach": "Waiting for Coach",
+    "waitingForClient": "Waiting for Client",
+    "needsReview": "Needs Review",
+    "expired": "Expired",
+    "draft": "Draft",
+    "published": "Published",
+    "active": "Active",
+    "paused": "Paused",
+    "cancelled": "Cancelled"
+  },
+  "api": {
+    "unauthenticated": "Sign in to continue",
+    "forbidden": "You do not have permission to do that",
+    "notFound": "We could not find what you were looking for",
+    "validation": "Some of the data is invalid, check it and try again",
+    "conflict": "This conflicts with existing data"
+  }
+}
