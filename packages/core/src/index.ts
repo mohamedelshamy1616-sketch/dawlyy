@@ -11,6 +11,10 @@
  *  - nutrition    sumMacros(), convertMeasure(), equivalentQuantity()
  *  - forms        evaluateVisibility(), validateAnswers()
  *  - authz        permission matrix, role presets, isAllowed()
+ *  - program-edit applyProgramOp(): the program builder's edit reducer, validateProgram()
+ *  - subscription endsOnFor(), buildSubscriptionSchedule(), reconcileSchedule(), accessStatus()
+ *  - text         Arabic folding, searchKey(), matchesQuery(), normalizePhone(), parseClientCode()
+ *  - csv          parseCsv(), suggestMapping(), mapExerciseRows(), toCsv()
  */
 export * from './types';
 export * from './schedule';
@@ -21,3 +25,7 @@ export * from './workout';
 export * from './nutrition';
 export * from './forms';
 export * from './authz';
+export * from './program-edit';
+export * from './subscription';
+export * from './text';
+export * from './csv';

@@ -1,5 +1,5 @@
 import { TZDate } from '@date-fns/tz';
-import { ScheduleInput, type ScheduleEvent, type ScheduleEventType, type IsoDate, type IsoDateTime } from '../types';
+import { ScheduleInput, type ScheduleEvent, type ScheduleEventType, type ScheduleRules, type IsoDate, type IsoDateTime } from '../types';
 
 export class ScheduleError extends Error {
   constructor(public readonly code: 'invalid_range' | 'invalid_timezone', message: string) {
@@ -28,11 +28,28 @@ export function localDateOf(instant: IsoDateTime, timezone: string): IsoDate {
   return new TZDate(instant, timezone).toISOString().slice(0, 10);
 }
 
-function dueAt(date: IsoDate, time: string, timezone: string): IsoDateTime {
+/** The instant of local `date` at `time` (HH:mm) in `timezone`; a time that falls in a DST gap moves forward. */
+export function zonedDueAt(date: IsoDate, time: string, timezone: string): IsoDateTime {
   const utc = new Date(`${date}T00:00:00.000Z`);
   const hour = Number(time.slice(0, 2));
   const minute = Number(time.slice(3, 5));
   return new TZDate(utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate(), hour, minute, 0, 0, timezone).toISOString();
+}
+
+/** Local times for rule types that carry no clock field in the shared contract. */
+const FIXED_TIMES = { technique_review: '09:00', renewal_reminder: '10:00', program_review: '09:00' } as const;
+
+/** The local HH:mm the rules schedule `type` at; undefined for types the rules never generate (custom). */
+export function timeOfDayFor(type: ScheduleEventType, rules: ScheduleRules): string | undefined {
+  switch (type) {
+    case 'weekly_checkin': return rules.weeklyCheckin.timeOfDay;
+    case 'daily_checkin': return rules.dailyCheckin.timeOfDay;
+    case 'weigh_in': return rules.weighInTimeOfDay;
+    case 'measurements': return rules.measurements?.timeOfDay;
+    case 'progress_photos': return rules.progressPhotos?.timeOfDay;
+    case 'technique_review': case 'renewal_reminder': case 'program_review': return FIXED_TIMES[type];
+    default: return undefined;
+  }
 }
 
 function compareEvents(left: ScheduleEvent, right: ScheduleEvent): number {
@@ -62,7 +79,7 @@ export function generateSchedule(input: ScheduleInput): ScheduleEvent[] {
     const baseline = day === 0 && (type === 'measurements' || type === 'progress_photos');
     if ((!baseline && day < 1) || day > lastDay) return;
     const localDate = addDays(startDate, day);
-    events.push({ type, dueAt: dueAt(localDate, time, timezone), localDate, timezone, windowDays, ruleKey: `${type}:${localDate}`, ...(payload === undefined ? {} : { payload }) });
+    events.push({ type, dueAt: zonedDueAt(localDate, time, timezone), localDate, timezone, windowDays, ruleKey: `${type}:${localDate}`, ...(payload === undefined ? {} : { payload }) });
   }
 
   const checkin = rules.weeklyCheckin;
@@ -110,15 +127,15 @@ export function generateSchedule(input: ScheduleInput): ScheduleEvent[] {
     for (let day = rule.firstAfterDays; day <= lastDay; day += rule.everyDays) emit(type, day, rule.timeOfDay, rule.windowDays);
   }
 
-  // These rules carry no clock field in the shared contract; use 09:00 local.
+  // These rules carry no clock field in the shared contract; FIXED_TIMES holds their local times.
   if (rules.techniqueReview.enabled) {
     for (let week = 0; week < rules.techniqueReview.firstWeeks && 3 + week * 7 <= lastDay; week++) {
-      emit('technique_review', 3 + week * 7, '09:00', 6, { maxPerWeek: rules.techniqueReview.maxPerWeek });
+      emit('technique_review', 3 + week * 7, FIXED_TIMES.technique_review, 6, { maxPerWeek: rules.techniqueReview.maxPerWeek });
     }
   }
-  for (const daysBefore of rules.renewalReminderDaysBefore) emit('renewal_reminder', lastDay - daysBefore, '10:00', 0, { daysBefore });
+  for (const daysBefore of rules.renewalReminderDaysBefore) emit('renewal_reminder', lastDay - daysBefore, FIXED_TIMES.renewal_reminder, 0, { daysBefore });
   if (rules.programReviewEveryDays !== undefined) {
-    for (let day = rules.programReviewEveryDays; day <= lastDay; day += rules.programReviewEveryDays) emit('program_review', day, '09:00', 0);
+    for (let day = rules.programReviewEveryDays; day <= lastDay; day += rules.programReviewEveryDays) emit('program_review', day, FIXED_TIMES.program_review, 0);
   }
 
   const totals = new Map<string, number>();

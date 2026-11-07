@@ -141,7 +141,8 @@ export const ExerciseSeed = z.object({
   name: LocalizedText,
   aliases: z.array(z.string()).default([]),
   category: z.string().min(1),
-  primaryMuscles: z.array(z.string()).min(1),
+  // May be empty for coach-created or imported exercises; the system seed validator requires at least one.
+  primaryMuscles: z.array(z.string()).default([]),
   secondaryMuscles: z.array(z.string()).default([]),
   movementPattern: z.enum(MOVEMENT_PATTERNS),
   equipment: z.array(z.string()).default([]),

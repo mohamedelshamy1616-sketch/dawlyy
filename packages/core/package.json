@@ -16,7 +16,11 @@
     "./workout": "./src/workout/index.ts",
     "./nutrition": "./src/nutrition/index.ts",
     "./forms": "./src/forms/index.ts",
-    "./authz": "./src/authz/index.ts"
+    "./authz": "./src/authz/index.ts",
+    "./program-edit": "./src/program-edit/index.ts",
+    "./subscription": "./src/subscription/index.ts",
+    "./text": "./src/text/index.ts",
+    "./csv": "./src/csv/index.ts"
   },
   "scripts": {
     "test": "vitest run",
