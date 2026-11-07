@@ -68,6 +68,22 @@ export async function withAuthTx<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T
 }
 
 /**
+ * Identity-only transaction used by requireAuth() to find the caller's memberships before a tenant context
+ * exists: JWT claims + SET LOCAL ROLE authenticated, no membership pin. RLS still applies — the
+ * `memberships_self_select` policy lets a user read only their own membership rows.
+ */
+export async function withUserTx<T>(userId: string, fn: (tx: Tx) => Promise<T>): Promise<T> {
+  runtimeDb ??= drizzle(runtimePool(), { schema });
+  return runtimeDb.transaction(async (tx) => {
+    const claims = JSON.stringify({ sub: userId, role: 'authenticated' });
+    await tx.execute(sql`select set_config('request.jwt.claims', ${claims}, true)`);
+    await tx.execute(sql`select set_config('request.jwt.claim.sub', ${userId}, true)`);
+    await tx.execute(sql`set local role authenticated`);
+    return fn(tx);
+  });
+}
+
+/**
  * Privileged transaction for background jobs, seeds and migrations. RLS is NOT enforced here, so:
  *  - every query must filter by `tenantId` explicitly;
  *  - `reason` is recorded as `app.service_reason` for the audit trigger and logs.
