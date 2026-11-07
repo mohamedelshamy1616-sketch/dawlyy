@@ -1,0 +1,1359 @@
+[
+  {
+    "slug": "koshary",
+    "name": {
+      "ar": "كشري",
+      "en": "Koshary (rice, lentils, pasta, sauce, fried onions)"
+    },
+    "aliases": [
+      "كشري",
+      "koshari",
+      "koshary"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 150,
+      "proteinG": 5,
+      "carbsG": 27,
+      "fatG": 2.5,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 250
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق وسط",
+            "en": "medium plate"
+          }
+        },
+        "grams": 350
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق كبير",
+            "en": "large plate"
+          }
+        },
+        "grams": 450
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "koshary-tomato-sauce",
+    "name": {
+      "ar": "دقة وصلصة الكشري",
+      "en": "Koshary Tomato-Garlic Sauce"
+    },
+    "aliases": [
+      "صلصة كشري",
+      "dakka",
+      "koshary sauce"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 47,
+      "proteinG": 1.5,
+      "carbsG": 7,
+      "fatG": 1.5,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "مغرفة",
+            "en": "ladle"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "fried-onions-koshary",
+    "name": {
+      "ar": "بصل محمر",
+      "en": "Crispy Fried Onions (Koshary topping)"
+    },
+    "aliases": [
+      "تقلية",
+      "بصل محمر",
+      "fried onions"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 488,
+      "proteinG": 5,
+      "carbsG": 45,
+      "fatG": 32,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 20
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "fatta-rice-meat",
+    "name": {
+      "ar": "فتة باللحمة",
+      "en": "Fatta (bread, rice, meat, garlic-vinegar sauce)"
+    },
+    "aliases": [
+      "فتة",
+      "fatta",
+      "fattah"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 187,
+      "proteinG": 9,
+      "carbsG": 22,
+      "fatG": 7,
+      "fiberG": 1.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 300
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "ful-medames-with-oil",
+    "name": {
+      "ar": "فول مدمس بزيت وكمون",
+      "en": "Ful Medames with Oil and Cumin (plated)"
+    },
+    "aliases": [
+      "فول بالزيت",
+      "ful bel zeit",
+      "ful medames oil"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 151,
+      "proteinG": 7.4,
+      "carbsG": 18,
+      "fatG": 5.5,
+      "fiberG": 5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 250
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "taameya-sandwich",
+    "name": {
+      "ar": "ساندوتش طعمية",
+      "en": "Taameya Sandwich (baladi bread, salad, tahini)"
+    },
+    "aliases": [
+      "ساندوتش طعمية",
+      "falafel sandwich",
+      "taamiya sandwich"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 232,
+      "proteinG": 8,
+      "carbsG": 32,
+      "fatG": 8,
+      "fiberG": 5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 180
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "ful-sandwich",
+    "name": {
+      "ar": "ساندوتش فول",
+      "en": "Ful Sandwich (baladi bread)"
+    },
+    "aliases": [
+      "ساندوتش فول",
+      "ful sandwich"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 168,
+      "proteinG": 7,
+      "carbsG": 26,
+      "fatG": 4,
+      "fiberG": 5.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "hawawshi",
+    "name": {
+      "ar": "حواوشي",
+      "en": "Hawawshi (spiced meat baked in baladi bread)"
+    },
+    "aliases": [
+      "حواوشي",
+      "hawawshi"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 269,
+      "proteinG": 13,
+      "carbsG": 25,
+      "fatG": 13,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص حواوشي",
+            "en": "half"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "stuffed-grape-leaves",
+    "name": {
+      "ar": "محشي ورق عنب",
+      "en": "Stuffed Grape Leaves (Warak Enab)"
+    },
+    "aliases": [
+      "ورق عنب",
+      "warak enab",
+      "dolma"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 163,
+      "proteinG": 3,
+      "carbsG": 22,
+      "fatG": 7,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 25
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate (8 pieces)"
+          }
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "stuffed-cabbage",
+    "name": {
+      "ar": "محشي كرنب",
+      "en": "Stuffed Cabbage (Mahshi Koronb)"
+    },
+    "aliases": [
+      "كرنب محشي",
+      "mahshi koronb"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 128,
+      "proteinG": 3,
+      "carbsG": 20,
+      "fatG": 4,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate (5 pieces)"
+          }
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "stuffed-zucchini",
+    "name": {
+      "ar": "محشي كوسة",
+      "en": "Stuffed Zucchini (Mahshi Koosa)"
+    },
+    "aliases": [
+      "كوسة محشي",
+      "mahshi koosa"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 120,
+      "proteinG": 3,
+      "carbsG": 18,
+      "fatG": 4,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate (4 pieces)"
+          }
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "mombar",
+    "name": {
+      "ar": "ممبار",
+      "en": "Mombar (stuffed sausage)"
+    },
+    "aliases": [
+      "ممبار",
+      "mombar"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 279,
+      "proteinG": 9,
+      "carbsG": 18,
+      "fatG": 19,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "liver-alexandrian",
+    "name": {
+      "ar": "كبدة إسكندراني",
+      "en": "Alexandrian Liver (spicy pan-fried)"
+    },
+    "aliases": [
+      "كبدة اسكندراني",
+      "kebda iskandarani",
+      "alexandrian liver"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 173,
+      "proteinG": 18,
+      "carbsG": 5,
+      "fatG": 9,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ساندوتش",
+            "en": "sandwich portion"
+          }
+        },
+        "grams": 80
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "molokhia-chicken-soup",
+    "name": {
+      "ar": "ملوخية بالفراخ",
+      "en": "Molokhia with Chicken (stew)"
+    },
+    "aliases": [
+      "ملوخية بالفراخ",
+      "molokhia bel ferakh"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 88,
+      "proteinG": 8,
+      "carbsG": 4,
+      "fatG": 4.5,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "bamia-meat-stew",
+    "name": {
+      "ar": "بامية باللحمة",
+      "en": "Okra with Meat (tomato stew)"
+    },
+    "aliases": [
+      "بامية باللحمة",
+      "bamia bel lahma"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 101,
+      "proteinG": 6,
+      "carbsG": 8,
+      "fatG": 5,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "macarona-bechamel",
+    "name": {
+      "ar": "مكرونة بشاميل",
+      "en": "Macarona Bechamel"
+    },
+    "aliases": [
+      "مكرونة بشاميل",
+      "macarona bechamel",
+      "bechamel"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 188,
+      "proteinG": 9,
+      "carbsG": 20,
+      "fatG": 8,
+      "fiberG": 1.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 220
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "rice-with-vermicelli",
+    "name": {
+      "ar": "رز بالشعرية",
+      "en": "Rice with Vermicelli (cooked with oil)"
+    },
+    "aliases": [
+      "رز بالشعرية",
+      "roz bel shereya",
+      "vermicelli rice"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 174,
+      "proteinG": 3.5,
+      "carbsG": 31,
+      "fatG": 4,
+      "fiberG": 0.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 170
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "sayadeya",
+    "name": {
+      "ar": "صيادية",
+      "en": "Sayadeya (fish with spiced rice)"
+    },
+    "aliases": [
+      "صيادية",
+      "sayadiya",
+      "fish rice"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 172,
+      "proteinG": 12,
+      "carbsG": 22,
+      "fatG": 4,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 300
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "shakshuka",
+    "name": {
+      "ar": "شكشوكة",
+      "en": "Shakshuka (eggs in tomato sauce)"
+    },
+    "aliases": [
+      "شكشوكة",
+      "shakshouka"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 124,
+      "proteinG": 7,
+      "carbsG": 6,
+      "fatG": 8,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 250
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "feteer-meshaltet",
+    "name": {
+      "ar": "فطير مشلتت",
+      "en": "Feteer Meshaltet (plain, with ghee)"
+    },
+    "aliases": [
+      "فطير مشلتت",
+      "feteer",
+      "fiteer"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 410,
+      "proteinG": 8,
+      "carbsG": 45,
+      "fatG": 22,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ربع فطيرة",
+            "en": "quarter"
+          }
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "lentil-soup",
+    "name": {
+      "ar": "شوربة عدس",
+      "en": "Lentil Soup (Shorbet Adas)"
+    },
+    "aliases": [
+      "شوربة عدس",
+      "shorbet adas",
+      "lentil soup"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 57,
+      "proteinG": 3.5,
+      "carbsG": 8.5,
+      "fatG": 1,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "bowl"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "vegetable-soup",
+    "name": {
+      "ar": "شوربة خضار",
+      "en": "Vegetable Soup"
+    },
+    "aliases": [
+      "شوربة خضار",
+      "shorbet khodar"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 36,
+      "proteinG": 1.2,
+      "carbsG": 6,
+      "fatG": 0.8,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "bowl"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "chicken-soup",
+    "name": {
+      "ar": "شوربة فراخ",
+      "en": "Chicken Soup"
+    },
+    "aliases": [
+      "شوربة فراخ",
+      "shorbet ferakh"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 39.5,
+      "proteinG": 3.5,
+      "carbsG": 3,
+      "fatG": 1.5,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "bowl"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "tabbouleh",
+    "name": {
+      "ar": "تبولة",
+      "en": "Tabbouleh"
+    },
+    "aliases": [
+      "تبولة",
+      "tabouli"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 103,
+      "proteinG": 2.5,
+      "carbsG": 12,
+      "fatG": 5,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small plate"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "kibbeh-fried",
+    "name": {
+      "ar": "كبيبة مقلية",
+      "en": "Fried Kibbeh"
+    },
+    "aliases": [
+      "كبة",
+      "kobeba",
+      "kibbeh"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 244,
+      "proteinG": 12,
+      "carbsG": 22,
+      "fatG": 12,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 70
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "sambousek-cheese",
+    "name": {
+      "ar": "سمبوسك بالجبنة",
+      "en": "Sambousek with Cheese (fried)"
+    },
+    "aliases": [
+      "سمبوسك",
+      "sambousek",
+      "sambusa"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 328,
+      "proteinG": 9,
+      "carbsG": 28,
+      "fatG": 20,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 35
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "chicken-shawarma-sandwich",
+    "name": {
+      "ar": "ساندوتش شاورما فراخ",
+      "en": "Chicken Shawarma Sandwich"
+    },
+    "aliases": [
+      "شاورما فراخ ساندوتش",
+      "shawerma sandwich"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 220,
+      "proteinG": 14,
+      "carbsG": 23,
+      "fatG": 8,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 220
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "beef-burger-sandwich",
+    "name": {
+      "ar": "ساندوتش برجر",
+      "en": "Beef Burger Sandwich (bun, patty, sauce)"
+    },
+    "aliases": [
+      "برجر",
+      "burger",
+      "burger sandwich"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 256,
+      "proteinG": 13,
+      "carbsG": 24,
+      "fatG": 12,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "kofta-sandwich",
+    "name": {
+      "ar": "ساندوتش كفتة",
+      "en": "Kofta Sandwich"
+    },
+    "aliases": [
+      "ساندوتش كفتة",
+      "kofta sandwich"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 256,
+      "proteinG": 12,
+      "carbsG": 24,
+      "fatG": 12,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "pizza-cheese",
+    "name": {
+      "ar": "بيتزا جبنة",
+      "en": "Cheese Pizza"
+    },
+    "aliases": [
+      "بيتزا",
+      "pizza",
+      "بيتزا مارجريتا"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 266,
+      "proteinG": 11,
+      "carbsG": 33,
+      "fatG": 10,
+      "fiberG": 2.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 110
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "بيتزا صغيرة",
+            "en": "small pizza"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "roz-moammar",
+    "name": {
+      "ar": "رز معمر",
+      "en": "Roz Moammar (baked creamy rice)"
+    },
+    "aliases": [
+      "رز معمر",
+      "roz mo3ammar"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 219,
+      "proteinG": 5,
+      "carbsG": 25,
+      "fatG": 11,
+      "fiberG": 0.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small dish"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "torly",
+    "name": {
+      "ar": "تورلي",
+      "en": "Torly (baked vegetable casserole)"
+    },
+    "aliases": [
+      "تورلي",
+      "torli",
+      "tourli"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 97.5,
+      "proteinG": 2,
+      "carbsG": 10,
+      "fatG": 5.5,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 300
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "eggplant-fried",
+    "name": {
+      "ar": "باذنجان مقلي",
+      "en": "Fried Eggplant"
+    },
+    "aliases": [
+      "باذنجان مقلي",
+      "betengan maqly"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 154,
+      "proteinG": 1.5,
+      "carbsG": 10,
+      "fatG": 12,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  },
+  {
+    "slug": "mesaqaa",
+    "name": {
+      "ar": "مسقعة",
+      "en": "Mesaqaa (eggplant in tomato sauce)"
+    },
+    "aliases": [
+      "مسقعة",
+      "mesa3a",
+      "moussaka vegetarian"
+    ],
+    "category": "egyptian-dishes",
+    "per100": {
+      "kcal": 102,
+      "proteinG": 2,
+      "carbsG": 9,
+      "fatG": 6.5,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "egyptian-dishes"
+    ]
+  }
+]

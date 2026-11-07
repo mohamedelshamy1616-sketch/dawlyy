@@ -1,0 +1,959 @@
+[
+  {
+    "slug": "tilapia-raw",
+    "name": {
+      "ar": "بلطي نيء",
+      "en": "Tilapia (Bolti), Raw"
+    },
+    "aliases": [
+      "بلطي",
+      "bolti",
+      "tilapia raw"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 95,
+      "proteinG": 20.1,
+      "carbsG": 0,
+      "fatG": 1.7
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "tilapia-cooked",
+    "cookedYield": 0.75,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فيليه",
+            "en": "fillet"
+          }
+        },
+        "grams": 120,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "tilapia-cooked",
+    "name": {
+      "ar": "بلطي مشوي",
+      "en": "Tilapia (Bolti), Grilled"
+    },
+    "aliases": [
+      "بلطي مشوي",
+      "bolti mashwi",
+      "grilled tilapia"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 128,
+      "proteinG": 26,
+      "carbsG": 0,
+      "fatG": 2.7
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "tilapia-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فيليه",
+            "en": "fillet"
+          }
+        },
+        "grams": 90,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "mullet-raw",
+    "name": {
+      "ar": "بوري نيء",
+      "en": "Grey Mullet (Bouri), Raw"
+    },
+    "aliases": [
+      "بوري",
+      "bouri",
+      "mullet"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 112,
+      "proteinG": 19.4,
+      "carbsG": 0,
+      "fatG": 3.8
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "mullet-cooked",
+    "cookedYield": 0.78,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 250,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "mullet-cooked",
+    "name": {
+      "ar": "بوري مشوي",
+      "en": "Grey Mullet (Bouri), Grilled"
+    },
+    "aliases": [
+      "بوري مشوي",
+      "bouri mashwi"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 145,
+      "proteinG": 25,
+      "carbsG": 0,
+      "fatG": 5
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "mullet-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 190,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sea-bass-raw",
+    "name": {
+      "ar": "قاروص نيء",
+      "en": "Sea Bass (Qarous), Raw"
+    },
+    "aliases": [
+      "قاروص",
+      "qarous",
+      "sea bass"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 92,
+      "proteinG": 18.4,
+      "carbsG": 0,
+      "fatG": 2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "sea-bass-cooked",
+    "cookedYield": 0.78,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 300,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sea-bass-cooked",
+    "name": {
+      "ar": "قاروص مشوي",
+      "en": "Sea Bass (Qarous), Grilled"
+    },
+    "aliases": [
+      "قاروص مشوي",
+      "grilled sea bass"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 117,
+      "proteinG": 23.6,
+      "carbsG": 0,
+      "fatG": 2.6
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "sea-bass-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 230,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sea-bream-raw",
+    "name": {
+      "ar": "دنيس نيء",
+      "en": "Sea Bream (Denis), Raw"
+    },
+    "aliases": [
+      "دنيس",
+      "denis",
+      "sea bream"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 96,
+      "proteinG": 19,
+      "carbsG": 0,
+      "fatG": 2.2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "sea-bream-cooked",
+    "cookedYield": 0.78,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 300,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sea-bream-cooked",
+    "name": {
+      "ar": "دنيس مشوي",
+      "en": "Sea Bream (Denis), Grilled"
+    },
+    "aliases": [
+      "دنيس مشوي",
+      "grilled sea bream"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 128,
+      "proteinG": 24.5,
+      "carbsG": 0,
+      "fatG": 3
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "sea-bream-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 230,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "shrimp-raw",
+    "name": {
+      "ar": "جمبري نيء",
+      "en": "Shrimp, Raw"
+    },
+    "aliases": [
+      "جمبري",
+      "gambari",
+      "shrimp raw"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 85,
+      "proteinG": 20.1,
+      "carbsG": 0,
+      "fatG": 0.5
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "shrimp-cooked",
+    "cookedYield": 0.8,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 15,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 145,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "shrimp-cooked",
+    "name": {
+      "ar": "جمبري مطبوخ",
+      "en": "Shrimp, Cooked"
+    },
+    "aliases": [
+      "جمبري مسلوق",
+      "جمبري مشوي",
+      "cooked shrimp"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 99,
+      "proteinG": 24,
+      "carbsG": 0.2,
+      "fatG": 0.3
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "shrimp-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 12,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 145,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "squid-raw",
+    "name": {
+      "ar": "كاليماري نيء",
+      "en": "Squid (Calamari), Raw"
+    },
+    "aliases": [
+      "حبار",
+      "كاليماري",
+      "squid"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 87,
+      "proteinG": 15.6,
+      "carbsG": 3.1,
+      "fatG": 1.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "calamari-fried",
+    "name": {
+      "ar": "كاليماري مقلي",
+      "en": "Calamari, Breaded and Fried"
+    },
+    "aliases": [
+      "كاليماري مقلي",
+      "fried calamari"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 173,
+      "proteinG": 15,
+      "carbsG": 8,
+      "fatG": 9,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "tuna-canned-water",
+    "name": {
+      "ar": "تونة معلبة بالماء",
+      "en": "Canned Tuna in Water (drained)"
+    },
+    "aliases": [
+      "تونة",
+      "tuna",
+      "tuna can",
+      "تونة مية"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 109,
+      "proteinG": 25.5,
+      "carbsG": 0,
+      "fatG": 0.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 170
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص علبة",
+            "en": "half can"
+          }
+        },
+        "grams": 85
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "tuna-canned-oil",
+    "name": {
+      "ar": "تونة معلبة بالزيت",
+      "en": "Canned Tuna in Oil (drained)"
+    },
+    "aliases": [
+      "تونة بالزيت",
+      "tuna in oil"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 190,
+      "proteinG": 29,
+      "carbsG": 0,
+      "fatG": 8.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 170
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص علبة",
+            "en": "half can"
+          }
+        },
+        "grams": 85
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "salmon-raw",
+    "name": {
+      "ar": "سلمون نيء",
+      "en": "Salmon, Raw"
+    },
+    "aliases": [
+      "سلمون",
+      "salmon"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 202,
+      "proteinG": 20.4,
+      "carbsG": 0,
+      "fatG": 13.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 180
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "شريحة",
+            "en": "fillet"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "salmon-cooked",
+    "name": {
+      "ar": "سلمون مشوي",
+      "en": "Salmon, Baked/Grilled"
+    },
+    "aliases": [
+      "سلمون مشوي",
+      "grilled salmon"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 206,
+      "proteinG": 22,
+      "carbsG": 0,
+      "fatG": 12.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 140
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "شريحة",
+            "en": "fillet"
+          }
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sardines-canned",
+    "name": {
+      "ar": "سردين معلب",
+      "en": "Canned Sardines in Oil (drained)"
+    },
+    "aliases": [
+      "سردين",
+      "sardine can"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 202,
+      "proteinG": 24.6,
+      "carbsG": 0,
+      "fatG": 11.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 105
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 20
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "sardines-grilled",
+    "name": {
+      "ar": "سردين مشوي",
+      "en": "Fresh Sardines, Grilled"
+    },
+    "aliases": [
+      "سردين مشوي",
+      "sardine mashwi"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 181,
+      "proteinG": 25,
+      "carbsG": 0,
+      "fatG": 9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "palm portion"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "mackerel-cooked",
+    "name": {
+      "ar": "ماكريل مشوي",
+      "en": "Mackerel, Grilled"
+    },
+    "aliases": [
+      "ماكريل",
+      "makarel",
+      "mackerel"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 255,
+      "proteinG": 23.8,
+      "carbsG": 0,
+      "fatG": 17.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "fish-fried-coated",
+    "name": {
+      "ar": "سمك مقلي",
+      "en": "Fried Fish (floured coating)"
+    },
+    "aliases": [
+      "سمك مقلي",
+      "samak maqly",
+      "fried fish"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 230,
+      "proteinG": 18,
+      "carbsG": 8,
+      "fatG": 14,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فيليه",
+            "en": "fillet"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "herring-smoked",
+    "name": {
+      "ar": "رنجة",
+      "en": "Smoked Herring (Renga)"
+    },
+    "aliases": [
+      "رنجة",
+      "renga",
+      "kipper"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 209,
+      "proteinG": 24.6,
+      "carbsG": 0,
+      "fatG": 12.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "fesikh",
+    "name": {
+      "ar": "فسيخ",
+      "en": "Fesikh (Salted Fermented Mullet)"
+    },
+    "aliases": [
+      "فسيخ",
+      "fesikh"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 178,
+      "proteinG": 22,
+      "carbsG": 0,
+      "fatG": 10
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "قطعة",
+            "en": "piece"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "crab-cooked",
+    "name": {
+      "ar": "كابوريا مطبوخة",
+      "en": "Crab Meat, Cooked"
+    },
+    "aliases": [
+      "كابوريا",
+      "crab"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 91,
+      "proteinG": 19.4,
+      "carbsG": 0,
+      "fatG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 135
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "palm portion"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "mussels-cooked",
+    "name": {
+      "ar": "بلح البحر مطبوخ",
+      "en": "Mussels, Cooked"
+    },
+    "aliases": [
+      "بلح البحر",
+      "mussels"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 165,
+      "proteinG": 23.8,
+      "carbsG": 7.4,
+      "fatG": 4.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  },
+  {
+    "slug": "cod-cooked",
+    "name": {
+      "ar": "فيليه سمك أبيض (قد) مطبوخ",
+      "en": "Cod Fillet, Cooked"
+    },
+    "aliases": [
+      "فيليه سمك أبيض",
+      "cod",
+      "white fish fillet"
+    ],
+    "category": "fish-seafood",
+    "per100": {
+      "kcal": 100,
+      "proteinG": 23,
+      "carbsG": 0,
+      "fatG": 0.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فيليه",
+            "en": "fillet"
+          }
+        },
+        "grams": 140
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fish-seafood"
+    ]
+  }
+]

@@ -1,0 +1,973 @@
+[
+  {
+    "slug": "kettlebell-swing",
+    "name": {
+      "ar": "كيتل بل سوينج",
+      "en": "Kettlebell Swing"
+    },
+    "aliases": [
+      "kettlebell swing",
+      "kb swing",
+      "كيتل بل"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "erector spinae",
+      "core",
+      "deltoid anterior"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "kettlebell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب الورك لورا وانفجر لقدام",
+        "en": "Hike the hips back and snap them forward"
+      },
+      {
+        "ar": "الدراع بتتحرك بالقوة اللي في الورك",
+        "en": "Let the hips throw the bell, arms stay loose"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكيتل بالكتف",
+        "en": "Lifting with the shoulders"
+      },
+      {
+        "ar": "تقويس الضهر في الأعلى",
+        "en": "Overarching at the top"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "cable-pull-through",
+      "romanian-deadlift"
+    ],
+    "alternatives": [
+      "romanian-deadlift",
+      "hip-thrust-barbell"
+    ],
+    "tags": [
+      "functional",
+      "hinge",
+      "kettlebell"
+    ]
+  },
+  {
+    "slug": "turkish-get-up",
+    "name": {
+      "ar": "قومة تركية",
+      "en": "Turkish Get-Up"
+    },
+    "aliases": [
+      "turkish get up",
+      "tgu",
+      "قومة تركي"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "deltoid",
+      "core",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "serratus anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "kettlebell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": true,
+    "compound": false,
+    "plane": "multi",
+    "cues": [
+      {
+        "ar": "عيونك على الوزن طول الوقت",
+        "en": "Keep your eyes on the weight throughout"
+      },
+      {
+        "ar": "دراعك فوق مقفول وكل خطوة بتحكم",
+        "en": "Arm locked overhead and each step controlled"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "استعجال",
+        "en": "Rushing the steps"
+      },
+      {
+        "ar": "دراع مثني",
+        "en": "Bent supporting arm"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "kettlebell-clean-press",
+      "plank"
+    ],
+    "tags": [
+      "functional",
+      "other",
+      "kettlebell"
+    ]
+  },
+  {
+    "slug": "farmers-carry",
+    "name": {
+      "ar": "مشي الفلاح",
+      "en": "Farmer's Carry"
+    },
+    "aliases": [
+      "farmers carry",
+      "farmer walk",
+      "مشي الفلاح"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "forearm flexors",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "gluteus medius",
+      "erector spinae"
+    ],
+    "movementPattern": "carry",
+    "equipment": [
+      "dumbbell",
+      "kettlebell",
+      "trap bar"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "كتفك لتحت والصدر مرفوع",
+        "en": "Shoulders down and chest tall"
+      },
+      {
+        "ar": "خطوات قصيرة وثابتة",
+        "en": "Short steady steps"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الجسم",
+        "en": "Leaning to one side"
+      },
+      {
+        "ar": "رفع الكتف",
+        "en": "Shrugging up"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "suitcase-carry",
+      "sandbag-carry"
+    ],
+    "tags": [
+      "functional",
+      "carry",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "suitcase-carry",
+    "name": {
+      "ar": "كاري شنطة",
+      "en": "Suitcase Carry"
+    },
+    "aliases": [
+      "suitcase carry",
+      "one arm carry",
+      "كاري يد واحدة"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "obliques",
+      "quadratus lumborum",
+      "forearm flexors"
+    ],
+    "secondaryMuscles": [
+      "gluteus medius",
+      "trapezius"
+    ],
+    "movementPattern": "carry",
+    "equipment": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "وزن في إيد واحدة ومتميلش للجنب",
+        "en": "One weight in one hand, do not lean"
+      },
+      {
+        "ar": "كتفين بنفس المستوى",
+        "en": "Keep the shoulders level"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الميل للجنب",
+        "en": "Side-leaning"
+      },
+      {
+        "ar": "خطوات سريعة",
+        "en": "Hurrying"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [
+      "farmers-carry"
+    ],
+    "alternatives": [
+      "farmers-carry",
+      "side-plank"
+    ],
+    "tags": [
+      "functional",
+      "carry",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "bear-crawl",
+    "name": {
+      "ar": "حبو الدب",
+      "en": "Bear Crawl"
+    },
+    "aliases": [
+      "bear crawl",
+      "حبو",
+      "بير كرول"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "serratus anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "multi",
+    "cues": [
+      {
+        "ar": "الركبة 5 سم من الأرض والضهر مسطح",
+        "en": "Knees hover a few cm off the floor with a flat back"
+      },
+      {
+        "ar": "حرك إيد ورجل عكس بعض",
+        "en": "Move opposite hand and foot"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع المؤخرة",
+        "en": "Hips too high"
+      },
+      {
+        "ar": "خطوات كبيرة",
+        "en": "Over-long steps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "mountain-climber",
+      "plank"
+    ],
+    "tags": [
+      "functional",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "dumbbell-snatch",
+    "name": {
+      "ar": "سناتش دمبل",
+      "en": "Dumbbell Snatch"
+    },
+    "aliases": [
+      "db snatch",
+      "dumbbell snatch",
+      "سناتش دمبل"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "deltoid",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "quadriceps",
+      "core"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ورك لورا ثم انفجر والدمبل يسير قريب",
+        "en": "Hips back then explode, dumbbell stays close"
+      },
+      {
+        "ar": "اسقبل الدمبل فوق الراس بدراع مفرود",
+        "en": "Catch overhead with a locked arm"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سحب بالدراع",
+        "en": "Pulling with the arm"
+      },
+      {
+        "ar": "ميل الجذع",
+        "en": "Leaning back in the catch"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "kettlebell-swing"
+    ],
+    "alternatives": [
+      "power-snatch",
+      "kettlebell-clean-press"
+    ],
+    "tags": [
+      "functional",
+      "hinge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "jump-squat",
+    "name": {
+      "ar": "سكوات قفز",
+      "en": "Jump Squat"
+    },
+    "aliases": [
+      "jump squat",
+      "سكوات نط"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "انزل نص سكوات وانفجر لفوق",
+        "en": "Drop to a half squat and explode up"
+      },
+      {
+        "ar": "اهبط بهدوء على مشط ثم كعب",
+        "en": "Land softly, ball of foot then heel"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "هبوط بركبة مفرودة",
+        "en": "Landing stiff-legged"
+      },
+      {
+        "ar": "ركبة جوه",
+        "en": "Knees caving"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "bodyweight-squat"
+    ],
+    "alternatives": [
+      "box-jump",
+      "bodyweight-squat"
+    ],
+    "tags": [
+      "functional",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "squat-thrust",
+    "name": {
+      "ar": "سكوات ثراست",
+      "en": "Squat Thrust"
+    },
+    "aliases": [
+      "squat thrust",
+      "سكوات ثراست"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "quadriceps",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "إيدك على الأرض وارمي الرجل لورا ثم ارجع",
+        "en": "Hands down, kick the feet back then return"
+      },
+      {
+        "ar": "الجسم مشدود في وضع الضغط",
+        "en": "Stay tight in the plank position"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول أسفل الضهر",
+        "en": "Sagging the lower back"
+      },
+      {
+        "ar": "رجوع الرجل بعيد",
+        "en": "Feet landing too far back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "burpee"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "mountain-climber",
+      "burpee"
+    ],
+    "tags": [
+      "functional",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "medicine-ball-slam",
+    "name": {
+      "ar": "ضرب كرة طبية",
+      "en": "Medicine Ball Slam"
+    },
+    "aliases": [
+      "med ball slam",
+      "ball slam",
+      "سلام"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "deltoid",
+      "triceps brachii",
+      "gluteus maximus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "medicine ball"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الكرة فوق الراس وسلمها بكل جسمك",
+        "en": "Reach overhead and slam with the whole body"
+      },
+      {
+        "ar": "حافظ على صدر مرفوع وركبة مثنية",
+        "en": "Keep the chest up with knees bent"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انحناء الضهر",
+        "en": "Rounding the back"
+      },
+      {
+        "ar": "رمي بدون استخدام الجسم",
+        "en": "Throwing with just the arms"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "battle-ropes",
+      "burpee"
+    ],
+    "tags": [
+      "functional",
+      "other",
+      "medicine ball"
+    ]
+  },
+  {
+    "slug": "sled-push",
+    "name": {
+      "ar": "دفع الزحافة",
+      "en": "Sled Push"
+    },
+    "aliases": [
+      "sled push",
+      "sled",
+      "دفع سليد"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings",
+      "core",
+      "deltoid anterior"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "sled"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "جسم مائل وذراع مفرود وادفع بالرجل",
+        "en": "Lean forward with straight arms and drive through the legs"
+      },
+      {
+        "ar": "خطوات قوية وقصيرة",
+        "en": "Short powerful steps"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "وقوف مستقيم",
+        "en": "Standing too upright"
+      },
+      {
+        "ar": "الانحناء من الضهر",
+        "en": "Rounding the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "farmers-carry",
+      "stair-climber"
+    ],
+    "tags": [
+      "functional",
+      "locomotion",
+      "sled"
+    ]
+  },
+  {
+    "slug": "thruster",
+    "name": {
+      "ar": "ثراستر",
+      "en": "Thruster"
+    },
+    "aliases": [
+      "thruster",
+      "ثراستر"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus",
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "barbell",
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "سكوات كامل وضغط فوق الراس بدون توقف",
+        "en": "Full squat flowing straight into a press"
+      },
+      {
+        "ar": "استخدم عزم الرجل في الدفع",
+        "en": "Use leg drive to power the press"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انتظار فوق قبل الدفع",
+        "en": "Pausing before the press"
+      },
+      {
+        "ar": "البار قدام الجسم",
+        "en": "Letting the bar drift forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "goblet-squat",
+      "push-press"
+    ],
+    "alternatives": [
+      "overhead-squat",
+      "wall-ball"
+    ],
+    "tags": [
+      "functional",
+      "squat",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "wall-ball",
+    "name": {
+      "ar": "وول بول",
+      "en": "Wall Ball"
+    },
+    "aliases": [
+      "wall ball",
+      "وول بول",
+      "رمي كرة على الحيطة"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus",
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "medicine ball"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "سكوات عميق ثم ارمي الكرة لهدف عالي",
+        "en": "Deep squat then throw to a high target"
+      },
+      {
+        "ar": "استقبل الكرة وانزل مباشرة",
+        "en": "Catch and drop straight into the next squat"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سكوات قصير",
+        "en": "Shallow squats"
+      },
+      {
+        "ar": "رمي بالدراع بس",
+        "en": "Throwing with arms only"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "goblet-squat"
+    ],
+    "alternatives": [
+      "thruster",
+      "medicine-ball-slam"
+    ],
+    "tags": [
+      "functional",
+      "squat",
+      "medicine ball"
+    ]
+  },
+  {
+    "slug": "sandbag-carry",
+    "name": {
+      "ar": "حمل كيس رمل",
+      "en": "Sandbag Carry"
+    },
+    "aliases": [
+      "sandbag carry",
+      "sandbag",
+      "كيس رمل"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "trapezius",
+      "erector spinae",
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "forearm flexors",
+      "gluteus maximus"
+    ],
+    "movementPattern": "carry",
+    "equipment": [
+      "sandbag"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "احضن الكيس على الصدر وخطوات قصيرة",
+        "en": "Bear-hug the bag at the chest and take short steps"
+      },
+      {
+        "ar": "شد البطن وتنفس منتظم",
+        "en": "Brace the abs and breathe steadily"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل لقدام",
+        "en": "Folding forward"
+      },
+      {
+        "ar": "الكيس واطي",
+        "en": "Bag hanging too low"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "farmers-carry"
+    ],
+    "alternatives": [
+      "farmers-carry",
+      "suitcase-carry"
+    ],
+    "tags": [
+      "functional",
+      "carry",
+      "sandbag"
+    ]
+  },
+  {
+    "slug": "kettlebell-clean-press",
+    "name": {
+      "ar": "كلين وبريس كيتل بل",
+      "en": "Kettlebell Clean and Press"
+    },
+    "aliases": [
+      "kb clean and press",
+      "كلين اند بريس كيتل"
+    ],
+    "category": "functional",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "deltoid anterior",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "hamstrings",
+      "core"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "kettlebell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب الكيتل بجانب جسمك وادخل بالكوع ثم اضغط",
+        "en": "Pull the bell close, snap the elbow in, then press"
+      },
+      {
+        "ar": "أنهي بذراع مفروضة وعضلة بطن مشدودة",
+        "en": "Finish with a locked arm and braced abs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "اللطمة على الساعد",
+        "en": "Bell slapping the forearm"
+      },
+      {
+        "ar": "قوس الضهر في الضغط",
+        "en": "Arching during the press"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-snatch"
+    ],
+    "alternatives": [
+      "dumbbell-snatch",
+      "push-press"
+    ],
+    "tags": [
+      "functional",
+      "push_vertical",
+      "kettlebell"
+    ]
+  }
+]

@@ -1,0 +1,1064 @@
+[
+  {
+    "slug": "olive-oil",
+    "name": {
+      "ar": "زيت زيتون",
+      "en": "Olive Oil"
+    },
+    "aliases": [
+      "زيت زيتون",
+      "zeit zaytoun",
+      "olive oil"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 900,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 100
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 216
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "sunflower-oil",
+    "name": {
+      "ar": "زيت عباد الشمس",
+      "en": "Sunflower Oil"
+    },
+    "aliases": [
+      "زيت عباد",
+      "zeit abbad",
+      "sunflower oil"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 900,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 100
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 216
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "corn-oil",
+    "name": {
+      "ar": "زيت ذرة",
+      "en": "Corn Oil"
+    },
+    "aliases": [
+      "زيت ذرة",
+      "zeit dora",
+      "corn oil"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 900,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 100
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 216
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "coconut-oil",
+    "name": {
+      "ar": "زيت جوز الهند",
+      "en": "Coconut Oil"
+    },
+    "aliases": [
+      "زيت جوز هند",
+      "coconut oil"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 900,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 100
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "ghee-samna",
+    "name": {
+      "ar": "سمنة",
+      "en": "Ghee (Samna Baladi)"
+    },
+    "aliases": [
+      "سمنة",
+      "samna",
+      "ghee"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 876,
+      "proteinG": 0.3,
+      "carbsG": 0,
+      "fatG": 99.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 13
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 4.5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "margarine",
+    "name": {
+      "ar": "مارجرين",
+      "en": "Margarine"
+    },
+    "aliases": [
+      "مارجرين",
+      "margarine",
+      "zebda sena3eya"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 725,
+      "proteinG": 0.2,
+      "carbsG": 0.7,
+      "fatG": 80.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "mayonnaise",
+    "name": {
+      "ar": "مايونيز",
+      "en": "Mayonnaise"
+    },
+    "aliases": [
+      "مايونيز",
+      "mayo",
+      "mayonnaise"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 681,
+      "proteinG": 1,
+      "carbsG": 0.6,
+      "fatG": 75
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "almonds",
+    "name": {
+      "ar": "لوز",
+      "en": "Almonds"
+    },
+    "aliases": [
+      "لوز",
+      "loz",
+      "almonds"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 579,
+      "proteinG": 21.2,
+      "carbsG": 21.6,
+      "fatG": 49.9,
+      "fiberG": 12.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 1.2
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 143
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "walnuts",
+    "name": {
+      "ar": "عين جمل",
+      "en": "Walnuts"
+    },
+    "aliases": [
+      "عين جمل",
+      "ayn gamal",
+      "walnuts"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 654,
+      "proteinG": 15.2,
+      "carbsG": 13.7,
+      "fatG": 65.2,
+      "fiberG": 6.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 4
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 117
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "cashews",
+    "name": {
+      "ar": "كاجو",
+      "en": "Cashews"
+    },
+    "aliases": [
+      "كاجو",
+      "kaju",
+      "cashew"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 553,
+      "proteinG": 18.2,
+      "carbsG": 30.2,
+      "fatG": 43.9,
+      "fiberG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 1.7
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 137
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "pistachios",
+    "name": {
+      "ar": "فستق",
+      "en": "Pistachios"
+    },
+    "aliases": [
+      "فستق",
+      "fostoq",
+      "pistachio"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 560,
+      "proteinG": 20.2,
+      "carbsG": 27.2,
+      "fatG": 45.3,
+      "fiberG": 10.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 123
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "peanuts",
+    "name": {
+      "ar": "فول سوداني",
+      "en": "Peanuts"
+    },
+    "aliases": [
+      "فول سوداني",
+      "sudani",
+      "peanuts"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 567,
+      "proteinG": 25.8,
+      "carbsG": 16.1,
+      "fatG": 49.2,
+      "fiberG": 8.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 146
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "peanut-butter",
+    "name": {
+      "ar": "زبدة فول سوداني",
+      "en": "Peanut Butter"
+    },
+    "aliases": [
+      "زبدة فول سوداني",
+      "peanut butter",
+      "زبدة الفول السوداني"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 630,
+      "proteinG": 25,
+      "carbsG": 20,
+      "fatG": 50,
+      "fiberG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "almond-butter",
+    "name": {
+      "ar": "زبدة لوز",
+      "en": "Almond Butter"
+    },
+    "aliases": [
+      "زبدة لوز",
+      "almond butter"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 614,
+      "proteinG": 21,
+      "carbsG": 19,
+      "fatG": 56,
+      "fiberG": 10
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "hazelnuts",
+    "name": {
+      "ar": "بندق",
+      "en": "Hazelnuts"
+    },
+    "aliases": [
+      "بندق",
+      "bunduq",
+      "hazelnut"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 628,
+      "proteinG": 15,
+      "carbsG": 16.7,
+      "fatG": 60.8,
+      "fiberG": 9.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 135
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "pecans",
+    "name": {
+      "ar": "بيكان",
+      "en": "Pecans"
+    },
+    "aliases": [
+      "بيكان",
+      "pecan"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 691,
+      "proteinG": 9.2,
+      "carbsG": 13.9,
+      "fatG": 72,
+      "fiberG": 9.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 109
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "sunflower-seeds",
+    "name": {
+      "ar": "لب سوري",
+      "en": "Sunflower Seeds (Lib Souri)"
+    },
+    "aliases": [
+      "لب سوري",
+      "lib soury",
+      "sunflower seeds"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 584,
+      "proteinG": 20.8,
+      "carbsG": 20,
+      "fatG": 51.5,
+      "fiberG": 8.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "pumpkin-seeds",
+    "name": {
+      "ar": "لب أبيض",
+      "en": "Pumpkin Seeds (Lib Abyad)"
+    },
+    "aliases": [
+      "لب ابيض",
+      "lib abyad",
+      "pumpkin seeds"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 559,
+      "proteinG": 30.2,
+      "carbsG": 10.7,
+      "fatG": 49,
+      "fiberG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "sesame-seeds",
+    "name": {
+      "ar": "سمسم",
+      "en": "Sesame Seeds"
+    },
+    "aliases": [
+      "سمسم",
+      "semsem",
+      "sesame"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 573,
+      "proteinG": 17.7,
+      "carbsG": 23.5,
+      "fatG": 49.7,
+      "fiberG": 11.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 9
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 3
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "tahini",
+    "name": {
+      "ar": "طحينة",
+      "en": "Tahini"
+    },
+    "aliases": [
+      "طحينة",
+      "tehina",
+      "tahini"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 595,
+      "proteinG": 17,
+      "carbsG": 21.2,
+      "fatG": 53.8,
+      "fiberG": 9.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "chia-seeds",
+    "name": {
+      "ar": "شيا",
+      "en": "Chia Seeds"
+    },
+    "aliases": [
+      "شيا",
+      "chia"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 486,
+      "proteinG": 16.5,
+      "carbsG": 42.1,
+      "fatG": 30.7,
+      "fiberG": 34.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 4
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "flaxseed",
+    "name": {
+      "ar": "بذر الكتان",
+      "en": "Flaxseed"
+    },
+    "aliases": [
+      "بذر الكتان",
+      "flax",
+      "flaxseed"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 534,
+      "proteinG": 18.3,
+      "carbsG": 28.9,
+      "fatG": 42.2,
+      "fiberG": 27.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 3.5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "coconut-dried",
+    "name": {
+      "ar": "جوز هند مبشور",
+      "en": "Desiccated Coconut"
+    },
+    "aliases": [
+      "جوز هند مبشور",
+      "coconut flakes"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 660,
+      "proteinG": 6.9,
+      "carbsG": 23.7,
+      "fatG": 64.5,
+      "fiberG": 16.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 80
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "mixed-nuts",
+    "name": {
+      "ar": "مكسرات مشكلة",
+      "en": "Mixed Nuts (unsalted)"
+    },
+    "aliases": [
+      "مكسرات",
+      "mixed nuts",
+      "mekassarat"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 650,
+      "proteinG": 20,
+      "carbsG": 21,
+      "fatG": 54,
+      "fiberG": 7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 140
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "nuts-raisins-mix",
+    "name": {
+      "ar": "تحميرة مكسرات وزبيب",
+      "en": "Nuts and Raisins Mix"
+    },
+    "aliases": [
+      "تحميرة",
+      "trail mix",
+      "mix mekassarat"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 480,
+      "proteinG": 12,
+      "carbsG": 45,
+      "fatG": 28,
+      "fiberG": 5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  },
+  {
+    "slug": "dukkah",
+    "name": {
+      "ar": "دقة",
+      "en": "Dukkah (Egyptian Nut and Spice Blend)"
+    },
+    "aliases": [
+      "دقة",
+      "du2a",
+      "dukkah"
+    ],
+    "category": "fats-nuts",
+    "per100": {
+      "kcal": 459,
+      "proteinG": 16,
+      "carbsG": 20,
+      "fatG": 35,
+      "fiberG": 8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 3
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fats-nuts"
+    ]
+  }
+]

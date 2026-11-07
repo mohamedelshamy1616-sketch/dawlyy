@@ -1,0 +1,1201 @@
+[
+  {
+    "slug": "milk-whole",
+    "name": {
+      "ar": "لبن كامل الدسم",
+      "en": "Whole Milk"
+    },
+    "aliases": [
+      "لبن",
+      "laban",
+      "halib",
+      "milk full fat"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 62,
+      "proteinG": 3.2,
+      "carbsG": 4.8,
+      "fatG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "carton 250ml"
+          }
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "milk-low-fat",
+    "name": {
+      "ar": "لبن قليل الدسم",
+      "en": "Low-Fat Milk (1%)"
+    },
+    "aliases": [
+      "لبن نص دسم",
+      "milk 1%",
+      "low fat milk"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 43,
+      "proteinG": 3.4,
+      "carbsG": 5,
+      "fatG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "milk-skim",
+    "name": {
+      "ar": "لبن خالي الدسم",
+      "en": "Skim Milk"
+    },
+    "aliases": [
+      "لبن خالي الدسم",
+      "skim milk",
+      "fat free milk"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 34,
+      "proteinG": 3.4,
+      "carbsG": 5,
+      "fatG": 0.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "laban-rayeb",
+    "name": {
+      "ar": "لبن رايب",
+      "en": "Laban Rayeb (Egyptian Fermented Milk)"
+    },
+    "aliases": [
+      "لبن رايب",
+      "rayeb",
+      "laban zabadi"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 50,
+      "proteinG": 3.3,
+      "carbsG": 4.8,
+      "fatG": 1.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "yogurt-plain-full",
+    "name": {
+      "ar": "زبادي كامل الدسم",
+      "en": "Plain Yogurt, Full Fat"
+    },
+    "aliases": [
+      "زبادي",
+      "zabadi",
+      "yogurt"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 62,
+      "proteinG": 3.5,
+      "carbsG": 4.7,
+      "fatG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 120g"
+          }
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "yogurt-plain-low-fat",
+    "name": {
+      "ar": "زبادي قليل الدسم",
+      "en": "Plain Yogurt, Low Fat"
+    },
+    "aliases": [
+      "زبادي دايت",
+      "low fat yogurt"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 63,
+      "proteinG": 5.3,
+      "carbsG": 7,
+      "fatG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 120g"
+          }
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "yogurt-greek-2",
+    "name": {
+      "ar": "زبادي يوناني 2%",
+      "en": "Greek Yogurt, 2% Fat"
+    },
+    "aliases": [
+      "زبادي يوناني",
+      "greek yogurt"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 74,
+      "proteinG": 10,
+      "carbsG": 3.9,
+      "fatG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 150g"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "yogurt-greek-0",
+    "name": {
+      "ar": "زبادي يوناني خالي الدسم",
+      "en": "Greek Yogurt, Fat Free"
+    },
+    "aliases": [
+      "زبادي يوناني دايت",
+      "fat free greek yogurt"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 59,
+      "proteinG": 10.2,
+      "carbsG": 3.6,
+      "fatG": 0.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 150g"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "labneh",
+    "name": {
+      "ar": "لبنة",
+      "en": "Labneh"
+    },
+    "aliases": [
+      "لبنة",
+      "labna",
+      "labneh"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 152,
+      "proteinG": 6,
+      "carbsG": 5,
+      "fatG": 12
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small plate"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cottage-cheese-qareesh",
+    "name": {
+      "ar": "جبنة قريش",
+      "en": "Qareesh Cheese (Egyptian Cottage Cheese)"
+    },
+    "aliases": [
+      "قريش",
+      "gebna qareesh",
+      "cottage cheese"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 69,
+      "proteinG": 12.4,
+      "carbsG": 2.7,
+      "fatG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 226
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 250g"
+          }
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-rumi",
+    "name": {
+      "ar": "جبنة رومي",
+      "en": "Rumi Cheese (Egyptian Aged Hard Cheese)"
+    },
+    "aliases": [
+      "رومي",
+      "gebna romy",
+      "rumi cheese"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 386,
+      "proteinG": 26,
+      "carbsG": 3,
+      "fatG": 30
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "قطعة صغيرة",
+            "en": "small piece"
+          }
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-domiati",
+    "name": {
+      "ar": "جبنة بيضاء دمياطي",
+      "en": "Domiati White Cheese"
+    },
+    "aliases": [
+      "جبنة بيضا",
+      "gebna beida",
+      "domiati",
+      "feta egyptian"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 266,
+      "proteinG": 14,
+      "carbsG": 2,
+      "fatG": 22
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ملعقة كبيرة",
+            "en": "tbsp crumbled"
+          }
+        },
+        "grams": 20
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-white-light",
+    "name": {
+      "ar": "جبنة بيضاء لايت",
+      "en": "Light White Cheese"
+    },
+    "aliases": [
+      "جبنة لايت",
+      "light cheese",
+      "low fat white cheese"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 138,
+      "proteinG": 18,
+      "carbsG": 3,
+      "fatG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-mozzarella",
+    "name": {
+      "ar": "موزاريلا",
+      "en": "Mozzarella Cheese"
+    },
+    "aliases": [
+      "موزاريلا",
+      "mozzarella"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 277,
+      "proteinG": 28,
+      "carbsG": 3,
+      "fatG": 17
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 112
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-cheddar",
+    "name": {
+      "ar": "شيدر",
+      "en": "Cheddar Cheese"
+    },
+    "aliases": [
+      "شيدر",
+      "cheddar",
+      "gebna sheder"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 402,
+      "proteinG": 25,
+      "carbsG": 1.3,
+      "fatG": 33
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 7
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cheese-triangle",
+    "name": {
+      "ar": "جبنة مثلثات",
+      "en": "Processed Cheese Triangle (generic)"
+    },
+    "aliases": [
+      "مثلثات",
+      "gebna mothalathat",
+      "cheese triangles"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 248,
+      "proteinG": 11,
+      "carbsG": 6,
+      "fatG": 20
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 17
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "cream-cheese",
+    "name": {
+      "ar": "كريم تشيز",
+      "en": "Cream Cheese"
+    },
+    "aliases": [
+      "كريم تشيز",
+      "cream cheese"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 346,
+      "proteinG": 6,
+      "carbsG": 4,
+      "fatG": 34
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 17
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "halloumi",
+    "name": {
+      "ar": "حلومي",
+      "en": "Halloumi Cheese"
+    },
+    "aliases": [
+      "حلومي",
+      "halloumi"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 317,
+      "proteinG": 21,
+      "carbsG": 2,
+      "fatG": 25
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "ricotta",
+    "name": {
+      "ar": "ريكوتا",
+      "en": "Ricotta Cheese"
+    },
+    "aliases": [
+      "ريكوتا",
+      "ricotta"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 173,
+      "proteinG": 11,
+      "carbsG": 3,
+      "fatG": 13
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 246
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "qeshta",
+    "name": {
+      "ar": "قشطة",
+      "en": "Qeshta (Clotted Cream)"
+    },
+    "aliases": [
+      "قشطة",
+      "eshta",
+      "cream"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 346,
+      "proteinG": 2.8,
+      "carbsG": 2.7,
+      "fatG": 36
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small plate"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "butter",
+    "name": {
+      "ar": "زبدة",
+      "en": "Butter"
+    },
+    "aliases": [
+      "زبدة",
+      "zebda",
+      "butter"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 733,
+      "proteinG": 0.9,
+      "carbsG": 0.1,
+      "fatG": 81
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "قطعة",
+            "en": "pat"
+          }
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-whole-raw",
+    "name": {
+      "ar": "بيض نيء",
+      "en": "Egg, Whole, Raw"
+    },
+    "aliases": [
+      "بيض",
+      "beid",
+      "eggs"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 138,
+      "proteinG": 12.6,
+      "carbsG": 0.7,
+      "fatG": 9.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 50
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كبيرة",
+            "en": "large egg"
+          }
+        },
+        "grams": 56
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-boiled",
+    "name": {
+      "ar": "بيض مسلوق",
+      "en": "Egg, Hard-Boiled"
+    },
+    "aliases": [
+      "بيض مسلوق",
+      "beid maslouk",
+      "boiled egg"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 152,
+      "proteinG": 13,
+      "carbsG": 1.1,
+      "fatG": 10.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 50
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كبيرة",
+            "en": "large egg"
+          }
+        },
+        "grams": 56
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-fried",
+    "name": {
+      "ar": "بيض مقلي",
+      "en": "Egg, Fried"
+    },
+    "aliases": [
+      "بيض مقلي",
+      "fried egg",
+      "beid maqly"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 192,
+      "proteinG": 13.6,
+      "carbsG": 0.8,
+      "fatG": 15
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 46
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-omelette",
+    "name": {
+      "ar": "أومليت",
+      "en": "Omelette (plain)"
+    },
+    "aliases": [
+      "أومليت",
+      "omelet"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 150,
+      "proteinG": 10.6,
+      "carbsG": 0.6,
+      "fatG": 11.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "بيضتين",
+            "en": "2-egg omelette"
+          }
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-white-raw",
+    "name": {
+      "ar": "بياض البيض",
+      "en": "Egg White, Raw"
+    },
+    "aliases": [
+      "بياض بيض",
+      "egg white",
+      "bayad"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 48,
+      "proteinG": 10.9,
+      "carbsG": 0.7,
+      "fatG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 33
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 243
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-yolk-raw",
+    "name": {
+      "ar": "صفار البيض",
+      "en": "Egg Yolk, Raw"
+    },
+    "aliases": [
+      "صفار بيض",
+      "egg yolk",
+      "safar"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 316,
+      "proteinG": 15.9,
+      "carbsG": 3.6,
+      "fatG": 26.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 17
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "egg-quail",
+    "name": {
+      "ar": "بيض سمان",
+      "en": "Quail Egg"
+    },
+    "aliases": [
+      "بيض سمان",
+      "quail egg"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 153,
+      "proteinG": 13,
+      "carbsG": 0.4,
+      "fatG": 11
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "milk-powder-full",
+    "name": {
+      "ar": "لبن بودرة",
+      "en": "Whole Milk Powder"
+    },
+    "aliases": [
+      "لبن بودرة",
+      "milk powder"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 499,
+      "proteinG": 26,
+      "carbsG": 38,
+      "fatG": 27
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 7
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 128
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "milk-evaporated",
+    "name": {
+      "ar": "لبن مبخر",
+      "en": "Evaporated Milk"
+    },
+    "aliases": [
+      "لبن مبخر",
+      "evaporated milk"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 135,
+      "proteinG": 6.8,
+      "carbsG": 10,
+      "fatG": 7.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 170
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  },
+  {
+    "slug": "milk-condensed",
+    "name": {
+      "ar": "لبن مكثف محلى",
+      "en": "Sweetened Condensed Milk"
+    },
+    "aliases": [
+      "لبن مكثف",
+      "condensed milk"
+    ],
+    "category": "dairy-eggs",
+    "per100": {
+      "kcal": 326,
+      "proteinG": 7.9,
+      "carbsG": 54,
+      "fatG": 8.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 397
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "dairy-eggs"
+    ]
+  }
+]

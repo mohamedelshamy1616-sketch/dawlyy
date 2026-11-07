@@ -1,0 +1,1226 @@
+[
+  {
+    "slug": "bench-press-barbell",
+    "name": {
+      "ar": "بنش بريس بار",
+      "en": "Barbell Bench Press"
+    },
+    "aliases": [
+      "bench press",
+      "benš bares",
+      "بنش"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ثبّت لوحي الكتف ورا وانزل البار لنص الصدر",
+        "en": "Pin your shoulder blades back and lower the bar to mid-chest"
+      },
+      {
+        "ar": "ادفع الأرض برجلك وأنت بتدفع البار",
+        "en": "Drive your feet into the floor as you press"
+      },
+      {
+        "ar": "الكوع بزاوية 45 درجة مش مفرود على الجنب",
+        "en": "Keep elbows at about 45 degrees, not flared"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع المؤخرة من على البنش",
+        "en": "Lifting the hips off the bench"
+      },
+      {
+        "ar": "نزول البار على الرقبة أو البطن",
+        "en": "Bouncing or lowering the bar toward neck or belly"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "incline-bench-press-barbell"
+    ],
+    "regressions": [
+      "dumbbell-bench-press",
+      "push-up"
+    ],
+    "alternatives": [
+      "dumbbell-bench-press",
+      "chest-press-machine",
+      "smith-bench-press"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "incline-bench-press-barbell",
+    "name": {
+      "ar": "بنش بريس مائل بار",
+      "en": "Incline Barbell Bench Press"
+    },
+    "aliases": [
+      "incline bench",
+      "انكلاين بنش",
+      "بنش مائل"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "barbell",
+      "incline bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميل البنش من 30 لـ 45 درجة",
+        "en": "Set the bench at 30 to 45 degrees"
+      },
+      {
+        "ar": "نزّل البار لأعلى الصدر عند الترقوة",
+        "en": "Lower the bar to the upper chest below the collarbone"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل عالي زيادة يحوّل التمرين لكتف",
+        "en": "Too steep an angle turns it into a shoulder press"
+      },
+      {
+        "ar": "ضهر مقوس زيادة",
+        "en": "Excessive arching of the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "incline-dumbbell-press"
+    ],
+    "alternatives": [
+      "incline-dumbbell-press",
+      "chest-press-machine"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "decline-bench-press-barbell",
+    "name": {
+      "ar": "بنش بريس سفلي بار",
+      "en": "Decline Barbell Bench Press"
+    },
+    "aliases": [
+      "decline bench",
+      "ديكلاين بنش",
+      "بنش نازل"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "barbell",
+      "decline bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ثبّت رجلك كويس في السنادة",
+        "en": "Lock your legs securely under the pads"
+      },
+      {
+        "ar": "نزّل البار لأسفل الصدر وتحكم في النزول",
+        "en": "Lower the bar to the lower chest under control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول سريع بدون تحكم",
+        "en": "Dropping the bar with no control"
+      },
+      {
+        "ar": "رفع البار بدون مساعد",
+        "en": "Training heavy without a spotter"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ضغط دم مرتفع غير مضبوط",
+        "en": "Uncontrolled hypertension"
+      },
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "bench-press-barbell"
+    ],
+    "alternatives": [
+      "chest-dips",
+      "cable-crossover"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "smith-bench-press",
+    "name": {
+      "ar": "بنش بريس سميث",
+      "en": "Smith Machine Bench Press"
+    },
+    "aliases": [
+      "smith bench",
+      "سميث بنش"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "smith machine",
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "حط البنش بحيث البار ينزل على نص الصدر",
+        "en": "Position the bench so the bar lands on mid-chest"
+      },
+      {
+        "ar": "ثبّت الكتف ورا واضغط بثبات",
+        "en": "Keep shoulders retracted and press steadily"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "البنش بعيد عن مسار البار",
+        "en": "Bench set too far from the bar path"
+      },
+      {
+        "ar": "قفل الكوع بعنف",
+        "en": "Snapping the elbows at lockout"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "bench-press-barbell"
+    ],
+    "regressions": [
+      "chest-press-machine"
+    ],
+    "alternatives": [
+      "chest-press-machine",
+      "dumbbell-bench-press"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "smith machine"
+    ]
+  },
+  {
+    "slug": "dumbbell-bench-press",
+    "name": {
+      "ar": "بنش بريس دمبل",
+      "en": "Dumbbell Bench Press"
+    },
+    "aliases": [
+      "db bench",
+      "دمبل بنش",
+      "benš dumbbell"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "انزل الدمبل لحد ما الكوع يعدي الصدر شوية",
+        "en": "Lower until the elbows pass just below chest level"
+      },
+      {
+        "ar": "اضغط لفوق وقرّب الدمبل من بعض من غير ما يخبطوا",
+        "en": "Press up and bring the dumbbells together without clanking"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فرد الكوع على الجنب",
+        "en": "Letting the elbows flare wide"
+      },
+      {
+        "ar": "أوزان تفوق التحكم",
+        "en": "Using weights you cannot control"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "bench-press-barbell"
+    ],
+    "regressions": [
+      "push-up"
+    ],
+    "alternatives": [
+      "bench-press-barbell",
+      "chest-press-machine",
+      "floor-press-dumbbell"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "incline-dumbbell-press",
+    "name": {
+      "ar": "بنش مائل دمبل",
+      "en": "Incline Dumbbell Press"
+    },
+    "aliases": [
+      "incline db press",
+      "انكلاين دمبل",
+      "دمبل مائل"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "dumbbell",
+      "incline bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميل خفيف 30 درجة يكفي للصدر العلوي",
+        "en": "A 30 degree angle is enough for the upper chest"
+      },
+      {
+        "ar": "الدمبل فوق الصدر مش فوق الوش",
+        "en": "Press over the chest, not over the face"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف لقرب الودن",
+        "en": "Shrugging shoulders toward the ears"
+      },
+      {
+        "ar": "ميل عالي زيادة",
+        "en": "Setting the incline too high"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "incline-bench-press-barbell"
+    ],
+    "regressions": [
+      "dumbbell-bench-press"
+    ],
+    "alternatives": [
+      "incline-bench-press-barbell",
+      "chest-press-machine"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "floor-press-dumbbell",
+    "name": {
+      "ar": "فلور بريس دمبل",
+      "en": "Dumbbell Floor Press"
+    },
+    "aliases": [
+      "floor press",
+      "ضغط أرضي دمبل"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "انزل لحد ما الكوع يلمس الأرض وقف لحظة",
+        "en": "Lower until the upper arms touch the floor and pause"
+      },
+      {
+        "ar": "الرسغ ثابت فوق الكوع",
+        "en": "Stack wrists over elbows"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ارتداد الكوع من الأرض",
+        "en": "Bouncing the elbows off the floor"
+      },
+      {
+        "ar": "فرد الكوع زيادة",
+        "en": "Flaring elbows too wide"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "push-up"
+    ],
+    "alternatives": [
+      "dumbbell-bench-press",
+      "push-up"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "dumbbell-fly",
+    "name": {
+      "ar": "رفرفة دمبل صدر",
+      "en": "Dumbbell Fly"
+    },
+    "aliases": [
+      "db fly",
+      "فلاي دمبل",
+      "رفرفة صدر"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "كوع مثني شوية وثابت طول الحركة",
+        "en": "Keep a soft constant bend in the elbows"
+      },
+      {
+        "ar": "افتح لحد ما تحس بتمدد في الصدر وارجع بقوس",
+        "en": "Open until you feel a chest stretch and hug back in an arc"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تحويلها لبريس بثني الكوع",
+        "en": "Turning it into a press by bending the elbows"
+      },
+      {
+        "ar": "نزول عميق زيادة على الكتف",
+        "en": "Going too deep and straining the shoulder"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "cable-crossover"
+    ],
+    "alternatives": [
+      "pec-deck-fly",
+      "cable-crossover"
+    ],
+    "tags": [
+      "chest",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "incline-dumbbell-fly",
+    "name": {
+      "ar": "رفرفة مائل دمبل",
+      "en": "Incline Dumbbell Fly"
+    },
+    "aliases": [
+      "incline fly",
+      "انكلاين فلاي",
+      "رفرفة مائلة"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell",
+      "incline bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "البنش ميل خفيف والدمبل بخفة",
+        "en": "Use a low incline and lighter dumbbells"
+      },
+      {
+        "ar": "اعصر الصدر وأنت بتقفل الحركة",
+        "en": "Squeeze the chest as you close the arc"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "وزن تقيل يشد الكتف",
+        "en": "Going too heavy and loading the shoulder"
+      },
+      {
+        "ar": "ثني الكوع بشكل متغير",
+        "en": "Changing elbow bend during the rep"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-fly"
+    ],
+    "alternatives": [
+      "dumbbell-fly",
+      "low-to-high-cable-fly"
+    ],
+    "tags": [
+      "chest",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "cable-crossover",
+    "name": {
+      "ar": "كروس أوفر كابل",
+      "en": "Cable Crossover"
+    },
+    "aliases": [
+      "cable fly",
+      "كروس اوفر",
+      "كابل كروس"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "serratus anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "ميل بسيط للأمام وخطوة واحدة قدام",
+        "en": "Lean slightly forward with a staggered stance"
+      },
+      {
+        "ar": "قرّب الإيدين قدام الصدر واعصر ثانية",
+        "en": "Bring the hands together in front of the chest and squeeze for a second"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجسم للأمام والخلف",
+        "en": "Swinging the torso for momentum"
+      },
+      {
+        "ar": "ثني الكوع وسحبه بالكتف",
+        "en": "Pulling with bent elbows and shoulders"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-fly",
+      "pec-deck-fly",
+      "low-to-high-cable-fly"
+    ],
+    "tags": [
+      "chest",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "low-to-high-cable-fly",
+    "name": {
+      "ar": "رفرفة كابل من تحت لفوق",
+      "en": "Low-to-High Cable Fly"
+    },
+    "aliases": [
+      "low to high fly",
+      "كابل صدر علوي",
+      "upper chest cable"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ابدأ من تحت الورك وارفع لمستوى الدقن",
+        "en": "Start by the hips and sweep up to chin height"
+      },
+      {
+        "ar": "الكوع مثني شوية طول الحركة",
+        "en": "Keep a slight constant elbow bend"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف مع الحركة",
+        "en": "Shrugging the shoulders up"
+      },
+      {
+        "ar": "استخدام عزم الضهر",
+        "en": "Using back momentum"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "cable-crossover"
+    ],
+    "alternatives": [
+      "incline-dumbbell-fly",
+      "cable-crossover"
+    ],
+    "tags": [
+      "chest",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "pec-deck-fly",
+    "name": {
+      "ar": "بيك ديك",
+      "en": "Pec Deck Fly"
+    },
+    "aliases": [
+      "pec deck",
+      "butterfly",
+      "باترفلاي"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "ضهرك ملزوق في المسند وكتفك لتحت",
+        "en": "Back flat on the pad and shoulders down"
+      },
+      {
+        "ar": "اعصر الصدر في النهاية ثانية",
+        "en": "Squeeze the chest at the end for one second"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ضبط المقعد عالي فيشد الكتف",
+        "en": "Seat too high straining the shoulders"
+      },
+      {
+        "ar": "فتح زيادة ورا الجسم",
+        "en": "Opening too far behind the body"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-fly",
+      "cable-crossover"
+    ],
+    "tags": [
+      "chest",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "chest-press-machine",
+    "name": {
+      "ar": "تشست بريس جهاز",
+      "en": "Machine Chest Press"
+    },
+    "aliases": [
+      "chest press",
+      "تشيست بريس",
+      "جهاز صدر"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اظبط الكرسي بحيث المقابض عند نص الصدر",
+        "en": "Set the seat so the handles line up with mid-chest"
+      },
+      {
+        "ar": "ادفع من غير ما تفرد الكوع بعنف",
+        "en": "Press without snapping the elbows"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الكرسي واطي أو عالي",
+        "en": "Seat set too low or too high"
+      },
+      {
+        "ar": "رفع الضهر من المسند",
+        "en": "Peeling your back off the pad"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "bench-press-barbell"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-bench-press",
+      "push-up"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "machine"
+    ]
+  },
+  {
+    "slug": "push-up",
+    "name": {
+      "ar": "ضغط",
+      "en": "Push-Up"
+    },
+    "aliases": [
+      "push up",
+      "pushups",
+      "بوش اب"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior",
+      "serratus anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "جسمك خط مستقيم من الراس للكعب",
+        "en": "Keep a straight line from head to heels"
+      },
+      {
+        "ar": "شد البطن وانزل لحد الصدر ما يقرب الأرض",
+        "en": "Brace the abs and lower until the chest nearly touches the floor"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الوسط أو رفع المؤخرة",
+        "en": "Sagging hips or piking the butt up"
+      },
+      {
+        "ar": "نزول نص حركة",
+        "en": "Doing half reps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "decline-push-up"
+    ],
+    "regressions": [
+      "incline-push-up"
+    ],
+    "alternatives": [
+      "incline-push-up",
+      "floor-press-dumbbell"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "incline-push-up",
+    "name": {
+      "ar": "ضغط مائل",
+      "en": "Incline Push-Up"
+    },
+    "aliases": [
+      "incline push up",
+      "ضغط على بنش",
+      "ضغط مرتفع"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "bodyweight",
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "إيدك على سطح مرتفع كل ما ارتفع كل ما سهل",
+        "en": "The higher the surface, the easier the rep"
+      },
+      {
+        "ar": "حافظ على الجسم مستقيم",
+        "en": "Keep the body in one straight line"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الوسط",
+        "en": "Letting the hips sag"
+      },
+      {
+        "ar": "مدى حركة قصير",
+        "en": "Short range of motion"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "push-up"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "push-up",
+      "chest-press-machine"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "decline-push-up",
+    "name": {
+      "ar": "ضغط رجل مرتفعة",
+      "en": "Decline Push-Up"
+    },
+    "aliases": [
+      "decline push up",
+      "ضغط مرفوع الرجل",
+      "feet elevated push up"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "bodyweight",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع رجليك على بنش وشد البطن",
+        "en": "Elevate the feet on a bench and brace the core"
+      },
+      {
+        "ar": "انزل بتحكم وادفع بقوة",
+        "en": "Lower under control and press hard"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انهيار أسفل الضهر",
+        "en": "Lumbar collapse"
+      },
+      {
+        "ar": "فتح الكوع بزاوية كبيرة",
+        "en": "Elbows flaring wide"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "push-up"
+    ],
+    "alternatives": [
+      "push-up",
+      "chest-dips"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "chest-dips",
+    "name": {
+      "ar": "متوازي صدر",
+      "en": "Chest Dips"
+    },
+    "aliases": [
+      "dips",
+      "parallel bar dips",
+      "ديبس"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "dip bars",
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميّل الجسم للأمام ولف الكوع للخارج شوية",
+        "en": "Lean the torso forward and let the elbows flare a little"
+      },
+      {
+        "ar": "انزل لحد ما الكتف يوصل لمستوى الكوع",
+        "en": "Lower until shoulders reach elbow level"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول عميق جدا على الكتف",
+        "en": "Dropping too deep under the shoulder joint"
+      },
+      {
+        "ar": "تمرجح بالرجلين",
+        "en": "Swinging the legs"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "incline-push-up"
+    ],
+    "alternatives": [
+      "decline-bench-press-barbell",
+      "push-up"
+    ],
+    "tags": [
+      "chest",
+      "push_vertical",
+      "dip bars"
+    ]
+  },
+  {
+    "slug": "svend-press",
+    "name": {
+      "ar": "سفند بريس",
+      "en": "Svend Press"
+    },
+    "aliases": [
+      "svend press",
+      "ضغط صفيحة",
+      "plate press"
+    ],
+    "category": "chest",
+    "primaryMuscles": [
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "serratus anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "weight plate"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اعصر الطبق بين الكفين طول الحركة",
+        "en": "Squeeze the plate between your palms throughout"
+      },
+      {
+        "ar": "ادفعه قدام الصدر وارجع ببطء",
+        "en": "Press it straight out then return slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الطبق لحد الدقن",
+        "en": "Letting the plate drift up toward the chin"
+      },
+      {
+        "ar": "ارتخاء الضغط بين الكفين",
+        "en": "Losing the palm squeeze"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "pec-deck-fly",
+      "push-up"
+    ],
+    "tags": [
+      "chest",
+      "push_horizontal",
+      "weight plate"
+    ]
+  }
+]

@@ -1,0 +1,1541 @@
+[
+  {
+    "slug": "aish-baladi",
+    "name": {
+      "ar": "رغيف بلدي",
+      "en": "Baladi Bread (Egyptian whole wheat flatbread)"
+    },
+    "aliases": [
+      "عيش بلدي",
+      "aish baladi",
+      "baladi bread"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 270,
+      "proteinG": 9,
+      "carbsG": 55,
+      "fatG": 1.5,
+      "fiberG": 5.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 90
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص رغيف",
+            "en": "half loaf"
+          }
+        },
+        "grams": 45
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "aish-fino",
+    "name": {
+      "ar": "رغيف فينو",
+      "en": "Fino Bread"
+    },
+    "aliases": [
+      "fino",
+      "عيش فينو",
+      "fino bread"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 283,
+      "proteinG": 9,
+      "carbsG": 56,
+      "fatG": 2.5,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص رغيف",
+            "en": "half roll"
+          }
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "aish-shamsi",
+    "name": {
+      "ar": "عيش شمسي",
+      "en": "Aish Shamsi (sourdough flatbread)"
+    },
+    "aliases": [
+      "عيش شمسي",
+      "shamsi"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 260,
+      "proteinG": 8.5,
+      "carbsG": 53,
+      "fatG": 1.2,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "aish-shami",
+    "name": {
+      "ar": "عيش شامي",
+      "en": "Shami Pita Bread"
+    },
+    "aliases": [
+      "pita",
+      "عيش شامي",
+      "pita bread"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 275,
+      "proteinG": 9.1,
+      "carbsG": 55.7,
+      "fatG": 1.2,
+      "fiberG": 2.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "رغيف كبير",
+            "en": "large pita"
+          }
+        },
+        "grams": 90
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "samoli",
+    "name": {
+      "ar": "صامولي",
+      "en": "Samoli (Egyptian white roll)"
+    },
+    "aliases": [
+      "صامولي",
+      "samouli",
+      "bread roll"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 280,
+      "proteinG": 9,
+      "carbsG": 54,
+      "fatG": 3,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 70
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "toast-white",
+    "name": {
+      "ar": "توست أبيض",
+      "en": "White Toast Bread"
+    },
+    "aliases": [
+      "toast",
+      "توست",
+      "white bread"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 261,
+      "proteinG": 8.9,
+      "carbsG": 49,
+      "fatG": 3.3,
+      "fiberG": 2.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 28
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "toast-whole-wheat",
+    "name": {
+      "ar": "توست أسمر",
+      "en": "Whole Wheat Toast Bread"
+    },
+    "aliases": [
+      "brown toast",
+      "توست أسمر",
+      "whole wheat bread"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 253,
+      "proteinG": 12.5,
+      "carbsG": 43,
+      "fatG": 3.5,
+      "fiberG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "croissant",
+    "name": {
+      "ar": "كرواسون",
+      "en": "Croissant"
+    },
+    "aliases": [
+      "croissant",
+      "كرواسون"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 406,
+      "proteinG": 8.2,
+      "carbsG": 45.8,
+      "fatG": 21,
+      "fiberG": 2.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 57
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "tortilla-wheat",
+    "name": {
+      "ar": "تورتيلا",
+      "en": "Wheat Tortilla Wrap"
+    },
+    "aliases": [
+      "tortilla",
+      "تورتيلا",
+      "wrap"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 308,
+      "proteinG": 8.3,
+      "carbsG": 51.5,
+      "fatG": 7.7,
+      "fiberG": 2.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 45
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "رابر كبير",
+            "en": "large wrap"
+          }
+        },
+        "grams": 65
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "crackers-plain",
+    "name": {
+      "ar": "بسكوت مملح",
+      "en": "Plain Salted Crackers"
+    },
+    "aliases": [
+      "crackers",
+      "بسكويت مملح",
+      "salted crackers"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 417,
+      "proteinG": 9.2,
+      "carbsG": 74,
+      "fatG": 9.4,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "digestive-biscuit",
+    "name": {
+      "ar": "بسكويت دايجستف",
+      "en": "Digestive Biscuit (generic)"
+    },
+    "aliases": [
+      "digestive",
+      "بسكويت دايجستف"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 481,
+      "proteinG": 7,
+      "carbsG": 66,
+      "fatG": 21,
+      "fiberG": 3.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "rice-white-raw",
+    "name": {
+      "ar": "رز أبيض مصري نيء",
+      "en": "White Rice, Raw (Egyptian short grain)"
+    },
+    "aliases": [
+      "رز مصري",
+      "roz masri",
+      "raw rice"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 360,
+      "proteinG": 7.1,
+      "carbsG": 79,
+      "fatG": 0.7,
+      "fiberG": 1.3
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "rice-white-cooked",
+    "cookedYield": 2.8,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 190,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حفنة",
+            "en": "handful"
+          }
+        },
+        "grams": 40,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "rice-white-cooked",
+    "name": {
+      "ar": "رز أبيض مصري مطبوخ",
+      "en": "White Rice, Cooked"
+    },
+    "aliases": [
+      "رز مطبوخ",
+      "cooked rice",
+      "roz masri mashi"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 130,
+      "proteinG": 2.7,
+      "carbsG": 28,
+      "fatG": 0.3,
+      "fiberG": 0.4
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "rice-white-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 160,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 25,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 250,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "rice-brown-raw",
+    "name": {
+      "ar": "رز بني نيء",
+      "en": "Brown Rice, Raw"
+    },
+    "aliases": [
+      "brown rice",
+      "رز بني",
+      "roz asmar"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 370,
+      "proteinG": 7.9,
+      "carbsG": 77,
+      "fatG": 2.9,
+      "fiberG": 3.5
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "rice-brown-cooked",
+    "cookedYield": 3,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 190,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "rice-brown-cooked",
+    "name": {
+      "ar": "رز بني مطبوخ",
+      "en": "Brown Rice, Cooked"
+    },
+    "aliases": [
+      "cooked brown rice",
+      "رز بني مسلوق"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 123,
+      "proteinG": 2.7,
+      "carbsG": 25.6,
+      "fatG": 1,
+      "fiberG": 1.6
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "rice-brown-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 195,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 25,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "pasta-raw",
+    "name": {
+      "ar": "مكرونة نيئة",
+      "en": "Pasta, Dry"
+    },
+    "aliases": [
+      "macarona",
+      "مكرونة",
+      "spaghetti raw"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 371,
+      "proteinG": 13,
+      "carbsG": 75,
+      "fatG": 1.5,
+      "fiberG": 3.2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "pasta-cooked",
+    "cookedYield": 2.35,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 100,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حفنة",
+            "en": "handful"
+          }
+        },
+        "grams": 50,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "pasta-cooked",
+    "name": {
+      "ar": "مكرونة مسلوقة",
+      "en": "Pasta, Cooked"
+    },
+    "aliases": [
+      "مكرونة مطبوخة",
+      "cooked pasta",
+      "macarona maslouka"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 158,
+      "proteinG": 5.8,
+      "carbsG": 31,
+      "fatG": 0.9,
+      "fiberG": 1.8
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "pasta-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 140,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 220,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "vermicelli-raw",
+    "name": {
+      "ar": "شعرية نيئة",
+      "en": "Vermicelli, Dry"
+    },
+    "aliases": [
+      "شعرية",
+      "shereya",
+      "vermicelli"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 371,
+      "proteinG": 11,
+      "carbsG": 76,
+      "fatG": 1.5,
+      "fiberG": 3
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "vermicelli-cooked",
+    "cookedYield": 2.4,
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حفنة",
+            "en": "handful"
+          }
+        },
+        "grams": 30,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "vermicelli-cooked",
+    "name": {
+      "ar": "شعرية مطبوخة",
+      "en": "Vermicelli, Cooked"
+    },
+    "aliases": [
+      "شعرية مسلوقة",
+      "cooked vermicelli"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 155,
+      "proteinG": 4.6,
+      "carbsG": 31,
+      "fatG": 0.7,
+      "fiberG": 1.5
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "vermicelli-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 120,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 18,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "bulgur-raw",
+    "name": {
+      "ar": "برغل نيء",
+      "en": "Bulgur, Dry"
+    },
+    "aliases": [
+      "برغل",
+      "burghul",
+      "bulgur"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 342,
+      "proteinG": 12.3,
+      "carbsG": 75.9,
+      "fatG": 1.3,
+      "fiberG": 12.5
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "bulgur-cooked",
+    "cookedYield": 4,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 140,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "bulgur-cooked",
+    "name": {
+      "ar": "برغل مطبوخ",
+      "en": "Bulgur, Cooked"
+    },
+    "aliases": [
+      "برغل مسلوق",
+      "cooked bulgur"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 83,
+      "proteinG": 3.1,
+      "carbsG": 18.6,
+      "fatG": 0.2,
+      "fiberG": 4.5
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "bulgur-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 180,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 22,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "freekeh-raw",
+    "name": {
+      "ar": "فريك نيء",
+      "en": "Freekeh, Dry"
+    },
+    "aliases": [
+      "فريك",
+      "freekeh"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 325,
+      "proteinG": 12.5,
+      "carbsG": 65,
+      "fatG": 2.5,
+      "fiberG": 13
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "freekeh-cooked",
+    "cookedYield": 2.75,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 170,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 11,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "freekeh-cooked",
+    "name": {
+      "ar": "فريك مطبوخ",
+      "en": "Freekeh, Cooked"
+    },
+    "aliases": [
+      "فريك مسلوق",
+      "cooked freekeh"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 118,
+      "proteinG": 4.5,
+      "carbsG": 24,
+      "fatG": 0.8,
+      "fiberG": 4.5
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "freekeh-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 165,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "oats-raw",
+    "name": {
+      "ar": "شوفان",
+      "en": "Rolled Oats, Dry"
+    },
+    "aliases": [
+      "oats",
+      "شوفان",
+      "ovaltine oats"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 389,
+      "proteinG": 16.9,
+      "carbsG": 66,
+      "fatG": 6.9,
+      "fiberG": 10.6
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "oats-cooked",
+    "cookedYield": 5.5,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 90,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 6,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "3 معالق",
+            "en": "3 tbsp"
+          }
+        },
+        "grams": 18,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "oats-cooked",
+    "name": {
+      "ar": "شوفان مطبوخ",
+      "en": "Oatmeal, Cooked in Water"
+    },
+    "aliases": [
+      "cooked oats",
+      "شوفان بالمية",
+      "oatmeal"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 71,
+      "proteinG": 2.5,
+      "carbsG": 12,
+      "fatG": 1.5,
+      "fiberG": 1.7
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "oats-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 234,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "quinoa-raw",
+    "name": {
+      "ar": "كينوا نيئة",
+      "en": "Quinoa, Dry"
+    },
+    "aliases": [
+      "quinoa",
+      "كينوا"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 368,
+      "proteinG": 14.1,
+      "carbsG": 64.2,
+      "fatG": 6.1,
+      "fiberG": 7
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "quinoa-cooked",
+    "cookedYield": 3,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 170,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "quinoa-cooked",
+    "name": {
+      "ar": "كينوا مطبوخة",
+      "en": "Quinoa, Cooked"
+    },
+    "aliases": [
+      "cooked quinoa",
+      "كينوا مسلوقة"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 120,
+      "proteinG": 4.4,
+      "carbsG": 21.3,
+      "fatG": 1.9,
+      "fiberG": 2.8
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "quinoa-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 185,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "couscous-cooked",
+    "name": {
+      "ar": "كسكسي مطبوخ",
+      "en": "Couscous, Cooked"
+    },
+    "aliases": [
+      "couscous",
+      "كسكسي"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 112,
+      "proteinG": 3.8,
+      "carbsG": 23.2,
+      "fatG": 0.2,
+      "fiberG": 1.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 157
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "barley-cooked",
+    "name": {
+      "ar": "شعير مطبوخ",
+      "en": "Pearl Barley, Cooked"
+    },
+    "aliases": [
+      "barley",
+      "شعير"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 123,
+      "proteinG": 2.3,
+      "carbsG": 28.2,
+      "fatG": 0.4,
+      "fiberG": 3.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 157
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "corn-kernels-boiled",
+    "name": {
+      "ar": "ذرة مسلوقة حبوب",
+      "en": "Sweet Corn Kernels, Boiled"
+    },
+    "aliases": [
+      "corn",
+      "ذرة",
+      "dura maslouka"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 106,
+      "proteinG": 3.3,
+      "carbsG": 20,
+      "fatG": 1.5,
+      "fiberG": 2.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 164
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 140
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "cornflakes",
+    "name": {
+      "ar": "كورن فليكس",
+      "en": "Corn Flakes"
+    },
+    "aliases": [
+      "cornflakes",
+      "corn flakes",
+      "كورن فليكس"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 365,
+      "proteinG": 7.5,
+      "carbsG": 84,
+      "fatG": 0.9,
+      "fiberG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 28
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "bowl"
+          }
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "granola",
+    "name": {
+      "ar": "جرانولا",
+      "en": "Granola (generic)"
+    },
+    "aliases": [
+      "granola",
+      "جرانولا"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 471,
+      "proteinG": 10,
+      "carbsG": 64,
+      "fatG": 20,
+      "fiberG": 5.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 100
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "muesli",
+    "name": {
+      "ar": "موسلي",
+      "en": "Muesli (no added sugar)"
+    },
+    "aliases": [
+      "muesli",
+      "موسلي"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 358,
+      "proteinG": 10,
+      "carbsG": 66,
+      "fatG": 6,
+      "fiberG": 7.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 85
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "popcorn-air-popped",
+    "name": {
+      "ar": "فشار",
+      "en": "Popcorn, Air-Popped"
+    },
+    "aliases": [
+      "popcorn",
+      "فشار",
+      "فوشار"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 390,
+      "proteinG": 13,
+      "carbsG": 78,
+      "fatG": 4.5,
+      "fiberG": 14.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 8
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس",
+            "en": "bag"
+          }
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "rice-cakes",
+    "name": {
+      "ar": "أقراص الرز",
+      "en": "Puffed Rice Cakes"
+    },
+    "aliases": [
+      "rice cakes",
+      "رايس كيك",
+      "أقراص رز"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 385,
+      "proteinG": 8,
+      "carbsG": 82,
+      "fatG": 2.8,
+      "fiberG": 3.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "semolina-raw",
+    "name": {
+      "ar": "سميد",
+      "en": "Semolina, Dry"
+    },
+    "aliases": [
+      "semolina",
+      "سميد"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 360,
+      "proteinG": 12.7,
+      "carbsG": 73,
+      "fatG": 1.1,
+      "fiberG": 3.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 167
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "flour-white",
+    "name": {
+      "ar": "دقيق أبيض",
+      "en": "White Wheat Flour"
+    },
+    "aliases": [
+      "flour",
+      "دقيق",
+      "طحين أبيض"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 364,
+      "proteinG": 10.3,
+      "carbsG": 76,
+      "fatG": 1,
+      "fiberG": 2.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 125
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  },
+  {
+    "slug": "flour-whole-wheat",
+    "name": {
+      "ar": "دقيق قمح كامل",
+      "en": "Whole Wheat Flour"
+    },
+    "aliases": [
+      "whole wheat flour",
+      "دقيق أسمر",
+      "طحين اسمر"
+    ],
+    "category": "bread-grains",
+    "per100": {
+      "kcal": 340,
+      "proteinG": 13.2,
+      "carbsG": 72,
+      "fatG": 2.5,
+      "fiberG": 10.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "bread-grains"
+    ]
+  }
+]

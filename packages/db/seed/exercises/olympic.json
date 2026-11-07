@@ -1,0 +1,600 @@
+[
+  {
+    "slug": "power-clean",
+    "name": {
+      "ar": "باور كلين",
+      "en": "Power Clean"
+    },
+    "aliases": [
+      "power clean",
+      "كلين",
+      "باور كلين"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "erector spinae",
+      "deltoid",
+      "forearm flexors"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "البار قريب منك وانفجر بالورك",
+        "en": "Keep the bar close and explode through the hips"
+      },
+      {
+        "ar": "اسحب نفسك تحت البار واستقبله على الكتف",
+        "en": "Pull yourself under and catch it on the shoulders"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد بالدراع بدري",
+        "en": "Pulling early with the arms"
+      },
+      {
+        "ar": "استقبال بكوع واطي",
+        "en": "Catching with low elbows"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hang-power-clean",
+      "clean-pull"
+    ],
+    "alternatives": [
+      "hang-power-clean",
+      "dumbbell-snatch"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "hang-power-clean",
+    "name": {
+      "ar": "هانج كلين",
+      "en": "Hang Power Clean"
+    },
+    "aliases": [
+      "hang clean",
+      "هانج باور كلين"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "forearm flexors"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ابدأ من فوق الركبة والبار قريب",
+        "en": "Start above the knee with the bar close"
+      },
+      {
+        "ar": "ورك لقدام ثم كتف لفوق",
+        "en": "Extend the hips, then shrug and pull"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل لقدام مع البار",
+        "en": "Leaning forward over the bar"
+      },
+      {
+        "ar": "استقبال بمعصم متصلب",
+        "en": "Stiff wrist in the catch"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "power-clean"
+    ],
+    "regressions": [
+      "clean-pull"
+    ],
+    "alternatives": [
+      "power-clean"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "clean-and-jerk",
+    "name": {
+      "ar": "كلين اند جيرك",
+      "en": "Clean and Jerk"
+    },
+    "aliases": [
+      "clean and jerk",
+      "كلين اند جيرك"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps",
+      "deltoid"
+    ],
+    "secondaryMuscles": [
+      "trapezius",
+      "triceps brachii",
+      "hamstrings"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "من الأرض لأمام الكتف ثم ادفع بالرجل",
+        "en": "From the floor to the front rack, then dip and drive"
+      },
+      {
+        "ar": "اقفل الدراع فوق الراس والرجل ثابتة",
+        "en": "Lock out overhead and stabilize with the feet"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الجذع للأمام",
+        "en": "Tilting the torso forward"
+      },
+      {
+        "ar": "تقوس أسفل الضهر في الدفع",
+        "en": "Arching the lower back on the jerk"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "power-clean",
+      "push-press"
+    ],
+    "alternatives": [
+      "snatch-barbell",
+      "push-jerk"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "snatch-barbell",
+    "name": {
+      "ar": "سناتش",
+      "en": "Barbell Snatch"
+    },
+    "aliases": [
+      "snatch",
+      "سناتش",
+      "خطف"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "deltoid",
+      "hamstrings",
+      "erector spinae"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قبضة واسعة والبار قريب",
+        "en": "Wide grip with the bar close"
+      },
+      {
+        "ar": "انفجر بالورك واسقط تحت البار بذراع مفرود",
+        "en": "Explode through the hips and drop under the bar with locked arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سحب بالدراع",
+        "en": "Pulling with bent arms"
+      },
+      {
+        "ar": "البار يبتعد عن الجسم",
+        "en": "Bar looping away from the body"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "power-snatch",
+      "overhead-squat"
+    ],
+    "alternatives": [
+      "clean-and-jerk",
+      "power-snatch"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "power-snatch",
+    "name": {
+      "ar": "باور سناتش",
+      "en": "Power Snatch"
+    },
+    "aliases": [
+      "power snatch",
+      "باور سناتش"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "trapezius",
+      "deltoid"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "triceps brachii"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "استقبل البار فوق الراس في ربع سكوات",
+        "en": "Catch the bar overhead in a quarter squat"
+      },
+      {
+        "ar": "الكتف نشيط والدراع مفرود",
+        "en": "Active shoulders and straight arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "استقبال بدراع مثني",
+        "en": "Catching with bent arms"
+      },
+      {
+        "ar": "ميل الجذع",
+        "en": "Leaning torso"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "snatch-barbell"
+    ],
+    "regressions": [
+      "dumbbell-snatch"
+    ],
+    "alternatives": [
+      "dumbbell-snatch",
+      "hang-power-clean"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "clean-pull",
+    "name": {
+      "ar": "كلين بول",
+      "en": "Clean Pull"
+    },
+    "aliases": [
+      "clean pull",
+      "كلين بول"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "trapezius",
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "forearm flexors"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ادفع الأرض وأنهي بشراج قوي",
+        "en": "Push the floor away and finish with a big shrug"
+      },
+      {
+        "ar": "الدراع مفرود لحد نهاية الشد",
+        "en": "Keep arms straight until the finish"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الدراع بدري",
+        "en": "Bending the arms early"
+      },
+      {
+        "ar": "بعد البار عن الجسم",
+        "en": "Bar drifting forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "power-clean"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "rack-pull",
+      "deadlift-conventional"
+    ],
+    "tags": [
+      "olympic",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "push-jerk",
+    "name": {
+      "ar": "بوش جيرك",
+      "en": "Push Jerk"
+    },
+    "aliases": [
+      "push jerk",
+      "jerk",
+      "جيرك"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "trapezius"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اكسر الركبة وانفجر لفوق ثم انزل تحت البار",
+        "en": "Dip and drive then drop under the bar"
+      },
+      {
+        "ar": "اقفل فوق الراس بدراع مفرود",
+        "en": "Lock out overhead with straight arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول للأمام",
+        "en": "Dipping forward"
+      },
+      {
+        "ar": "فتح القدم بسرعة",
+        "en": "Feet too wide too early"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "push-press"
+    ],
+    "alternatives": [
+      "push-press",
+      "overhead-press-barbell"
+    ],
+    "tags": [
+      "olympic",
+      "push_vertical",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "overhead-squat",
+    "name": {
+      "ar": "سكوات فوق الراس",
+      "en": "Overhead Squat"
+    },
+    "aliases": [
+      "overhead squat",
+      "سكوات فوق الراس",
+      "اوفر هيد سكوات"
+    ],
+    "category": "olympic",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus",
+      "deltoid"
+    ],
+    "secondaryMuscles": [
+      "erector spinae",
+      "trapezius",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "إدفع البار لفوق ومفرود الدراع طول الحركة",
+        "en": "Press the bar up and keep arms locked throughout"
+      },
+      {
+        "ar": "ركبتك مع الصباع والصدر مفتوح",
+        "en": "Knees track toes, chest open"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول البار لقدام",
+        "en": "Bar drifting forward"
+      },
+      {
+        "ar": "رفع الكعب",
+        "en": "Heels lifting"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "front-squat",
+      "goblet-squat"
+    ],
+    "alternatives": [
+      "front-squat",
+      "snatch-barbell"
+    ],
+    "tags": [
+      "olympic",
+      "squat",
+      "barbell"
+    ]
+  }
+]

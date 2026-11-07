@@ -1,0 +1,964 @@
+[
+  {
+    "slug": "treadmill-run",
+    "name": {
+      "ar": "جري على المشاية",
+      "en": "Treadmill Run"
+    },
+    "aliases": [
+      "treadmill",
+      "running",
+      "مشاية"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "soleus",
+      "hip flexors"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "treadmill"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوات قصيرة وسريعة والنظر لقدام",
+        "en": "Short quick strides with eyes forward"
+      },
+      {
+        "ar": "دراعك مثني 90 ومسترخي",
+        "en": "Arms bent at 90 and relaxed"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الإمساك بالمقابض",
+        "en": "Holding the rails"
+      },
+      {
+        "ar": "الهبوط على الكعب بقوة",
+        "en": "Heavy heel striking"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [
+      "treadmill-incline-walk"
+    ],
+    "regressions": [
+      "treadmill-incline-walk"
+    ],
+    "alternatives": [
+      "elliptical",
+      "stationary-bike"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "treadmill"
+    ]
+  },
+  {
+    "slug": "treadmill-incline-walk",
+    "name": {
+      "ar": "مشي مائل على المشاية",
+      "en": "Incline Treadmill Walk"
+    },
+    "aliases": [
+      "incline walk",
+      "12-3-30",
+      "مشي مائل"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "gastrocnemius",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "quadriceps",
+      "soleus"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "treadmill"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميل 8 لـ 12 درجة وسرعة مريحة",
+        "en": "Use an 8 to 12 percent incline at a comfortable pace"
+      },
+      {
+        "ar": "متمسكش بالمقابض",
+        "en": "Do not hold the rails"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الإمساك بالمقابض",
+        "en": "Leaning on the handrails"
+      },
+      {
+        "ar": "انحناء الظهر لقدام",
+        "en": "Hunching forward"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "treadmill-run"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "stair-climber",
+      "elliptical"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "treadmill"
+    ]
+  },
+  {
+    "slug": "stationary-bike",
+    "name": {
+      "ar": "عجلة ثابتة",
+      "en": "Stationary Bike"
+    },
+    "aliases": [
+      "bike",
+      "cycling",
+      "spinning"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gastrocnemius"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bike"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اظبط الكرسي عند ارتفاع الحوض",
+        "en": "Set the saddle at hip height"
+      },
+      {
+        "ar": "دور برجلك بسلاسة",
+        "en": "Pedal smoothly in circles"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "كرسي واطي يضغط الركبة",
+        "en": "Saddle too low stressing the knees"
+      },
+      {
+        "ar": "انحناء زيادة",
+        "en": "Hunching over the bars"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "assault-bike"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "elliptical",
+      "rowing-machine"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "bike"
+    ]
+  },
+  {
+    "slug": "assault-bike",
+    "name": {
+      "ar": "اسولت بايك",
+      "en": "Assault Bike"
+    },
+    "aliases": [
+      "assault bike",
+      "air bike",
+      "اير بايك"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus",
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "latissimus dorsi",
+      "hamstrings",
+      "triceps brachii"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "air bike"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اشد وادفع بالدراع مع الرجل",
+        "en": "Push and pull with the arms along with the legs"
+      },
+      {
+        "ar": "فواصل 20 ثانية قوية و40 راحة للبداية",
+        "en": "Start with 20 second hard efforts and 40 seconds rest"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "البدء بأقصى سرعة مرة واحدة",
+        "en": "Starting at maximum effort"
+      },
+      {
+        "ar": "الجسم متشنج",
+        "en": "Tense upper body"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ضغط دم مرتفع غير مضبوط",
+        "en": "Uncontrolled hypertension"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "stationary-bike"
+    ],
+    "alternatives": [
+      "rowing-machine",
+      "ski-erg"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "air bike"
+    ]
+  },
+  {
+    "slug": "rowing-machine",
+    "name": {
+      "ar": "جهاز التجديف",
+      "en": "Rowing Machine"
+    },
+    "aliases": [
+      "rower",
+      "rowing",
+      "erg"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "hamstrings",
+      "biceps brachii",
+      "erector spinae"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "rowing machine"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الترتيب رجل ثم جذع ثم دراع",
+        "en": "Sequence is legs, then torso, then arms"
+      },
+      {
+        "ar": "ارجع بالعكس: دراع ثم جذع ثم رجل",
+        "en": "Recover in reverse: arms, torso, legs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد بالدراع قبل الرجل",
+        "en": "Pulling with the arms first"
+      },
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "stationary-bike"
+    ],
+    "alternatives": [
+      "ski-erg",
+      "assault-bike"
+    ],
+    "tags": [
+      "cardio",
+      "pull_horizontal",
+      "rowing machine"
+    ]
+  },
+  {
+    "slug": "elliptical",
+    "name": {
+      "ar": "إليبتيكال",
+      "en": "Elliptical Trainer"
+    },
+    "aliases": [
+      "elliptical",
+      "cross trainer",
+      "اليبتيكال"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gastrocnemius"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "elliptical"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قف مستقيم وامسك المقابض خفيف",
+        "en": "Stand tall and grip the handles lightly"
+      },
+      {
+        "ar": "ادفع بالكعب وليس الصباع",
+        "en": "Drive through the heel"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الاتكاء على المقابض",
+        "en": "Leaning on the handles"
+      },
+      {
+        "ar": "خطوة صغيرة وسريعة",
+        "en": "Tiny frantic strides"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "stationary-bike",
+      "treadmill-run"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "elliptical"
+    ]
+  },
+  {
+    "slug": "stair-climber",
+    "name": {
+      "ar": "سلم كهربائي",
+      "en": "Stair Climber"
+    },
+    "aliases": [
+      "stair climber",
+      "stairmaster",
+      "ستير ماستر"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "stair machine"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوة كاملة والجسم مستقيم",
+        "en": "Take full steps with the torso upright"
+      },
+      {
+        "ar": "متتسندش بالمقابض",
+        "en": "Avoid leaning on the rails"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الاتكاء على المقابض",
+        "en": "Hanging on the rails"
+      },
+      {
+        "ar": "خطوات صغيرة",
+        "en": "Mini steps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "treadmill-incline-walk"
+    ],
+    "alternatives": [
+      "treadmill-incline-walk",
+      "elliptical"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "stair machine"
+    ]
+  },
+  {
+    "slug": "jump-rope",
+    "name": {
+      "ar": "نط الحبل",
+      "en": "Jump Rope"
+    },
+    "aliases": [
+      "jump rope",
+      "skipping",
+      "نط الحبل"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "deltoid",
+      "forearm flexors"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "jump rope"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قفزات صغيرة على مشط القدم",
+        "en": "Small hops on the balls of the feet"
+      },
+      {
+        "ar": "لف الرسغ مش الدراع",
+        "en": "Turn the rope from the wrists, not the arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قفز عالي زيادة",
+        "en": "Jumping too high"
+      },
+      {
+        "ar": "دراع بعيد عن الجسم",
+        "en": "Arms flaring away"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      },
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "jumping-jack"
+    ],
+    "alternatives": [
+      "high-knees",
+      "burpee"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "jump rope"
+    ]
+  },
+  {
+    "slug": "burpee",
+    "name": {
+      "ar": "بيربي",
+      "en": "Burpee"
+    },
+    "aliases": [
+      "burpee",
+      "burpees",
+      "بيربي"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "pectoralis major",
+      "core"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii",
+      "gluteus maximus"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "multi",
+    "cues": [
+      {
+        "ar": "صدر للأرض وارجع للوقوف بقفزة",
+        "en": "Chest to the floor then explode into a jump"
+      },
+      {
+        "ar": "حافظ على الجسم مشدود في الضغط",
+        "en": "Keep the body tight in the push-up"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول أسفل الضهر في الضغط",
+        "en": "Sagging the lower back in the push-up"
+      },
+      {
+        "ar": "نط ضعيف",
+        "en": "Skipping the jump"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "squat-thrust"
+    ],
+    "alternatives": [
+      "mountain-climber",
+      "jump-rope"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "jumping-jack",
+    "name": {
+      "ar": "جامبينج جاك",
+      "en": "Jumping Jacks"
+    },
+    "aliases": [
+      "jumping jacks",
+      "jumping jack",
+      "نط جاك"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "calves",
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "deltoid",
+      "quadriceps"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "اهبط على المشط ورقبتك مسترخية",
+        "en": "Land on the balls of the feet with relaxed shoulders"
+      },
+      {
+        "ar": "دراعك لفوق الراس بإيقاع",
+        "en": "Arms overhead in rhythm"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "هبوط تقيل",
+        "en": "Landing heavily"
+      },
+      {
+        "ar": "تقويس الضهر",
+        "en": "Arching the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "high-knees",
+      "jump-rope"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "high-knees",
+    "name": {
+      "ar": "ركب عالية",
+      "en": "High Knees"
+    },
+    "aliases": [
+      "high knees",
+      "ركب عالية",
+      "رفع الركب"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "hip flexors",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "rectus abdominis"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الركبة لمستوى الحوض",
+        "en": "Drive the knees to hip height"
+      },
+      {
+        "ar": "دراع مثني ويتبادل",
+        "en": "Pump the arms in opposition"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الميل للخلف",
+        "en": "Leaning back"
+      },
+      {
+        "ar": "خطوة بطيئة",
+        "en": "Slow cadence"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "jumping-jack",
+      "jump-rope"
+    ],
+    "tags": [
+      "cardio",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "box-jump",
+    "name": {
+      "ar": "نط على صندوق",
+      "en": "Box Jump"
+    },
+    "aliases": [
+      "box jump",
+      "بوكس جامب",
+      "قفز على بوكس"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "plyo box"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارجع بالدراع وانط بقوة",
+        "en": "Swing the arms back and jump explosively"
+      },
+      {
+        "ar": "اهبط بهدوء وركبة مثنية",
+        "en": "Land softly with bent knees"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "هبوط بركبة مفرودة",
+        "en": "Landing with straight knees"
+      },
+      {
+        "ar": "النزول بالنط للأرض",
+        "en": "Jumping down instead of stepping"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "step-up"
+    ],
+    "alternatives": [
+      "jump-squat",
+      "step-up"
+    ],
+    "tags": [
+      "cardio",
+      "squat",
+      "plyo box"
+    ]
+  },
+  {
+    "slug": "battle-ropes",
+    "name": {
+      "ar": "حبال المعركة",
+      "en": "Battle Ropes"
+    },
+    "aliases": [
+      "battle ropes",
+      "battle rope",
+      "حبال"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "deltoid",
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "forearm flexors",
+      "biceps brachii"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "battle ropes"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "وقفة نص سكوات وابدأ موجات متبادلة",
+        "en": "Half-squat stance with alternating waves"
+      },
+      {
+        "ar": "حرك من الكتف مش من الإيد",
+        "en": "Drive the waves from the shoulders"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس أسفل الضهر",
+        "en": "Arching the lower back"
+      },
+      {
+        "ar": "موجات صغيرة",
+        "en": "Tiny waves"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "ski-erg",
+      "burpee"
+    ],
+    "tags": [
+      "cardio",
+      "other",
+      "battle ropes"
+    ]
+  },
+  {
+    "slug": "ski-erg",
+    "name": {
+      "ar": "سكي إرج",
+      "en": "Ski Erg"
+    },
+    "aliases": [
+      "ski erg",
+      "skierg",
+      "سكي"
+    ],
+    "category": "cardio",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "gluteus maximus",
+      "quadriceps"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "ski erg"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب الإيد لتحت مع ثني الورك",
+        "en": "Pull the handles down while hinging at the hips"
+      },
+      {
+        "ar": "انهض بالجسم واعمل دورة بإيقاع",
+        "en": "Stand tall and cycle with rhythm"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "السحب بالذراع بس",
+        "en": "Arming the pull"
+      },
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "rowing-machine",
+      "battle-ropes"
+    ],
+    "tags": [
+      "cardio",
+      "pull_vertical",
+      "ski erg"
+    ]
+  }
+]

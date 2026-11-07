@@ -1,0 +1,1309 @@
+[
+  {
+    "slug": "honey",
+    "name": {
+      "ar": "عسل نحل",
+      "en": "Honey"
+    },
+    "aliases": [
+      "عسل",
+      "asal nahl",
+      "honey"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 320,
+      "proteinG": 0.3,
+      "carbsG": 82.4,
+      "fatG": 0,
+      "fiberG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 21
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 7
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "sugar-white",
+    "name": {
+      "ar": "سكر",
+      "en": "White Sugar"
+    },
+    "aliases": [
+      "سكر",
+      "sokkar",
+      "sugar"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 387,
+      "proteinG": 0,
+      "carbsG": 100,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 4
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "sugar-brown",
+    "name": {
+      "ar": "سكر بني",
+      "en": "Brown Sugar"
+    },
+    "aliases": [
+      "سكر بني",
+      "brown sugar"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 380,
+      "proteinG": 0.1,
+      "carbsG": 98,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 14
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 4.5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "molasses-black-honey",
+    "name": {
+      "ar": "عسل أسود",
+      "en": "Black Honey (Molasses, Asal Eswed)"
+    },
+    "aliases": [
+      "عسل اسود",
+      "asal eswed",
+      "molasses"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 290,
+      "proteinG": 0,
+      "carbsG": 75,
+      "fatG": 0.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 7
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "jam",
+    "name": {
+      "ar": "مربى",
+      "en": "Fruit Jam (generic)"
+    },
+    "aliases": [
+      "مربى",
+      "morabba",
+      "jam"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 255,
+      "proteinG": 0.4,
+      "carbsG": 65,
+      "fatG": 0.1,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 7
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "halawa-tahiniya",
+    "name": {
+      "ar": "حلاوة طحينية",
+      "en": "Halawa Tahiniya"
+    },
+    "aliases": [
+      "حلاوة طحينية",
+      "halawa",
+      "halva"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 531,
+      "proteinG": 12.5,
+      "carbsG": 55,
+      "fatG": 29,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "basbousa",
+    "name": {
+      "ar": "بسبوسة",
+      "en": "Basbousa"
+    },
+    "aliases": [
+      "بسبوسة",
+      "basbousa"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 350,
+      "proteinG": 4,
+      "carbsG": 52,
+      "fatG": 14,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 70
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "konafa-cream",
+    "name": {
+      "ar": "كنافة بالقشطة",
+      "en": "Konafa with Cream"
+    },
+    "aliases": [
+      "كنافة",
+      "konafa",
+      "kunafa"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 363,
+      "proteinG": 6,
+      "carbsG": 42,
+      "fatG": 19,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "baklava",
+    "name": {
+      "ar": "بقلاوة",
+      "en": "Baklava"
+    },
+    "aliases": [
+      "بقلاوة",
+      "baklawa",
+      "baklava"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 440,
+      "proteinG": 6,
+      "carbsG": 50,
+      "fatG": 24,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "umm-ali",
+    "name": {
+      "ar": "أم علي",
+      "en": "Umm Ali"
+    },
+    "aliases": [
+      "ام علي",
+      "om ali",
+      "umm ali"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 271,
+      "proteinG": 6,
+      "carbsG": 28,
+      "fatG": 15,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small bowl"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "rice-pudding",
+    "name": {
+      "ar": "رز بلبن",
+      "en": "Rice Pudding (Roz bel Laban)"
+    },
+    "aliases": [
+      "رز بلبن",
+      "roz bel laban",
+      "rice pudding"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 127,
+      "proteinG": 3,
+      "carbsG": 22,
+      "fatG": 3,
+      "fiberG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "cup 150g"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "mahalabia",
+    "name": {
+      "ar": "مهلبية",
+      "en": "Mahalabia (Milk Pudding)"
+    },
+    "aliases": [
+      "مهلبية",
+      "mahalabeya"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 111,
+      "proteinG": 3,
+      "carbsG": 18,
+      "fatG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "cup 150g"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "chocolate-dark",
+    "name": {
+      "ar": "شوكولاتة داكنة",
+      "en": "Dark Chocolate (70%)"
+    },
+    "aliases": [
+      "شوكولاتة داكنة",
+      "dark chocolate",
+      "choco dark"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 543,
+      "proteinG": 5,
+      "carbsG": 61,
+      "fatG": 31,
+      "fiberG": 10
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "مربع",
+            "en": "square"
+          }
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "chocolate-milk",
+    "name": {
+      "ar": "شوكولاتة بالحليب",
+      "en": "Milk Chocolate"
+    },
+    "aliases": [
+      "شوكولاتة",
+      "chocolate",
+      "milk chocolate"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 537,
+      "proteinG": 7.7,
+      "carbsG": 59,
+      "fatG": 30,
+      "fiberG": 3.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "لوح",
+            "en": "bar"
+          }
+        },
+        "grams": 45
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "chocolate-spread",
+    "name": {
+      "ar": "كريمة شوكولاتة بالبندق",
+      "en": "Chocolate Hazelnut Spread (generic)"
+    },
+    "aliases": [
+      "نوتيلا",
+      "nutella style",
+      "choco spread"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 535,
+      "proteinG": 6,
+      "carbsG": 58,
+      "fatG": 31,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 18
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 6
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "cookies-biscuit",
+    "name": {
+      "ar": "بسكويت كوكيز",
+      "en": "Cookies (generic)"
+    },
+    "aliases": [
+      "كوكيز",
+      "biscuits",
+      "cookies"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 483,
+      "proteinG": 5.5,
+      "carbsG": 68,
+      "fatG": 21,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large cookie"
+          }
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "cake-sponge",
+    "name": {
+      "ar": "كيك سادة",
+      "en": "Plain Sponge Cake"
+    },
+    "aliases": [
+      "كيك",
+      "cake",
+      "كيك اسفنجي"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 339,
+      "proteinG": 5,
+      "carbsG": 55,
+      "fatG": 11,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 60
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "ice-cream-vanilla",
+    "name": {
+      "ar": "آيس كريم فانيليا",
+      "en": "Vanilla Ice Cream"
+    },
+    "aliases": [
+      "آيس كريم",
+      "ice cream",
+      "ايس كريم"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 209,
+      "proteinG": 3.5,
+      "carbsG": 24,
+      "fatG": 11,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 132
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كورة",
+            "en": "scoop"
+          }
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "donut",
+    "name": {
+      "ar": "دونات",
+      "en": "Donut (glazed)"
+    },
+    "aliases": [
+      "دونات",
+      "donut",
+      "doughnut"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 423,
+      "proteinG": 5,
+      "carbsG": 49,
+      "fatG": 23,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "maamoul-dates",
+    "name": {
+      "ar": "معمول بالتمر",
+      "en": "Maamoul with Dates"
+    },
+    "aliases": [
+      "معمول",
+      "maamoul"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 404,
+      "proteinG": 5,
+      "carbsG": 60,
+      "fatG": 16,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 35
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "luqmat-el-qadi",
+    "name": {
+      "ar": "لقمة القاضي",
+      "en": "Luqmat el-Qadi (Fried Dough with Syrup)"
+    },
+    "aliases": [
+      "لقمة القاضي",
+      "zalabia",
+      "loqmet el qadi"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 378,
+      "proteinG": 4,
+      "carbsG": 50,
+      "fatG": 18,
+      "fiberG": 0.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "plate"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "tahini-molasses",
+    "name": {
+      "ar": "طحينة بعسل أسود",
+      "en": "Tahini with Black Honey"
+    },
+    "aliases": [
+      "طحينة بعسل",
+      "tehina w asal"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 420,
+      "proteinG": 8,
+      "carbsG": 52,
+      "fatG": 20,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small plate"
+          }
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "sugar-syrup-shira",
+    "name": {
+      "ar": "شيرة",
+      "en": "Sugar Syrup (Shira)"
+    },
+    "aliases": [
+      "شيرة",
+      "شربات",
+      "attar",
+      "syrup"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 288,
+      "proteinG": 0,
+      "carbsG": 72,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 7
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "jelly-dessert",
+    "name": {
+      "ar": "جيلي",
+      "en": "Gelatin Dessert (prepared)"
+    },
+    "aliases": [
+      "جيلي",
+      "jelly",
+      "jello"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 61,
+      "proteinG": 1.2,
+      "carbsG": 14,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "cup 125g"
+          }
+        },
+        "grams": 125
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "hard-candy",
+    "name": {
+      "ar": "حلوى صلبة",
+      "en": "Hard Candy"
+    },
+    "aliases": [
+      "حلويات",
+      "candy",
+      "سكاكر"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 394,
+      "proteinG": 0,
+      "carbsG": 98,
+      "fatG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 6
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "potato-chips",
+    "name": {
+      "ar": "شيبسي",
+      "en": "Potato Chips (generic)"
+    },
+    "aliases": [
+      "شيبسي",
+      "chipsy",
+      "potato chips"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 546,
+      "proteinG": 7,
+      "carbsG": 53,
+      "fatG": 34,
+      "fiberG": 4.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس صغير",
+            "en": "small bag"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 25
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "ketchup",
+    "name": {
+      "ar": "كاتشب",
+      "en": "Ketchup"
+    },
+    "aliases": [
+      "كاتشب",
+      "ketchup"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 104,
+      "proteinG": 1,
+      "carbsG": 27,
+      "fatG": 0.1,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 17
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 6
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "mustard",
+    "name": {
+      "ar": "مسطردة",
+      "en": "Mustard"
+    },
+    "aliases": [
+      "مسطردة",
+      "mustard"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 69,
+      "proteinG": 4,
+      "carbsG": 5,
+      "fatG": 4,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "soy-sauce",
+    "name": {
+      "ar": "صويا صوص",
+      "en": "Soy Sauce"
+    },
+    "aliases": [
+      "صويا صوص",
+      "soy sauce"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 55,
+      "proteinG": 8,
+      "carbsG": 5,
+      "fatG": 0.6,
+      "fiberG": 0.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "tomato-paste",
+    "name": {
+      "ar": "معجون طماطم",
+      "en": "Tomato Paste"
+    },
+    "aliases": [
+      "صلصة",
+      "salsa",
+      "tomato paste",
+      "معجون"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 90,
+      "proteinG": 4.3,
+      "carbsG": 19,
+      "fatG": 0.5,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 70
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "tomato-sauce",
+    "name": {
+      "ar": "صلصة طماطم",
+      "en": "Tomato Sauce"
+    },
+    "aliases": [
+      "صلصة طماطم",
+      "tomato sauce",
+      "salsa"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 30,
+      "proteinG": 1.3,
+      "carbsG": 6.5,
+      "fatG": 0.2,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "vinegar",
+    "name": {
+      "ar": "خل",
+      "en": "Vinegar"
+    },
+    "aliases": [
+      "خل",
+      "khal",
+      "vinegar"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 4,
+      "proteinG": 0,
+      "carbsG": 0.9,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "hot-sauce",
+    "name": {
+      "ar": "شطة",
+      "en": "Hot Sauce (Shatta)"
+    },
+    "aliases": [
+      "شطة",
+      "shatta",
+      "hot sauce"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 12,
+      "proteinG": 0.5,
+      "carbsG": 2,
+      "fatG": 0.2,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  },
+  {
+    "slug": "pesto",
+    "name": {
+      "ar": "بيستو",
+      "en": "Pesto Sauce"
+    },
+    "aliases": [
+      "بيستو",
+      "pesto"
+    ],
+    "category": "sweets-sauces",
+    "per100": {
+      "kcal": 467,
+      "proteinG": 5,
+      "carbsG": 6,
+      "fatG": 47,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 16
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "sweets-sauces"
+    ]
+  }
+]

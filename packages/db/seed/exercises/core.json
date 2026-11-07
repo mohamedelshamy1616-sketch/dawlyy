@@ -1,0 +1,1489 @@
+[
+  {
+    "slug": "plank",
+    "name": {
+      "ar": "بلانك",
+      "en": "Plank"
+    },
+    "aliases": [
+      "plank",
+      "بلانك",
+      "وضع اللوح"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "transversus abdominis"
+    ],
+    "secondaryMuscles": [
+      "obliques",
+      "erector spinae",
+      "gluteus maximus",
+      "deltoid anterior"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "جسمك لوح مستقيم والجلوت مشدود",
+        "en": "Body like a board with glutes squeezed"
+      },
+      {
+        "ar": "ادفع الأرض بالدراع وشد السرة لجوه",
+        "en": "Press the floor away and draw the navel in"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول أسفل الضهر",
+        "en": "Sagging lower back"
+      },
+      {
+        "ar": "رفع المؤخرة لفوق",
+        "en": "Piking the hips up"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "side-plank"
+    ],
+    "regressions": [
+      "dead-bug"
+    ],
+    "alternatives": [
+      "dead-bug",
+      "hollow-hold"
+    ],
+    "tags": [
+      "core",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "side-plank",
+    "name": {
+      "ar": "بلانك جانبي",
+      "en": "Side Plank"
+    },
+    "aliases": [
+      "side plank",
+      "بلانك جنب"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "obliques",
+      "quadratus lumborum"
+    ],
+    "secondaryMuscles": [
+      "gluteus medius",
+      "transversus abdominis"
+    ],
+    "movementPattern": "anti_rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "الكوع تحت الكتف والجسم خط مستقيم",
+        "en": "Elbow under shoulder with a straight body line"
+      },
+      {
+        "ar": "ارفع الورك ومتنزلوش",
+        "en": "Lift the hips and do not let them drop"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الورك",
+        "en": "Hips dropping"
+      },
+      {
+        "ar": "دوران الجسم للأمام",
+        "en": "Rolling forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "copenhagen-plank"
+    ],
+    "regressions": [
+      "plank"
+    ],
+    "alternatives": [
+      "pallof-press"
+    ],
+    "tags": [
+      "core",
+      "anti_rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "dead-bug",
+    "name": {
+      "ar": "ديد باج",
+      "en": "Dead Bug"
+    },
+    "aliases": [
+      "dead bug",
+      "دد باج",
+      "الحشرة الميتة"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "transversus abdominis",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "obliques",
+      "hip flexors"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "أسفل الضهر ملزوق في الأرض طول الوقت",
+        "en": "Keep the lower back pressed to the floor"
+      },
+      {
+        "ar": "حرّك دراع ورجل عكس بعض ببطء",
+        "en": "Move opposite arm and leg slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انفصال الضهر عن الأرض",
+        "en": "Lower back peeling off the floor"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Moving fast"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "plank"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "bird-dog",
+      "plank"
+    ],
+    "tags": [
+      "core",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "bird-dog",
+    "name": {
+      "ar": "بيرد دوج",
+      "en": "Bird Dog"
+    },
+    "aliases": [
+      "bird dog",
+      "بيرد دوج",
+      "الكلب والطائر"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "erector spinae",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "multifidus",
+      "deltoid anterior",
+      "transversus abdominis"
+    ],
+    "movementPattern": "anti_rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهر مسطح وارفع دراع ورجل عكس بعض",
+        "en": "Flat back and extend opposite arm and leg"
+      },
+      {
+        "ar": "متلفش الحوض",
+        "en": "Do not rotate the hips"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      },
+      {
+        "ar": "تمرجح الحوض",
+        "en": "Hip sway"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dead-bug",
+      "plank"
+    ],
+    "tags": [
+      "core",
+      "anti_rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "hollow-hold",
+    "name": {
+      "ar": "هولو هولد",
+      "en": "Hollow Body Hold"
+    },
+    "aliases": [
+      "hollow hold",
+      "hollow body",
+      "هولو"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "transversus abdominis"
+    ],
+    "secondaryMuscles": [
+      "hip flexors",
+      "obliques"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "أسفل الضهر ملزوق في الأرض والرجل لفوق شوية",
+        "en": "Keep the lower back on the floor and legs low"
+      },
+      {
+        "ar": "الدراع فوق الراس والكتف مرفوع",
+        "en": "Arms overhead with shoulders lifted"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the lower back"
+      },
+      {
+        "ar": "رفع الرقبة بالقوة",
+        "en": "Straining the neck"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dead-bug"
+    ],
+    "alternatives": [
+      "plank",
+      "dead-bug"
+    ],
+    "tags": [
+      "core",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "crunch",
+    "name": {
+      "ar": "كرنش",
+      "en": "Crunch"
+    },
+    "aliases": [
+      "crunch",
+      "abs crunch",
+      "كرنش"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الكتف عن الأرض بتقويس البطن",
+        "en": "Lift the shoulders by curling the ribs to the pelvis"
+      },
+      {
+        "ar": "النظر لفوق والدقن بعيد عن الصدر",
+        "en": "Eyes up with a fist of space under the chin"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد الرقبة بالإيد",
+        "en": "Pulling on the neck"
+      },
+      {
+        "ar": "حركة كبيرة بالعزم",
+        "en": "Using momentum"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "reverse-crunch",
+      "cable-crunch"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "bicycle-crunch",
+    "name": {
+      "ar": "كرنش دراجة",
+      "en": "Bicycle Crunch"
+    },
+    "aliases": [
+      "bicycle crunch",
+      "كرنش عجلة",
+      "بايسكل"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "obliques"
+    ],
+    "secondaryMuscles": [
+      "hip flexors"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "لف الكتف مش الكوع لعكس الركبة",
+        "en": "Rotate the shoulder, not just the elbow, toward the opposite knee"
+      },
+      {
+        "ar": "حرك ببطء وتحكم",
+        "en": "Move slowly with control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد الرقبة",
+        "en": "Pulling on the neck"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Rushing the reps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "crunch"
+    ],
+    "alternatives": [
+      "russian-twist",
+      "crunch"
+    ],
+    "tags": [
+      "core",
+      "rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "reverse-crunch",
+    "name": {
+      "ar": "ريفرس كرنش",
+      "en": "Reverse Crunch"
+    },
+    "aliases": [
+      "reverse crunch",
+      "كرنش عكسي"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis (lower)"
+    ],
+    "secondaryMuscles": [
+      "obliques",
+      "hip flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اطلع بالحوض مش بالركبة",
+        "en": "Curl the pelvis up, do not just swing the knees"
+      },
+      {
+        "ar": "انزل ببطء من غير ما تلمس الأرض بالرجل",
+        "en": "Lower slowly without dropping the legs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      },
+      {
+        "ar": "رفع الرقبة",
+        "en": "Lifting the neck"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "crunch"
+    ],
+    "alternatives": [
+      "lying-leg-raise",
+      "crunch"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "hanging-leg-raise",
+    "name": {
+      "ar": "رفع الرجل معلق",
+      "en": "Hanging Leg Raise"
+    },
+    "aliases": [
+      "hanging leg raise",
+      "رفع رجل عقلة",
+      "هانجنج ليج ريز"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis (lower)"
+    ],
+    "secondaryMuscles": [
+      "hip flexors",
+      "obliques",
+      "forearm flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "pull-up bar"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اطلع بالحوض لقدام مش بالرجل بس",
+        "en": "Tilt the pelvis up, not just the legs"
+      },
+      {
+        "ar": "نزل بتحكم من غير تمرجح",
+        "en": "Lower with control, no swing"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجسم",
+        "en": "Swinging the body"
+      },
+      {
+        "ar": "رفع الرجل بالمرجحة",
+        "en": "Using momentum"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "toes-to-bar"
+    ],
+    "regressions": [
+      "hanging-knee-raise"
+    ],
+    "alternatives": [
+      "hanging-knee-raise",
+      "lying-leg-raise"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "pull-up bar"
+    ]
+  },
+  {
+    "slug": "hanging-knee-raise",
+    "name": {
+      "ar": "رفع الركبة معلق",
+      "en": "Hanging Knee Raise"
+    },
+    "aliases": [
+      "hanging knee raise",
+      "رفع ركبة عقلة"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "hip flexors",
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "pull-up bar"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اطلع بالركبة لصدرك وأنت بتقوس الضهر",
+        "en": "Bring knees to chest while rounding the pelvis"
+      },
+      {
+        "ar": "ثبّت الكتف وشد الإبط",
+        "en": "Keep shoulders packed and lats engaged"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "hanging-leg-raise"
+    ],
+    "regressions": [
+      "reverse-crunch"
+    ],
+    "alternatives": [
+      "hanging-leg-raise",
+      "reverse-crunch"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "pull-up bar"
+    ]
+  },
+  {
+    "slug": "cable-crunch",
+    "name": {
+      "ar": "كرنش كابل",
+      "en": "Cable Crunch"
+    },
+    "aliases": [
+      "cable crunch",
+      "كرنش كابل",
+      "كابل كرنش"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable",
+      "rope"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ركبة على الأرض وقوس الضهر لتحت",
+        "en": "Kneel and flex the spine downward"
+      },
+      {
+        "ar": "الحبل جنب الراس والحوض ثابت",
+        "en": "Rope beside the head and keep the hips still"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الجلوس على الكعب للأمام بقوة",
+        "en": "Hinging at the hips"
+      },
+      {
+        "ar": "سحب بالإيد",
+        "en": "Pulling with the arms"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "crunch"
+    ],
+    "alternatives": [
+      "crunch",
+      "ab-wheel-rollout"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "ab-wheel-rollout",
+    "name": {
+      "ar": "عجلة البطن",
+      "en": "Ab Wheel Rollout"
+    },
+    "aliases": [
+      "ab wheel",
+      "ab roller",
+      "عجلة بطن"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "transversus abdominis"
+    ],
+    "secondaryMuscles": [
+      "latissimus dorsi",
+      "deltoid anterior",
+      "erector spinae"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "ab wheel"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قوّس الحوض وشد الجلوت قبل ما تتدحرج",
+        "en": "Tuck the pelvis and squeeze glutes before rolling"
+      },
+      {
+        "ar": "اتدحرج لحد ما تحس بالتحكم وارجع بالبطن",
+        "en": "Roll as far as you can control and return with the abs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول أسفل الضهر",
+        "en": "Sagging the lower back"
+      },
+      {
+        "ar": "مدى كبير مبكر",
+        "en": "Rolling too far too early"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "plank",
+      "hanging-knee-raise"
+    ],
+    "alternatives": [
+      "plank",
+      "cable-crunch"
+    ],
+    "tags": [
+      "core",
+      "other",
+      "ab wheel"
+    ]
+  },
+  {
+    "slug": "russian-twist",
+    "name": {
+      "ar": "لف روسي",
+      "en": "Russian Twist"
+    },
+    "aliases": [
+      "russian twist",
+      "روسيان تويست",
+      "لفة روسي"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "obliques",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "hip flexors"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "bodyweight",
+      "weight plate"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "الصدر لفوق والرجل مرفوعة أو على الأرض",
+        "en": "Chest up with the feet raised or grounded"
+      },
+      {
+        "ar": "لف الصدر مش الدراع",
+        "en": "Rotate the chest, not just the arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      },
+      {
+        "ar": "لف بالدراع بس",
+        "en": "Swinging only the arms"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "bicycle-crunch"
+    ],
+    "alternatives": [
+      "cable-woodchop",
+      "pallof-press"
+    ],
+    "tags": [
+      "core",
+      "rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "pallof-press",
+    "name": {
+      "ar": "بالوف بريس",
+      "en": "Pallof Press"
+    },
+    "aliases": [
+      "pallof press",
+      "بالوف",
+      "ضغط مقاومة الدوران"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "obliques",
+      "transversus abdominis"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "gluteus medius"
+    ],
+    "movementPattern": "anti_rotation",
+    "equipment": [
+      "cable",
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "قاوم الكابل إنه يلفك",
+        "en": "Resist the cable trying to rotate you"
+      },
+      {
+        "ar": "ادفع قدام الصدر وثبّت 2 ثانية",
+        "en": "Press out from the chest and hold two seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "دوران الجذع",
+        "en": "Letting the torso twist"
+      },
+      {
+        "ar": "وقفة ضيقة",
+        "en": "Stance too narrow"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "side-plank",
+      "cable-woodchop"
+    ],
+    "tags": [
+      "core",
+      "anti_rotation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "cable-woodchop",
+    "name": {
+      "ar": "ودتشوب كابل",
+      "en": "Cable Woodchop"
+    },
+    "aliases": [
+      "woodchop",
+      "wood chop",
+      "وودتشوب"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "obliques"
+    ],
+    "secondaryMuscles": [
+      "rectus abdominis",
+      "deltoid anterior",
+      "gluteus maximus"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "لف من الورك والرجل مش من الدراع",
+        "en": "Rotate from the hips and legs, not just the arms"
+      },
+      {
+        "ar": "دراعك شبه مفرودة وعيونك مع الإيد",
+        "en": "Arms nearly straight with eyes following the hands"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "دوران الضهر بس",
+        "en": "Twisting through the lower back only"
+      },
+      {
+        "ar": "وزن عالي",
+        "en": "Too heavy"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "pallof-press"
+    ],
+    "alternatives": [
+      "russian-twist",
+      "pallof-press"
+    ],
+    "tags": [
+      "core",
+      "rotation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "mountain-climber",
+    "name": {
+      "ar": "متسلق الجبل",
+      "en": "Mountain Climber"
+    },
+    "aliases": [
+      "mountain climber",
+      "mountain climbers",
+      "ماونتن كلايمبر"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "hip flexors"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "quadriceps",
+      "obliques"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "وضع بلانك عالي وابدل الركبة لصدرك",
+        "en": "High plank, alternate knees to the chest"
+      },
+      {
+        "ar": "الحوض ثابت ومتطلعش فوق",
+        "en": "Keep hips level, not piking"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع المؤخرة",
+        "en": "Hips high"
+      },
+      {
+        "ar": "الكتف خلف اليد",
+        "en": "Shoulders drifting behind the hands"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "plank"
+    ],
+    "alternatives": [
+      "plank",
+      "bear-crawl"
+    ],
+    "tags": [
+      "core",
+      "locomotion",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "lying-leg-raise",
+    "name": {
+      "ar": "رفع الرجل نايم",
+      "en": "Lying Leg Raise"
+    },
+    "aliases": [
+      "leg raise",
+      "lying leg raise",
+      "رفع رجل نايم"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis (lower)"
+    ],
+    "secondaryMuscles": [
+      "hip flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "أسفل الضهر لازق في الأرض",
+        "en": "Lower back flat on the floor"
+      },
+      {
+        "ar": "نزّل الرجل ببطء من غير ما تلمس الأرض",
+        "en": "Lower the legs slowly without touching down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      },
+      {
+        "ar": "رجل سريعة",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "hanging-leg-raise"
+    ],
+    "regressions": [
+      "reverse-crunch"
+    ],
+    "alternatives": [
+      "reverse-crunch",
+      "flutter-kick"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "v-up",
+    "name": {
+      "ar": "في أب",
+      "en": "V-Up"
+    },
+    "aliases": [
+      "v up",
+      "v-up",
+      "في اب"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "hip flexors"
+    ],
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الجذع والرجل مع بعض للقاء في النص",
+        "en": "Raise torso and legs together to meet in the middle"
+      },
+      {
+        "ar": "نزّل بتحكم",
+        "en": "Lower under control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "اندفاع بالعزم",
+        "en": "Throwing the arms for momentum"
+      },
+      {
+        "ar": "رجل منحنية",
+        "en": "Bent legs the whole time"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "lying-leg-raise"
+    ],
+    "alternatives": [
+      "sit-up",
+      "hollow-hold"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "sit-up",
+    "name": {
+      "ar": "سيت اب",
+      "en": "Sit-Up"
+    },
+    "aliases": [
+      "sit up",
+      "situp",
+      "سيت اب"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "hip flexors"
+    ],
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "رجل ثابتة وقوس الضهر وأنت بترفع",
+        "en": "Feet anchored, curl up segment by segment"
+      },
+      {
+        "ar": "انزل ببطء ومتنزلش مرة واحدة",
+        "en": "Lower slowly, do not collapse"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد الرقبة",
+        "en": "Pulling on the neck"
+      },
+      {
+        "ar": "قوة الورك فقط",
+        "en": "Using only hip flexors"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "crunch"
+    ],
+    "alternatives": [
+      "crunch",
+      "v-up"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "toes-to-bar",
+    "name": {
+      "ar": "تو تو بار",
+      "en": "Toes to Bar"
+    },
+    "aliases": [
+      "toes to bar",
+      "ttb",
+      "تو تو بار"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "hip flexors"
+    ],
+    "secondaryMuscles": [
+      "latissimus dorsi",
+      "forearm flexors",
+      "obliques"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "pull-up bar"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب البار لتحت وارفع الصباع للبار",
+        "en": "Pull down on the bar and lift the toes up to it"
+      },
+      {
+        "ar": "تحكم في الرجوع من غير تمرجح",
+        "en": "Return under control, no swinging"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح بدون تحكم",
+        "en": "Uncontrolled kipping"
+      },
+      {
+        "ar": "ثني الكوع",
+        "en": "Bending the arms"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hanging-leg-raise"
+    ],
+    "alternatives": [
+      "hanging-leg-raise"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "pull-up bar"
+    ]
+  },
+  {
+    "slug": "copenhagen-plank",
+    "name": {
+      "ar": "كوبنهاجن بلانك",
+      "en": "Copenhagen Plank"
+    },
+    "aliases": [
+      "copenhagen plank",
+      "كوبنهاجن"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "adductor longus",
+      "obliques"
+    ],
+    "secondaryMuscles": [
+      "adductor magnus",
+      "quadratus lumborum"
+    ],
+    "movementPattern": "anti_rotation",
+    "equipment": [
+      "bench",
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "الرجل العلوية على البنش والجسم خط مستقيم",
+        "en": "Top leg on the bench with a straight body line"
+      },
+      {
+        "ar": "ارفع الورك بباطن الفخد",
+        "en": "Lift the hips with the inner thigh"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الورك",
+        "en": "Hips dropping"
+      },
+      {
+        "ar": "دوران الصدر",
+        "en": "Chest rotating"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "side-plank"
+    ],
+    "alternatives": [
+      "side-plank"
+    ],
+    "tags": [
+      "core",
+      "anti_rotation",
+      "bench"
+    ]
+  },
+  {
+    "slug": "flutter-kick",
+    "name": {
+      "ar": "فلاتر كيك",
+      "en": "Flutter Kick"
+    },
+    "aliases": [
+      "flutter kick",
+      "ركلات بطن",
+      "فلاتر"
+    ],
+    "category": "core",
+    "primaryMuscles": [
+      "rectus abdominis (lower)"
+    ],
+    "secondaryMuscles": [
+      "hip flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "أسفل الضهر ملزوق في الأرض والرجل واطية",
+        "en": "Lower back flat with legs low"
+      },
+      {
+        "ar": "ركلات صغيرة وسريعة بتحكم",
+        "en": "Small quick controlled kicks"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      },
+      {
+        "ar": "رجل مرتفعة تخفف الشد",
+        "en": "Legs too high losing tension"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "lying-leg-raise"
+    ],
+    "alternatives": [
+      "lying-leg-raise",
+      "dead-bug"
+    ],
+    "tags": [
+      "core",
+      "isolation",
+      "bodyweight"
+    ]
+  }
+]

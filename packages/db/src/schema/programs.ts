@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { boolean, index, integer, jsonb, pgPolicy, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 import type { ProgramDocument } from '@dawlyy/core/types';
-import { authenticated, clientPolicies, tenantPolicies } from './_rls';
+import { authenticated, clientPolicies, isStaff, tenantMatch, tenantPolicies } from './_rls';
 import { documentKind, publishState } from './enums';
 import { clients } from './clients';
 import { tenants } from './tenants';
@@ -109,12 +109,15 @@ export const programVersions = pgTable(
 
 /**
  * Versioned documents: templates (client_id null) are tenant-wide; client copies follow client access.
- * Immutability of published versions is enforced by the trigger in sql/0001_app_helpers.sql.
+ * Immutability of published versions is enforced by the trigger in migrations/0002_app_post_tables.sql.
  */
 export function documentHeadPolicies(table: string, t: Parameters<typeof clientPolicies>[1]) {
-  const tenantOnly = tenantPolicies(table, { tenantId: t.tenantId });
+  // Templates (client_id null) are tenant-wide but only owner/staff may touch them. A plain member policy
+  // (tenantPolicies) would let every client of the tenant read all templates and every other client's copy.
+  const templates = sql`${tenantMatch(t.tenantId)} and ${isStaff} and ${t.clientId} is null`;
+  const tenantOnly = [pgPolicy(`${table}_staff_templates`, { for: 'all', to: authenticated, using: templates, withCheck: templates })];
   const perClient = clientPolicies(`${table}_client`, t);
   // Both sets apply; policies are OR-ed per command. Template rows have client_id null, so
-  // app.can_access_client(null) is false and only the tenant policies grant access to them.
+  // app.can_access_client(null) is false and only the template policy grants access to them.
   return [...tenantOnly, ...perClient];
 }

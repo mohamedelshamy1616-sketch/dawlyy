@@ -3,7 +3,7 @@ import { pgPolicy, pgRole, type AnyPgColumn } from 'drizzle-orm/pg-core';
 
 /**
  * Row Level Security building blocks. Every policy reads the caller through the
- * `app.*` security-definer helpers (see ../../sql/0001_app_helpers.sql), which in turn
+ * `app.*` security-definer helpers (see ../../migrations/0000_app_schema.sql), which in turn
  * read the transaction-local settings that `withAuthTx` applies.
  *
  * Postgres role used at runtime after `SET LOCAL ROLE authenticated` (Supabase built-in).

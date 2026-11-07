@@ -1,0 +1,882 @@
+[
+  {
+    "slug": "scapular-wall-slide",
+    "name": {
+      "ar": "انزلاق الكتف على الحيطة",
+      "en": "Scapular Wall Slide"
+    },
+    "aliases": [
+      "wall slide",
+      "wall slides",
+      "سلايد حيطة"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "lower trapezius",
+      "serratus anterior"
+    ],
+    "secondaryMuscles": [
+      "deltoid",
+      "rotator cuff"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ضهرك ولوح الكتف على الحيطة وارفع الدراع على شكل Y",
+        "en": "Back and shoulder blades on the wall, slide the arms up in a Y"
+      },
+      {
+        "ar": "ابقى مريح من غير قوس في الضهر",
+        "en": "Keep the ribs down, no lumbar arch"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف للودن",
+        "en": "Shrugging toward the ears"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "serratus-wall-slide-foam",
+      "prone-ytw-raise"
+    ],
+    "tags": [
+      "corrective",
+      "other",
+      "wall"
+    ]
+  },
+  {
+    "slug": "band-external-rotation",
+    "name": {
+      "ar": "دوران خارجي باند",
+      "en": "Band External Rotation"
+    },
+    "aliases": [
+      "external rotation",
+      "shoulder rotation band",
+      "دوران الكتف للخارج"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "infraspinatus",
+      "teres minor"
+    ],
+    "secondaryMuscles": [
+      "posterior deltoid"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "band",
+      "cable"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "كوعك ملزوق في جنبك والباند في إيدك",
+        "en": "Elbow pinned to the side holding the band"
+      },
+      {
+        "ar": "لف الساعد لبره ببطء",
+        "en": "Rotate the forearm outward slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ابعاد الكوع عن الجسم",
+        "en": "Letting the elbow drift away"
+      },
+      {
+        "ar": "وزن تقيل",
+        "en": "Too much resistance"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "prone-ytw-raise",
+      "face-pull"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "band"
+    ]
+  },
+  {
+    "slug": "prone-ytw-raise",
+    "name": {
+      "ar": "وايي تي دبليو نايم",
+      "en": "Prone Y-T-W Raise"
+    },
+    "aliases": [
+      "ytw",
+      "prone y t w",
+      "وي تي دبليو"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "lower trapezius",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "posterior deltoid",
+      "infraspinatus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "نايم على بطنك وارفع الدراع بشكل Y ثم T ثم W",
+        "en": "Lie face down and lift arms into Y, T then W"
+      },
+      {
+        "ar": "الإبهام لفوق واعصر لوح الكتف",
+        "en": "Thumbs up and squeeze the shoulder blades"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الرقبة",
+        "en": "Lifting the head"
+      },
+      {
+        "ar": "رفع الدراع بعنف",
+        "en": "Jerking the arms up"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "scapular-wall-slide"
+    ],
+    "alternatives": [
+      "band-pull-apart",
+      "face-pull"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "serratus-wall-slide-foam",
+    "name": {
+      "ar": "سيراتس سلايد بالفوم",
+      "en": "Serratus Wall Slide with Foam Roller"
+    },
+    "aliases": [
+      "serratus slide",
+      "serratus wall slide",
+      "سيراتس"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "serratus anterior"
+    ],
+    "secondaryMuscles": [
+      "lower trapezius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "foam roller",
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الساعد على الفوم رولر على الحيطة",
+        "en": "Forearms on a foam roller against the wall"
+      },
+      {
+        "ar": "ارفع الرولر لفوق وادفع للأمام بلوح الكتف",
+        "en": "Slide the roller up while protracting the shoulder blades"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف",
+        "en": "Shrugging"
+      },
+      {
+        "ar": "قوس أسفل الضهر",
+        "en": "Arching the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "scapular-wall-slide",
+      "push-up"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "foam roller"
+    ]
+  },
+  {
+    "slug": "scapular-push-up",
+    "name": {
+      "ar": "بوش اب لوح الكتف",
+      "en": "Scapular Push-Up"
+    },
+    "aliases": [
+      "scap push up",
+      "scapular pushup",
+      "سكابيولار بوش اب"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "serratus anterior"
+    ],
+    "secondaryMuscles": [
+      "pectoralis minor",
+      "lower trapezius"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ذراعك مفرود وتحرك لوح الكتف بس",
+        "en": "Keep arms straight and move only the shoulder blades"
+      },
+      {
+        "ar": "ادفع الأرض بعيد لما الكتف يفتح",
+        "en": "Push the floor away to protract"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الكوع",
+        "en": "Bending the elbows"
+      },
+      {
+        "ar": "حركة قصيرة",
+        "en": "Tiny range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "serratus-wall-slide-foam",
+      "push-up"
+    ],
+    "tags": [
+      "corrective",
+      "push_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "clamshell",
+    "name": {
+      "ar": "كلامشيل",
+      "en": "Clamshell"
+    },
+    "aliases": [
+      "clamshell",
+      "clam shell",
+      "كلام شيل"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "gluteus minimus",
+      "hip external rotators"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "band",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "نايم على جنبك والركبة مثنية 45 درجة والكعب ملزوق",
+        "en": "Side-lying with knees bent and heels together"
+      },
+      {
+        "ar": "افتح الركبة من غير ما الحوض يلف",
+        "en": "Open the knee without rolling the pelvis back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "دوران الحوض لورا",
+        "en": "Pelvis rolling backward"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Rushing"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "side-lying-hip-abduction",
+      "banded-lateral-walk"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "band"
+    ]
+  },
+  {
+    "slug": "side-lying-hip-abduction",
+    "name": {
+      "ar": "فتح الورك نايم على الجنب",
+      "en": "Side-Lying Hip Abduction"
+    },
+    "aliases": [
+      "side lying abduction",
+      "leg raise side",
+      "رفع الرجل جنب"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "tensor fasciae latae",
+      "gluteus minimus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight",
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "الجسم مستقيم والصباع للأمام",
+        "en": "Body in line with the toes pointing forward"
+      },
+      {
+        "ar": "ارفع الرجل 30 درجة بس",
+        "en": "Lift the leg only about 30 degrees"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الرجل بدوران الحوض",
+        "en": "Rotating the hip back"
+      },
+      {
+        "ar": "رفع عالي زيادة",
+        "en": "Lifting too high"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [
+      "clamshell"
+    ],
+    "alternatives": [
+      "clamshell",
+      "abductor-machine"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "single-leg-balance",
+    "name": {
+      "ar": "توازن رجل واحدة",
+      "en": "Single-Leg Balance"
+    },
+    "aliases": [
+      "single leg stand",
+      "balance",
+      "توازن"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "gluteus medius",
+      "tibialis anterior"
+    ],
+    "secondaryMuscles": [
+      "peroneals",
+      "core"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "عيونك على نقطة ثابتة والحوض مستوي",
+        "en": "Eyes on a fixed point with level hips"
+      },
+      {
+        "ar": "القدم ثلاثية الارتكاز",
+        "en": "Tripod foot: big toe, little toe, heel"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الحوض",
+        "en": "Hip hiking or dropping"
+      },
+      {
+        "ar": "القفل في الركبة",
+        "en": "Locking the knee"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "short-foot",
+      "tibialis-raise"
+    ],
+    "tags": [
+      "corrective",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "tibialis-raise",
+    "name": {
+      "ar": "رفعة الظنبوب",
+      "en": "Tibialis Raise"
+    },
+    "aliases": [
+      "tib raise",
+      "tibialis raise",
+      "عضلة قصبة الرجل"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "tibialis anterior"
+    ],
+    "secondaryMuscles": [],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight",
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهرك للحيطة وارفع صوابع القدم لفوق",
+        "en": "Back against a wall and lift the toes up"
+      },
+      {
+        "ar": "انزل ببطء",
+        "en": "Lower slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الركبة",
+        "en": "Bending the knees"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Going too fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "short-foot",
+      "standing-calf-raise"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "short-foot",
+    "name": {
+      "ar": "القدم القصيرة",
+      "en": "Short Foot Exercise"
+    },
+    "aliases": [
+      "short foot",
+      "foot doming",
+      "تقوية القوس"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "abductor hallucis",
+      "intrinsic foot muscles"
+    ],
+    "secondaryMuscles": [
+      "tibialis posterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب مشط القدم ناحية الكعب من غير ما تثني الصباع",
+        "en": "Draw the ball of the foot toward the heel without curling the toes"
+      },
+      {
+        "ar": "وزع الوزن على ثلاث نقاط",
+        "en": "Distribute weight on three points"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الصوابع",
+        "en": "Curling the toes"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "single-leg-balance",
+      "tibialis-raise"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "chin-tuck",
+    "name": {
+      "ar": "ادخال الذقن",
+      "en": "Chin Tuck"
+    },
+    "aliases": [
+      "chin tuck",
+      "neck retraction",
+      "ترجيع الرقبة"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "deep neck flexors"
+    ],
+    "secondaryMuscles": [
+      "longus colli"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب الدقن لورا كأنك بتعمل دقن مزدوجة",
+        "en": "Draw the chin straight back, making a double chin"
+      },
+      {
+        "ar": "النظر للأمام من غير ما تنزل الراس",
+        "en": "Eyes level without tilting the head down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الراس لتحت",
+        "en": "Nodding the head down"
+      },
+      {
+        "ar": "ضغط مبالغ",
+        "en": "Over-pushing"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "thoracic-foam-roller-extension"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "pelvic-tilt",
+    "name": {
+      "ar": "ميل الحوض",
+      "en": "Pelvic Tilt"
+    },
+    "aliases": [
+      "pelvic tilt",
+      "posterior tilt",
+      "ميل الحوض"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "transversus abdominis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "نايم وأسفل الضهر يلمس الأرض بشد البطن",
+        "en": "Lie down and flatten the lower back by bracing the abs"
+      },
+      {
+        "ar": "ارجع لوضع محايد بتحكم",
+        "en": "Return to neutral with control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الضغط بالجلوت بس",
+        "en": "Using only the glutes"
+      },
+      {
+        "ar": "حبس النفس",
+        "en": "Holding the breath"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dead-bug",
+      "glute-bridge"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "quadruped-rock-back",
+    "name": {
+      "ar": "تأرجح لورا على أربع",
+      "en": "Quadruped Rock Back"
+    },
+    "aliases": [
+      "rock back",
+      "rocking",
+      "روك باك"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "adductors"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهر محايد وارجع الورك لورا ناحية الكعب",
+        "en": "Neutral spine and rock the hips back toward the heels"
+      },
+      {
+        "ar": "وقف في آخر حركة تقدر عليها بضهر مسطح",
+        "en": "Stop at the end of the range with a flat back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس الضهر في آخر الحركة",
+        "en": "Rounding the spine at the end range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "childs-pose",
+      "cat-cow"
+    ],
+    "tags": [
+      "corrective",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "prone-cobra-hold",
+    "name": {
+      "ar": "ثبات كوبرا نايم",
+      "en": "Prone Cobra Hold"
+    },
+    "aliases": [
+      "prone cobra",
+      "cobra hold",
+      "ثبات الكوبرا"
+    ],
+    "category": "corrective",
+    "primaryMuscles": [
+      "lower trapezius",
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "gluteus maximus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "نايم على بطنك والإبهام لفوق وارفع الصدر",
+        "en": "Lie prone, thumbs up, lift the chest"
+      },
+      {
+        "ar": "اعصر لوح الكتف وشد الجلوت",
+        "en": "Squeeze shoulder blades and glutes"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الراس بقوة",
+        "en": "Craning the neck"
+      },
+      {
+        "ar": "قوس أسفل الضهر",
+        "en": "Hyperextending the lumbar spine"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "prone-ytw-raise",
+      "bird-dog"
+    ],
+    "tags": [
+      "corrective",
+      "isolation",
+      "bodyweight"
+    ]
+  }
+]

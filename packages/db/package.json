@@ -17,6 +17,10 @@
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "seed": "node --env-file=.env --import tsx ./seed/index.ts",
+    "db:local:up": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action start",
+    "db:local:down": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action stop",
+    "db:local:reset": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action reset",
+    "db:local:prepare": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action prepare",
     "test:rls": "vitest run test/rls.test.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },

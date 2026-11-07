@@ -1,0 +1,1126 @@
+[
+  {
+    "slug": "cat-cow",
+    "name": {
+      "ar": "قطة وبقرة",
+      "en": "Cat-Cow"
+    },
+    "aliases": [
+      "cat cow",
+      "cat camel",
+      "كات كاو"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "erector spinae",
+      "rectus abdominis"
+    ],
+    "secondaryMuscles": [
+      "multifidus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "على أربع والإيد تحت الكتف والركبة تحت الورك",
+        "en": "On all fours, hands under shoulders, knees under hips"
+      },
+      {
+        "ar": "حرك العمود الفقري فقرة فقرة مع النفس",
+        "en": "Move the spine segment by segment with your breath"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "حركة سريعة من غير نفس",
+        "en": "Rushing without breathing"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "thread-the-needle",
+      "childs-pose"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "worlds-greatest-stretch",
+    "name": {
+      "ar": "أحسن مرونة في العالم",
+      "en": "World's Greatest Stretch"
+    },
+    "aliases": [
+      "worlds greatest stretch",
+      "wgs",
+      "ستريتش العالم"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "hip flexors",
+      "thoracic spine rotators"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gluteus maximus",
+      "adductor magnus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "خطوة لانج واسعة وإيد على الأرض",
+        "en": "Take a long lunge step with a hand on the floor"
+      },
+      {
+        "ar": "لف الصدر وارفع الدراع للسقف",
+        "en": "Rotate the chest and reach the arm to the ceiling"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "خطوة قصيرة",
+        "en": "Using a short step"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "couch-stretch",
+      "open-book-rotation"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "couch-stretch",
+    "name": {
+      "ar": "ستريتش الكنبة",
+      "en": "Couch Stretch"
+    },
+    "aliases": [
+      "couch stretch",
+      "hip flexor stretch",
+      "تمدد مقدمة الفخد"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "hip flexors",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "rectus femoris"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "wall",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الركبة الخلفية على الأرض والقدم على الحيطة",
+        "en": "Back knee down with the foot up the wall"
+      },
+      {
+        "ar": "اشد الجلوت وارفع الصدر",
+        "en": "Squeeze the glute and lift the chest"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس أسفل الضهر",
+        "en": "Overarching the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "standing-quad-stretch",
+      "hip-90-90"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "wall"
+    ]
+  },
+  {
+    "slug": "hip-90-90",
+    "name": {
+      "ar": "تبديل الورك 90-90",
+      "en": "90/90 Hip Switch"
+    },
+    "aliases": [
+      "90 90",
+      "hip switch",
+      "ورك 90 90"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "hip external rotators"
+    ],
+    "secondaryMuscles": [
+      "hip internal rotators"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "الركبتين 90 درجة وصدرك مرفوع",
+        "en": "Both knees at 90 degrees with the chest tall"
+      },
+      {
+        "ar": "بدّل الجنب بالتحكم من غير إيد لو أمكن",
+        "en": "Switch sides with control, hands-free if possible"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الجلوس على جنب الورك",
+        "en": "Collapsing to one hip"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      },
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "pigeon-stretch",
+      "frog-stretch"
+    ],
+    "tags": [
+      "mobility",
+      "rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "thoracic-foam-roller-extension",
+    "name": {
+      "ar": "تمدد الصدر على الفوم رولر",
+      "en": "Thoracic Extension on Foam Roller"
+    },
+    "aliases": [
+      "thoracic extension",
+      "foam roller",
+      "فوم رولر ضهر"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "thoracic extensors"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "erector spinae"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "foam roller"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الرولر تحت لوح الكتف وإيدك ورا الراس",
+        "en": "Roller under the shoulder blades with hands behind the head"
+      },
+      {
+        "ar": "اتمدد لورا من غير ما تقوس أسفل الضهر",
+        "en": "Extend back without arching the lower back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس أسفل الضهر بدل الصدر",
+        "en": "Extending through the lumbar spine"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "open-book-rotation",
+      "cat-cow"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "foam roller"
+    ]
+  },
+  {
+    "slug": "thread-the-needle",
+    "name": {
+      "ar": "خيط الإبرة",
+      "en": "Thread the Needle"
+    },
+    "aliases": [
+      "thread the needle",
+      "ثريد ذا نيدل"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "thoracic spine rotators",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "posterior deltoid"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "على أربع ومرر دراع تحت الدراع التاني",
+        "en": "On all fours, thread one arm under the other"
+      },
+      {
+        "ar": "اقعد بالورك على الكعب وأنت بتلف",
+        "en": "Sit hips back toward the heels as you rotate"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الضغط على الكتف",
+        "en": "Crunching the shoulder"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "open-book-rotation",
+      "cat-cow"
+    ],
+    "tags": [
+      "mobility",
+      "rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "childs-pose",
+    "name": {
+      "ar": "وضع الطفل",
+      "en": "Child's Pose"
+    },
+    "aliases": [
+      "child pose",
+      "childs pose",
+      "وضع الطفل"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اقعد بالورك على الكعب ومد الدراع قدام",
+        "en": "Sit hips back to the heels and reach the arms forward"
+      },
+      {
+        "ar": "تنفس بعمق في أسفل الضهر",
+        "en": "Breathe deeply into the lower back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الورك من الكعب",
+        "en": "Hips lifting off the heels"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "cat-cow",
+      "cobra-stretch"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "pigeon-stretch",
+    "name": {
+      "ar": "وضع الحمامة",
+      "en": "Pigeon Stretch"
+    },
+    "aliases": [
+      "pigeon pose",
+      "pigeon stretch",
+      "وضع الحمامة"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "piriformis"
+    ],
+    "secondaryMuscles": [
+      "hip external rotators"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الساق الأمامية مثنية والورك مربع",
+        "en": "Front shin bent with the hips square"
+      },
+      {
+        "ar": "اتحني على الركبة الأمامية ببطء",
+        "en": "Fold forward over the front leg slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ضغط على الركبة",
+        "en": "Forcing pressure through the knee"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hip-90-90"
+    ],
+    "alternatives": [
+      "hip-90-90",
+      "frog-stretch"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "supine-hamstring-stretch",
+    "name": {
+      "ar": "تمدد الهامسترنج نايم",
+      "en": "Supine Hamstring Stretch"
+    },
+    "aliases": [
+      "hamstring stretch",
+      "ستريتش خلفي الفخد",
+      "band hamstring stretch"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "gastrocnemius"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "band",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "نايم على ضهرك وارفع رجل بالباند",
+        "en": "Lie on your back and raise one leg with a band"
+      },
+      {
+        "ar": "ركبتك شبه مفرودة والورك على الأرض",
+        "en": "Knee nearly straight with the hip grounded"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الركبة بالكامل",
+        "en": "Bending the knee fully"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "wall-calf-stretch",
+      "good-morning"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "band"
+    ]
+  },
+  {
+    "slug": "standing-quad-stretch",
+    "name": {
+      "ar": "تمدد مقدمة الفخد واقف",
+      "en": "Standing Quad Stretch"
+    },
+    "aliases": [
+      "quad stretch",
+      "ستريتش مقدمة الفخد"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "hip flexors"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ركبتك مع بعض وادفع الورك لقدام",
+        "en": "Keep the knees together and push the hips forward"
+      },
+      {
+        "ar": "اشد الجلوت",
+        "en": "Squeeze the glute"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الركبة للخارج",
+        "en": "Letting the knee drift out"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "couch-stretch"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "wall-calf-stretch",
+    "name": {
+      "ar": "تمدد السمانة بالحيطة",
+      "en": "Wall Calf Stretch"
+    },
+    "aliases": [
+      "calf stretch",
+      "ستريتش سمانة"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "soleus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكعب على الأرض وادفع الحيطة",
+        "en": "Heel down and lean into the wall"
+      },
+      {
+        "ar": "ثني الركبة بيمدد السمانة العميقة",
+        "en": "Bend the knee to target the soleus"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكعب",
+        "en": "Lifting the heel"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "ankle-knee-to-wall"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "wall"
+    ]
+  },
+  {
+    "slug": "band-shoulder-dislocate",
+    "name": {
+      "ar": "باند دورة الكتف",
+      "en": "Band Shoulder Dislocate"
+    },
+    "aliases": [
+      "shoulder dislocates",
+      "band pass through",
+      "دوران الكتف باند"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "pectoralis major",
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "latissimus dorsi",
+      "rotator cuff"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "band",
+      "pvc pipe"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "مسكة واسعة والدراع مفرود",
+        "en": "Wide grip with straight arms"
+      },
+      {
+        "ar": "قرب إيدك كل ما تتحسن",
+        "en": "Narrow the grip as you improve"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "مسكة ضيقة تخلي الكتف يتشد",
+        "en": "Grip too narrow"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "face-pull",
+      "thoracic-foam-roller-extension"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "band"
+    ]
+  },
+  {
+    "slug": "ankle-knee-to-wall",
+    "name": {
+      "ar": "حركة الكاحل للحيطة",
+      "en": "Knee-to-Wall Ankle Mobility"
+    },
+    "aliases": [
+      "ankle mobility",
+      "ankle dorsiflexion",
+      "مرونة الكاحل"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondaryMuscles": [
+      "tibialis anterior"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القدم على بعد 10 سم والركبة تلمس الحيطة",
+        "en": "Foot about 10 cm from the wall, knee touching the wall"
+      },
+      {
+        "ar": "الكعب على الأرض طول الوقت",
+        "en": "Heel stays down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكعب",
+        "en": "Heel lifting"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "wall-calf-stretch",
+      "deep-squat-hold"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "wall"
+    ]
+  },
+  {
+    "slug": "deep-squat-hold",
+    "name": {
+      "ar": "وقفة القرفصاء",
+      "en": "Deep Squat Hold"
+    },
+    "aliases": [
+      "deep squat hold",
+      "squat hold",
+      "prying squat"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "adductor magnus"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اقعد عميق وادفع الركبة بالكوع",
+        "en": "Sit deep and push the knees out with the elbows"
+      },
+      {
+        "ar": "الصدر لفوق والكعب على الأرض",
+        "en": "Chest tall and heels down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انهيار الصدر لقدام",
+        "en": "Chest collapsing forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "box-squat"
+    ],
+    "alternatives": [
+      "goblet-squat",
+      "ankle-knee-to-wall"
+    ],
+    "tags": [
+      "mobility",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "cossack-squat",
+    "name": {
+      "ar": "كوساك سكوات",
+      "en": "Cossack Squat"
+    },
+    "aliases": [
+      "cossack squat",
+      "سكوات جانبي",
+      "كوساك"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "adductor magnus",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight",
+      "kettlebell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "انزل على رجل والتانية مفرودة وصباعها لفوق",
+        "en": "Sink onto one leg with the other straight and toes up"
+      },
+      {
+        "ar": "الصدر لفوق وكعب الرجل المثنية على الأرض",
+        "en": "Chest up and heel of the bent leg grounded"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الكعب يرتفع",
+        "en": "Heel lifting"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "lateral-lunge"
+    ],
+    "alternatives": [
+      "lateral-lunge",
+      "deep-squat-hold"
+    ],
+    "tags": [
+      "mobility",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "frog-stretch",
+    "name": {
+      "ar": "تمدد الضفدع",
+      "en": "Frog Stretch"
+    },
+    "aliases": [
+      "frog stretch",
+      "frog pose",
+      "ستريتش ضفدع"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "adductor magnus",
+      "adductor longus"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "على أربع وافتح الركبة للجنب بتدريج",
+        "en": "On all fours, widen the knees gradually"
+      },
+      {
+        "ar": "ظهر مسطح والورك لورا",
+        "en": "Flat back and hips back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح مفرط بدون تحكم",
+        "en": "Forcing the range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      },
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "hip-90-90",
+      "pigeon-stretch"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "open-book-rotation",
+    "name": {
+      "ar": "كتاب مفتوح",
+      "en": "Open Book Rotation"
+    },
+    "aliases": [
+      "open book",
+      "كتاب مفتوح",
+      "دوران الصدر"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "thoracic spine rotators",
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "obliques",
+      "rhomboids"
+    ],
+    "movementPattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "نايم على الجنب والركبتين مثنيتين مع بعض",
+        "en": "Lie on your side with knees stacked and bent"
+      },
+      {
+        "ar": "افتح الدراع العلوي ولف الصدر بعيون على إيدك",
+        "en": "Open the top arm and rotate the chest, eyes follow the hand"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الركبة بدل دوران الصدر",
+        "en": "Letting the knees open instead of the chest"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "thread-the-needle",
+      "thoracic-foam-roller-extension"
+    ],
+    "tags": [
+      "mobility",
+      "rotation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "cobra-stretch",
+    "name": {
+      "ar": "تمدد الكوبرا",
+      "en": "Cobra Stretch"
+    },
+    "aliases": [
+      "cobra stretch",
+      "cobra pose",
+      "كوبرا"
+    ],
+    "category": "mobility",
+    "primaryMuscles": [
+      "rectus abdominis",
+      "hip flexors"
+    ],
+    "secondaryMuscles": [
+      "erector spinae"
+    ],
+    "movementPattern": "other",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الصدر بالدراع والحوض على الأرض",
+        "en": "Lift the chest with the arms, hips on the floor"
+      },
+      {
+        "ar": "كتفك بعيد عن ودنك",
+        "en": "Shoulders away from the ears"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "انضغاط أسفل الضهر",
+        "en": "Crunching the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "childs-pose"
+    ],
+    "alternatives": [
+      "childs-pose",
+      "cat-cow"
+    ],
+    "tags": [
+      "mobility",
+      "other",
+      "bodyweight"
+    ]
+  }
+]

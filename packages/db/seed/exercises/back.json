@@ -1,0 +1,1354 @@
+[
+  {
+    "slug": "pull-up",
+    "name": {
+      "ar": "عقلة",
+      "en": "Pull-Up"
+    },
+    "aliases": [
+      "pull up",
+      "pullups",
+      "بول اب"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "rhomboids",
+      "teres major",
+      "lower trapezius"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "pull-up bar",
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ابدأ بشد لوحي الكتف لتحت قبل ما تثني الكوع",
+        "en": "Start by pulling the shoulder blades down before bending the elbows"
+      },
+      {
+        "ar": "اطلع بالدقن فوق البار من غير تمرجح",
+        "en": "Chin over the bar with no swinging"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول نص حركة من فوق",
+        "en": "Not lowering to a full hang"
+      },
+      {
+        "ar": "تمرجح بالرجلين",
+        "en": "Kipping with the legs"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "assisted-pull-up",
+      "lat-pulldown"
+    ],
+    "alternatives": [
+      "lat-pulldown",
+      "chin-up"
+    ],
+    "tags": [
+      "back",
+      "pull_vertical",
+      "pull-up bar"
+    ]
+  },
+  {
+    "slug": "chin-up",
+    "name": {
+      "ar": "عقلة ضيقة عكسي",
+      "en": "Chin-Up"
+    },
+    "aliases": [
+      "chin up",
+      "chinups",
+      "شن اب"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "brachialis",
+      "teres major"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "pull-up bar",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القبضة عكسية بعرض الكتف",
+        "en": "Underhand grip at shoulder width"
+      },
+      {
+        "ar": "اسحب الكوع لجنبك واطلع بالصدر ناحية البار",
+        "en": "Drive elbows to the ribs and bring the chest toward the bar"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد بالبايسبس بس",
+        "en": "Pulling with the biceps only"
+      },
+      {
+        "ar": "قفل الكتف لقدام",
+        "en": "Rounding the shoulders forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "assisted-pull-up",
+      "close-grip-pulldown"
+    ],
+    "alternatives": [
+      "pull-up",
+      "close-grip-pulldown"
+    ],
+    "tags": [
+      "back",
+      "pull_vertical",
+      "pull-up bar"
+    ]
+  },
+  {
+    "slug": "assisted-pull-up",
+    "name": {
+      "ar": "عقلة بمساعدة",
+      "en": "Assisted Pull-Up"
+    },
+    "aliases": [
+      "assisted pullup",
+      "عقلة جهاز",
+      "عقلة بالباند"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "rhomboids"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "machine",
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قلل المساعدة تدريجيا كل أسبوع",
+        "en": "Reduce the assistance gradually each week"
+      },
+      {
+        "ar": "انزل ببطء ثلاث ثواني",
+        "en": "Lower slowly over three seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الاعتماد على المساعدة الكبيرة دايما",
+        "en": "Staying on the heavy assistance forever"
+      },
+      {
+        "ar": "شد الكتف لقدام",
+        "en": "Shoulders rolling forward"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "pull-up"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "lat-pulldown"
+    ],
+    "tags": [
+      "back",
+      "pull_vertical",
+      "machine"
+    ]
+  },
+  {
+    "slug": "lat-pulldown",
+    "name": {
+      "ar": "سحب أمامي للصدر",
+      "en": "Lat Pulldown"
+    },
+    "aliases": [
+      "lat pulldown",
+      "لات بول داون",
+      "سحب علوي"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "rhomboids",
+      "teres major"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "cable",
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "اسحب البار لأعلى الصدر مع ميل بسيط للخلف",
+        "en": "Pull the bar to the upper chest with a slight lean back"
+      },
+      {
+        "ar": "فكر إنك بتنزل الكوع في جيبك",
+        "en": "Think of driving elbows into your back pockets"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "السحب ورا الرقبة",
+        "en": "Pulling behind the neck"
+      },
+      {
+        "ar": "تمرجح الجسم للخلف لرفع الوزن",
+        "en": "Using body swing to move the weight"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "pull-up"
+    ],
+    "regressions": [
+      "assisted-pull-up"
+    ],
+    "alternatives": [
+      "close-grip-pulldown",
+      "pull-up"
+    ],
+    "tags": [
+      "back",
+      "pull_vertical",
+      "cable"
+    ]
+  },
+  {
+    "slug": "close-grip-pulldown",
+    "name": {
+      "ar": "سحب أمامي قبضة ضيقة",
+      "en": "Close-Grip Lat Pulldown"
+    },
+    "aliases": [
+      "close grip pulldown",
+      "سحب ضيق",
+      "v bar pulldown"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "rhomboids"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "استخدم مقبض V واسحب لنص الصدر",
+        "en": "Use a V handle and pull to mid-chest"
+      },
+      {
+        "ar": "الصدر مفتوح والكتف بعيد عن الودن",
+        "en": "Chest open and shoulders away from the ears"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل زيادة للخلف",
+        "en": "Leaning back too far"
+      },
+      {
+        "ar": "سحب بالإيد بدل الضهر",
+        "en": "Arming the pull instead of the back"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "lat-pulldown"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "lat-pulldown",
+      "chin-up"
+    ],
+    "tags": [
+      "back",
+      "pull_vertical",
+      "cable"
+    ]
+  },
+  {
+    "slug": "straight-arm-pulldown",
+    "name": {
+      "ar": "سحب دراع مفرود",
+      "en": "Straight-Arm Pulldown"
+    },
+    "aliases": [
+      "straight arm pulldown",
+      "ستريت ارم",
+      "سحب كابل دراع مفرود"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "teres major",
+      "triceps brachii"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "دراعك شبه مفرود وميّل الصدر شوية",
+        "en": "Keep arms nearly straight with a small forward lean"
+      },
+      {
+        "ar": "اسحب بالضهر لحد الفخد",
+        "en": "Sweep down to the thighs using the lats"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الكوع زيادة",
+        "en": "Bending the elbows too much"
+      },
+      {
+        "ar": "تحريك الجذع",
+        "en": "Swaying the torso"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-pullover",
+      "lat-pulldown"
+    ],
+    "tags": [
+      "back",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "barbell-row",
+    "name": {
+      "ar": "تجديف بار",
+      "en": "Barbell Bent-Over Row"
+    },
+    "aliases": [
+      "bent over row",
+      "barbell row",
+      "باربل رو"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "erector spinae",
+      "deltoid posterior",
+      "trapezius"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميّل الجذع 45 درجة وضهر مستقيم",
+        "en": "Hinge to about 45 degrees with a flat back"
+      },
+      {
+        "ar": "اسحب البار لسرة البطن",
+        "en": "Row the bar toward the navel"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الجذع مع كل عدة",
+        "en": "Standing up more with every rep"
+      },
+      {
+        "ar": "قفل الضهر وقت الشد",
+        "en": "Rounding the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "chest-supported-row",
+      "seated-cable-row"
+    ],
+    "alternatives": [
+      "dumbbell-row",
+      "t-bar-row",
+      "seated-cable-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "dumbbell-row",
+    "name": {
+      "ar": "تجديف دمبل ذراع واحد",
+      "en": "Single-Arm Dumbbell Row"
+    },
+    "aliases": [
+      "one arm row",
+      "db row",
+      "دمبل رو"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "biceps brachii",
+      "deltoid posterior"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "إيد وركبة على البنش وضهر مسطح",
+        "en": "One hand and knee on the bench with a flat back"
+      },
+      {
+        "ar": "اسحب الدمبل ناحية الورك مش الكتف",
+        "en": "Row toward the hip, not the shoulder"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الجذع مع الشد",
+        "en": "Rotating the torso to cheat the weight"
+      },
+      {
+        "ar": "رفع الكتف ناحية الودن",
+        "en": "Shrugging toward the ear"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "barbell-row"
+    ],
+    "regressions": [
+      "chest-supported-row"
+    ],
+    "alternatives": [
+      "barbell-row",
+      "single-arm-cable-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "seated-cable-row",
+    "name": {
+      "ar": "تجديف كابل جالس",
+      "en": "Seated Cable Row"
+    },
+    "aliases": [
+      "cable row",
+      "seated row",
+      "سيتد رو"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "trapezius",
+      "deltoid posterior"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اجلس بصدر عالي وضهر مستقيم",
+        "en": "Sit tall with the chest up and back neutral"
+      },
+      {
+        "ar": "اعصر لوحي الكتف في نهاية الشد",
+        "en": "Squeeze the shoulder blades at the end of the pull"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجسم للأمام والخلف",
+        "en": "Rocking back and forth"
+      },
+      {
+        "ar": "بتحني الضهر وقت الرجوع",
+        "en": "Rounding the back on the stretch"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "machine-row"
+    ],
+    "alternatives": [
+      "barbell-row",
+      "machine-row",
+      "chest-supported-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "cable"
+    ]
+  },
+  {
+    "slug": "t-bar-row",
+    "name": {
+      "ar": "تي بار رو",
+      "en": "T-Bar Row"
+    },
+    "aliases": [
+      "t bar row",
+      "تي بار",
+      "تجديف تي"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "trapezius",
+      "biceps brachii",
+      "erector spinae"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "t-bar",
+      "landmine"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اثني الورك وحافظ على ضهر مسطح",
+        "en": "Hinge at the hips and keep the back flat"
+      },
+      {
+        "ar": "اسحب لأعلى البطن واعصر الضهر",
+        "en": "Pull to the upper abs and squeeze the back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      },
+      {
+        "ar": "حركة مدى قصير",
+        "en": "Using a short range of motion"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "chest-supported-row"
+    ],
+    "alternatives": [
+      "barbell-row",
+      "chest-supported-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "t-bar"
+    ]
+  },
+  {
+    "slug": "chest-supported-row",
+    "name": {
+      "ar": "تجديف بدعم الصدر",
+      "en": "Chest-Supported Row"
+    },
+    "aliases": [
+      "chest supported row",
+      "incline db row",
+      "رو على بنش مائل"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "deltoid posterior",
+      "biceps brachii",
+      "trapezius"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "dumbbell",
+      "incline bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "صدرك على البنش المائل واسحب الكوع لورا",
+        "en": "Chest on the incline bench and drive the elbows back"
+      },
+      {
+        "ar": "وقف ثانية في الأعلى",
+        "en": "Pause for one second at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الصدر من البنش",
+        "en": "Lifting the chest off the pad"
+      },
+      {
+        "ar": "استخدام وزن عالي بلا تحكم",
+        "en": "Going too heavy with no control"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "barbell-row"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "seated-cable-row",
+      "dumbbell-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "inverted-row",
+    "name": {
+      "ar": "تجديف مقلوب",
+      "en": "Inverted Row"
+    },
+    "aliases": [
+      "inverted row",
+      "bodyweight row",
+      "تجديف بوزن الجسم"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "deltoid posterior",
+      "trapezius"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "bodyweight",
+      "smith machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "جسمك لوح مستقيم وصدرك يلمس البار",
+        "en": "Keep the body like a plank and touch the chest to the bar"
+      },
+      {
+        "ar": "قرّب لوحي الكتف في الأعلى",
+        "en": "Pinch the shoulder blades together at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الوسط",
+        "en": "Hips sagging"
+      },
+      {
+        "ar": "شد برقبة بدل الضهر",
+        "en": "Craning the neck forward"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "pull-up"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "seated-cable-row",
+      "pull-up"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "machine-row",
+    "name": {
+      "ar": "تجديف جهاز",
+      "en": "Machine Row"
+    },
+    "aliases": [
+      "machine row",
+      "تجديف ماشين",
+      "hammer row"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "deltoid posterior"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "صدرك ثابت على المسند",
+        "en": "Keep the chest firm on the pad"
+      },
+      {
+        "ar": "اسحب الكوع ورا الجسم",
+        "en": "Drive the elbows behind the torso"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف ناحية الودن",
+        "en": "Shrugging toward the ears"
+      },
+      {
+        "ar": "مدى حركة قصير",
+        "en": "Short range of motion"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "seated-cable-row"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "seated-cable-row",
+      "chest-supported-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "machine"
+    ]
+  },
+  {
+    "slug": "single-arm-cable-row",
+    "name": {
+      "ar": "تجديف كابل ذراع واحد",
+      "en": "Single-Arm Cable Row"
+    },
+    "aliases": [
+      "one arm cable row",
+      "كابل رو ذراع",
+      "تجديف كابل فردي"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "biceps brachii"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ثبّت الجذع ومتلفش الكتف",
+        "en": "Keep the torso still and avoid rotating"
+      },
+      {
+        "ar": "اسحب الكوع للخلف جنب الضلوع",
+        "en": "Pull the elbow back past the ribs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الجسم مع الشد",
+        "en": "Twisting the body with the pull"
+      },
+      {
+        "ar": "دفع الحوض",
+        "en": "Pushing the hips back and forth"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-row",
+      "seated-cable-row"
+    ],
+    "tags": [
+      "back",
+      "pull_horizontal",
+      "cable"
+    ]
+  },
+  {
+    "slug": "deadlift-conventional",
+    "name": {
+      "ar": "ديد ليفت",
+      "en": "Conventional Deadlift"
+    },
+    "aliases": [
+      "deadlift",
+      "ديدليفت",
+      "ديد ليفت عادي"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "erector spinae",
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "latissimus dorsi",
+      "trapezius",
+      "forearm flexors"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ادفع الأرض برجليك وشد البار ناحية جسمك",
+        "en": "Push the floor away and drag the bar close to the body"
+      },
+      {
+        "ar": "ضهر محايد وشد الإبط قبل الرفع",
+        "en": "Neutral spine with lats engaged before the lift"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس أسفل الضهر",
+        "en": "Rounding the lower back"
+      },
+      {
+        "ar": "ابتعاد البار عن الرجل",
+        "en": "Letting the bar drift away from the legs"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "ضغط دم مرتفع غير مضبوط",
+        "en": "Uncontrolled hypertension"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "rack-pull",
+      "hyperextension"
+    ],
+    "alternatives": [
+      "rack-pull",
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "back",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "rack-pull",
+    "name": {
+      "ar": "راك بول",
+      "en": "Rack Pull"
+    },
+    "aliases": [
+      "rack pull",
+      "ديد ليفت من فوق الركبة",
+      "partial deadlift"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "erector spinae",
+      "trapezius",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "latissimus dorsi",
+      "forearm flexors"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell",
+      "power rack"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ابدأ من تحت أو فوق الركبة والبار قريب",
+        "en": "Start from just below or above the knee with the bar close"
+      },
+      {
+        "ar": "اقفل بشد الحوض لقدام مش بتقويس الضهر",
+        "en": "Lock out with hips, not by leaning back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "التمايل بالضهر عند القفل",
+        "en": "Hyperextending the back at lockout"
+      },
+      {
+        "ar": "قبضة ضعيفة",
+        "en": "Failing grip"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "ضغط دم مرتفع غير مضبوط",
+        "en": "Uncontrolled hypertension"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hyperextension"
+    ],
+    "alternatives": [
+      "deadlift-conventional",
+      "barbell-shrug"
+    ],
+    "tags": [
+      "back",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "barbell-shrug",
+    "name": {
+      "ar": "شراجز بار",
+      "en": "Barbell Shrug"
+    },
+    "aliases": [
+      "barbell shrug",
+      "شرج بار",
+      "ترابيس بار"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "levator scapulae",
+      "forearm flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ارفع الكتف عمودي لفوق وقف ثانية",
+        "en": "Lift the shoulders straight up and pause"
+      },
+      {
+        "ar": "دراعك مفرود ومش بتلف الكتف",
+        "en": "Keep arms long and do not roll the shoulders"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الكتف دايري",
+        "en": "Rolling the shoulders in circles"
+      },
+      {
+        "ar": "ثني الكوع",
+        "en": "Bending the elbows"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-shrug"
+    ],
+    "alternatives": [
+      "dumbbell-shrug"
+    ],
+    "tags": [
+      "back",
+      "isolation",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "dumbbell-shrug",
+    "name": {
+      "ar": "شراجز دمبل",
+      "en": "Dumbbell Shrug"
+    },
+    "aliases": [
+      "dumbbell shrug",
+      "شرج دمبل",
+      "ترابيس دمبل"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "levator scapulae",
+      "forearm flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "الدمبل على الجنب والكتف بيطلع للودن",
+        "en": "Dumbbells at the sides, lift shoulders toward ears"
+      },
+      {
+        "ar": "نزّل ببطء وحس بالتمدد",
+        "en": "Lower slowly and feel the stretch"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تحريك الراس لقدام",
+        "en": "Pushing the head forward"
+      },
+      {
+        "ar": "وزن تقيل ومدى قصير",
+        "en": "Heavy weight with a tiny range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [
+      "barbell-shrug"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "barbell-shrug"
+    ],
+    "tags": [
+      "back",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "hyperextension",
+    "name": {
+      "ar": "هايبر اكستنشن",
+      "en": "Back Extension"
+    },
+    "aliases": [
+      "hyperextension",
+      "back extension",
+      "تمرين الظهر"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "hyperextension bench",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "انزل بالورك مش بالضهر",
+        "en": "Hinge from the hips, not the spine"
+      },
+      {
+        "ar": "ارفع لحد خط مستقيم من الراس للكعب",
+        "en": "Rise until body forms a straight line"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الجسم لفوق خط الورك بقوة",
+        "en": "Over-arching past neutral at the top"
+      },
+      {
+        "ar": "تمرجح سريع",
+        "en": "Swinging fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "deadlift-conventional"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "good-morning",
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "back",
+      "hinge",
+      "hyperextension bench"
+    ]
+  },
+  {
+    "slug": "dumbbell-pullover",
+    "name": {
+      "ar": "بولوفر دمبل",
+      "en": "Dumbbell Pullover"
+    },
+    "aliases": [
+      "pullover",
+      "بول أوفر",
+      "دمبل بولوفر"
+    ],
+    "category": "back",
+    "primaryMuscles": [
+      "latissimus dorsi",
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "serratus anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "كوعك مثني شوية وانزل الدمبل ورا الراس بتحكم",
+        "en": "Keep a slight elbow bend and lower the dumbbell behind the head with control"
+      },
+      {
+        "ar": "ارجع بالضهر مش بالإيد",
+        "en": "Return using the lats, not the arms"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس زيادة في الضهر",
+        "en": "Excess arching of the back"
+      },
+      {
+        "ar": "وزن تقيل على الكتف",
+        "en": "Overloading the shoulder joint"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "straight-arm-pulldown"
+    ],
+    "alternatives": [
+      "straight-arm-pulldown",
+      "cable-crossover"
+    ],
+    "tags": [
+      "back",
+      "isolation",
+      "dumbbell"
+    ]
+  }
+]

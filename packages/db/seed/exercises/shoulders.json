@@ -1,0 +1,1216 @@
+[
+  {
+    "slug": "overhead-press-barbell",
+    "name": {
+      "ar": "أوفر هيد بريس بار",
+      "en": "Standing Barbell Overhead Press"
+    },
+    "aliases": [
+      "military press",
+      "shoulder press bar",
+      "ميلتري بريس"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "deltoid lateral",
+      "triceps brachii",
+      "upper trapezius",
+      "serratus anterior"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اشد الجلوت والبطن ودفع البار فوق الراس",
+        "en": "Squeeze glutes and abs and press the bar over the head"
+      },
+      {
+        "ar": "ادخل راسك للأمام لما البار يعدي الجبهة",
+        "en": "Move the head through once the bar passes the forehead"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس أسفل الضهر",
+        "en": "Leaning back and arching the lower back"
+      },
+      {
+        "ar": "البار قدام الجسم بعيد",
+        "en": "Pressing the bar out in front"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "push-press"
+    ],
+    "regressions": [
+      "seated-dumbbell-press",
+      "machine-shoulder-press"
+    ],
+    "alternatives": [
+      "seated-dumbbell-press",
+      "arnold-press"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "seated-dumbbell-press",
+    "name": {
+      "ar": "ضغط كتف دمبل جالس",
+      "en": "Seated Dumbbell Shoulder Press"
+    },
+    "aliases": [
+      "db shoulder press",
+      "شولدر بريس دمبل",
+      "ضغط كتف دمبل"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "deltoid lateral"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "upper trapezius"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ضهر مسنود والدمبل عند مستوى الودن",
+        "en": "Back supported with dumbbells at ear level"
+      },
+      {
+        "ar": "ادفع لفوق وقرّب الدمبل من بعض",
+        "en": "Press up and slightly in"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فرد الكوع للخلف",
+        "en": "Elbows drifting behind the body"
+      },
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching off the backrest"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "overhead-press-barbell"
+    ],
+    "regressions": [
+      "machine-shoulder-press"
+    ],
+    "alternatives": [
+      "overhead-press-barbell",
+      "arnold-press",
+      "machine-shoulder-press"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "arnold-press",
+    "name": {
+      "ar": "ارنولد بريس",
+      "en": "Arnold Press"
+    },
+    "aliases": [
+      "arnold press",
+      "أرنولد",
+      "ضغط ارنولد"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "deltoid lateral"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "deltoid posterior"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "multi",
+    "cues": [
+      {
+        "ar": "ابدأ والكف ناحيتك ولف وأنت بتدفع",
+        "en": "Start with palms facing you and rotate as you press"
+      },
+      {
+        "ar": "تحكم في اللفة ومتسرعش",
+        "en": "Control the rotation, do not rush"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "وزن تقيل يبوظ اللفة",
+        "en": "Too heavy ruins the rotation"
+      },
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "seated-dumbbell-press"
+    ],
+    "alternatives": [
+      "seated-dumbbell-press",
+      "machine-shoulder-press"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "machine-shoulder-press",
+    "name": {
+      "ar": "شولدر بريس جهاز",
+      "en": "Machine Shoulder Press"
+    },
+    "aliases": [
+      "shoulder press machine",
+      "ضغط كتف جهاز",
+      "شولدر ماشين"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "deltoid lateral"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "اظبط الكرسي بحيث المقبض عند الكتف",
+        "en": "Set the seat so handles start at shoulder height"
+      },
+      {
+        "ar": "ادفع من غير ما تقفل الكوع بقوة",
+        "en": "Press without slamming the elbows into lockout"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "كرسي مظبوط غلط",
+        "en": "Wrong seat height"
+      },
+      {
+        "ar": "رفع الكتف للودن",
+        "en": "Shrugging toward the ears"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "seated-dumbbell-press"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "seated-dumbbell-press",
+      "overhead-press-barbell"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "machine"
+    ]
+  },
+  {
+    "slug": "push-press",
+    "name": {
+      "ar": "بوش بريس",
+      "en": "Push Press"
+    },
+    "aliases": [
+      "push press",
+      "بوش برس"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "gluteus maximus",
+      "deltoid lateral"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اكسر الركبة شوية وانفجر لفوق",
+        "en": "Dip slightly at the knees then drive explosively"
+      },
+      {
+        "ar": "كمّل البار فوق الراس بدراع مفرود",
+        "en": "Finish with arms locked overhead"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول عميق زي السكوات",
+        "en": "Dipping too deep like a squat"
+      },
+      {
+        "ar": "ضغط من غير استخدام الرجل",
+        "en": "Pressing without leg drive"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "overhead-press-barbell"
+    ],
+    "alternatives": [
+      "overhead-press-barbell",
+      "dumbbell-snatch"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "landmine-press",
+    "name": {
+      "ar": "لاندماين بريس",
+      "en": "Landmine Press"
+    },
+    "aliases": [
+      "landmine press",
+      "ضغط لاندماين",
+      "بريس البار الزاوي"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior",
+      "pectoralis major"
+    ],
+    "secondaryMuscles": [
+      "serratus anterior",
+      "triceps brachii"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "barbell",
+      "landmine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ادفع بزاوية لقدام وفوق",
+        "en": "Press up and forward along the bar arc"
+      },
+      {
+        "ar": "اشد البطن والرجل ثابتة",
+        "en": "Brace and keep legs planted"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الجذع مع الضغط",
+        "en": "Twisting the torso"
+      },
+      {
+        "ar": "وزن تقيل وقوس الضهر",
+        "en": "Heavy weight with back arch"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [
+      "overhead-press-barbell"
+    ],
+    "alternatives": [
+      "overhead-press-barbell",
+      "seated-dumbbell-press"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "lateral-raise-dumbbell",
+    "name": {
+      "ar": "رفرفة جانبي دمبل",
+      "en": "Dumbbell Lateral Raise"
+    },
+    "aliases": [
+      "lateral raise",
+      "side raise",
+      "رفرفة جانبي"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid lateral"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "supraspinatus",
+      "upper trapezius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ارفع الكوع مش الكف لمستوى الكتف",
+        "en": "Lift the elbows, not the hands, to shoulder height"
+      },
+      {
+        "ar": "ميل بسيط لقدام والكوع مثني شوية",
+        "en": "Lean slightly forward with elbows slightly bent"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجسم",
+        "en": "Swinging the body"
+      },
+      {
+        "ar": "رفع أعلى من الكتف بشد الترابيس",
+        "en": "Going above shoulder level with the traps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "cable-lateral-raise"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "cable-lateral-raise",
+      "upright-row"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "cable-lateral-raise",
+    "name": {
+      "ar": "رفرفة جانبي كابل",
+      "en": "Cable Lateral Raise"
+    },
+    "aliases": [
+      "cable lateral raise",
+      "لاترال كابل",
+      "رفرفة كابل"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid lateral"
+    ],
+    "secondaryMuscles": [
+      "supraspinatus",
+      "upper trapezius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "وقف جانب الكابل وارفع بعيد عن الجسم",
+        "en": "Stand side-on to the cable and lift away from the body"
+      },
+      {
+        "ar": "حافظ على التوتر في أسفل الحركة",
+        "en": "Keep tension at the bottom of the rep"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد بالمرجحة",
+        "en": "Using momentum"
+      },
+      {
+        "ar": "رفع الكتف",
+        "en": "Shrugging up"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "lateral-raise-dumbbell"
+    ],
+    "alternatives": [
+      "lateral-raise-dumbbell"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "front-raise-dumbbell",
+    "name": {
+      "ar": "رفرفة أمامي دمبل",
+      "en": "Dumbbell Front Raise"
+    },
+    "aliases": [
+      "front raise",
+      "فرونت ريز",
+      "رفرفة أمامي"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "pectoralis major clavicular",
+      "upper trapezius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع لحد مستوى العين وبتحكم",
+        "en": "Raise to eye level under control"
+      },
+      {
+        "ar": "اثبت الجذع ومتتمرجحش",
+        "en": "Keep the torso still, no swinging"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "استخدام الضهر للدفع",
+        "en": "Using back momentum"
+      },
+      {
+        "ar": "رفع أعلى من اللازم",
+        "en": "Raising far above shoulder height"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "plate-front-raise"
+    ],
+    "alternatives": [
+      "plate-front-raise",
+      "cable-lateral-raise"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "plate-front-raise",
+    "name": {
+      "ar": "رفرفة أمامي بطبق",
+      "en": "Plate Front Raise"
+    },
+    "aliases": [
+      "plate raise",
+      "front raise plate",
+      "رفع طبق أمامي"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "pectoralis major clavicular",
+      "serratus anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "weight plate"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "امسك الطبق على الساعة 9 و3",
+        "en": "Hold the plate at nine and three o'clock"
+      },
+      {
+        "ar": "ارفع بعنف أقل وتحكم أكتر",
+        "en": "Lift smoothly and with control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل لورا",
+        "en": "Leaning back"
+      },
+      {
+        "ar": "وزن زيادة",
+        "en": "Too heavy"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [
+      "front-raise-dumbbell"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "front-raise-dumbbell"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "weight plate"
+    ]
+  },
+  {
+    "slug": "rear-delt-fly-dumbbell",
+    "name": {
+      "ar": "رفرفة خلفي دمبل",
+      "en": "Bent-Over Rear Delt Fly"
+    },
+    "aliases": [
+      "rear delt fly",
+      "reverse fly",
+      "رفرفة خلفية"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid posterior"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "trapezius",
+      "infraspinatus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "اثني الورك والضهر مسطح وافتح الدراع لجنب",
+        "en": "Hinge with a flat back and open the arms to the side"
+      },
+      {
+        "ar": "حرّك من الكتف مش من الكوع",
+        "en": "Move from the shoulder, not the elbow"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجذع",
+        "en": "Swinging the torso"
+      },
+      {
+        "ar": "شد لوح الكتف بقوة بدل الكتف الخلفي",
+        "en": "Overusing the traps"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [
+      "reverse-pec-deck"
+    ],
+    "alternatives": [
+      "reverse-pec-deck",
+      "face-pull"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "reverse-pec-deck",
+    "name": {
+      "ar": "ريفرس بيك ديك",
+      "en": "Reverse Pec Deck"
+    },
+    "aliases": [
+      "reverse pec deck",
+      "rear delt machine",
+      "كتف خلفي جهاز"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid posterior"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "infraspinatus",
+      "trapezius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "صدرك على المسند وافتح لحد خط الكتف",
+        "en": "Chest on the pad and open to shoulder line"
+      },
+      {
+        "ar": "بدون تمرجح",
+        "en": "No momentum"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "شد الكوع بعيد جدا للخلف",
+        "en": "Pulling the elbows too far back"
+      },
+      {
+        "ar": "ثني الدراع بالكامل",
+        "en": "Excessive elbow bend"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "rear-delt-fly-dumbbell"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "rear-delt-fly-dumbbell",
+      "face-pull"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "face-pull",
+    "name": {
+      "ar": "فيس بول",
+      "en": "Face Pull"
+    },
+    "aliases": [
+      "face pull",
+      "فيس بل",
+      "سحب للوش بالكابل"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid posterior",
+      "infraspinatus"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "trapezius",
+      "teres minor"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "cable",
+      "rope"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "اسحب الحبل لمستوى الوش وافتح الكوع",
+        "en": "Pull the rope to face level with elbows high and wide"
+      },
+      {
+        "ar": "لف الإيد لبره في الآخر",
+        "en": "Externally rotate the hands at the end"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "وزن تقيل يخلي الجسم يميل",
+        "en": "Too heavy so the torso leans back"
+      },
+      {
+        "ar": "سحب الحبل للرقبة",
+        "en": "Pulling toward the neck"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "rear-delt-fly-dumbbell",
+      "band-pull-apart"
+    ],
+    "tags": [
+      "shoulders",
+      "pull_horizontal",
+      "cable"
+    ]
+  },
+  {
+    "slug": "upright-row",
+    "name": {
+      "ar": "سحب عمودي",
+      "en": "Upright Row"
+    },
+    "aliases": [
+      "upright row",
+      "ابرايت رو",
+      "سحب بار للدقن"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid lateral",
+      "trapezius"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "deltoid anterior"
+    ],
+    "movementPattern": "pull_vertical",
+    "equipment": [
+      "barbell",
+      "ez bar"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب لحد مستوى الصدر بس",
+        "en": "Pull only to chest height"
+      },
+      {
+        "ar": "الكوع يتقدم الكف",
+        "en": "Lead with the elbows"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سحب للدقن يضيّق مساحة الكتف",
+        "en": "Pulling to the chin and crowding the shoulder"
+      },
+      {
+        "ar": "قبضة ضيقة جدا",
+        "en": "Grip that is too narrow"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "lateral-raise-dumbbell"
+    ],
+    "alternatives": [
+      "lateral-raise-dumbbell",
+      "barbell-shrug"
+    ],
+    "tags": [
+      "shoulders",
+      "pull_vertical",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "pike-push-up",
+    "name": {
+      "ar": "ضغط بايك",
+      "en": "Pike Push-Up"
+    },
+    "aliases": [
+      "pike push up",
+      "ضغط الكتف بوزن الجسم",
+      "بايك بوش اب"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "upper trapezius"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الورك عالي كأنك V مقلوبة",
+        "en": "Hips high in an inverted V"
+      },
+      {
+        "ar": "انزل بالراس بين الإيدين",
+        "en": "Lower the head between the hands"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ضغط برقبة مشدودة",
+        "en": "Straining the neck"
+      },
+      {
+        "ar": "انزل الورك",
+        "en": "Dropping the hips"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "handstand-push-up"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "overhead-press-barbell",
+      "push-up"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "handstand-push-up",
+    "name": {
+      "ar": "ضغط وقوف على اليدين",
+      "en": "Handstand Push-Up"
+    },
+    "aliases": [
+      "hspu",
+      "handstand push up",
+      "ضغط هاند ستاند"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid anterior"
+    ],
+    "secondaryMuscles": [
+      "triceps brachii",
+      "trapezius",
+      "serratus anterior"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "bodyweight",
+      "wall"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ظهرك للحيط وقلب بتحكم",
+        "en": "Use the wall and keep the body tight"
+      },
+      {
+        "ar": "انزل لحد ما الراس تلمس مرتبة",
+        "en": "Lower until the head lightly touches a mat"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر بعنف",
+        "en": "Excessive back arch"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      },
+      {
+        "ar": "ضغط دم مرتفع غير مضبوط",
+        "en": "Uncontrolled hypertension"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "pike-push-up"
+    ],
+    "alternatives": [
+      "pike-push-up"
+    ],
+    "tags": [
+      "shoulders",
+      "push_vertical",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "band-pull-apart",
+    "name": {
+      "ar": "باند بول أبارت",
+      "en": "Band Pull-Apart"
+    },
+    "aliases": [
+      "band pull apart",
+      "فتح باند",
+      "سحب الباند"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid posterior",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "trapezius",
+      "infraspinatus"
+    ],
+    "movementPattern": "pull_horizontal",
+    "equipment": [
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "ذراعك مفرودة وافتح الباند لحد الصدر",
+        "en": "Straight arms and pull the band to the chest"
+      },
+      {
+        "ar": "قرب لوحي الكتف",
+        "en": "Squeeze the shoulder blades"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف",
+        "en": "Shrugging"
+      },
+      {
+        "ar": "فتح بسرعة",
+        "en": "Snapping the band open"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "face-pull",
+      "reverse-pec-deck"
+    ],
+    "tags": [
+      "shoulders",
+      "pull_horizontal",
+      "band"
+    ]
+  },
+  {
+    "slug": "cable-y-raise",
+    "name": {
+      "ar": "كابل واي ريز",
+      "en": "Cable Y Raise"
+    },
+    "aliases": [
+      "y raise",
+      "cable y raise",
+      "رفعة Y"
+    ],
+    "category": "shoulders",
+    "primaryMuscles": [
+      "deltoid lateral",
+      "lower trapezius"
+    ],
+    "secondaryMuscles": [
+      "deltoid posterior",
+      "serratus anterior"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ارفع الإيدين على شكل Y والإبهام لفوق",
+        "en": "Lift arms into a Y with thumbs up"
+      },
+      {
+        "ar": "لوح الكتف يتحرك لتحت",
+        "en": "Keep shoulder blades moving down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الجذع للخلف",
+        "en": "Leaning back"
+      },
+      {
+        "ar": "وزن عالي",
+        "en": "Too much weight"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "lateral-raise-dumbbell",
+      "face-pull"
+    ],
+    "tags": [
+      "shoulders",
+      "isolation",
+      "cable"
+    ]
+  }
+]

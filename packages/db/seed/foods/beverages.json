@@ -1,0 +1,1037 @@
+[
+  {
+    "slug": "water",
+    "name": {
+      "ar": "مياه",
+      "en": "Water"
+    },
+    "aliases": [
+      "ماء",
+      "mayya",
+      "water"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 0,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "زجاجة",
+            "en": "bottle 600ml"
+          }
+        },
+        "grams": 600
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "tea-black",
+    "name": {
+      "ar": "شاي أسود بدون سكر",
+      "en": "Black Tea, Unsweetened"
+    },
+    "aliases": [
+      "شاي",
+      "shay",
+      "tea"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 1,
+      "proteinG": 0,
+      "carbsG": 0.3,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوباية شاي",
+            "en": "tea glass"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "tea-with-milk-sugar",
+    "name": {
+      "ar": "شاي بلبن وسكر",
+      "en": "Milk Tea with Sugar"
+    },
+    "aliases": [
+      "شاي بلبن",
+      "shay bel laban",
+      "milk tea"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 46,
+      "proteinG": 1.2,
+      "carbsG": 8,
+      "fatG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوباية شاي",
+            "en": "tea glass"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "coffee-black",
+    "name": {
+      "ar": "قهوة سادة",
+      "en": "Black Coffee"
+    },
+    "aliases": [
+      "قهوة",
+      "ahwa",
+      "coffee"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 1,
+      "proteinG": 0.1,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فنجان",
+            "en": "small cup"
+          }
+        },
+        "grams": 90
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "coffee-turkish",
+    "name": {
+      "ar": "قهوة تركي سادة",
+      "en": "Turkish Coffee, Unsweetened"
+    },
+    "aliases": [
+      "قهوة تركي",
+      "ahwa torki",
+      "turkish coffee"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 2,
+      "proteinG": 0.2,
+      "carbsG": 0.2,
+      "fatG": 0.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فنجان",
+            "en": "small cup"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "latte-whole-milk",
+    "name": {
+      "ar": "لاتيه",
+      "en": "Latte (whole milk, unsweetened)"
+    },
+    "aliases": [
+      "لاتيه",
+      "latte",
+      "قهوة بلبن"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 54,
+      "proteinG": 3,
+      "carbsG": 4.5,
+      "fatG": 2.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large cup"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "cola",
+    "name": {
+      "ar": "كولا",
+      "en": "Cola"
+    },
+    "aliases": [
+      "بيبسي",
+      "كوكاكولا",
+      "cola",
+      "soda"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 42,
+      "proteinG": 0,
+      "carbsG": 10.6,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 330
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "cola-diet",
+    "name": {
+      "ar": "كولا دايت",
+      "en": "Diet Cola"
+    },
+    "aliases": [
+      "دايت كولا",
+      "diet cola",
+      "zero cola"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 0,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 330
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-orange",
+    "name": {
+      "ar": "عصير برتقال",
+      "en": "Orange Juice"
+    },
+    "aliases": [
+      "عصير برتقال",
+      "orange juice",
+      "asir bortoal"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 46,
+      "proteinG": 0.7,
+      "carbsG": 10.4,
+      "fatG": 0.2,
+      "fiberG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-mango",
+    "name": {
+      "ar": "عصير مانجو",
+      "en": "Mango Juice/Nectar"
+    },
+    "aliases": [
+      "عصير مانجو",
+      "mango juice"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 56,
+      "proteinG": 0.3,
+      "carbsG": 13.5,
+      "fatG": 0.1,
+      "fiberG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-guava",
+    "name": {
+      "ar": "عصير جوافة",
+      "en": "Guava Juice"
+    },
+    "aliases": [
+      "عصير جوافة",
+      "guava juice"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 53,
+      "proteinG": 0.4,
+      "carbsG": 12.5,
+      "fatG": 0.2,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-sugarcane",
+    "name": {
+      "ar": "عصير قصب",
+      "en": "Sugarcane Juice (Asab)"
+    },
+    "aliases": [
+      "عصير قصب",
+      "asab",
+      "sugarcane juice"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 72,
+      "proteinG": 0.2,
+      "carbsG": 17.5,
+      "fatG": 0.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-fruit-box",
+    "name": {
+      "ar": "عصير فواكه معلب",
+      "en": "Boxed Fruit Juice (generic)"
+    },
+    "aliases": [
+      "عصير علبة",
+      "juice box",
+      "عصير معلب"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 48,
+      "proteinG": 0.3,
+      "carbsG": 11.5,
+      "fatG": 0.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة صغيرة",
+            "en": "small box 250ml"
+          }
+        },
+        "grams": 250
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "juice-lemon",
+    "name": {
+      "ar": "عصير ليمون طازج",
+      "en": "Fresh Lemon Juice"
+    },
+    "aliases": [
+      "ليمون معصور",
+      "lemon juice"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 28,
+      "proteinG": 0.4,
+      "carbsG": 6.9,
+      "fatG": 0.2,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 244
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "lemonade-sweet",
+    "name": {
+      "ar": "ليمونادة",
+      "en": "Lemonade, Sweetened"
+    },
+    "aliases": [
+      "ليمونادة",
+      "limonada",
+      "lemonade"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 0.1,
+      "carbsG": 10,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "karkade-sweet",
+    "name": {
+      "ar": "كركديه بسكر",
+      "en": "Hibiscus Tea (Karkade), Sweetened"
+    },
+    "aliases": [
+      "كركديه",
+      "karkadeh",
+      "hibiscus"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 35,
+      "proteinG": 0,
+      "carbsG": 8.7,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "karkade-plain",
+    "name": {
+      "ar": "كركديه بدون سكر",
+      "en": "Hibiscus Tea (Karkade), Unsweetened"
+    },
+    "aliases": [
+      "كركديه سادة",
+      "plain karkade"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 1,
+      "proteinG": 0,
+      "carbsG": 0.2,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "tamarind-drink",
+    "name": {
+      "ar": "تمر هندي",
+      "en": "Tamarind Drink (Tamr Hindi), Sweetened"
+    },
+    "aliases": [
+      "تمر هندي",
+      "tamr hindi",
+      "tamarind drink"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 0.1,
+      "carbsG": 10,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "sobia",
+    "name": {
+      "ar": "سوبيا",
+      "en": "Sobia (Coconut-Rice Drink)"
+    },
+    "aliases": [
+      "سوبيا",
+      "sobya",
+      "coconut sobia"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 78,
+      "proteinG": 1,
+      "carbsG": 14,
+      "fatG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كوب كبير",
+            "en": "large glass"
+          }
+        },
+        "grams": 350
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "sahlab",
+    "name": {
+      "ar": "سحلب",
+      "en": "Sahlab (prepared with milk)"
+    },
+    "aliases": [
+      "سحلب",
+      "sahlab"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 98,
+      "proteinG": 3,
+      "carbsG": 17,
+      "fatG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق",
+            "en": "bowl 200g"
+          }
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "chocolate-milk-drink",
+    "name": {
+      "ar": "شوكولاتة بالحليب (مشروب)",
+      "en": "Chocolate Milk"
+    },
+    "aliases": [
+      "شوكلاتة بلبن",
+      "choco milk",
+      "chocolate milk"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 83,
+      "proteinG": 3.4,
+      "carbsG": 10.5,
+      "fatG": 3,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "carton 200ml"
+          }
+        },
+        "grams": 200
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "energy-drink",
+    "name": {
+      "ar": "مشروب طاقة",
+      "en": "Energy Drink (sugared)"
+    },
+    "aliases": [
+      "ريد بول",
+      "energy drink",
+      "مشروب طاقة"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 44,
+      "proteinG": 0,
+      "carbsG": 11,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "sports-drink",
+    "name": {
+      "ar": "مشروب رياضي",
+      "en": "Sports Drink (carbohydrate-electrolyte)"
+    },
+    "aliases": [
+      "سبورتس درنك",
+      "gatorade style",
+      "isotonic"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 26,
+      "proteinG": 0,
+      "carbsG": 6.4,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "زجاجة",
+            "en": "bottle 500ml"
+          }
+        },
+        "grams": 500
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "almond-milk",
+    "name": {
+      "ar": "لبن لوز بدون سكر",
+      "en": "Almond Milk, Unsweetened"
+    },
+    "aliases": [
+      "لبن لوز",
+      "almond milk"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 14.4,
+      "proteinG": 0.6,
+      "carbsG": 0.3,
+      "fatG": 1.2,
+      "fiberG": 0.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "soy-milk",
+    "name": {
+      "ar": "لبن صويا",
+      "en": "Soy Milk, Unsweetened"
+    },
+    "aliases": [
+      "لبن صويا",
+      "soy milk"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 33,
+      "proteinG": 2.9,
+      "carbsG": 1.7,
+      "fatG": 1.6,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "coconut-water",
+    "name": {
+      "ar": "ماء جوز الهند",
+      "en": "Coconut Water"
+    },
+    "aliases": [
+      "ماء جوز هند",
+      "coconut water"
+    ],
+    "category": "beverages",
+    "per100": {
+      "kcal": 19,
+      "proteinG": 0.7,
+      "carbsG": 3.7,
+      "fatG": 0.2,
+      "fiberG": 1.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "carton 330ml"
+          }
+        },
+        "grams": 330
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "beverages",
+      "liquid"
+    ]
+  }
+]

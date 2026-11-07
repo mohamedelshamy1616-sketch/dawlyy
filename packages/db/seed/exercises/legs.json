@@ -1,0 +1,1907 @@
+[
+  {
+    "slug": "back-squat",
+    "name": {
+      "ar": "سكوات بالبار",
+      "en": "Barbell Back Squat"
+    },
+    "aliases": [
+      "squat",
+      "back squat",
+      "سكوات"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus",
+      "erector spinae"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "barbell",
+      "squat rack"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "البار على الترابيس وصدرك مفتوح",
+        "en": "Bar on the traps with the chest open"
+      },
+      {
+        "ar": "انزل لحد الفخد يوازي الأرض أو أعمق والركبة ماشية مع الصباع",
+        "en": "Squat to parallel or deeper with knees tracking over the toes"
+      },
+      {
+        "ar": "ادفع الأرض بكل القدم",
+        "en": "Drive through the whole foot"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الركبة بتدخل لجوه",
+        "en": "Knees caving inward"
+      },
+      {
+        "ar": "رفع الكعب من الأرض",
+        "en": "Heels lifting off the floor"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "front-squat"
+    ],
+    "regressions": [
+      "goblet-squat",
+      "box-squat"
+    ],
+    "alternatives": [
+      "front-squat",
+      "hack-squat-machine",
+      "leg-press"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "front-squat",
+    "name": {
+      "ar": "فرونت سكوات",
+      "en": "Barbell Front Squat"
+    },
+    "aliases": [
+      "front squat",
+      "سكوات أمامي",
+      "فرونت اسكوات"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "erector spinae",
+      "upper trapezius"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "barbell",
+      "squat rack"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع عالي والبار على الكتف الأمامي",
+        "en": "Keep elbows high with the bar on the front delts"
+      },
+      {
+        "ar": "جسمك عمودي وأنت نازل",
+        "en": "Keep the torso upright on the way down"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول الكوع",
+        "en": "Dropping the elbows"
+      },
+      {
+        "ar": "الركبة تدخل لجوه",
+        "en": "Knees caving"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "goblet-squat"
+    ],
+    "alternatives": [
+      "back-squat",
+      "goblet-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "goblet-squat",
+    "name": {
+      "ar": "جوبلت سكوات",
+      "en": "Goblet Squat"
+    },
+    "aliases": [
+      "goblet squat",
+      "سكوات كيتل بل",
+      "سكوات دمبل"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "adductor magnus",
+      "erector spinae",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "امسك الوزن قدام الصدر والكوع بين الركبة",
+        "en": "Hold the weight at the chest with elbows inside the knees"
+      },
+      {
+        "ar": "اقعد بين رجليك وصدرك لفوق",
+        "en": "Sit down between the legs with the chest up"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الجسم يميل لقدام",
+        "en": "Folding forward"
+      },
+      {
+        "ar": "الكعب يتحرك",
+        "en": "Heels coming up"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "back-squat"
+    ],
+    "regressions": [
+      "box-squat"
+    ],
+    "alternatives": [
+      "back-squat",
+      "hack-squat-machine"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "box-squat",
+    "name": {
+      "ar": "سكوات على صندوق",
+      "en": "Box Squat"
+    },
+    "aliases": [
+      "box squat",
+      "سكوات بوكس",
+      "سكوات على بنش"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "barbell",
+      "box"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اقعد بالورك لورا على الصندوق بتحكم",
+        "en": "Sit back onto the box with control"
+      },
+      {
+        "ar": "قوم بالدفع من الأرض من غير ارتداد",
+        "en": "Drive up from the floor without bouncing"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الجلوس بقوة على الصندوق",
+        "en": "Crashing onto the box"
+      },
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "back-squat",
+      "goblet-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "bodyweight-squat",
+    "name": {
+      "ar": "سكوات بوزن الجسم",
+      "en": "Bodyweight Squat"
+    },
+    "aliases": [
+      "air squat",
+      "bodyweight squat",
+      "سكوات من غير وزن"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القدم بعرض الكتف والصدر لفوق",
+        "en": "Feet shoulder width with the chest up"
+      },
+      {
+        "ar": "انزل بالورك لورا ورجع للوقوف",
+        "en": "Sit hips back and drive up"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكعب",
+        "en": "Heels lifting"
+      },
+      {
+        "ar": "ركبة لجوه",
+        "en": "Knees collapsing inward"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "goblet-squat"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "goblet-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "hack-squat-machine",
+    "name": {
+      "ar": "هاك سكوات",
+      "en": "Hack Squat Machine"
+    },
+    "aliases": [
+      "hack squat",
+      "هاك سكوات جهاز"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "adductor magnus"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهرك كله على المسند والقدم قدام شوية",
+        "en": "Back flat on the pad with feet slightly forward"
+      },
+      {
+        "ar": "انزل عميق وركبتك ماشية مع الصباع",
+        "en": "Go deep with knees tracking over the toes"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع المؤخرة من المسند",
+        "en": "Hips peeling off the pad"
+      },
+      {
+        "ar": "مدى قصير",
+        "en": "Short range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "leg-press"
+    ],
+    "alternatives": [
+      "leg-press",
+      "back-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "machine"
+    ]
+  },
+  {
+    "slug": "leg-press",
+    "name": {
+      "ar": "ليج بريس",
+      "en": "Leg Press"
+    },
+    "aliases": [
+      "leg press",
+      "ليج برس",
+      "جهاز رجل"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القدم بعرض الكتف في نص المنصة",
+        "en": "Feet shoulder width in the middle of the platform"
+      },
+      {
+        "ar": "انزل لحد ما الركبة 90 درجة بدون رفع الورك",
+        "en": "Lower to about 90 degrees without the hips rolling up"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قفل الركبة بقوة",
+        "en": "Locking the knees hard"
+      },
+      {
+        "ar": "رفع المؤخرة وتقويس الضهر",
+        "en": "Hips curling off the seat"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "hack-squat-machine",
+      "goblet-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "machine"
+    ]
+  },
+  {
+    "slug": "bulgarian-split-squat",
+    "name": {
+      "ar": "بلغاري سبليت سكوات",
+      "en": "Bulgarian Split Squat"
+    },
+    "aliases": [
+      "bulgarian split squat",
+      "سبليت سكوات",
+      "سكوات بلغاري"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "adductor magnus",
+      "hamstrings"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الرجل الخلفية على البنش والجسم عمودي",
+        "en": "Rear foot on the bench with the torso upright"
+      },
+      {
+        "ar": "انزل مباشرة لتحت من غير ما تتقدم",
+        "en": "Drop straight down without drifting forward"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "خطوة قصيرة والركبة تعدي الصباع بزيادة",
+        "en": "Stance too short with knee travelling far past the toes"
+      },
+      {
+        "ar": "الجسم يميل",
+        "en": "Torso folding forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "reverse-lunge"
+    ],
+    "alternatives": [
+      "walking-lunge",
+      "reverse-lunge"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "walking-lunge",
+    "name": {
+      "ar": "لانجز مشي",
+      "en": "Walking Lunge"
+    },
+    "aliases": [
+      "walking lunge",
+      "lunges",
+      "لانجز"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوة واسعة وانزل الركبة الخلفية لقرب الأرض",
+        "en": "Take a long step and lower the back knee close to the floor"
+      },
+      {
+        "ar": "الصدر مرفوع والجسم مستقر",
+        "en": "Chest up and torso stable"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "خطوة قصيرة",
+        "en": "Short stride"
+      },
+      {
+        "ar": "الركبة تدخل لجوه",
+        "en": "Front knee caving"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "bulgarian-split-squat"
+    ],
+    "regressions": [
+      "reverse-lunge"
+    ],
+    "alternatives": [
+      "reverse-lunge",
+      "forward-lunge"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "reverse-lunge",
+    "name": {
+      "ar": "لانجز خلفي",
+      "en": "Reverse Lunge"
+    },
+    "aliases": [
+      "reverse lunge",
+      "لانج لورا",
+      "خطوة لورا"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوة لورا والوزن على الرجل اللي قدام",
+        "en": "Step back with the weight on the front leg"
+      },
+      {
+        "ar": "ادفع بالكعب اللي قدام للرجوع",
+        "en": "Drive through the front heel to return"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الركبة الأمامية تتحرك",
+        "en": "Front knee shifting"
+      },
+      {
+        "ar": "الجسم يميل",
+        "en": "Torso tipping"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "walking-lunge"
+    ],
+    "regressions": [
+      "step-up"
+    ],
+    "alternatives": [
+      "walking-lunge",
+      "forward-lunge"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "forward-lunge",
+    "name": {
+      "ar": "لانجز أمامي",
+      "en": "Forward Lunge"
+    },
+    "aliases": [
+      "forward lunge",
+      "لانج قدام"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوة لقدام وارجع بدفع الكعب",
+        "en": "Step forward then push back with the heel"
+      },
+      {
+        "ar": "ركبتك الأمامية فوق الكاحل",
+        "en": "Keep the front knee over the ankle"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ركبة تتجاوز الصباع كتير",
+        "en": "Knee far past toes"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping too fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "reverse-lunge"
+    ],
+    "regressions": [
+      "step-up"
+    ],
+    "alternatives": [
+      "reverse-lunge",
+      "walking-lunge"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "lateral-lunge",
+    "name": {
+      "ar": "لانجز جانبي",
+      "en": "Lateral Lunge"
+    },
+    "aliases": [
+      "lateral lunge",
+      "side lunge",
+      "لانج جانبي"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "quadriceps",
+      "adductor magnus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "خطوة لجنب وارجع الورك لورا",
+        "en": "Step wide and push the hips back"
+      },
+      {
+        "ar": "الرجل الأخرى مفرودة والقدم على الأرض",
+        "en": "Keep the straight leg extended with the foot flat"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكعب",
+        "en": "Heel lifting"
+      },
+      {
+        "ar": "الصدر يميل لقدام",
+        "en": "Torso collapsing forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "reverse-lunge"
+    ],
+    "alternatives": [
+      "curtsy-lunge",
+      "reverse-lunge"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "step-up",
+    "name": {
+      "ar": "ستيب أب",
+      "en": "Step-Up"
+    },
+    "aliases": [
+      "step up",
+      "ستيب اب",
+      "طلوع على بنش"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "calves"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "box"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ادفع بالرجل اللي على الصندوق مش اللي على الأرض",
+        "en": "Drive with the leg on the box, not the trail leg"
+      },
+      {
+        "ar": "الصدر لفوق وفرد الورك",
+        "en": "Chest up and extend the hip fully"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الدفع بالرجل الخلفية",
+        "en": "Pushing off the back foot"
+      },
+      {
+        "ar": "صندوق عالي جدا",
+        "en": "Box too high"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "bulgarian-split-squat"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "reverse-lunge",
+      "bulgarian-split-squat"
+    ],
+    "tags": [
+      "legs",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "leg-extension",
+    "name": {
+      "ar": "ليج اكستنشن",
+      "en": "Leg Extension"
+    },
+    "aliases": [
+      "leg extension",
+      "ليج اكستنشن",
+      "فرد الرجل"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اضبط المسند خلف الركبة واعصر في الأعلى",
+        "en": "Align the knee with the pivot and squeeze at the top"
+      },
+      {
+        "ar": "انزل ببطء ثلاث ثواني",
+        "en": "Lower for three seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قذف الوزن بسرعة",
+        "en": "Kicking the weight up"
+      },
+      {
+        "ar": "رفع المؤخرة",
+        "en": "Lifting the hips"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "sissy-squat",
+      "leg-press"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "leg-curl-lying",
+    "name": {
+      "ar": "ليج كيرل نايم",
+      "en": "Lying Leg Curl"
+    },
+    "aliases": [
+      "lying leg curl",
+      "leg curl",
+      "ليج كيرل"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "gastrocnemius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الورك ملزوق في الجهاز وكعبك يلمس المؤخرة",
+        "en": "Hips pressed down and heels towards the glutes"
+      },
+      {
+        "ar": "انزل بتحكم",
+        "en": "Lower under control"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الورك",
+        "en": "Hips lifting"
+      },
+      {
+        "ar": "سرعة زيادة",
+        "en": "Going too fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "leg-curl-seated",
+      "nordic-curl"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "leg-curl-seated",
+    "name": {
+      "ar": "ليج كيرل جالس",
+      "en": "Seated Leg Curl"
+    },
+    "aliases": [
+      "seated leg curl",
+      "ليج كيرل جالس"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "gastrocnemius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهر ملزوق والمسند الفخد ثابت",
+        "en": "Back against the pad and thigh pad secure"
+      },
+      {
+        "ar": "اثني بقوة وارجع ببطء",
+        "en": "Curl hard and return slowly"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الجسم",
+        "en": "Leaning forward"
+      },
+      {
+        "ar": "نصف حركة",
+        "en": "Half reps"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "leg-curl-lying",
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "romanian-deadlift",
+    "name": {
+      "ar": "ديد ليفت روماني",
+      "en": "Romanian Deadlift"
+    },
+    "aliases": [
+      "rdl",
+      "romanian deadlift",
+      "ديدليفت روماني"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "erector spinae",
+      "adductor magnus"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell",
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اسحب الورك لورا والبار ملزوق في رجلك",
+        "en": "Push the hips back with the bar close to the legs"
+      },
+      {
+        "ar": "انزل لحد ما تحس بشد في الهامسترنج وضهرك مستقيم",
+        "en": "Lower until you feel the hamstring stretch with a flat back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      },
+      {
+        "ar": "ثني الركبة زيادة فيبقى سكوات",
+        "en": "Bending the knees too much"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "deadlift-conventional"
+    ],
+    "regressions": [
+      "good-morning"
+    ],
+    "alternatives": [
+      "stiff-leg-deadlift",
+      "single-leg-rdl"
+    ],
+    "tags": [
+      "legs",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "stiff-leg-deadlift",
+    "name": {
+      "ar": "ديد ليفت رجل مفرودة",
+      "en": "Stiff-Leg Deadlift"
+    },
+    "aliases": [
+      "stiff leg deadlift",
+      "sldl",
+      "ديدليفت رجل مفرودة"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus",
+      "erector spinae"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ركبة مفرودة تقريبا وانزل بالورك",
+        "en": "Knees almost straight, hinge at the hips"
+      },
+      {
+        "ar": "ظهر محايد طول الوقت",
+        "en": "Keep the spine neutral"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الضهر",
+        "en": "Spinal flexion"
+      },
+      {
+        "ar": "نزول للأرض أكتر من اللازم",
+        "en": "Reaching the floor with a rounded back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "good-morning"
+    ],
+    "alternatives": [
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "legs",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "good-morning",
+    "name": {
+      "ar": "جود مورنينج",
+      "en": "Good Morning"
+    },
+    "aliases": [
+      "good morning",
+      "جود مورنينج"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings",
+      "erector spinae"
+    ],
+    "secondaryMuscles": [
+      "gluteus maximus"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "البار على الترابيس وادفع الورك لورا",
+        "en": "Bar on the traps and push the hips back"
+      },
+      {
+        "ar": "ركبة مثنية بسيط وضهر مستقيم",
+        "en": "Slight knee bend with a flat back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تقويس أسفل الضهر",
+        "en": "Rounding the lower back"
+      },
+      {
+        "ar": "وزن تقيل",
+        "en": "Going too heavy"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "ألم الرقبة أو ديسك رقبي",
+        "en": "Neck pain or cervical disc issue"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hyperextension"
+    ],
+    "alternatives": [
+      "romanian-deadlift",
+      "hyperextension"
+    ],
+    "tags": [
+      "legs",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "nordic-curl",
+    "name": {
+      "ar": "نورديك كيرل",
+      "en": "Nordic Hamstring Curl"
+    },
+    "aliases": [
+      "nordic curl",
+      "nordic",
+      "نورديك"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "gastrocnemius",
+      "gluteus maximus"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اثبت الكعب وانزل ببطء بصدرك",
+        "en": "Anchor the heels and lower the chest slowly"
+      },
+      {
+        "ar": "الجسم خط مستقيم من الركبة للراس",
+        "en": "Keep a straight line from knees to head"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "كسر الورك",
+        "en": "Breaking at the hips"
+      },
+      {
+        "ar": "النزول المفاجئ",
+        "en": "Falling fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "leg-curl-lying"
+    ],
+    "alternatives": [
+      "leg-curl-lying",
+      "leg-curl-seated"
+    ],
+    "tags": [
+      "legs",
+      "hinge",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "standing-calf-raise",
+    "name": {
+      "ar": "سمانة واقف",
+      "en": "Standing Calf Raise"
+    },
+    "aliases": [
+      "calf raise",
+      "سمانة",
+      "ربلة واقف"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "soleus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine",
+      "smith machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اطلع على مشط القدم وقف ثانية",
+        "en": "Rise on the balls of the feet and pause"
+      },
+      {
+        "ar": "انزل لتمدد كامل",
+        "en": "Lower to a full stretch"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الركبة",
+        "en": "Bending the knees"
+      },
+      {
+        "ar": "حركة قصيرة وسريعة",
+        "en": "Short and bouncy reps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "seated-calf-raise",
+      "donkey-calf-raise"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "seated-calf-raise",
+    "name": {
+      "ar": "سمانة جالس",
+      "en": "Seated Calf Raise"
+    },
+    "aliases": [
+      "seated calf raise",
+      "سمانة جالس"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "soleus"
+    ],
+    "secondaryMuscles": [
+      "gastrocnemius"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ركبة 90 درجة وارفع الكعب بأقصى مدى",
+        "en": "Knees at 90 degrees and lift the heels through full range"
+      },
+      {
+        "ar": "حافظ على التوتر في الأسفل",
+        "en": "Keep tension at the bottom"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ارتداد",
+        "en": "Bouncing"
+      },
+      {
+        "ar": "حركة نصف",
+        "en": "Half range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "standing-calf-raise"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "donkey-calf-raise",
+    "name": {
+      "ar": "سمانة حمار",
+      "en": "Donkey Calf Raise"
+    },
+    "aliases": [
+      "donkey calf raise",
+      "سمانة حمار"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "soleus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اتحني من الورك وضهر مسطح",
+        "en": "Hinge at the hips with a flat back"
+      },
+      {
+        "ar": "اطلع فوق وقف ثانية",
+        "en": "Lift and pause at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الركبة",
+        "en": "Bending the knees"
+      },
+      {
+        "ar": "ارتداد",
+        "en": "Bouncing"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      },
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "standing-calf-raise"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "sissy-squat",
+    "name": {
+      "ar": "سيسي سكوات",
+      "en": "Sissy Squat"
+    },
+    "aliases": [
+      "sissy squat",
+      "سيسي سكوات"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ميّل الجسم للخلف والركبة لقدام",
+        "en": "Lean back as the knees travel forward"
+      },
+      {
+        "ar": "امسك حاجة للتوازن",
+        "en": "Hold something for balance"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الورك",
+        "en": "Breaking at the hips"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "leg-extension"
+    ],
+    "alternatives": [
+      "leg-extension",
+      "goblet-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "pistol-squat",
+    "name": {
+      "ar": "بيستول سكوات",
+      "en": "Pistol Squat"
+    },
+    "aliases": [
+      "pistol squat",
+      "سكوات رجل واحدة",
+      "بيستول"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus",
+      "core"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "advanced",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الرجل التانية قدام والصدر لفوق",
+        "en": "Other leg out front with the chest up"
+      },
+      {
+        "ar": "انزل ببطء وارجع بدون ارتداد",
+        "en": "Lower slowly and stand without bouncing"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الكعب يرتفع",
+        "en": "Heel lifting"
+      },
+      {
+        "ar": "الركبة تدخل",
+        "en": "Knee collapsing"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      },
+      {
+        "ar": "التواء أو ألم حديث في الكاحل",
+        "en": "Recent ankle sprain or pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "bulgarian-split-squat",
+      "box-squat"
+    ],
+    "alternatives": [
+      "bulgarian-split-squat"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "adductor-machine",
+    "name": {
+      "ar": "أدكتور جهاز",
+      "en": "Adductor Machine"
+    },
+    "aliases": [
+      "adductor machine",
+      "inner thigh",
+      "باطن الفخد"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "adductor magnus",
+      "adductor longus"
+    ],
+    "secondaryMuscles": [
+      "gracilis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ضهر ملزوق وضم الرجل بتحكم",
+        "en": "Back flat and squeeze the legs together with control"
+      },
+      {
+        "ar": "متفتحش أكتر من مدى مريح",
+        "en": "Do not open past a comfortable range"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح مفرط",
+        "en": "Over-opening"
+      },
+      {
+        "ar": "حركة سريعة",
+        "en": "Fast reps"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "lateral-lunge",
+      "sumo-deadlift"
+    ],
+    "tags": [
+      "legs",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "sumo-deadlift",
+    "name": {
+      "ar": "ديد ليفت سومو",
+      "en": "Sumo Deadlift"
+    },
+    "aliases": [
+      "sumo deadlift",
+      "ديدليفت سومو"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "adductor magnus",
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "erector spinae",
+      "trapezius"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": false,
+    "compound": true,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "وقفة واسعة والصباع بره والركبة مع الصباع",
+        "en": "Wide stance, toes out, knees over the toes"
+      },
+      {
+        "ar": "ادفع الأرض وشد الورك لقدام",
+        "en": "Push the floor away and drive the hips forward"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الركبة تدخل",
+        "en": "Knees caving in"
+      },
+      {
+        "ar": "رفع المؤخرة قبل الصدر",
+        "en": "Hips shooting up before the chest"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      },
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "romanian-deadlift"
+    ],
+    "alternatives": [
+      "deadlift-conventional",
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "legs",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "smith-squat",
+    "name": {
+      "ar": "سكوات سميث",
+      "en": "Smith Machine Squat"
+    },
+    "aliases": [
+      "smith squat",
+      "سكوات سميث"
+    ],
+    "category": "legs",
+    "primaryMuscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings"
+    ],
+    "movementPattern": "squat",
+    "equipment": [
+      "smith machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القدم قدام البار شوية",
+        "en": "Feet slightly forward of the bar"
+      },
+      {
+        "ar": "انزل لتوازي الفخد على الأرض",
+        "en": "Descend to parallel"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "القدم تحت البار",
+        "en": "Feet right under the bar"
+      },
+      {
+        "ar": "الركبة جوه",
+        "en": "Knees buckling in"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [
+      "back-squat"
+    ],
+    "regressions": [
+      "goblet-squat"
+    ],
+    "alternatives": [
+      "hack-squat-machine",
+      "leg-press"
+    ],
+    "tags": [
+      "legs",
+      "squat",
+      "smith machine"
+    ]
+  }
+]

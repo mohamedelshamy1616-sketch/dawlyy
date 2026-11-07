@@ -1,0 +1,1923 @@
+[
+  {
+    "slug": "tomato",
+    "name": {
+      "ar": "طماطم",
+      "en": "Tomato"
+    },
+    "aliases": [
+      "طماطم",
+      "tamatem",
+      "tomato raw"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 18,
+      "proteinG": 0.9,
+      "carbsG": 3.9,
+      "fatG": 0.2,
+      "fiberG": 1.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 180
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "cucumber",
+    "name": {
+      "ar": "خيار",
+      "en": "Cucumber"
+    },
+    "aliases": [
+      "خيار",
+      "khyar",
+      "cucumber raw"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 15,
+      "proteinG": 0.7,
+      "carbsG": 3.6,
+      "fatG": 0.1,
+      "fiberG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 7
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 104
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "lettuce",
+    "name": {
+      "ar": "خس",
+      "en": "Lettuce"
+    },
+    "aliases": [
+      "خس",
+      "khas",
+      "iceberg lettuce"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 15,
+      "proteinG": 1.4,
+      "carbsG": 2.9,
+      "fatG": 0.2,
+      "fiberG": 1.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 55
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ورقة",
+            "en": "leaf"
+          }
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "romaine-lettuce",
+    "name": {
+      "ar": "خس روماني",
+      "en": "Romaine Lettuce"
+    },
+    "aliases": [
+      "خس روماني",
+      "romaine"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 17,
+      "proteinG": 1.2,
+      "carbsG": 3.3,
+      "fatG": 0.3,
+      "fiberG": 2.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 47
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ورقة",
+            "en": "leaf"
+          }
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "arugula",
+    "name": {
+      "ar": "جرجير",
+      "en": "Arugula (Rocket)"
+    },
+    "aliases": [
+      "جرجير",
+      "gargeer",
+      "rocket"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 25,
+      "proteinG": 2.6,
+      "carbsG": 3.7,
+      "fatG": 0.7,
+      "fiberG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 20
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حزمة",
+            "en": "bunch"
+          }
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "onion",
+    "name": {
+      "ar": "بصل",
+      "en": "Onion"
+    },
+    "aliases": [
+      "بصل",
+      "basal",
+      "onion raw"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 1.1,
+      "carbsG": 9.3,
+      "fatG": 0.1,
+      "fiberG": 1.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 110
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 160
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "spring-onion",
+    "name": {
+      "ar": "بصل أخضر",
+      "en": "Spring Onion"
+    },
+    "aliases": [
+      "بصل اخضر",
+      "scallion",
+      "green onion"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 32,
+      "proteinG": 1.8,
+      "carbsG": 7.3,
+      "fatG": 0.2,
+      "fiberG": 2.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 15
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "garlic",
+    "name": {
+      "ar": "ثوم",
+      "en": "Garlic"
+    },
+    "aliases": [
+      "ثوم",
+      "tom",
+      "garlic"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 149,
+      "proteinG": 6.4,
+      "carbsG": 33,
+      "fatG": 0.5,
+      "fiberG": 2.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "فص",
+            "en": "clove"
+          }
+        },
+        "grams": 3
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 3
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "carrot-raw",
+    "name": {
+      "ar": "جزر نيء",
+      "en": "Carrot, Raw"
+    },
+    "aliases": [
+      "جزر",
+      "gazar",
+      "carrot"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 41,
+      "proteinG": 0.9,
+      "carbsG": 9.6,
+      "fatG": 0.2,
+      "fiberG": 2.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 61
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 128
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "carrot-cooked",
+    "name": {
+      "ar": "جزر مسلوق",
+      "en": "Carrot, Boiled"
+    },
+    "aliases": [
+      "جزر مسلوق",
+      "cooked carrot"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 35,
+      "proteinG": 0.8,
+      "carbsG": 8.2,
+      "fatG": 0.2,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 156
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "potato-raw",
+    "name": {
+      "ar": "بطاطس نيئة",
+      "en": "Potato, Raw"
+    },
+    "aliases": [
+      "بطاطس",
+      "batates",
+      "potato"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 77,
+      "proteinG": 2,
+      "carbsG": 17,
+      "fatG": 0.1,
+      "fiberG": 2.2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "potato-boiled",
+    "cookedYield": 1,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 170,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large potato"
+          }
+        },
+        "grams": 250,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 150,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "potato-boiled",
+    "name": {
+      "ar": "بطاطس مسلوقة",
+      "en": "Potato, Boiled"
+    },
+    "aliases": [
+      "بطاطس مسلوقة",
+      "boiled potato",
+      "batates maslouka"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 87,
+      "proteinG": 1.9,
+      "carbsG": 20.1,
+      "fatG": 0.1,
+      "fiberG": 1.8
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "potato-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 156,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "potato-baked",
+    "name": {
+      "ar": "بطاطس مشوية",
+      "en": "Potato, Baked (with skin)"
+    },
+    "aliases": [
+      "بطاطس فرن",
+      "baked potato",
+      "batates mashwiya"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 93,
+      "proteinG": 2.5,
+      "carbsG": 21,
+      "fatG": 0.1,
+      "fiberG": 2.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 173
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "french-fries",
+    "name": {
+      "ar": "بطاطس مقلية",
+      "en": "French Fries (Fried)"
+    },
+    "aliases": [
+      "بطاطس محمرة",
+      "chips",
+      "french fries",
+      "فرايز"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 312,
+      "proteinG": 3.4,
+      "carbsG": 41,
+      "fatG": 15,
+      "fiberG": 3.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حفنة",
+            "en": "handful"
+          }
+        },
+        "grams": 50
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس وسط",
+            "en": "medium portion"
+          }
+        },
+        "grams": 117
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "sweet-potato-raw",
+    "name": {
+      "ar": "بطاطا نيئة",
+      "en": "Sweet Potato, Raw"
+    },
+    "aliases": [
+      "بطاطا",
+      "batata",
+      "sweet potato"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 86,
+      "proteinG": 1.6,
+      "carbsG": 20.1,
+      "fatG": 0.1,
+      "fiberG": 3
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "sweet-potato-baked",
+    "cookedYield": 0.9,
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 130,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large"
+          }
+        },
+        "grams": 200,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "sweet-potato-baked",
+    "name": {
+      "ar": "بطاطا مشوية",
+      "en": "Sweet Potato, Baked"
+    },
+    "aliases": [
+      "بطاطا مشوية",
+      "baked sweet potato",
+      "batata mashwiya"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 90,
+      "proteinG": 2,
+      "carbsG": 20.7,
+      "fatG": 0.2,
+      "fiberG": 3.3
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "sweet-potato-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 114,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large"
+          }
+        },
+        "grams": 180,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "okra-raw",
+    "name": {
+      "ar": "بامية نيئة",
+      "en": "Okra, Raw"
+    },
+    "aliases": [
+      "بامية",
+      "bamia",
+      "okra"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 33,
+      "proteinG": 1.9,
+      "carbsG": 7.5,
+      "fatG": 0.2,
+      "fiberG": 3.2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "okra-cooked",
+    "cookedYield": 0.85,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 100,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 12,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "okra-cooked",
+    "name": {
+      "ar": "بامية مسلوقة",
+      "en": "Okra, Boiled"
+    },
+    "aliases": [
+      "بامية مطبوخة",
+      "cooked okra"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 22,
+      "proteinG": 1.9,
+      "carbsG": 4.5,
+      "fatG": 0.2,
+      "fiberG": 2.5
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "okra-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 160,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 10,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "molokhia-raw",
+    "name": {
+      "ar": "ملوخية خضراء",
+      "en": "Molokhia, Raw Leaves"
+    },
+    "aliases": [
+      "ملوخية",
+      "mulukhiyah",
+      "jute leaves"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 4.6,
+      "carbsG": 5.8,
+      "fatG": 0.3,
+      "fiberG": 2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "molokhia-cooked",
+    "cookedYield": 0.7,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 30,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حزمة",
+            "en": "bunch"
+          }
+        },
+        "grams": 150,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "molokhia-cooked",
+    "name": {
+      "ar": "ملوخية مطبوخة",
+      "en": "Molokhia, Cooked (no meat, no oil)"
+    },
+    "aliases": [
+      "ملوخية مسلوقة",
+      "cooked molokhia"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 32,
+      "proteinG": 3.7,
+      "carbsG": 4.6,
+      "fatG": 0.3,
+      "fiberG": 2
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "molokhia-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 180,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "spinach-raw",
+    "name": {
+      "ar": "سبانخ نيئة",
+      "en": "Spinach, Raw"
+    },
+    "aliases": [
+      "سبانخ",
+      "sabanekh",
+      "spinach"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 23,
+      "proteinG": 2.9,
+      "carbsG": 3.6,
+      "fatG": 0.4,
+      "fiberG": 2.2
+    },
+    "rawOrCooked": "raw",
+    "counterpartSlug": "spinach-cooked",
+    "cookedYield": 0.6,
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 30,
+        "rawOrCooked": "raw"
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حزمة",
+            "en": "bunch"
+          }
+        },
+        "grams": 250,
+        "rawOrCooked": "raw"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "spinach-cooked",
+    "name": {
+      "ar": "سبانخ مطبوخة",
+      "en": "Spinach, Boiled"
+    },
+    "aliases": [
+      "سبانخ مسلوقة",
+      "cooked spinach"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 23,
+      "proteinG": 3,
+      "carbsG": 3.8,
+      "fatG": 0.3,
+      "fiberG": 2.4
+    },
+    "rawOrCooked": "cooked",
+    "counterpartSlug": "spinach-raw",
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 180,
+        "rawOrCooked": "cooked"
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15,
+        "rawOrCooked": "cooked"
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "zucchini",
+    "name": {
+      "ar": "كوسة",
+      "en": "Zucchini"
+    },
+    "aliases": [
+      "كوسة",
+      "koosa",
+      "courgette"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 17,
+      "proteinG": 1.2,
+      "carbsG": 3.1,
+      "fatG": 0.3,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 196
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 124
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "eggplant",
+    "name": {
+      "ar": "باذنجان",
+      "en": "Eggplant"
+    },
+    "aliases": [
+      "باذنجان",
+      "betengan",
+      "aubergine"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 25,
+      "proteinG": 1,
+      "carbsG": 5.9,
+      "fatG": 0.2,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 300
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 82
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "pepper-green",
+    "name": {
+      "ar": "فلفل أخضر رومي",
+      "en": "Green Bell Pepper"
+    },
+    "aliases": [
+      "فلفل رومي",
+      "felfel romy",
+      "green pepper"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 20,
+      "proteinG": 0.9,
+      "carbsG": 4.6,
+      "fatG": 0.2,
+      "fiberG": 1.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 92
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "pepper-red",
+    "name": {
+      "ar": "فلفل أحمر",
+      "en": "Red Bell Pepper"
+    },
+    "aliases": [
+      "فلفل أحمر",
+      "red pepper"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 31,
+      "proteinG": 1,
+      "carbsG": 6,
+      "fatG": 0.3,
+      "fiberG": 2.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 92
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "chili-green",
+    "name": {
+      "ar": "فلفل حار",
+      "en": "Green Chili Pepper"
+    },
+    "aliases": [
+      "شطة خضراء",
+      "felfel har",
+      "chili"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 2,
+      "carbsG": 9,
+      "fatG": 0.2,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 45
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "cabbage",
+    "name": {
+      "ar": "كرنب",
+      "en": "Cabbage"
+    },
+    "aliases": [
+      "كرنب",
+      "koronb",
+      "cabbage"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 25,
+      "proteinG": 1.3,
+      "carbsG": 5.8,
+      "fatG": 0.1,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 70
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 900
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "cauliflower",
+    "name": {
+      "ar": "قرنبيط",
+      "en": "Cauliflower"
+    },
+    "aliases": [
+      "قرنبيط",
+      "arnabeet",
+      "cauliflower"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 25,
+      "proteinG": 1.9,
+      "carbsG": 5,
+      "fatG": 0.3,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 107
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 600
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "broccoli",
+    "name": {
+      "ar": "بروكلي",
+      "en": "Broccoli"
+    },
+    "aliases": [
+      "بروكلي",
+      "broccoli"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 34,
+      "proteinG": 2.8,
+      "carbsG": 6.6,
+      "fatG": 0.4,
+      "fiberG": 2.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 91
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "green-beans",
+    "name": {
+      "ar": "فاصوليا خضراء",
+      "en": "Green Beans"
+    },
+    "aliases": [
+      "فاصوليا خضرا",
+      "fasolia khadra",
+      "string beans"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 31,
+      "proteinG": 1.8,
+      "carbsG": 7,
+      "fatG": 0.2,
+      "fiberG": 2.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "beetroot-cooked",
+    "name": {
+      "ar": "بنجر مسلوق",
+      "en": "Beetroot, Boiled"
+    },
+    "aliases": [
+      "بنجر",
+      "bangar",
+      "beets"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 44,
+      "proteinG": 1.7,
+      "carbsG": 10,
+      "fatG": 0.2,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 170
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 80
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "radish",
+    "name": {
+      "ar": "فجل",
+      "en": "Radish"
+    },
+    "aliases": [
+      "فجل",
+      "fogl",
+      "radish"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 16,
+      "proteinG": 0.7,
+      "carbsG": 3.4,
+      "fatG": 0.1,
+      "fiberG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 9
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 116
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "parsley",
+    "name": {
+      "ar": "بقدونس",
+      "en": "Parsley"
+    },
+    "aliases": [
+      "بقدونس",
+      "baqdunis",
+      "parsley"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 40,
+      "proteinG": 3,
+      "carbsG": 6.3,
+      "fatG": 0.8,
+      "fiberG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 4
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "dill",
+    "name": {
+      "ar": "شبت",
+      "en": "Dill"
+    },
+    "aliases": [
+      "شبت",
+      "shibint",
+      "dill"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 45,
+      "proteinG": 3.5,
+      "carbsG": 7,
+      "fatG": 1.1,
+      "fiberG": 2.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 3
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 9
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "mint-fresh",
+    "name": {
+      "ar": "نعناع",
+      "en": "Fresh Mint"
+    },
+    "aliases": [
+      "نعناع",
+      "naana",
+      "mint"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 48,
+      "proteinG": 3.3,
+      "carbsG": 8.4,
+      "fatG": 0.7,
+      "fiberG": 6.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 3
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 14
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "pumpkin-cooked",
+    "name": {
+      "ar": "قرع مسلوق",
+      "en": "Pumpkin, Boiled"
+    },
+    "aliases": [
+      "قرع عسلي",
+      "pumpkin",
+      "qar3"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 20,
+      "proteinG": 0.7,
+      "carbsG": 4.9,
+      "fatG": 0.1,
+      "fiberG": 1.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "mushroom",
+    "name": {
+      "ar": "مشروم",
+      "en": "Mushrooms"
+    },
+    "aliases": [
+      "مشروم",
+      "عيش الغراب",
+      "mushroom"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 22,
+      "proteinG": 3.1,
+      "carbsG": 3.3,
+      "fatG": 0.3,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 70
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 18
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "corn-cob-grilled",
+    "name": {
+      "ar": "درة مشوي",
+      "en": "Grilled Corn on the Cob"
+    },
+    "aliases": [
+      "درة مشوي",
+      "dora mashwi",
+      "corn cob"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 120,
+      "proteinG": 3.5,
+      "carbsG": 25,
+      "fatG": 1.5,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة صغيرة",
+            "en": "small cob"
+          }
+        },
+        "grams": 120
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "taro-cooked",
+    "name": {
+      "ar": "قلقاس مسلوق",
+      "en": "Taro (Colocasia), Boiled"
+    },
+    "aliases": [
+      "قلقاس",
+      "qolqas",
+      "taro"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 112,
+      "proteinG": 0.5,
+      "carbsG": 26.5,
+      "fatG": 0.2,
+      "fiberG": 4.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 132
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "artichoke-cooked",
+    "name": {
+      "ar": "أرضي شوكي مسلوق",
+      "en": "Artichoke, Boiled"
+    },
+    "aliases": [
+      "أرضي شوكي",
+      "ardi shoki",
+      "artichoke"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 56,
+      "proteinG": 2.9,
+      "carbsG": 11.9,
+      "fatG": 0.4,
+      "fiberG": 5.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 120
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 168
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "leek",
+    "name": {
+      "ar": "كرات",
+      "en": "Leek"
+    },
+    "aliases": [
+      "كرات",
+      "karat",
+      "leek"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 61,
+      "proteinG": 1.5,
+      "carbsG": 14.2,
+      "fatG": 0.3,
+      "fiberG": 1.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 90
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 89
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "celery",
+    "name": {
+      "ar": "كرفس",
+      "en": "Celery"
+    },
+    "aliases": [
+      "كرفس",
+      "karafs",
+      "celery"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 16,
+      "proteinG": 0.7,
+      "carbsG": 3,
+      "fatG": 0.2,
+      "fiberG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 40
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 101
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "olives-green",
+    "name": {
+      "ar": "زيتون أخضر",
+      "en": "Green Olives"
+    },
+    "aliases": [
+      "زيتون اخضر",
+      "zaytoun akhdar",
+      "green olives"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 145,
+      "proteinG": 1,
+      "carbsG": 3.8,
+      "fatG": 15.3,
+      "fiberG": 3.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 4
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "olives-black",
+    "name": {
+      "ar": "زيتون أسود",
+      "en": "Black Olives"
+    },
+    "aliases": [
+      "زيتون اسود",
+      "black olives"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 115,
+      "proteinG": 0.8,
+      "carbsG": 6,
+      "fatG": 10.7,
+      "fiberG": 3.2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 4
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "pickled-cucumber",
+    "name": {
+      "ar": "خيار مخلل",
+      "en": "Pickled Cucumber"
+    },
+    "aliases": [
+      "خيار مخلل",
+      "khyar mekhalel",
+      "pickles"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 12,
+      "proteinG": 0.3,
+      "carbsG": 2.3,
+      "fatG": 0.2,
+      "fiberG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 35
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "pickled-vegetables",
+    "name": {
+      "ar": "طرشي مشكل",
+      "en": "Mixed Egyptian Pickles (Torshi)"
+    },
+    "aliases": [
+      "طرشي",
+      "torshi",
+      "mixed pickles"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 21,
+      "proteinG": 1,
+      "carbsG": 4,
+      "fatG": 0.2,
+      "fiberG": 1.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "طبق صغير",
+            "en": "small plate"
+          }
+        },
+        "grams": 50
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 20
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  },
+  {
+    "slug": "grape-leaves",
+    "name": {
+      "ar": "ورق عنب نيء",
+      "en": "Grape Leaves (Raw)"
+    },
+    "aliases": [
+      "ورق عنب",
+      "warak enab",
+      "vine leaves"
+    ],
+    "category": "vegetables",
+    "per100": {
+      "kcal": 100,
+      "proteinG": 5.6,
+      "carbsG": 17,
+      "fatG": 2.1,
+      "fiberG": 11
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "ورقة",
+            "en": "leaf"
+          }
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "vegetables"
+    ]
+  }
+]

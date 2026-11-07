@@ -1,0 +1,1261 @@
+[
+  {
+    "slug": "banana",
+    "name": {
+      "ar": "موز",
+      "en": "Banana"
+    },
+    "aliases": [
+      "موز",
+      "moz",
+      "banana"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 89,
+      "proteinG": 1.1,
+      "carbsG": 22.8,
+      "fatG": 0.3,
+      "fiberG": 2.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 118
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large banana"
+          }
+        },
+        "grams": 136
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "apple",
+    "name": {
+      "ar": "تفاح",
+      "en": "Apple"
+    },
+    "aliases": [
+      "تفاح",
+      "toffah",
+      "apple"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 52,
+      "proteinG": 0.3,
+      "carbsG": 13.8,
+      "fatG": 0.2,
+      "fiberG": 2.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 182
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "orange",
+    "name": {
+      "ar": "برتقال",
+      "en": "Orange"
+    },
+    "aliases": [
+      "برتقال",
+      "bortoal",
+      "orange"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 47,
+      "proteinG": 0.9,
+      "carbsG": 11.8,
+      "fatG": 0.1,
+      "fiberG": 2.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 131
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "mandarin",
+    "name": {
+      "ar": "يوسفي",
+      "en": "Mandarin (Yousef Effendi)"
+    },
+    "aliases": [
+      "يوسفي",
+      "mandarine",
+      "tangerine"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 53,
+      "proteinG": 0.8,
+      "carbsG": 13.3,
+      "fatG": 0.3,
+      "fiberG": 1.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 88
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "grapes",
+    "name": {
+      "ar": "عنب",
+      "en": "Grapes"
+    },
+    "aliases": [
+      "عنب",
+      "enab",
+      "grapes"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 69,
+      "proteinG": 0.7,
+      "carbsG": 18.1,
+      "fatG": 0.2,
+      "fiberG": 0.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 151
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "watermelon",
+    "name": {
+      "ar": "بطيخ",
+      "en": "Watermelon"
+    },
+    "aliases": [
+      "بطيخ",
+      "batikh",
+      "watermelon"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 30,
+      "proteinG": 0.6,
+      "carbsG": 7.6,
+      "fatG": 0.2,
+      "fiberG": 0.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 152
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 280
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "cantaloupe",
+    "name": {
+      "ar": "كنتالوب",
+      "en": "Cantaloupe"
+    },
+    "aliases": [
+      "كانتالوب",
+      "cantaloupe"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 34,
+      "proteinG": 0.8,
+      "carbsG": 8.2,
+      "fatG": 0.2,
+      "fiberG": 0.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 160
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "honeydew-melon",
+    "name": {
+      "ar": "شمام",
+      "en": "Honeydew Melon (Shammam)"
+    },
+    "aliases": [
+      "شمام",
+      "shammam",
+      "melon"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 36,
+      "proteinG": 0.5,
+      "carbsG": 9.1,
+      "fatG": 0.1,
+      "fiberG": 0.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 170
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "mango",
+    "name": {
+      "ar": "مانجو",
+      "en": "Mango"
+    },
+    "aliases": [
+      "مانجو",
+      "mango",
+      "manga"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 60,
+      "proteinG": 0.8,
+      "carbsG": 15,
+      "fatG": 0.4,
+      "fiberG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 165
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "guava",
+    "name": {
+      "ar": "جوافة",
+      "en": "Guava"
+    },
+    "aliases": [
+      "جوافة",
+      "gawafa",
+      "guava"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 68,
+      "proteinG": 2.6,
+      "carbsG": 14.3,
+      "fatG": 1,
+      "fiberG": 5.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 55
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "حبة كبيرة",
+            "en": "large guava"
+          }
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "pomegranate",
+    "name": {
+      "ar": "رمان",
+      "en": "Pomegranate Arils"
+    },
+    "aliases": [
+      "رمان",
+      "roman",
+      "pomegranate"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 83,
+      "proteinG": 1.7,
+      "carbsG": 18.7,
+      "fatG": 1.2,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 174
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "strawberry",
+    "name": {
+      "ar": "فراولة",
+      "en": "Strawberries"
+    },
+    "aliases": [
+      "فراولة",
+      "farawla",
+      "strawberry"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 32,
+      "proteinG": 0.7,
+      "carbsG": 7.7,
+      "fatG": 0.3,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 152
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 12
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "peach",
+    "name": {
+      "ar": "خوخ",
+      "en": "Peach"
+    },
+    "aliases": [
+      "خوخ",
+      "khoukh",
+      "peach"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 39,
+      "proteinG": 0.9,
+      "carbsG": 9.5,
+      "fatG": 0.3,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "apricot",
+    "name": {
+      "ar": "مشمش",
+      "en": "Apricot"
+    },
+    "aliases": [
+      "مشمش",
+      "mishmish",
+      "apricot"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 48,
+      "proteinG": 1.4,
+      "carbsG": 11.1,
+      "fatG": 0.4,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 35
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 165
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "plum",
+    "name": {
+      "ar": "برقوق",
+      "en": "Plum"
+    },
+    "aliases": [
+      "برقوق",
+      "barqouq",
+      "plum"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 46,
+      "proteinG": 0.7,
+      "carbsG": 11.4,
+      "fatG": 0.3,
+      "fiberG": 1.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 66
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "fig-fresh",
+    "name": {
+      "ar": "تين",
+      "en": "Fresh Figs"
+    },
+    "aliases": [
+      "تين",
+      "teen",
+      "fig"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 74,
+      "proteinG": 0.8,
+      "carbsG": 19.2,
+      "fatG": 0.3,
+      "fiberG": 2.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "dates",
+    "name": {
+      "ar": "تمر",
+      "en": "Dates, Dried"
+    },
+    "aliases": [
+      "تمر",
+      "tamr",
+      "dates"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 282,
+      "proteinG": 2.5,
+      "carbsG": 75,
+      "fatG": 0.4,
+      "fiberG": 8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 8
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 40
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "dates-medjool",
+    "name": {
+      "ar": "تمر مجدول",
+      "en": "Medjool Dates"
+    },
+    "aliases": [
+      "مجدول",
+      "medjool",
+      "تمر مجدول"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 277,
+      "proteinG": 1.8,
+      "carbsG": 75,
+      "fatG": 0.2,
+      "fiberG": 6.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 24
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "dates-ajwa",
+    "name": {
+      "ar": "عجوة",
+      "en": "Ajwa Dates"
+    },
+    "aliases": [
+      "عجوة",
+      "ajwa",
+      "ajwa dates"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 275,
+      "proteinG": 2,
+      "carbsG": 72,
+      "fatG": 0.4,
+      "fiberG": 7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "raisins",
+    "name": {
+      "ar": "زبيب",
+      "en": "Raisins"
+    },
+    "aliases": [
+      "زبيب",
+      "zabeeb",
+      "raisins"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 299,
+      "proteinG": 3.1,
+      "carbsG": 79.2,
+      "fatG": 0.5,
+      "fiberG": 3.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 145
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "apricot-dried",
+    "name": {
+      "ar": "قمر الدين",
+      "en": "Dried Apricots (Amardeen)"
+    },
+    "aliases": [
+      "مشمش مجفف",
+      "qamar el din",
+      "dried apricot"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 241,
+      "proteinG": 3.4,
+      "carbsG": 62.6,
+      "fatG": 0.5,
+      "fiberG": 7.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 8
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 35
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "fig-dried",
+    "name": {
+      "ar": "تين مجفف",
+      "en": "Dried Figs"
+    },
+    "aliases": [
+      "تين مجفف",
+      "dried figs"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 249,
+      "proteinG": 3.3,
+      "carbsG": 63.9,
+      "fatG": 0.9,
+      "fiberG": 9.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 19
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 35
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "prickly-pear",
+    "name": {
+      "ar": "تين شوكي",
+      "en": "Prickly Pear"
+    },
+    "aliases": [
+      "تين شوكي",
+      "teen shouki",
+      "cactus fruit"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 41,
+      "proteinG": 0.7,
+      "carbsG": 9.6,
+      "fatG": 0.5,
+      "fiberG": 3.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "pear",
+    "name": {
+      "ar": "كمثرى",
+      "en": "Pear"
+    },
+    "aliases": [
+      "كمثرى",
+      "kommetra",
+      "pear"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 57,
+      "proteinG": 0.4,
+      "carbsG": 15.2,
+      "fatG": 0.1,
+      "fiberG": 3.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 178
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "pineapple",
+    "name": {
+      "ar": "أناناس",
+      "en": "Pineapple"
+    },
+    "aliases": [
+      "أناناس",
+      "ananas",
+      "pineapple"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 50,
+      "proteinG": 0.5,
+      "carbsG": 13.1,
+      "fatG": 0.1,
+      "fiberG": 1.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 165
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 85
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "kiwi",
+    "name": {
+      "ar": "كيوي",
+      "en": "Kiwi"
+    },
+    "aliases": [
+      "كيوي",
+      "kiwi"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 61,
+      "proteinG": 1.1,
+      "carbsG": 14.7,
+      "fatG": 0.5,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 69
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "lemon",
+    "name": {
+      "ar": "ليمون",
+      "en": "Lemon"
+    },
+    "aliases": [
+      "ليمون",
+      "lamoun",
+      "lemon"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 35,
+      "proteinG": 1.1,
+      "carbsG": 8,
+      "fatG": 0.3,
+      "fiberG": 2.8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 58
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "grapefruit",
+    "name": {
+      "ar": "جريب فروت",
+      "en": "Grapefruit"
+    },
+    "aliases": [
+      "جريب فروت",
+      "grapefruit"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 42,
+      "proteinG": 0.8,
+      "carbsG": 10.7,
+      "fatG": 0.1,
+      "fiberG": 1.6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 230
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "avocado",
+    "name": {
+      "ar": "أفوكادو",
+      "en": "Avocado"
+    },
+    "aliases": [
+      "أفوكادو",
+      "avocado",
+      "افوكادو"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 160,
+      "proteinG": 2,
+      "carbsG": 8.5,
+      "fatG": 14.7,
+      "fiberG": 6.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 150
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 25
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 15
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "coconut-fresh",
+    "name": {
+      "ar": "جوز هند طازج",
+      "en": "Fresh Coconut"
+    },
+    "aliases": [
+      "جوز هند",
+      "goz hend",
+      "coconut"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 354,
+      "proteinG": 3.3,
+      "carbsG": 15.2,
+      "fatG": 33.5,
+      "fiberG": 9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 45
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "blueberries",
+    "name": {
+      "ar": "توت أزرق",
+      "en": "Blueberries"
+    },
+    "aliases": [
+      "بلوبيري",
+      "blueberry",
+      "blueberries"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 57,
+      "proteinG": 0.7,
+      "carbsG": 14.5,
+      "fatG": 0.3,
+      "fiberG": 2.4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 148
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "cherries",
+    "name": {
+      "ar": "كرز",
+      "en": "Cherries"
+    },
+    "aliases": [
+      "كرز",
+      "karaz",
+      "cherry"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 63,
+      "proteinG": 1.1,
+      "carbsG": 16,
+      "fatG": 0.2,
+      "fiberG": 2.1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 138
+      },
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "papaya",
+    "name": {
+      "ar": "بابايا",
+      "en": "Papaya"
+    },
+    "aliases": [
+      "بابايا",
+      "papaya"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 43,
+      "proteinG": 0.5,
+      "carbsG": 10.8,
+      "fatG": 0.3,
+      "fiberG": 1.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 145
+      },
+      {
+        "measure": {
+          "kind": "slice"
+        },
+        "grams": 100
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  },
+  {
+    "slug": "mulberries",
+    "name": {
+      "ar": "توت",
+      "en": "Mulberries"
+    },
+    "aliases": [
+      "توت",
+      "toot",
+      "mulberry"
+    ],
+    "category": "fruits",
+    "per100": {
+      "kcal": 43,
+      "proteinG": 1.4,
+      "carbsG": 9.8,
+      "fatG": 0.4,
+      "fiberG": 1.7
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 140
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "fruits"
+    ]
+  }
+]

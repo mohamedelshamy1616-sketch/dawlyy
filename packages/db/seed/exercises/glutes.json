@@ -1,0 +1,895 @@
+[
+  {
+    "slug": "hip-thrust-barbell",
+    "name": {
+      "ar": "هيب ثراست بار",
+      "en": "Barbell Hip Thrust"
+    },
+    "aliases": [
+      "hip thrust",
+      "هيب ثرست",
+      "دفع الورك بالبار"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "لوح الكتف على البنش وارفع الورك لحد خط مستقيم",
+        "en": "Shoulder blades on the bench, lift hips to a straight line"
+      },
+      {
+        "ar": "دقن لصدرك واعصر الجلوت فوق",
+        "en": "Chin tucked, squeeze the glutes at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس أسفل الضهر في الأعلى",
+        "en": "Hyperextending the lower back at the top"
+      },
+      {
+        "ar": "قدم بعيد جدا أو قريب جدا",
+        "en": "Feet too far or too close"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [
+      "single-leg-hip-thrust"
+    ],
+    "regressions": [
+      "glute-bridge"
+    ],
+    "alternatives": [
+      "glute-bridge",
+      "cable-pull-through"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "glute-bridge",
+    "name": {
+      "ar": "جلوت بريدج",
+      "en": "Glute Bridge"
+    },
+    "aliases": [
+      "glute bridge",
+      "بريدج",
+      "جسر الجلوت"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "erector spinae"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ركبة مثنية والكعب قريب من المؤخرة",
+        "en": "Knees bent with heels close to the glutes"
+      },
+      {
+        "ar": "ارفع الورك واعصر ثانيتين",
+        "en": "Lift hips and squeeze for two seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "دفع من أصابع القدم",
+        "en": "Pushing through the toes"
+      },
+      {
+        "ar": "رفع الضهر بدل الورك",
+        "en": "Lifting with the back instead of the hips"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "hip-thrust-barbell"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "hip-thrust-barbell",
+      "single-leg-glute-bridge"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "single-leg-glute-bridge",
+    "name": {
+      "ar": "جلوت بريدج رجل واحدة",
+      "en": "Single-Leg Glute Bridge"
+    },
+    "aliases": [
+      "single leg bridge",
+      "بريدج رجل واحدة"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gluteus medius"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الرجل التانية مفرودة وبمحاذاة الفخد",
+        "en": "Other leg extended in line with the thigh"
+      },
+      {
+        "ar": "الحوض مستوي من غير ميل",
+        "en": "Keep the pelvis level"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الحوض",
+        "en": "Pelvis tilting"
+      },
+      {
+        "ar": "دفع من الضهر",
+        "en": "Using the back"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [
+      "single-leg-hip-thrust"
+    ],
+    "regressions": [
+      "glute-bridge"
+    ],
+    "alternatives": [
+      "glute-bridge"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "single-leg-hip-thrust",
+    "name": {
+      "ar": "هيب ثراست رجل واحدة",
+      "en": "Single-Leg Hip Thrust"
+    },
+    "aliases": [
+      "single leg hip thrust",
+      "هيب ثرست فردي"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gluteus medius"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bench",
+      "dumbbell"
+    ],
+    "difficulty": "advanced",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "لوح الكتف على البنش وارفع بكعب واحد",
+        "en": "Shoulders on the bench, drive through one heel"
+      },
+      {
+        "ar": "الحوض لازم يفضل أفقي",
+        "en": "Keep the hips level"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "دوران الحوض",
+        "en": "Rotating the hips"
+      },
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hip-thrust-barbell"
+    ],
+    "alternatives": [
+      "hip-thrust-barbell"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "bench"
+    ]
+  },
+  {
+    "slug": "cable-kickback",
+    "name": {
+      "ar": "كيك باك كابل",
+      "en": "Cable Glute Kickback"
+    },
+    "aliases": [
+      "cable kickback",
+      "glute kickback",
+      "كيك باك جلوت"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "cable",
+      "ankle strap"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اشد البطن وارفع الرجل لورا بالجلوت",
+        "en": "Brace and kick back using the glute"
+      },
+      {
+        "ar": "متقوسش الضهر",
+        "en": "Do not arch the back"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قوس الضهر للرفع أعلى",
+        "en": "Arching to go higher"
+      },
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "donkey-kick",
+      "hip-thrust-barbell"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "cable"
+    ]
+  },
+  {
+    "slug": "donkey-kick",
+    "name": {
+      "ar": "دونكي كيك",
+      "en": "Donkey Kick"
+    },
+    "aliases": [
+      "donkey kick",
+      "ركلة الحمار",
+      "دونكي"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "hamstrings",
+      "gluteus medius"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bodyweight",
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اطلع بالكعب لفوق والركبة 90",
+        "en": "Drive the heel up with the knee at 90 degrees"
+      },
+      {
+        "ar": "الحوض يفضل ثابت",
+        "en": "Keep the hips square"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الحوض",
+        "en": "Hips opening"
+      },
+      {
+        "ar": "قوس الضهر",
+        "en": "Arching the back"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "fire-hydrant",
+      "cable-kickback"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "fire-hydrant",
+    "name": {
+      "ar": "فاير هيدرانت",
+      "en": "Fire Hydrant"
+    },
+    "aliases": [
+      "fire hydrant",
+      "هيدرانت"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "gluteus minimus",
+      "gluteus maximus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "bodyweight",
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "افتح الركبة لجنب من غير ما تلف الجسم",
+        "en": "Open the knee to the side without rotating the torso"
+      },
+      {
+        "ar": "وقف ثانية في الأعلى",
+        "en": "Pause at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تدوير الحوض",
+        "en": "Rolling the pelvis"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Rushing"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "donkey-kick",
+      "abductor-machine"
+    ],
+    "tags": [
+      "glutes",
+      "isolation",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "frog-pump",
+    "name": {
+      "ar": "فروج بامب",
+      "en": "Frog Pump"
+    },
+    "aliases": [
+      "frog pump",
+      "فروج بمب"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus"
+    ],
+    "secondaryMuscles": [
+      "adductor magnus"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "كعبين مع بعض والركبة مفتوحة",
+        "en": "Soles together with knees wide"
+      },
+      {
+        "ar": "اضغط الجلوت بقوة في الأعلى",
+        "en": "Squeeze the glutes hard at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الضهر",
+        "en": "Lifting with the back"
+      },
+      {
+        "ar": "سرعة",
+        "en": "Going too fast"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "glute-bridge"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "cable-pull-through",
+    "name": {
+      "ar": "بول ثرو كابل",
+      "en": "Cable Pull-Through"
+    },
+    "aliases": [
+      "pull through",
+      "كابل بول ثرو"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "erector spinae"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "cable",
+      "rope"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "اديله ضهرك واسحب الورك لورا",
+        "en": "Face away and push the hips back"
+      },
+      {
+        "ar": "قفل بدفع الحوض لقدام",
+        "en": "Finish by driving the hips forward"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سحب بالذراع",
+        "en": "Pulling with the arms"
+      },
+      {
+        "ar": "قوس الضهر",
+        "en": "Rounding the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "romanian-deadlift",
+      "hip-thrust-barbell"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "cable"
+    ]
+  },
+  {
+    "slug": "banded-lateral-walk",
+    "name": {
+      "ar": "مشي جانبي باند",
+      "en": "Banded Lateral Walk"
+    },
+    "aliases": [
+      "lateral band walk",
+      "مشي جانبي",
+      "باند ووك"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "gluteus minimus",
+      "tensor fasciae latae"
+    ],
+    "movementPattern": "locomotion",
+    "equipment": [
+      "band"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ركبة مثنية شوية والباند فوق الركبة",
+        "en": "Slight knee bend with the band above the knees"
+      },
+      {
+        "ar": "خطوات صغيرة وتوتر ثابت",
+        "en": "Small steps with constant tension"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الركبة تدخل",
+        "en": "Knees caving in"
+      },
+      {
+        "ar": "خطوة كبيرة",
+        "en": "Taking big steps"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "fire-hydrant",
+      "abductor-machine"
+    ],
+    "tags": [
+      "glutes",
+      "locomotion",
+      "band"
+    ]
+  },
+  {
+    "slug": "abductor-machine",
+    "name": {
+      "ar": "أبداكتور جهاز",
+      "en": "Hip Abductor Machine"
+    },
+    "aliases": [
+      "abductor machine",
+      "hip abduction",
+      "ابداكتور"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "gluteus minimus",
+      "tensor fasciae latae"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "machine"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "frontal",
+    "cues": [
+      {
+        "ar": "ميل بسيط لقدام لزيادة الجلوت",
+        "en": "Lean slightly forward to bias the glutes"
+      },
+      {
+        "ar": "افتح ببطء وقف ثانية",
+        "en": "Open slowly and pause"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "سرعة وارتداد",
+        "en": "Fast bouncing reps"
+      },
+      {
+        "ar": "وزن عالي بتحرك الحوض",
+        "en": "Too heavy rocking the hips"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار الورك (FAI) أو ألم الأربية",
+        "en": "Hip impingement (FAI) or groin pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "banded-lateral-walk",
+      "fire-hydrant"
+    ],
+    "tags": [
+      "glutes",
+      "isolation",
+      "machine"
+    ]
+  },
+  {
+    "slug": "curtsy-lunge",
+    "name": {
+      "ar": "كورتسي لانج",
+      "en": "Curtsy Lunge"
+    },
+    "aliases": [
+      "curtsy lunge",
+      "لانج متقاطع",
+      "كيرتسي"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "gluteus medius"
+    ],
+    "secondaryMuscles": [
+      "quadriceps",
+      "adductor magnus"
+    ],
+    "movementPattern": "lunge",
+    "equipment": [
+      "dumbbell",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "transverse",
+    "cues": [
+      {
+        "ar": "اخطي بالرجل لورا ولقطر الرجل التانية",
+        "en": "Step behind and across the standing leg"
+      },
+      {
+        "ar": "الجذع عمودي والركبة الأمامية مع الصباع",
+        "en": "Torso upright with the front knee over the toes"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الركبة تدخل",
+        "en": "Front knee collapsing"
+      },
+      {
+        "ar": "نزول غير متحكم",
+        "en": "Uncontrolled descent"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم الركبة الأمامي أو إصابة رباط الركبة",
+        "en": "Patellofemoral pain or knee ligament injury"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "reverse-lunge"
+    ],
+    "alternatives": [
+      "reverse-lunge",
+      "lateral-lunge"
+    ],
+    "tags": [
+      "glutes",
+      "lunge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "single-leg-rdl",
+    "name": {
+      "ar": "ديد ليفت روماني رجل واحدة",
+      "en": "Single-Leg Romanian Deadlift"
+    },
+    "aliases": [
+      "single leg rdl",
+      "sl rdl",
+      "ديدليفت رجل واحدة"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "erector spinae",
+      "gluteus medius",
+      "core"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الرجل الحرة لورا بخط مع الجسم",
+        "en": "Free leg extends behind in line with the torso"
+      },
+      {
+        "ar": "ثبّت الحوض مستوي طول الحركة",
+        "en": "Keep the hips level throughout"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الحوض",
+        "en": "Opening the hips"
+      },
+      {
+        "ar": "تقويس الضهر",
+        "en": "Rounding the back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "romanian-deadlift"
+    ],
+    "alternatives": [
+      "romanian-deadlift"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "reverse-hyperextension",
+    "name": {
+      "ar": "ريفرس هايبر",
+      "en": "Reverse Hyperextension"
+    },
+    "aliases": [
+      "reverse hyper",
+      "ريفرس هايبر"
+    ],
+    "category": "glutes",
+    "primaryMuscles": [
+      "gluteus maximus",
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "erector spinae"
+    ],
+    "movementPattern": "hinge",
+    "equipment": [
+      "reverse hyper machine",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع الرجل بالجلوت لخط مستقيم",
+        "en": "Raise the legs with the glutes to a straight line"
+      },
+      {
+        "ar": "متتأرجحش بقوة",
+        "en": "Do not swing aggressively"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح عنيف",
+        "en": "Aggressive swinging"
+      },
+      {
+        "ar": "قوس الضهر فوق الخط",
+        "en": "Arching past neutral"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "عدم تحمل انحناء أسفل الظهر أو ديسك حاد",
+        "en": "Lumbar flexion intolerance or acute disc pain"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "glute-bridge"
+    ],
+    "alternatives": [
+      "hyperextension",
+      "hip-thrust-barbell"
+    ],
+    "tags": [
+      "glutes",
+      "hinge",
+      "reverse hyper machine"
+    ]
+  }
+]

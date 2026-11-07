@@ -1,0 +1,856 @@
+[
+  {
+    "slug": "whey-protein-concentrate",
+    "name": {
+      "ar": "واي بروتين كونسنتريت",
+      "en": "Whey Protein Concentrate (powder)"
+    },
+    "aliases": [
+      "واي بروتين",
+      "whey",
+      "whey protein",
+      "بروتين باودر"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 398,
+      "proteinG": 78,
+      "carbsG": 8,
+      "fatG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "whey-protein-isolate",
+    "name": {
+      "ar": "واي بروتين ايزوليت",
+      "en": "Whey Protein Isolate (powder)"
+    },
+    "aliases": [
+      "ايزوليت",
+      "whey isolate",
+      "iso whey"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 377,
+      "proteinG": 90,
+      "carbsG": 2,
+      "fatG": 1
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 30
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 8
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "casein-powder",
+    "name": {
+      "ar": "كازين",
+      "en": "Micellar Casein (powder)"
+    },
+    "aliases": [
+      "كازين",
+      "casein"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 371,
+      "proteinG": 80,
+      "carbsG": 6,
+      "fatG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 33
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "mass-gainer",
+    "name": {
+      "ar": "ماس جينر",
+      "en": "Mass Gainer (powder)"
+    },
+    "aliases": [
+      "جينر",
+      "mass gainer",
+      "gainer"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 375,
+      "proteinG": 22,
+      "carbsG": 65,
+      "fatG": 3,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 100
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "نص سكوب",
+            "en": "half scoop"
+          }
+        },
+        "grams": 50
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "creatine-monohydrate",
+    "name": {
+      "ar": "كرياتين",
+      "en": "Creatine Monohydrate"
+    },
+    "aliases": [
+      "كرياتين",
+      "creatine",
+      "كرياتين مونوهيدرات"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 0,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 5
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "bcaa-powder",
+    "name": {
+      "ar": "بي سي إيه إيه",
+      "en": "BCAA Powder"
+    },
+    "aliases": [
+      "bcaa",
+      "بي سي ايه ايه",
+      "أحماض أمينية"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 360,
+      "proteinG": 90,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 7
+      },
+      {
+        "measure": {
+          "kind": "tsp"
+        },
+        "grams": 4
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "preworkout-powder",
+    "name": {
+      "ar": "بري ورك أوت",
+      "en": "Pre-Workout Powder"
+    },
+    "aliases": [
+      "pre workout",
+      "بري ورك اوت",
+      "preworkout"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 48,
+      "proteinG": 0,
+      "carbsG": 12,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "electrolyte-powder",
+    "name": {
+      "ar": "ألكتروليت",
+      "en": "Electrolyte Powder (sugar-free)"
+    },
+    "aliases": [
+      "electrolytes",
+      "املاح",
+      "ألكتروليت"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 0,
+      "proteinG": 0,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس",
+            "en": "sachet"
+          }
+        },
+        "grams": 5
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "collagen-peptides",
+    "name": {
+      "ar": "كولاجين",
+      "en": "Collagen Peptides"
+    },
+    "aliases": [
+      "collagen",
+      "كولاجين"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 360,
+      "proteinG": 90,
+      "carbsG": 0,
+      "fatG": 0
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "سكوب",
+            "en": "scoop"
+          }
+        },
+        "grams": 10
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 10
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "peanut-butter-powder",
+    "name": {
+      "ar": "بودرة زبدة فول سوداني",
+      "en": "Peanut Butter Powder (defatted)"
+    },
+    "aliases": [
+      "بودرة زبدة فول سوداني",
+      "pb powder"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 412,
+      "proteinG": 50,
+      "carbsG": 26,
+      "fatG": 12,
+      "fiberG": 13
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 6
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "protein-bar",
+    "name": {
+      "ar": "بروتين بار",
+      "en": "Protein Bar (generic)"
+    },
+    "aliases": [
+      "بروتين بار",
+      "protein bar"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 380,
+      "proteinG": 33,
+      "carbsG": 35,
+      "fatG": 12,
+      "fiberG": 6
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "protein-cookie",
+    "name": {
+      "ar": "كوكيز بروتين",
+      "en": "Protein Cookie (generic)"
+    },
+    "aliases": [
+      "كوكيز بروتين",
+      "protein cookie"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 394,
+      "proteinG": 22,
+      "carbsG": 45,
+      "fatG": 14,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 60
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "cereal-bar",
+    "name": {
+      "ar": "سيريال بار",
+      "en": "Cereal Bar (generic)"
+    },
+    "aliases": [
+      "سيريال بار",
+      "granola bar",
+      "بار حبوب"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 390,
+      "proteinG": 5,
+      "carbsG": 70,
+      "fatG": 10,
+      "fiberG": 3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 25
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "instant-oats-packet",
+    "name": {
+      "ar": "شوفان سريع",
+      "en": "Instant Oats Sachet (plain, dry)"
+    },
+    "aliases": [
+      "شوفان سريع",
+      "instant oats",
+      "quick oats"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 375,
+      "proteinG": 12,
+      "carbsG": 66,
+      "fatG": 7,
+      "fiberG": 8
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس",
+            "en": "sachet"
+          }
+        },
+        "grams": 40
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 80
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "protein-yogurt",
+    "name": {
+      "ar": "زبادي بروتين",
+      "en": "High-Protein Yogurt (generic)"
+    },
+    "aliases": [
+      "زبادي بروتين",
+      "protein yogurt",
+      "skyr"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 68.5,
+      "proteinG": 10,
+      "carbsG": 6,
+      "fatG": 0.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "علبة",
+            "en": "tub 200g"
+          }
+        },
+        "grams": 200
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 245
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "protein-shake-rtd",
+    "name": {
+      "ar": "مشروب بروتين جاهز",
+      "en": "Ready-to-Drink Protein Shake (generic)"
+    },
+    "aliases": [
+      "بروتين شيك",
+      "protein shake",
+      "rtd shake"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 53,
+      "proteinG": 8,
+      "carbsG": 3,
+      "fatG": 1,
+      "fiberG": 0.3
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "زجاجة",
+            "en": "bottle 330ml"
+          }
+        },
+        "grams": 330
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 240
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged",
+      "liquid"
+    ]
+  },
+  {
+    "slug": "instant-noodles-dry",
+    "name": {
+      "ar": "نودلز سريعة التحضير",
+      "en": "Instant Noodles, Dry (without seasoning)"
+    },
+    "aliases": [
+      "اندومي",
+      "instant noodles",
+      "نودلز"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 446,
+      "proteinG": 9,
+      "carbsG": 62,
+      "fatG": 18,
+      "fiberG": 2.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "باكو",
+            "en": "pack"
+          }
+        },
+        "grams": 75
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "chocolate-wafer",
+    "name": {
+      "ar": "ويفر شوكولاتة",
+      "en": "Chocolate Wafer Bar (generic)"
+    },
+    "aliases": [
+      "ويفر",
+      "wafer",
+      "شوكولاتة ويفر"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 524,
+      "proteinG": 6,
+      "carbsG": 62,
+      "fatG": 28,
+      "fiberG": 1.5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "piece"
+        },
+        "grams": 25
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "لوح كبير",
+            "en": "large bar"
+          }
+        },
+        "grams": 45
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "canned-chickpeas",
+    "name": {
+      "ar": "حمص معلب",
+      "en": "Canned Chickpeas (drained)"
+    },
+    "aliases": [
+      "حمص معلب",
+      "canned hummus beans"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 118.5,
+      "proteinG": 6,
+      "carbsG": 18,
+      "fatG": 2.5,
+      "fiberG": 5
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 240
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 164
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 12
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "baked-beans-canned",
+    "name": {
+      "ar": "فاصوليا بالصلصة معلبة",
+      "en": "Baked Beans in Tomato Sauce, Canned"
+    },
+    "aliases": [
+      "فاصوليا معلبة",
+      "baked beans",
+      "fasolia mo3allaba"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 106,
+      "proteinG": 4.7,
+      "carbsG": 21,
+      "fatG": 0.4,
+      "fiberG": 4
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 415
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 254
+      },
+      {
+        "measure": {
+          "kind": "tbsp"
+        },
+        "grams": 17
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "cheese-puffs-snack",
+    "name": {
+      "ar": "سناكس جبنة",
+      "en": "Cheese Puffs Snack (generic)"
+    },
+    "aliases": [
+      "سناكس",
+      "cheese puffs",
+      "كرانشي"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 550,
+      "proteinG": 6,
+      "carbsG": 55,
+      "fatG": 34,
+      "fiberG": 2
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كيس صغير",
+            "en": "small bag"
+          }
+        },
+        "grams": 25
+      },
+      {
+        "measure": {
+          "kind": "custom",
+          "label": {
+            "ar": "كف يد",
+            "en": "handful"
+          }
+        },
+        "grams": 20
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  },
+  {
+    "slug": "fruit-cocktail-canned",
+    "name": {
+      "ar": "كوكتيل فواكه معلب",
+      "en": "Canned Fruit Cocktail in Syrup"
+    },
+    "aliases": [
+      "فواكه معلبة",
+      "fruit cocktail"
+    ],
+    "category": "supplements-packaged",
+    "per100": {
+      "kcal": 65,
+      "proteinG": 0.4,
+      "carbsG": 16,
+      "fatG": 0.1,
+      "fiberG": 0.9
+    },
+    "measures": [
+      {
+        "measure": {
+          "kind": "can"
+        },
+        "grams": 400
+      },
+      {
+        "measure": {
+          "kind": "cup"
+        },
+        "grams": 250
+      }
+    ],
+    "source": "estimate",
+    "tags": [
+      "supplements-packaged"
+    ]
+  }
+]

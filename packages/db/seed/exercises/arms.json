@@ -1,0 +1,1455 @@
+[
+  {
+    "slug": "barbell-curl",
+    "name": {
+      "ar": "بايسبس بار",
+      "en": "Barbell Curl"
+    },
+    "aliases": [
+      "barbell curl",
+      "bicep curl bar",
+      "بايسبس بالبار"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "brachioradialis",
+      "forearm flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "barbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع ثابت على جنبك والحركة من الكوع بس",
+        "en": "Keep elbows pinned to your sides, move only at the elbow"
+      },
+      {
+        "ar": "انزل ببطء ثانيتين",
+        "en": "Lower slowly over two seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الضهر لرفع الوزن",
+        "en": "Swinging the back to lift the weight"
+      },
+      {
+        "ar": "رجوع الكوع لقدام",
+        "en": "Letting the elbows drift forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-curl"
+    ],
+    "alternatives": [
+      "ez-bar-curl",
+      "dumbbell-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "ez-bar-curl",
+    "name": {
+      "ar": "بايسبس بار مكسور",
+      "en": "EZ-Bar Curl"
+    },
+    "aliases": [
+      "ez bar curl",
+      "ez curl",
+      "بار زيجزاج"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "ez bar"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "امسك على الانحناءات الداخلية لراحة الرسغ",
+        "en": "Grip the bends to keep the wrists comfortable"
+      },
+      {
+        "ar": "اعصر البايسبس فوق ثانية",
+        "en": "Squeeze the biceps for a second at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكتف مع الحركة",
+        "en": "Raising the shoulders"
+      },
+      {
+        "ar": "وزن زيادة وتمرجح",
+        "en": "Going too heavy and swinging"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-curl"
+    ],
+    "alternatives": [
+      "barbell-curl",
+      "dumbbell-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "ez bar"
+    ]
+  },
+  {
+    "slug": "dumbbell-curl",
+    "name": {
+      "ar": "بايسبس دمبل",
+      "en": "Dumbbell Curl"
+    },
+    "aliases": [
+      "db curl",
+      "dumbbell biceps curl",
+      "بايسبس دمبل"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "لف الكف لفوق وأنت بترفع",
+        "en": "Supinate the palm as you curl up"
+      },
+      {
+        "ar": "نزّل كامل وافرد الدراع",
+        "en": "Lower fully to a straight arm"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح الجسم",
+        "en": "Body swing"
+      },
+      {
+        "ar": "نص حركة",
+        "en": "Half reps"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "hammer-curl",
+      "incline-dumbbell-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "hammer-curl",
+    "name": {
+      "ar": "هامر",
+      "en": "Hammer Curl"
+    },
+    "aliases": [
+      "hammer curl",
+      "هامر كيرل",
+      "مطرقة"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "biceps brachii",
+      "forearm flexors"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكفوف ناحية بعض طول الحركة",
+        "en": "Palms face each other throughout"
+      },
+      {
+        "ar": "الكوع ثابت جنبك",
+        "en": "Keep elbows tucked"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      },
+      {
+        "ar": "رفع الكتف",
+        "en": "Shrugging the shoulders"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "dumbbell-curl",
+      "reverse-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "incline-dumbbell-curl",
+    "name": {
+      "ar": "بايسبس دمبل مائل",
+      "en": "Incline Dumbbell Curl"
+    },
+    "aliases": [
+      "incline curl",
+      "انكلاين كيرل",
+      "بايسبس مائل"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii (long head)"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell",
+      "incline bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهرك على البنش ودراعك متدلي ورا الجسم",
+        "en": "Lie back with arms hanging behind the torso"
+      },
+      {
+        "ar": "اتمدد كويس في الأسفل",
+        "en": "Get a full stretch at the bottom"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الكوع لقدام",
+        "en": "Pushing elbows forward"
+      },
+      {
+        "ar": "ميل البنش مرتفع جدا",
+        "en": "Bench too upright"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-curl"
+    ],
+    "alternatives": [
+      "dumbbell-curl",
+      "preacher-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "preacher-curl",
+    "name": {
+      "ar": "بريتشر كيرل",
+      "en": "Preacher Curl"
+    },
+    "aliases": [
+      "preacher curl",
+      "بريتشر",
+      "كيرل على المسند"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii (short head)"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "ez bar",
+      "preacher bench"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ذراعك على المسند وكتفك لتحت",
+        "en": "Arms flat on the pad, shoulders down"
+      },
+      {
+        "ar": "متفردش الدراع بقوة في الأسفل",
+        "en": "Do not slam into full extension"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع المؤخرة من الكرسي",
+        "en": "Lifting the hips off the seat"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "dumbbell-curl"
+    ],
+    "alternatives": [
+      "concentration-curl",
+      "cable-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "ez bar"
+    ]
+  },
+  {
+    "slug": "concentration-curl",
+    "name": {
+      "ar": "كونسنتريشن كيرل",
+      "en": "Concentration Curl"
+    },
+    "aliases": [
+      "concentration curl",
+      "كيرل تركيز"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "كوعك على الفخد الداخلي",
+        "en": "Rest the elbow on the inner thigh"
+      },
+      {
+        "ar": "لف الكف في الطلعة",
+        "en": "Rotate the wrist as you curl"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تحريك الجسم",
+        "en": "Moving the torso"
+      },
+      {
+        "ar": "وزن تقيل",
+        "en": "Too much weight"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "preacher-curl",
+      "dumbbell-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "cable-curl",
+    "name": {
+      "ar": "بايسبس كابل",
+      "en": "Cable Curl"
+    },
+    "aliases": [
+      "cable curl",
+      "كابل كيرل",
+      "بايسبس بالكابل"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ثبّت الكوع وحافظ على التوتر طول الحركة",
+        "en": "Pin the elbows and keep tension throughout"
+      },
+      {
+        "ar": "اعصر في أعلى الحركة",
+        "en": "Squeeze at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "الميل للخلف",
+        "en": "Leaning back"
+      },
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "barbell-curl",
+      "spider-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "spider-curl",
+    "name": {
+      "ar": "سبايدر كيرل",
+      "en": "Spider Curl"
+    },
+    "aliases": [
+      "spider curl",
+      "كيرل عنكبوت"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii (short head)"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell",
+      "incline bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "انبطح على صدرك على البنش المائل",
+        "en": "Lie chest-down on an incline bench"
+      },
+      {
+        "ar": "اعصر ثانية في الأعلى",
+        "en": "Squeeze for one second at the top"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تحريك الكتف",
+        "en": "Moving the shoulder"
+      },
+      {
+        "ar": "سرعة زيادة",
+        "en": "Going too fast"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "preacher-curl",
+      "cable-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "reverse-curl",
+    "name": {
+      "ar": "ريفرس كيرل",
+      "en": "Reverse Curl"
+    },
+    "aliases": [
+      "reverse curl",
+      "كيرل عكسي",
+      "ساعد بار"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearm extensors",
+      "biceps brachii"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "ez bar",
+      "barbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "قبضة علوية والرسغ محايد",
+        "en": "Overhand grip with a neutral wrist"
+      },
+      {
+        "ar": "الكوع ثابت جنبك",
+        "en": "Elbows fixed at your sides"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ثني الرسغ لأسفل",
+        "en": "Letting the wrists collapse"
+      },
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hammer-curl"
+    ],
+    "alternatives": [
+      "hammer-curl",
+      "reverse-wrist-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "ez bar"
+    ]
+  },
+  {
+    "slug": "zottman-curl",
+    "name": {
+      "ar": "زوتمان كيرل",
+      "en": "Zottman Curl"
+    },
+    "aliases": [
+      "zottman curl",
+      "زوتمان"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "biceps brachii",
+      "brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "forearm extensors",
+      "brachialis"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ارفع بقبضة سفلية وانزل بقبضة علوية",
+        "en": "Curl supinated and lower pronated"
+      },
+      {
+        "ar": "نزل ببطء ثلاث ثواني",
+        "en": "Lower slowly for three seconds"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "لف الرسغ بسرعة",
+        "en": "Rushing the wrist rotation"
+      },
+      {
+        "ar": "تمرجح",
+        "en": "Swinging"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "hammer-curl"
+    ],
+    "alternatives": [
+      "hammer-curl",
+      "dumbbell-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "triceps-pushdown-rope",
+    "name": {
+      "ar": "تراي بوش داون حبل",
+      "en": "Rope Triceps Pushdown"
+    },
+    "aliases": [
+      "rope pushdown",
+      "tricep rope",
+      "تراي حبل"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "anconeus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable",
+      "rope"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع ملزوق جنبك وافتح الحبل في الآخر",
+        "en": "Elbows glued to the sides and split the rope at the bottom"
+      },
+      {
+        "ar": "اضغط لحد القفل الكامل",
+        "en": "Press to full lockout"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "ميل الجسم وضغط بوزن الجسم",
+        "en": "Leaning over and pressing with body weight"
+      },
+      {
+        "ar": "رفع الكوع لقدام",
+        "en": "Elbows drifting forward"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "triceps-pushdown-bar"
+    ],
+    "alternatives": [
+      "triceps-pushdown-bar",
+      "overhead-cable-triceps-extension"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "triceps-pushdown-bar",
+    "name": {
+      "ar": "تراي بوش داون بار",
+      "en": "Bar Triceps Pushdown"
+    },
+    "aliases": [
+      "tricep pushdown",
+      "تراي بار",
+      "بوش داون بار"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "anconeus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable",
+      "straight bar"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع ثابت وانزل ببطء",
+        "en": "Elbows fixed and return slowly"
+      },
+      {
+        "ar": "اشد الصدر وانت بتضغط",
+        "en": "Keep the chest up while pressing"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "حركة الكتف",
+        "en": "Moving the shoulders"
+      },
+      {
+        "ar": "نصف الحركة",
+        "en": "Short range"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "triceps-pushdown-rope",
+      "skull-crusher"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "overhead-triceps-extension-dumbbell",
+    "name": {
+      "ar": "تراي فوق الراس دمبل",
+      "en": "Overhead Dumbbell Triceps Extension"
+    },
+    "aliases": [
+      "overhead extension",
+      "french press dumbbell",
+      "تراي خلف الراس"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii (long head)"
+    ],
+    "secondaryMuscles": [
+      "anconeus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع جنب الراس مش بيفتح",
+        "en": "Elbows stay close to the head"
+      },
+      {
+        "ar": "نزل الدمبل ورا الراس لتمدد كامل",
+        "en": "Lower behind the head to a full stretch"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الكوع للخارج",
+        "en": "Flaring the elbows"
+      },
+      {
+        "ar": "قوس أسفل الضهر",
+        "en": "Arching the lower back"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      },
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "triceps-pushdown-bar"
+    ],
+    "alternatives": [
+      "overhead-cable-triceps-extension",
+      "skull-crusher"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "overhead-cable-triceps-extension",
+    "name": {
+      "ar": "تراي كابل فوق الراس",
+      "en": "Overhead Cable Triceps Extension"
+    },
+    "aliases": [
+      "cable overhead extension",
+      "تراي كابل خلف الراس"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii (long head)"
+    ],
+    "secondaryMuscles": [
+      "anconeus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "cable",
+      "rope"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "خطوة قدام وميل بسيط والكوع لأعلى",
+        "en": "Step forward with a small lean and elbows up"
+      },
+      {
+        "ar": "افرد الدراع لقدام لحد القفل",
+        "en": "Extend forward to full lockout"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "تحريك الكتف",
+        "en": "Shoulders moving"
+      },
+      {
+        "ar": "وزن زيادة",
+        "en": "Too heavy"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "overhead-triceps-extension-dumbbell"
+    ],
+    "alternatives": [
+      "overhead-triceps-extension-dumbbell",
+      "triceps-pushdown-rope"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "cable"
+    ]
+  },
+  {
+    "slug": "skull-crusher",
+    "name": {
+      "ar": "سكل كراشر",
+      "en": "Skull Crusher"
+    },
+    "aliases": [
+      "skull crusher",
+      "lying triceps extension",
+      "فرنش بريس"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "anconeus"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "ez bar",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الدراع عمودي والكوع ثابت",
+        "en": "Upper arms vertical and elbows fixed"
+      },
+      {
+        "ar": "انزل البار قبل الجبهة بسنتي",
+        "en": "Lower the bar just above the forehead"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الكوع",
+        "en": "Flaring the elbows"
+      },
+      {
+        "ar": "نزول سريع",
+        "en": "Dropping fast"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "overhead-triceps-extension-dumbbell"
+    ],
+    "alternatives": [
+      "triceps-pushdown-bar",
+      "overhead-triceps-extension-dumbbell"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "ez bar"
+    ]
+  },
+  {
+    "slug": "close-grip-bench-press",
+    "name": {
+      "ar": "بنش ضيق",
+      "en": "Close-Grip Bench Press"
+    },
+    "aliases": [
+      "close grip bench",
+      "بنش ضيق",
+      "كلوز جريب"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "pectoralis major",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "القبضة بعرض الكتف تقريبا مش أضيق",
+        "en": "Grip around shoulder width, not narrower"
+      },
+      {
+        "ar": "الكوع قريب لجسمك",
+        "en": "Keep elbows tucked in"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "قبضة ضيقة جدا تتعب الرسغ",
+        "en": "Grip too narrow straining the wrists"
+      },
+      {
+        "ar": "نزول البار على البطن",
+        "en": "Lowering the bar to the stomach"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "bench-dip"
+    ],
+    "alternatives": [
+      "bench-press-barbell",
+      "chest-dips"
+    ],
+    "tags": [
+      "arms",
+      "push_horizontal",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "bench-dip",
+    "name": {
+      "ar": "ديبس على البنش",
+      "en": "Bench Dip"
+    },
+    "aliases": [
+      "bench dip",
+      "triceps dips",
+      "ديبس بنش"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "deltoid anterior",
+      "pectoralis major"
+    ],
+    "movementPattern": "push_vertical",
+    "equipment": [
+      "bench",
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "ضهرك قريب من البنش ونزل الكوع 90 درجة",
+        "en": "Keep the back close to the bench and lower to 90 degrees"
+      },
+      {
+        "ar": "اضغط بالتراي مش بالكتف",
+        "en": "Drive with the triceps, not the shoulder"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "نزول عميق على الكتف",
+        "en": "Dropping too deep on the shoulder"
+      },
+      {
+        "ar": "بعد الجسم عن البنش",
+        "en": "Hips drifting away from the bench"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "انحشار أو التهاب في الكتف",
+        "en": "Shoulder impingement or painful shoulder"
+      },
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [
+      "close-grip-bench-press"
+    ],
+    "regressions": [],
+    "alternatives": [
+      "triceps-pushdown-bar"
+    ],
+    "tags": [
+      "arms",
+      "push_vertical",
+      "bench"
+    ]
+  },
+  {
+    "slug": "diamond-push-up",
+    "name": {
+      "ar": "ضغط الماسة",
+      "en": "Diamond Push-Up"
+    },
+    "aliases": [
+      "diamond push up",
+      "ضغط ضيق",
+      "دايموند بوش اب"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "pectoralis major",
+      "deltoid anterior"
+    ],
+    "movementPattern": "push_horizontal",
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "unilateral": false,
+    "compound": true,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الإبهام والسبابة على شكل الماسة تحت الصدر",
+        "en": "Thumbs and index fingers form a diamond under the chest"
+      },
+      {
+        "ar": "الكوع جنبك",
+        "en": "Elbows hug the ribs"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "فتح الكوع",
+        "en": "Flaring the elbows"
+      },
+      {
+        "ar": "نزول الوسط",
+        "en": "Hips sagging"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "push-up"
+    ],
+    "alternatives": [
+      "close-grip-bench-press",
+      "push-up"
+    ],
+    "tags": [
+      "arms",
+      "push_horizontal",
+      "bodyweight"
+    ]
+  },
+  {
+    "slug": "triceps-kickback",
+    "name": {
+      "ar": "تراي كيك باك",
+      "en": "Dumbbell Triceps Kickback"
+    },
+    "aliases": [
+      "kickback",
+      "tricep kickback",
+      "كيك باك"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "triceps brachii"
+    ],
+    "secondaryMuscles": [
+      "posterior deltoid"
+    ],
+    "movementPattern": "isolation",
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": true,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكوع ثابت لمستوى الجذع",
+        "en": "Keep the upper arm parallel to the torso"
+      },
+      {
+        "ar": "فرد كامل واعصر",
+        "en": "Extend fully and squeeze"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "استخدام زخم",
+        "en": "Using momentum"
+      },
+      {
+        "ar": "وزن عالي",
+        "en": "Too heavy"
+      }
+    ],
+    "contraindications": [],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "triceps-pushdown-rope",
+      "overhead-triceps-extension-dumbbell"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "dumbbell"
+    ]
+  },
+  {
+    "slug": "wrist-curl",
+    "name": {
+      "ar": "رسغ للأمام",
+      "en": "Wrist Curl"
+    },
+    "aliases": [
+      "wrist curl",
+      "ساعد",
+      "فورارم كيرل"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "forearm flexors"
+    ],
+    "secondaryMuscles": [],
+    "movementPattern": "isolation",
+    "equipment": [
+      "barbell",
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الساعد مسنود على الفخد والكف لفوق",
+        "en": "Forearms supported on thighs, palms up"
+      },
+      {
+        "ar": "حرك الرسغ بس",
+        "en": "Move only at the wrist"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "رفع الساعد",
+        "en": "Lifting the forearm"
+      },
+      {
+        "ar": "وزن تقيل",
+        "en": "Too heavy"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      }
+    ],
+    "progressions": [],
+    "regressions": [],
+    "alternatives": [
+      "reverse-wrist-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "barbell"
+    ]
+  },
+  {
+    "slug": "reverse-wrist-curl",
+    "name": {
+      "ar": "رسغ للخلف",
+      "en": "Reverse Wrist Curl"
+    },
+    "aliases": [
+      "reverse wrist curl",
+      "ساعد خلفي"
+    ],
+    "category": "arms",
+    "primaryMuscles": [
+      "forearm extensors"
+    ],
+    "secondaryMuscles": [],
+    "movementPattern": "isolation",
+    "equipment": [
+      "barbell",
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "unilateral": false,
+    "compound": false,
+    "plane": "sagittal",
+    "cues": [
+      {
+        "ar": "الكف لتحت والساعد مسنود",
+        "en": "Palms down with forearms supported"
+      },
+      {
+        "ar": "حركة بطيئة وبوزن خفيف",
+        "en": "Slow reps with a light load"
+      }
+    ],
+    "commonMistakes": [
+      {
+        "ar": "وزن عالي",
+        "en": "Going too heavy"
+      },
+      {
+        "ar": "تحريك الكوع",
+        "en": "Moving the elbow"
+      }
+    ],
+    "contraindications": [
+      {
+        "ar": "ألم أو عدم ثبات في الرسغ",
+        "en": "Wrist pain or instability"
+      },
+      {
+        "ar": "التهاب وتر المرفق",
+        "en": "Elbow tendinopathy"
+      }
+    ],
+    "progressions": [],
+    "regressions": [
+      "wrist-curl"
+    ],
+    "alternatives": [
+      "wrist-curl",
+      "reverse-curl"
+    ],
+    "tags": [
+      "arms",
+      "isolation",
+      "barbell"
+    ]
+  }
+]
