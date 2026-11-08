@@ -35,3 +35,10 @@ exports), `packages/db/src/client.ts`, the schema files under `packages/db/src/s
 
 Your final answer must list every exported name with its exact signature: fifteen suite writers code against that
 list without seeing your files.
+
+## Running at the same time as SEC-X2
+
+Batch SEC-X2 rewrites `packages/db/src/client.ts` while you work. Code against the signatures of doc section 14:
+`withAuthTx(ctx, fn)`, `withUserTx(userId, fn)`, `withServiceTx(tenantId, reason, fn)` and
+`withErasureTx(tenantId, reason, fn)`, plus the `AuthContext` and `Tx` types. If the current file lacks one of them,
+import it anyway under the name the doc gives and list it under "what other builders must provide".
