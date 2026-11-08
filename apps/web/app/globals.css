@@ -143,3 +143,37 @@
     font-family: var(--font-arabic);
   }
 }
+
+/*
+ * BRAND LAYER (added in P2.5). DAWLYY's own color on top of the neutral tokens above.
+ * --brand is a deep teal: white text on it passes AA (about 7:1). --brand-soft is its tint for
+ * active nav items, empty-state badges and loading skeletons. Change these four to re-brand the shell.
+ */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-foreground: var(--brand-soft-foreground);
+}
+
+:root {
+  --brand: oklch(0.45 0.09 185);
+  --brand-foreground: oklch(0.99 0.01 185);
+  --brand-soft: oklch(0.955 0.03 185);
+  --brand-soft-foreground: oklch(0.34 0.07 185);
+}
+
+.dark {
+  --brand: oklch(0.72 0.11 185);
+  --brand-foreground: oklch(0.2 0.04 185);
+  --brand-soft: oklch(0.3 0.05 185);
+  --brand-soft-foreground: oklch(0.9 0.05 185);
+}
+
+/* A clearly visible keyboard focus ring for links and custom controls (2px, offset, brand color). */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}

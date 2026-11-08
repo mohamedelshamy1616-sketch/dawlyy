@@ -1,20 +1,18 @@
+import { CalendarCheck } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/src/components/shell/empty-state";
+import { PageHeader } from "@/src/components/shell/page-header";
 
 export default async function TodayPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const nav = await getTranslations("nav.client");
-  const common = await getTranslations("common");
+  const t = await getTranslations("client.today");
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-start text-2xl font-semibold">{nav("today")}</h1>
-      <Card>
-        <CardContent>
-          <p className="text-start text-sm text-muted-foreground">{common("noResults")}</p>
-        </CardContent>
-      </Card>
+    <div className="flex flex-col gap-6">
+      <PageHeader title={nav("today")} subtitle={t("subtitle")} />
+      <EmptyState Icon={CalendarCheck} title={t("emptyTitle")} description={t("emptyBody")} />
     </div>
   );
 }

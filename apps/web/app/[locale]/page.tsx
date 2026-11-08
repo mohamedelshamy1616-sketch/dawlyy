@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { getAuthContext } from "@/src/server/auth";
+import { LandingState } from "@/src/components/shell/landing-state";
 
 async function RoleRedirect() {
   const locale = await getLocale();
@@ -15,8 +16,10 @@ async function RoleRedirect() {
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  // The redirect needs the session, which streams. Until it resolves the visitor sees the branded
+  // landing state instead of an empty body; the fallback is replaced the moment the redirect fires.
   return (
-    <Suspense>
+    <Suspense fallback={<LandingState />}>
       <RoleRedirect />
     </Suspense>
   );

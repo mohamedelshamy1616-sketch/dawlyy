@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { AuthGate } from "@/components/app/auth-gate";
-import { ClientTabBar } from "@/components/app/client-tab-bar";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ClientShell } from "@/src/components/shell/client-shell";
+import { PageSkeleton } from "@/src/components/shell/page-skeleton";
 
 export default async function ClientAppLayout({
   children,
@@ -14,14 +14,14 @@ export default async function ClientAppLayout({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  // The shell holds no data, so it is sent first. Only the session check and the page wait inside Suspense.
   return (
-    <Suspense fallback={<Skeleton className="m-4 h-40" />}>
-      <AuthGate roles={["client"]} fallback="/coach">
-        <div className="mx-auto flex min-h-svh w-full max-w-xl flex-col">
-          <main className="flex-1 px-4 pt-6 pb-24">{children}</main>
-          <ClientTabBar />
-        </div>
-      </AuthGate>
-    </Suspense>
+    <ClientShell>
+      <Suspense fallback={<PageSkeleton />}>
+        <AuthGate roles={["client"]} fallback="/coach">
+          {children}
+        </AuthGate>
+      </Suspense>
+    </ClientShell>
   );
 }
