@@ -47,7 +47,16 @@ export type Fixture = {
   clientC: string;
   /** Auth contexts. */
   o1: AuthContext;
+  /** Staff of T1 with client_scope 'assigned', assigned to client A only. */
   s1: AuthContext;
+  /** Staff of T1 with client_scope 'all'. */
+  s2: AuthContext;
+  /** Staff of T1 with client_scope 'all' whose membership is disabled: pinning it must give no access. */
+  sx: AuthContext;
+  /** Owner of T2. */
+  o2: AuthContext;
+  /** O1's user as active staff (client_scope 'all') of T2: one user, two tenants. */
+  o1t2: AuthContext;
   ua: AuthContext;
   ub: AuthContext;
   uc: AuthContext;
@@ -55,15 +64,21 @@ export type Fixture = {
   s1MembershipId: string;
   packageT1: string;
   packageT2: string;
+  /** Active subscriptions of A, B (T1) and C (T2). */
+  subA: string;
+  subB: string;
+  subC: string;
   templateProgram: string;
   copyProgram: string;
   publishedVersion: string;
+  /** Draft version 1 of A's copy program. */
+  copyVersion: string;
   noteA: string;
   metricA: string;
   metricB: string;
 };
 
-const SERVICE_TABLES = 'tenants, audit_log';
+const SERVICE_TABLES = 'tenants, audit_log, events, job_runs';
 
 /** Remove everything the suite created. TRUNCATE ... CASCADE follows the tenant foreign keys. */
 export async function truncateAll(): Promise<void> {
@@ -85,16 +100,26 @@ export async function buildFixture(): Promise<Fixture> {
     clientC: randomUUID(),
     userO1: randomUUID(),
     userS1: randomUUID(),
+    userS2: randomUUID(),
+    userSX: randomUUID(),
+    userO2: randomUUID(),
     userA: randomUUID(),
     userB: randomUUID(),
     userC: randomUUID(),
     memO1: randomUUID(),
     memS1: randomUUID(),
+    memS2: randomUUID(),
+    memSX: randomUUID(),
+    memO2: randomUUID(),
+    memO1T2: randomUUID(),
     memA: randomUUID(),
     memB: randomUUID(),
     memC: randomUUID(),
     packageT1: randomUUID(),
     packageT2: randomUUID(),
+    subA: randomUUID(),
+    subB: randomUUID(),
+    subC: randomUUID(),
     templateProgram: randomUUID(),
     copyProgram: randomUUID(),
     publishedVersion: randomUUID(),
@@ -131,6 +156,13 @@ export async function buildFixture(): Promise<Fixture> {
       (${f.memB}, ${f.t1}, ${f.userB}, 'client', 'active', ${f.clientB}, null),
       (${f.memC}, ${f.t2}, ${f.userC}, 'client', 'active', ${f.clientC}, null)`);
 
+    const allScope = JSON.stringify({ client_scope: 'all', modules: {} });
+    await tx.execute(sql`insert into memberships (id, tenant_id, user_id, role, status, client_id, permissions) values
+      (${f.memS2}, ${f.t1}, ${f.userS2}, 'staff', 'active', null, ${allScope}::jsonb),
+      (${f.memSX}, ${f.t1}, ${f.userSX}, 'staff', 'disabled', null, ${allScope}::jsonb),
+      (${f.memO2}, ${f.t2}, ${f.userO2}, 'owner', 'active', null, null),
+      (${f.memO1T2}, ${f.t2}, ${f.userO1}, 'staff', 'active', null, ${allScope}::jsonb)`);
+
     await tx.execute(sql`insert into staff_client_assignments (tenant_id, membership_id, client_id)
       values (${f.t1}, ${f.memS1}, ${f.clientA})`);
 
@@ -138,10 +170,10 @@ export async function buildFixture(): Promise<Fixture> {
       (${f.packageT1}, ${f.t1}, ${JSON.stringify({ en: 'Package T1' })}::jsonb, 30, ${schedule}::jsonb),
       (${f.packageT2}, ${f.t2}, ${JSON.stringify({ en: 'Package T2' })}::jsonb, 30, ${schedule}::jsonb)`);
 
-    await tx.execute(sql`insert into subscriptions (tenant_id, client_id, package_id, package_snapshot, state, starts_on, ends_on) values
-      (${f.t1}, ${f.clientA}, ${f.packageT1}, ${snapshot('Package T1')}::jsonb, 'active', current_date, current_date + 30),
-      (${f.t1}, ${f.clientB}, ${f.packageT1}, ${snapshot('Package T1')}::jsonb, 'active', current_date, current_date + 30),
-      (${f.t2}, ${f.clientC}, ${f.packageT2}, ${snapshot('Package T2')}::jsonb, 'active', current_date, current_date + 30)`);
+    await tx.execute(sql`insert into subscriptions (id, tenant_id, client_id, package_id, package_snapshot, state, starts_on, ends_on) values
+      (${f.subA}, ${f.t1}, ${f.clientA}, ${f.packageT1}, ${snapshot('Package T1')}::jsonb, 'active', current_date, current_date + 30),
+      (${f.subB}, ${f.t1}, ${f.clientB}, ${f.packageT1}, ${snapshot('Package T1')}::jsonb, 'active', current_date, current_date + 30),
+      (${f.subC}, ${f.t2}, ${f.clientC}, ${f.packageT2}, ${snapshot('Package T2')}::jsonb, 'active', current_date, current_date + 30)`);
 
     // Template (client_id null) with one published version, plus a client copy for A.
     await tx.execute(sql`insert into programs (id, tenant_id, name, kind, client_id) values
@@ -168,15 +200,23 @@ export async function buildFixture(): Promise<Fixture> {
     clientC: f.clientC,
     o1: { userId: f.userO1, tenantId: f.t1, membershipId: f.memO1, role: 'owner' },
     s1: { userId: f.userS1, tenantId: f.t1, membershipId: f.memS1, role: 'staff' },
+    s2: { userId: f.userS2, tenantId: f.t1, membershipId: f.memS2, role: 'staff' },
+    sx: { userId: f.userSX, tenantId: f.t1, membershipId: f.memSX, role: 'staff' },
+    o2: { userId: f.userO2, tenantId: f.t2, membershipId: f.memO2, role: 'owner' },
+    o1t2: { userId: f.userO1, tenantId: f.t2, membershipId: f.memO1T2, role: 'staff' },
     ua: { userId: f.userA, tenantId: f.t1, membershipId: f.memA, role: 'client', clientId: f.clientA },
     ub: { userId: f.userB, tenantId: f.t1, membershipId: f.memB, role: 'client', clientId: f.clientB },
     uc: { userId: f.userC, tenantId: f.t2, membershipId: f.memC, role: 'client', clientId: f.clientC },
     s1MembershipId: f.memS1,
     packageT1: f.packageT1,
     packageT2: f.packageT2,
+    subA: f.subA,
+    subB: f.subB,
+    subC: f.subC,
     templateProgram: f.templateProgram,
     copyProgram: f.copyProgram,
     publishedVersion: f.publishedVersion,
+    copyVersion: f.copyVersion,
     noteA: f.noteA,
     metricA: f.metricA,
     metricB: f.metricB,
