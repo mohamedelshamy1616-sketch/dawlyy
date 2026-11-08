@@ -5,15 +5,18 @@ import {
   MEDIA_REVIEW_STATES,
   PUBLISH_STATES,
   AUTOMATION_RUN_STATES,
+  PAYMENT_STATES,
   type SubscriptionState,
   type CheckinState,
   type SessionState,
   type MediaReviewState,
   type PublishState,
   type AutomationRunState,
+  type PaymentState,
 } from '../types';
 
-export type MachineName = 'subscription' | 'checkin' | 'session' | 'mediaReview' | 'publish' | 'automationRun';
+/** doc §6.3: named domain machines, including the payment guard's state contract. */
+export type MachineName = 'subscription' | 'checkin' | 'session' | 'mediaReview' | 'publish' | 'automationRun' | 'payment';
 
 export type Machine<S extends string = string, E extends string = string> = {
   name: MachineName;
@@ -32,10 +35,11 @@ function freezeMachine<S extends string, E extends string>(machine: Machine<S, E
   });
 }
 
-/** Spec §56: domain transitions only; the caller enforces permissions and persists history. */
+/** Spec §56, doc §6.3: plain domain transitions; callers enforce permissions and persist history. */
 export const machines: Readonly<Record<MachineName, Machine>> = Object.freeze({
   subscription: freezeMachine({
     name: 'subscription',
+    // doc §6.3: a subscription is created active when its payment is already verified.
     initial: 'pending',
     states: SUBSCRIPTION_STATES,
     terminal: ['cancelled'],
@@ -45,7 +49,7 @@ export const machines: Readonly<Record<MachineName, Machine>> = Object.freeze({
       { from: ['active', 'grace'], event: 'expire', to: 'expired' },
       { from: ['active'], event: 'pause', to: 'paused' },
       { from: ['paused'], event: 'resume', to: 'active' },
-      { from: ['active', 'grace', 'paused'], event: 'cancel', to: 'cancelled' },
+      { from: ['active', 'grace', 'paused', 'pending', 'suspended'], event: 'cancel', to: 'cancelled' },
       { from: ['pending', 'active', 'grace', 'paused', 'expired'], event: 'suspend', to: 'suspended' },
       { from: ['suspended'], event: 'reinstate', to: 'active' },
       { from: ['expired', 'grace'], event: 'renew', to: 'active' },
@@ -108,7 +112,7 @@ export const machines: Readonly<Record<MachineName, Machine>> = Object.freeze({
       { from: ['in_review'], event: 'approve', to: 'approved' },
       { from: ['in_review'], event: 'reject', to: 'draft' },
       { from: ['approved'], event: 'publish', to: 'published' },
-      { from: ['draft'], event: 'publish', to: 'published', note: 'Solo owner shortcut, spec §40.' },
+      { from: ['draft'], event: 'publish', to: 'published', note: 'Direct publication, spec §40; doc §6.3 requires staff module publish permission.' },
       { from: ['published'], event: 'supersede', to: 'superseded' },
       { from: ['draft', 'in_review', 'approved', 'published', 'superseded'], event: 'archive', to: 'archived' },
     ],
@@ -127,6 +131,18 @@ export const machines: Readonly<Record<MachineName, Machine>> = Object.freeze({
       { from: ['pending', 'running', 'failed', 'retrying'], event: 'cancel', to: 'cancelled' },
     ],
   } satisfies Machine<AutomationRunState>),
+  payment: freezeMachine({
+    name: 'payment',
+    initial: 'pending',
+    states: PAYMENT_STATES,
+    terminal: ['rejected', 'refunded'],
+    transitions: [
+      { from: ['pending'], event: 'verify', to: 'verified' },
+      { from: ['pending'], event: 'reject', to: 'rejected' },
+      // doc §6.3: partial refunds stay verified; refunded means the full amount was returned.
+      { from: ['verified'], event: 'refund', to: 'refunded' },
+    ],
+  } satisfies Machine<PaymentState>),
 });
 
 export type TransitionResult =

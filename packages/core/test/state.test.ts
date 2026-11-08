@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { machines, transition, canTransition, eventsFrom, isTerminal, type MachineName } from '../src/state';
-import { SUBSCRIPTION_STATES, CHECKIN_STATES, SESSION_STATES, MEDIA_REVIEW_STATES, PUBLISH_STATES, AUTOMATION_RUN_STATES } from '../src/types';
+import { SUBSCRIPTION_STATES, CHECKIN_STATES, SESSION_STATES, MEDIA_REVIEW_STATES, PUBLISH_STATES, AUTOMATION_RUN_STATES, PAYMENT_STATES } from '../src/types';
 
-const names: MachineName[] = ['subscription', 'checkin', 'session', 'mediaReview', 'publish', 'automationRun'];
+const names: MachineName[] = ['subscription', 'checkin', 'session', 'mediaReview', 'publish', 'automationRun', 'payment'];
 
 describe('machine tables', () => {
   it('uses the exact shared state vocabularies', () => {
@@ -12,6 +12,7 @@ describe('machine tables', () => {
     expect(machines.mediaReview.states).toEqual(MEDIA_REVIEW_STATES);
     expect(machines.publish.states).toEqual(PUBLISH_STATES);
     expect(machines.automationRun.states).toEqual(AUTOMATION_RUN_STATES);
+    expect(machines.payment.states).toEqual(PAYMENT_STATES);
   });
 
   it.each(names)('%s has valid endpoints, reachable states, and terminal states without outgoing transitions', name => {
@@ -74,6 +75,8 @@ describe('transition paths', () => {
     { name: 'mediaReview', events: ['upload', 'process', 'queue', 'request_resubmission', 'resubmit', 'queue', 'approve', 'archive'], states: ['uploaded', 'processing', 'queued_for_review', 'needs_resubmission', 'uploaded', 'queued_for_review', 'approved', 'archived'] },
     { name: 'publish', events: ['submit_review', 'reject', 'submit_review', 'approve', 'publish', 'supersede', 'archive'], states: ['in_review', 'draft', 'in_review', 'approved', 'published', 'superseded', 'archived'] },
     { name: 'automationRun', events: ['start', 'fail', 'retry', 'rerun', 'complete'], states: ['running', 'failed', 'retrying', 'running', 'completed'] },
+    { name: 'payment', events: ['verify', 'refund'], states: ['verified', 'refunded'] },
+    { name: 'payment', events: ['reject'], states: ['rejected'] },
   ];
   it.each(paths)('follows the $name lifecycle', ({ name, events, states }) => {
     let current = machines[name].initial;
@@ -84,9 +87,66 @@ describe('transition paths', () => {
     });
   });
 
-  it('allows the solo owner publish shortcut and documents its intent', () => {
+  it('allows direct publication and documents the separate permission requirement', () => {
     expect(transition('publish', 'draft', 'publish')).toEqual({ ok: true, to: 'published' });
     expect(machines.publish.transitions.find(t => t.from.includes('draft') && t.event === 'publish')?.note).toContain('§40');
+    expect(machines.publish.transitions.find(t => t.from.includes('draft') && t.event === 'publish')?.note).toContain('§6.3');
+  });
+});
+
+describe('database security contract §6.3', () => {
+  it('exposes exactly the three payment edges as plain transition data', () => {
+    const payment = machines.payment;
+    expect(payment.initial).toBe('pending');
+    expect(payment.terminal).toEqual(['rejected', 'refunded']);
+    const edges = payment.transitions.flatMap(edge => edge.from.map(from => [from, edge.to]));
+    expect(edges).toEqual([
+      ['pending', 'verified'],
+      ['pending', 'rejected'],
+      ['verified', 'refunded'],
+    ]);
+    // A partial refund changes the cumulative amount while remaining verified; it adds no state edge.
+    for (const from of PAYMENT_STATES) {
+      for (const to of PAYMENT_STATES) {
+        const events = eventsFrom('payment', from);
+        const reachesTarget = events.some(event => {
+          const result = transition('payment', from, event);
+          return result.ok && result.to === to;
+        });
+        expect(reachesTarget).toBe(edges.some(([source, target]) => source === from && target === to));
+      }
+    }
+    expect(canTransition('payment', 'pending', 'refund')).toBe(false);
+    expect(canTransition('payment', 'verified', 'reject')).toBe(false);
+    expect(canTransition('payment', 'verified', 'verify')).toBe(false);
+  });
+
+  it('exposes all 19 subscription edges, including pending and suspended cancellation', () => {
+    const edges = machines.subscription.transitions.flatMap(edge => edge.from.map(from => `${from}->${edge.to}`));
+    expect(edges.sort()).toEqual([
+      'pending->active',
+      'active->grace',
+      'active->expired',
+      'grace->expired',
+      'active->paused',
+      'paused->active',
+      'active->cancelled',
+      'grace->cancelled',
+      'paused->cancelled',
+      'pending->cancelled',
+      'suspended->cancelled',
+      'pending->suspended',
+      'active->suspended',
+      'grace->suspended',
+      'paused->suspended',
+      'expired->suspended',
+      'suspended->active',
+      'expired->active',
+      'grace->active',
+    ].sort());
+    expect(transition('subscription', 'pending', 'cancel')).toEqual({ ok: true, to: 'cancelled' });
+    expect(transition('subscription', 'suspended', 'cancel')).toEqual({ ok: true, to: 'cancelled' });
+    expect(canTransition('subscription', 'expired', 'cancel')).toBe(false);
   });
 });
 

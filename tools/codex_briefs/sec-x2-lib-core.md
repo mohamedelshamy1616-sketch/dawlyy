@@ -46,3 +46,9 @@ exports.
 - The runtime transactions never run without `set local role dawlyy_rls`; the service path never sets it.
 - `clientColumns` lists, for every table a client can read, only the client-visible columns of section 12.
 - `machines.payment` exists with exactly the doc's edges; existing machines keep their shape.
+
+## Running at the same time as SEC-X3
+
+Batch SEC-X3 rewrites `packages/db/test/fixtures.ts` and `helpers.ts` while you work, coding against the doc section 14
+signatures (`withAuthTx(ctx, fn)`, `withUserTx(userId, fn)`, `withServiceTx(tenantId, reason, fn)`,
+`withErasureTx(tenantId, reason, fn)`, `AuthContext`, `Tx`). Export exactly those names.

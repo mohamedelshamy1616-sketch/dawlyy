@@ -9,6 +9,7 @@ import { createSupabaseServerClient } from './supabase';
 /**
  * Resolve the caller from the Supabase session (cookie) or an `Authorization: Bearer` access token,
  * then load their active membership under RLS. Returns null when there is no session or no active membership.
+ * doc §14: staff API permissions come from that same membership; owners and clients carry null.
  * Tokens never leave this function.
  */
 export async function getAuthContext(): Promise<AuthContext | null> {
@@ -35,6 +36,7 @@ export async function getAuthContext(): Promise<AuthContext | null> {
     tenantId: membership.tenantId,
     membershipId: membership.id,
     role: membership.role,
+    permissions: membership.role === 'staff' ? membership.permissions : null,
     clientId: membership.clientId ?? undefined,
   };
 }
