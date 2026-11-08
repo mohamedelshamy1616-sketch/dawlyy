@@ -5,7 +5,11 @@ list current and works around each item until it gets an answer. Item 1 blocks t
 
 Last update: 2026-11-08 06:40 (Africa/Cairo), by the setup session (Claude Opus 5.5).
 
-## 1. Free disk space on C: (blocks installs, Playwright and the final test phase)
+Status 8 Nov 23:55: items 1 and 2 are done. After a restart and `powercfg /hibernate off` (his yes, run elevated),
+C: has about 14 GB free. The private GitHub repo exists and the watchdog pushes `main` to it hourly. The full,
+sourced budget from now to launch is in `docs/plans/BUDGET.md`; the table at the end of this file is its short form.
+
+## 1. Free disk space on C: (done 8 Nov)
 
 C: had 1.1 GB free on 8 Nov 06:18. Installs, builds and browser runs need at least 3 GB, and the commit charge
 (memory) cannot grow while the disk is full. These are regenerable caches or backups, sizes measured 8 Nov 06:20:
@@ -28,7 +32,7 @@ this morning. At 08:01 `C:\pagefile.sys` was 19.7 GB and still growing (it grows
 e) `powercfg /hibernate off` in an admin PowerShell deletes hiberfil.sys (6.6 GB; turns off hibernate and fast
 startup); f) delete `%LOCALAPPDATA%\npm-cache\_npx` (1.0 GB; npx downloads its tools again on next use).
 
-## 2. GitHub private repository and push
+## 2. GitHub private repository and push (done 8 Nov)
 
 - Action: create a private repo `dawlyy` under your GitHub account and push `main`
   (`gh repo create dawlyy --private --source . --remote origin --push`).
@@ -84,3 +88,4 @@ Prices are estimates; check each before paying.
 | Legal review | | quote needed |
 | Fable credits (optional) | | Anthropic usage page |
 | **Total for a paid beta** | **about $45/month** | **about $10-15/year + legal** |
+| Launch in Egypt (see BUDGET.md) | about $65-85 + usage; Paymob 2.75% + EGP 3 per card payment | domain, lawyer quote, PDPC licence |
