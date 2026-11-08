@@ -2,7 +2,9 @@
 
 Online coaching operating system: pnpm 12 workspace, Next.js 16 web app with a Hono API at `/api/v1`
 (`apps/web`), pure-TypeScript domain core (`packages/core`), Drizzle + Postgres with row-level security
-(`packages/db`). Local only: branch `main`, no remote.
+(`packages/db`). Branch `main`; remote `origin` is Mohamed's private GitHub repo (created 8 Nov 2026 with his
+yes). Sessions never push: the autopilot watchdog pushes new commits hourly, fast-forward only, after a secret
+scan (`C:/Users/compuline/.claude/autopilot/git_sync.py`).
 
 ## Read first
 

@@ -86,7 +86,8 @@ His standing instructions (7 and 8 Nov):
 
 These need his specific yes naming the action. Never do them. Write each one into `docs/plans/APPROVALS.md` (the
 exact action, why, the cost, what it unblocks), then continue with other work:
-- `git push`, creating a GitHub repository or any remote;
+- `git push`, creating a GitHub repository or any other remote. The private GitHub repo `origin` exists (his yes,
+  8 Nov 2026) and the watchdog pushes your commits to it hourly; you never push yourself, so commit often;
 - any Supabase, Vercel or other account action (sign-up, project, keys), buying a domain;
 - spending money of any kind, including Fable credits and paid overage;
 - deleting or moving any of his files or caches outside the repo (see Disk);
@@ -211,6 +212,29 @@ STATE.md next action 5, so that parallel builders never edit the same file:
 - the development-only login (see Local testing).
 
 Gate: typecheck. Commit.
+
+### P2.5: a preview Mohamed can open and click (sonnet high)
+
+Mohamed, 8 Nov 2026: "I want to start seeing what the app looks like, so everything is clear and I can test
+everything." Do not wait for P5 to make the app visible:
+- Load a small demo seed (owner, one staff member, 3 clients, 1 package, 20 exercises, 20 foods, 1 program) so the
+  dev login has users. The full P5 seed replaces it later.
+- Give every route the real app shell (header, navigation, locale switch) and branded loading and empty states; no
+  blank page and no bare grey skeleton.
+- Fix the RTL overflow on `/ar/login` (`docs/product/COMPETITOR_GAPS.md`, "Already seen").
+- Write a first `docs/qa/HOW_TO_TEST.md` in plain Egyptian Arabic: one command he runs himself to start the
+  database and the app (a `tools/start_preview.ps1` that starts Postgres, migrates, seeds and runs the dev server
+  on port 3200; agents never run it, per the dev-server rule), the demo logins, and what already works. Update
+  it at the end of every later phase with what became testable.
+- Take screenshots of every route at 390 px and 1366 px, in `ar` and `en`, with a Playwright spec
+  (`apps/web/e2e/screens.spec.ts`) whose `webServer` serves the production build; Playwright starts and stops that
+  server itself (the guard denies `next start`/`next dev` typed directly). Run it through `job.py` with a timeout.
+  Put the images in `docs/qa/screens/` with an `index.md`, so he can see progress without starting anything.
+
+Gate: typecheck, the screenshots exist, HOW_TO_TEST.md exists. Commit.
+
+Throughout P3 to P7, treat `docs/product/COMPETITOR_GAPS.md` as requirements: each row names its owner task and
+its proof. A task is not done while a row it owns has no passing proof.
 
 ### P3: wave 2 (hand off to sonnet high)
 
