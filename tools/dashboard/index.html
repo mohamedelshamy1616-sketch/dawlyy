@@ -132,6 +132,23 @@
     </div>
   </section>
 
+  <section class="dl-sec" id="live" aria-labelledby="live-h">
+    <h2 class="dl-h2" id="live-h">مباشر من الجهاز</h2>
+    <p class="dl-sub">البرنامج اللي على جهازك بيكتب الجزء ده لوحده كل ما حاجة تتغير، وبيترفع هنا كل نص ساعة على الأكثر. آخر كتابة: <b class="dash-skeleton" data-draw="live-stamp" data-source="live" data-field="updated" data-row="0">—</b></p>
+    <div class="dl-box">
+      <table class="dl-table dl-live" data-source="live" data-row-key="n" aria-labelledby="live-h">
+        <thead><tr>
+          <th scope="col" data-field="n">#</th>
+          <th scope="col" data-field="item">إيه</th>
+          <th scope="col" data-field="value">دلوقتي</th>
+          <th scope="col" data-field="detail">التفاصيل</th>
+        </tr></thead>
+        <tbody data-draw="live-rows"></tbody>
+      </table>
+      <p class="dl-fail" data-fail-for="live" hidden>معرفتش أحمّل الجزء ده</p>
+    </div>
+  </section>
+
   <section class="dl-sec" id="now" aria-labelledby="now-h">
     <h2 class="dl-h2" id="now-h">الشغال دلوقتي بالظبط</h2>
     <div class="dl-box">
@@ -288,7 +305,9 @@ dash.draw('bar', (el) => {
   el.setAttribute('aria-valuenow', String(share));
 });
 
-dash.draw('now-rows', (tb) => dlRows(tb, 'now', ['n', 'what', 'state', 'detail', 'updated'], (r) => `is-${r.state_code}`, { updated: (v) => (v ? dlClock.format(new Date(v)) : '') }));
+dash.draw('live-stamp', (el) => dlCell(el, 'live', dlFirst, (r) => String(r.updated || '—')));
+dash.draw('live-rows', (tb) => dlRows(tb, 'live', ['n', 'item', 'value', 'detail'], (r) => (r.n === 1 ? 'is-running' : '')));
+dash.draw('now-rows',(tb) => dlRows(tb, 'now', ['n', 'what', 'state', 'detail', 'updated'], (r) => `is-${r.state_code}`, { updated: (v) => (v ? dlClock.format(new Date(v)) : '') }));
 dash.draw('needs-rows', (tb) => dlRows(tb, 'needs', ['n', 'item', 'why', 'if_silent', 'urgency'], (r) => `is-${r.urgency_code}`));
 dash.draw('steps-rows', (tb) => dlRows(tb, 'steps', ['n', 'step', 'status', 'time', 'phase', 'note'], (r) => `is-${r.state}`));
 
