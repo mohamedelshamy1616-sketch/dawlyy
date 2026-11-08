@@ -1,0 +1,9 @@
+{
+ "checks": [
+  {"name": "typecheck", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "typecheck"], "cwd": ".", "timeout": 1800, "heavy": true},
+  {"name": "lint", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "lint"], "cwd": ".", "timeout": 1200, "heavy": true},
+  {"name": "test-core", "cmd": ["pnpm", "--filter", "@dawlyy/core", "exec", "vitest", "run", "--maxWorkers=1"], "cwd": ".", "timeout": 1800, "heavy": true},
+  {"name": "test-db", "cmd": ["pnpm", "--filter", "@dawlyy/db", "test:rls"], "cwd": ".", "timeout": 1800, "heavy": true},
+  {"name": "test-web", "cmd": ["pnpm", "--filter", "@dawlyy/web", "test"], "cwd": ".", "timeout": 1800, "heavy": true}
+ ]
+}

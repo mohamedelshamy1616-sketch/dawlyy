@@ -4,7 +4,43 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-07 17:22 (Africa/Cairo), by Claude (Opus 5.5, max effort, ultracode on), session `4eebc630`.
+Last update: 2026-11-08 07:00 (Africa/Cairo), by Claude (Opus 5.5), session `4eebc630` (setup of the autopilot).
+
+## 8 Nov 2026: autopilot setup (read this first)
+
+Written 07:00 Cairo by the setup session (Claude Opus 5.5, session 4eebc630). From the autopilot launch on, this
+repo is worked by the autopilot worker under `docs/plans/AUTOPILOT_MASTER_PROMPT.md`. Never resume session 4eebc630.
+
+What happened since 7 Nov 23:30:
+- The revised security design was joined into `docs/architecture/02-database-security-model.md` (428 KB), with the
+  triage in `docs/architecture/02-database-security-triage.md`. The R2 verification workflow died on the 5-hour
+  usage limit. Codex then reviewed the doc (`tools/.codex-answers/20261108-002748-codex_doc_review_brief.*`) and
+  fixed it (`20261108-042819-codex_fix_brief.*`). Codex changed SQL in sections 3.4, 4, 6.2-6.3, 7.4, 7.5.2, 7.8.3,
+  7.9, 7.10.3, 7.11.4, 8.2, 9.2, 10 and 11.4. That SQL is not probed yet: it is the first P6 probe target. Its two
+  open questions are rows 1-2 of `docs/plans/OPEN_DECISIONS.md` (safe defaults taken).
+- Fable 5.1 now needs paid usage credits (API error `model_requires_usage_credits`, 8 Nov 02:47Z). Opus and Sonnet
+  do all Claude work.
+- Codex X1 (`tools/codex_briefs/sec-x1-schema.md` with `_common_db.md`, effort xhigh) ran 06:15-06:50 and exited 0.
+  It rewrote `packages/db/src/schema/_rls.ts` and the schema files (git diff at 06:55: 15 files, +1045/-404).
+  Its answer is the newest `tools/.codex-answers/*sec-x1-schema*.md`. NOT reviewed yet. `packages/db/test/fixtures.ts`
+  (modified) and `packages/db/test/helpers.ts` (new) were already on disk before X1 started: review them with X1.
+- `tools/codex_build.py` now kills the whole process tree on timeout, keeps stderr, and takes `--common none`.
+- The scratchpad of session 4eebc630 is copied to `.work/kit/` (paths rewritten).
+- The autopilot is built in `C:/Users/compuline/.claude/autopilot` (SPEC.md; 188 tests pass). Repo glue: `CLAUDE.md`,
+  `.autopilot/config.json`, `docs/plans/AUTOPILOT_MASTER_PROMPT.md`, `APPROVALS.md`, `OPEN_DECISIONS.md`,
+  `tools/checks.json`, `tools/dashboard/`, `.claude/skills/dawlyy-dashboard/`, and `.gitignore` entries for
+  `.autopilot/`, `.work/` and `tools/dashboard/*.json`.
+- At about 06:55 the 5-hour usage window ran out (resets 09:20 Cairo). Three Sonnet reviewers of the autopilot code
+  died mid-review; whatever they saved is in `C:/Users/compuline/.claude/autopilot/review/`.
+- Disk: C: had 1.1 GB free (APPROVALS item 1). Mohamed's Claude login expires around 10 Nov: it must be renewed
+  (`/login`), or every autopilot run fails.
+
+Setup steps left (the setup session continues after 09:20, see `C:/Users/compuline/.claude/autopilot/SETUP_STATUS.md`):
+finish the reviews and fix confirmed findings; rehearse on the sandbox through the scheduled-task path; install the
+task "Claude Autopilot - DAWLYY"; launch the worker on opus high in phase P1.
+
+The worker's first action (P1 step 1): review Codex X1's diff against its brief and the doc. Then update sec-x2 and
+sec-x3 and run them as job.py jobs, then `.work/kit/design-review/b_build2_wf.js`.
 
 ## Objective
 
@@ -15,7 +51,9 @@ payments in beta, native apps later. Mohamed's words: "build everything, then we
 ## Approvals in force and their limits
 
 Allowed without asking: installs inside the repo, builds, typecheck, tests, local Postgres start/stop on port 54329,
-local commits on `main`, starting Codex builds, starting Sonnet workflows (max 3 agents at once), reading anything.
+local commits on `main`, starting Codex builds, starting Sonnet workflows, reading anything. Mohamed, 2026-11-07 19:20: "use as many agents
+as you can and get the job done" (replaces the old 3-agent cap; the machine still allows at most 3 heavy node
+processes such as vitest, tsc, drizzle-kit or the migrator at once).
 
 Needs a specific yes from Mohamed naming the action: `git push`, creating the GitHub repo, any Vercel/Supabase
 account action, deleting or moving any of his data (Apple MobileSync backups etc.), credential changes, anything that
@@ -31,7 +69,8 @@ Never weaken a test, guard or policy to get green. A red test that reports a rea
   offline outbox; Resend; Web Push; Vitest 5; Playwright; persisted due events + Vercel Cron. No Turborepo, no Inngest
   (Codex review, `docs/architecture/01-codex-review-of-stack.md`).
 - Database access: only through `withAuthTx` / `withUserTx` / `withServiceTx` in `packages/db/src/client.ts`. Runtime
-  role `dawlyy_app` (LOGIN NOINHERIT NOBYPASSRLS) does `SET LOCAL ROLE authenticated` inside the transaction. Server
+  role `dawlyy_app` (LOGIN NOINHERIT NOBYPASSRLS) does `SET LOCAL ROLE authenticated` inside the transaction
+  (the security pass changes this to `SET LOCAL ROLE dawlyy_rls`; contract: `docs/architecture/02-database-security-model.md`). Server
   Components use the same boundary as API handlers. No cosmetic RLS: isolation tests must prove tenant and
   client-vs-client separation.
 - Build team: Claude integrates, reviews, commits. Codex (ChatGPT subscription, zero Claude usage) builds pure modules
@@ -66,7 +105,7 @@ Evidence for commits 4-5 (16:24): `pnpm -r --workspace-concurrency=1 typecheck` 
 web test 2/2; `seed/validate.ts` errors=0; `test:rls` 12/12; seed run twice on dawlyy_test: inserted 210/371 then
 updated 210/371, counts stable.
 
-6. `feat(core): program editing, subscription timeline, Arabic text and CSV import` (the commit after `b5a8f92`):
+6. `026872d` `feat(core): program editing, subscription timeline, Arabic text and CSV import`:
    Codex D (`program-edit`, `subscription`) and Codex E (`text`, `csv`) with the integrator's fixes, the fixes from the
    adversarial D review, the review suites promoted to `test/program-edit.contract.test.ts` and
    `test/subscription.contract.test.ts`, the four new exports, the `ExerciseSeed.primaryMuscles` relaxation, this file
@@ -120,13 +159,65 @@ Codex contract notes worth knowing when wiring the API (from the batch answers):
 
 ## In flight right now
 
-Workflow `wf_b4b8873f-a5f` (task `wik5q257l`, 16:00–17:12) finished: 8 Sonnet agents, 6 returned, 2 failed on API
-timeouts (`audit:tenant`, `audit:definer`; re-run them). The two reviews are processed (commit 6). The returned audit
-lenses (`exposure`, `scope`, `authority`, `history`) each used a scratch database `dawlyy_audit_<lens>` on the local
-cluster, with SQL proofs in the scratchpad folder `audit\<lens>\`. Next: the main thread re-runs each proof, then fixes
-and writes RLS tests. The `audit:scope` agent ran while the safety classifier was unavailable; check what it changed. Journal:
-`C:\Users\compuline\.claude\projects\C--Users-compuline\4eebc630-63ac-41d5-ad16-887e467309f3\subagents\workflows\wf_b4b8873f-a5f\journal.jsonl`.
-Resume after a crash: `Workflow({scriptPath: <the script under ...\workflows\scripts\>, resumeFromRunId: 'wf_b4b8873f-a5f'})`.
+Security pass on the database layer (next action 4):
+- DONE: adversarial audit `wf_b4b8873f-a5f` — 51 findings, clustered A–P (Data API exposure through `authenticated`,
+  the `app.membership()` cast crash after a local `set_config`, payments self-verification, invitation escalation,
+  published-version bypass, client-writable server columns, internal-message leaks, audit/outbox forgery, over-broad
+  staff reads, 74 cross-tenant/cross-client reference pairs, client-code and history deletion). Compact list:
+  scratchpad `auditindings_compact.md`; proofs in `audit\<lens>\`.
+- DONE 19:15: the fix as a binding design, `docs/architecture/02-database-security-model.md` (role `dawlyy_rls`, policy
+  and privilege matrices, JSON-configured guard trigger, special triggers, composite FKs, migrations 0003–0006, tests).
+- RUNNING 19:24: design review `wf_ebcf30c7-985` (task `wmn15f0mc`): 8 Sonnet lenses (sqlexec, coverage, flows, drizzle,
+  privileges, attacker, tests, perf), each with its own scratch DB `dawlyy_review_<lens>`; plus a Codex consult through
+  the bridge (output in scratchpad `design-review\codex.md`). Claude holds the bridge edit lock until 2026-11-08 05:19.
+- 20:30 progress: privileges (8 findings), flows (19) and attacker (17) returned; coverage and drizzle died on API
+  network timeouts and were re-run as one-lens workflows (`wf_616c693d-fe8`, `wf_29c94dee-97b`, scripts built by
+  scratchpad `design-review\make_rerun_wf.py`); sqlexec, tests and perf still running. Lens results are saved as
+  scratchpad `design-review\lens_<key>.json`. Binding triage decisions so far: scratchpad `design-review\triage.md`
+  (T1–T29; copy into `docs/architecture/` with the revised doc). Product defaults taken there: staff may publish,
+  verify payments, approve AI output and create clients only with the matching module permission, enforced in the DB by
+  `app.has_perm`; assigned-scope staff are auto-assigned the clients they create; freeze answers S14/S32 as recommended.
+- 21:00 progress: sqlexec (12), perf (8) and coverage (9) returned and are triaged (triage.md now also has the
+  SQLX, PERF, CV and D blocks; 73 lens findings plus Codex C1-C24 and Claude S1-S11). The drizzle lens died twice on
+  the network (ECONNRESET); its probes were salvaged into the D1-D4 constraints (63-byte names, single-transaction
+  migrator, hand edits listed, Drizzle-inexpressible objects in 0005/0006), and R2 re-checks Drizzle on the revised
+  doc. The tests lens re-run (`wf_eaa6307b-0a6`) is still running. Revision R1 `wf_4f2975a7-426` (task `w4ya6zqbc`)
+  runs 5 Sonnet appliers on scratchpad `design-review\rev\g1..g5` (g1 also owns g7); g6 (sections 11-13) runs after
+  the tests lens lands, with the same script and `args.groups = ["g6"]`. Then `python sections.py join`, then R2.
+- 21:40 progress: the tests lens returned (22 findings N1-N22, triaged as the "lens_tests" block: layer-marked
+  raises, expectGuard/expectRls/expectPrivilege/expectNoEffect, new suites S matrix, X machines, N integrity, Z escape).
+  R1 g2 died on the network and was re-run (`wf_5826e253-2b9`); g6 runs as `wf_b3b47fb7-7ba`; after g3/g4 finish,
+  scratchpad `design-review\patch_g34_wf.js` applies N2/N14/N20 to sections 6-7. Prepared and parse-checked, not yet
+  run: `r2_verify_wf.js` (SQL build + 2 probe agents + consistency + triage coverage + Drizzle, then one fixer and a
+  recheck), `b_build_wf.js` (vocab -> 3 schema agents, client-lib, core machines, fixtures -> suite writers from
+  `args.suites`, then migrations integrator and typecheck integrator; fail-closed on missing reports; template
+  fingerprint as the database comment) and `b_run_wf.js` (one vitest process per round, triage per failing suite,
+  one product fixer, skeptic audit of test changes; max 3 rounds). Codex reviewed the build plan (bridge thread
+  `2026-11-07-213125-dawlyy-read-only-plan-review-attached`); its 12 points are folded into `b_build_wf.js`.
+- 23:30 progress: R1 returned g1, g3 and g5. Three appliers died on the network, but their work was on disk:
+  g2's second attempt finished section 4-5 text, tests and `rev/g2.log.md` and dropped its database before it could
+  report; g4 rewrote section 7 and ran probes 1-5 (kit in scratchpad `g4work`), then died before probe6 and its log;
+  g6 wrote section 11 (`g6work/part11.md`) and 12 (`g6work/part12.md`), then died at the start of 13 (ENOTFOUND, the
+  internet itself was down; its retry died at once). Running now: workflow `wf_c78dc308-438`
+  (`design-review/finish_patch_wf.js`: finish:g4 re-runs the probes and writes the g4 log, patch:g3 applies N2/N14/N20,
+  then patch:g4 applies N2/N12/N13/N20) and Codex writing section 13 (`design-review/codex_s13_brief.md`, run with
+  `python tools/codex_build.py <brief> --common none --cwd <scratchpad>/g6work`; output `g6work/part13.md` and
+  `part13.log.md`). `tools/codex_build.py` gained `--common` ('none' skips the core rules). Every workflow script's
+  retry now also catches a rejected agent() call (`safeAgent`). Next: assemble g6 from part11+12+13, join, copy the
+  triage into the repo, R2. Mohamed (23:20) lowers the effort from max to high and wants Codex to do more of the
+  build: in B-build Codex takes core machines, client lib, Drizzle schema files and the security suites; Sonnet keeps
+  psql, migrations, typecheck and test runs; Claude reviews and tests everything before a commit.
+- Status dashboard for Mohamed (asked 19:50): https://claude.ai/artifact/JkbMzpKAkRbVpN4zKFdwVT. Data source of truth:
+  scratchpad `dashboard\build.py` (edit, run, upload the changed JSON as an asset, update `datasets/<id>`). Update it
+  at every step change.
+- NEXT: fix the design from the review, then the build workflow (implementers by schema-file group, one test writer per
+  suite, one integrator for the migrations, run-and-fix by suite with at most 3 heavy processes, then red-team lenses
+  on cloned databases), then review, full checks and commit.
+- Gotcha paid for: do not resume a workflow to re-run single failed agents. Resume replays only the longest unchanged
+  prefix of agent calls and re-runs everything after the first changed one; a resume re-ran `audit:authority` and wiped
+  `dawlyy_audit_authority` (0 tables). Re-run one agent with a fresh small workflow instead.
+- Gotcha: roles and role memberships are cluster-wide. Migration 0000 grants `authenticated` to `dawlyy_app` and 0006
+  revokes it, so a database migrated only to 0002 changes what every other database on the cluster sees.
 
 Done and committed: wave 1 (`wf_5e877eef-b0f`), see commits 4-5. Its earlier notes, kept for reference:
 
@@ -174,7 +265,7 @@ Codex batches launched 15:20 (main thread now Opus 5.5 at max effort, ultracode 
 1. DONE 16:24: wave 1 verified and committed (commits 4-5).
 2. Smoke test `pnpm dev` by hand (not from an agent) when commit charge is below 24 GB: `/ar` and `/en` render, `/api/v1/health` answers, `/docs` shows OpenAPI.
 3. DONE 17:20: D review processed, core committed (commit 6).
-4. Security pass on the database layer: an adversarial audit workflow (Sonnet finders by lens, each proving findings
+4. IN PROGRESS (see In flight): security pass on the database layer: an adversarial audit workflow (Sonnet finders by lens, each proving findings
    with SQL against a scratch database on the local cluster), then fixes and new RLS tests by the main thread.
 5. Platform prep by the main thread before wave 2, so parallel builders never edit the same file:
    `getSessionUser` / `getAuthContext(headers)` / onboarding redirect; `requirePermission` guard; cursor pagination;

@@ -1,0 +1,305 @@
+<meta name="dash-one-writer">
+<style>
+.dl {
+  --dl-accent: var(--color-fg);
+  direction: rtl;
+  container-type: inline-size;
+  display: grid;
+  gap: var(--cds-gap-xl);
+  max-width: 68rem;
+  margin-inline: auto;
+  font-family: var(--font-anthropic-sans), "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif;
+  color: var(--color-fg);
+}
+.dl-head { display: grid; gap: var(--cds-gap-sm); }
+.dl-title {
+  margin: 0;
+  font-family: var(--font-anthropic-serif), "Segoe UI", Tahoma, serif;
+  font-weight: 400;
+  font-size: var(--cds-font-size-title);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.dl-take { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.8; max-width: 62ch; }
+.dl .dl-take b, .dl .dl-note b { font-weight: var(--cds-font-weight-medium); }
+.dl-stamp { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.dl-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr)); gap: var(--cds-gap-md); }
+.dl-card {
+  min-width: 0;
+  display: grid;
+  gap: var(--cds-gap-xs);
+  align-content: start;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border-line);
+  border-radius: var(--cds-radius);
+  padding: var(--cds-pad-lg);
+}
+.dl-label { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.dl-big {
+  margin: 0;
+  font-family: var(--font-anthropic-serif), "Segoe UI", Tahoma, serif;
+  font-weight: 400;
+  font-size: var(--cds-font-size-title);
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+.dl-mid { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); line-height: 1.5; }
+.dl-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.7; }
+.dl .dl-hot { color: var(--color-warn); }
+.dl-bar { block-size: 0.5rem; border-radius: var(--cds-radius); background: var(--cds-chart-grid); overflow: hidden; margin-block: var(--cds-gap-xs); }
+.dl-bar-fill { block-size: 100%; background: var(--color-ok); border-radius: inherit; }
+.dl-sec { display: grid; gap: var(--cds-gap-sm); }
+.dl-h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.dl-sub { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.dl-box { overflow-x: auto; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+.dl-table { inline-size: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); }
+.dl-table th {
+  text-align: start;
+  font-weight: var(--cds-font-weight-medium);
+  font-size: var(--cds-font-size-caption);
+  color: var(--color-fg-muted);
+  padding: var(--cds-pad-sm) var(--cds-pad-md);
+  border-bottom: 1px solid var(--color-border-line);
+  white-space: nowrap;
+}
+.dl-table td { padding: var(--cds-pad-sm) var(--cds-pad-md); border-bottom: 1px solid var(--color-border-line); vertical-align: top; line-height: 1.7; }
+.dl-table tbody tr:last-child td { border-bottom: 0; }
+.dl-table th:first-child, .dl-table td:first-child { inline-size: 2.25rem; color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.dl-steps td:nth-child(3), .dl-now td:nth-child(3), .dl-needs td:nth-child(5) { white-space: nowrap; font-weight: var(--cds-font-weight-medium); }
+.dl-steps td:nth-child(3)::before, .dl-now td:nth-child(3)::before, .dl-needs td:nth-child(5)::before {
+  content: "";
+  display: inline-block;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  margin-inline-end: 0.45rem;
+  vertical-align: 0.05em;
+}
+.dl-steps td:nth-child(4) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dl-steps tr.is-done td { color: var(--color-fg-muted); }
+.dl-steps tr.is-done td:nth-child(3), .dl-now tr.is-done td:nth-child(3) { color: var(--color-ok); }
+.dl-steps tr.is-now td, .dl-now tr.is-running td { background: color-mix(in srgb, var(--dl-accent) 9%, transparent); }
+.dl-steps tr.is-now td:nth-child(3), .dl-now tr.is-running td:nth-child(3) { color: var(--dl-accent); }
+.dl-steps tr.is-next td:nth-child(3) { color: var(--color-fg); }
+.dl-steps tr.is-later td:nth-child(3) { color: var(--color-fg-muted); }
+.dl-now tr.is-failed td:nth-child(3) { color: var(--color-bad); }
+.dl-now tr.is-waiting td:nth-child(3) { color: var(--color-warn); }
+.dl-needs tr.is-now td { background: color-mix(in srgb, var(--color-warn) 10%, transparent); }
+.dl-needs tr.is-now td:nth-child(5) { color: var(--color-warn); }
+.dl-needs tr.is-soon td:nth-child(5) { color: var(--color-fg); }
+.dl-needs tr.is-later td:nth-child(5) { color: var(--color-fg-muted); }
+.dl-needs td:nth-child(2) { font-weight: var(--cds-font-weight-medium); min-inline-size: 12rem; }
+.dl-fail { margin: 0; display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); min-block-size: 4rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.dl-fail::before { content: ""; inline-size: 0.375rem; block-size: 0.375rem; border-radius: 50%; background: var(--color-bad); }
+.dl [data-dash-source-state=empty] { color: transparent; }
+.dl [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+@container (max-width: 40rem) {
+  .dl-steps th:nth-child(n+5), .dl-steps td:nth-child(n+5),
+  .dl-needs th:nth-child(3), .dl-needs td:nth-child(3),
+  .dl-now th:nth-child(5), .dl-now td:nth-child(5) { display: none; }
+}
+</style>
+
+<div class="dl" lang="ar" dir="rtl">
+  <header class="dl-head" id="top">
+    <h1 class="dl-title">فين وصلنا في DAWLYY</h1>
+    <p class="dl-take">إحنا في الخطوة <b class="dash-skeleton" data-draw="cur-n" data-source="steps" data-field="n" data-where="state=now">—</b> من <b class="dash-skeleton" data-draw="total" data-source="progress" data-field="total">—</b>: <b class="dash-skeleton" data-draw="cur-step" data-source="steps" data-field="step" data-where="state=now">—</b>.</p>
+    <p class="dl-stamp">آخر تحديث: <span class="dash-skeleton" data-draw="stamp" data-source="latest" data-field="updated">—</span> بتوقيت القاهرة</p>
+  </header>
+
+  <section class="dl-tiles" aria-label="الملخص">
+    <div class="dl-card">
+      <p class="dl-label">خلصنا</p>
+      <p class="dl-big"><span class="dash-skeleton" data-draw="done" data-source="progress" data-field="done">—</span> من <span class="dash-skeleton" data-draw="total" data-source="progress" data-field="total">—</span> خطوة</p>
+      <div class="dl-bar dash-skeleton" data-draw="bar" data-source="progress" role="progressbar" aria-label="نسبة الخطوات اللي خلصت" aria-valuemin="0" aria-valuemax="100"></div>
+      <p class="dl-note">يعني <b class="dash-skeleton" data-draw="pct" data-source="progress" data-field="pct">—</b> من الطريق للبيتا.</p>
+    </div>
+    <div class="dl-card">
+      <p class="dl-label">شغالين في إيه دلوقتي</p>
+      <p class="dl-mid dash-skeleton" data-draw="cur-step" data-source="steps" data-field="step" data-where="state=now">—</p>
+      <p class="dl-note">مرحلة <b class="dash-skeleton" data-draw="cur-phase" data-source="steps" data-field="phase" data-where="state=now">—</b></p>
+    </div>
+    <div class="dl-card">
+      <p class="dl-label">فاضل قد إيه</p>
+      <p class="dl-big">من <span class="dash-skeleton" data-draw="hmin" data-source="remaining" data-field="h_min">—</span> لـ <span class="dash-skeleton" data-draw="hmax" data-source="remaining" data-field="h_max">—</span> ساعة</p>
+      <p class="dl-note">يعني حوالي <b class="dash-skeleton" data-draw="dmin" data-source="remaining" data-field="d_min">—</b> لـ <b class="dash-skeleton" data-draw="dmax" data-source="remaining" data-field="d_max">—</b> أيام لو اشتغلنا <b class="dash-skeleton" data-draw="perday" data-source="remaining" data-field="per_day">—</b> ساعات في اليوم. ده تقدير، وبيزيد لو الهارد فضل مليان أو ليميت الاستخدام خلص.</p>
+    </div>
+    <div class="dl-card">
+      <p class="dl-label">محتاج منك</p>
+      <p class="dl-big"><span class="dash-skeleton" data-draw="asks-total" data-source="asks" data-field="total">—</span> حاجات</p>
+      <p class="dl-note">منهم <b class="dash-skeleton" data-draw="asks-urgent" data-source="asks" data-field="urgent">—</b> مستعجلة دلوقتي، والباقي ليه وقته. التفاصيل تحت.</p>
+    </div>
+  </section>
+
+  <section class="dl-sec" id="now" aria-labelledby="now-h">
+    <h2 class="dl-h2" id="now-h">الشغال دلوقتي بالظبط</h2>
+    <div class="dl-box">
+      <table class="dl-table dl-now" data-source="now" data-row-key="n" aria-labelledby="now-h">
+        <thead><tr>
+          <th scope="col" data-field="n">#</th>
+          <th scope="col" data-field="what">إيه</th>
+          <th scope="col" data-field="state">حالته</th>
+          <th scope="col" data-field="detail">التفاصيل</th>
+          <th scope="col" data-field="updated">آخر تحديث</th>
+        </tr></thead>
+        <tbody data-draw="now-rows"></tbody>
+      </table>
+      <p class="dl-fail" data-fail-for="now" hidden>معرفتش أحمّل الجزء ده</p>
+    </div>
+  </section>
+
+  <section class="dl-sec" id="asks" aria-labelledby="asks-h">
+    <h2 class="dl-h2" id="asks-h">محتاج منك</h2>
+    <p class="dl-sub">كل طلب معاه اللي هعمله لو مردتش. مش لازم ترد على كله دلوقتي.</p>
+    <div class="dl-box">
+      <table class="dl-table dl-needs" data-source="needs" data-row-key="n" aria-labelledby="asks-h">
+        <thead><tr>
+          <th scope="col" data-field="n">#</th>
+          <th scope="col" data-field="item">المطلوب</th>
+          <th scope="col" data-field="why">ليه</th>
+          <th scope="col" data-field="if_silent">لو مردتش</th>
+          <th scope="col" data-field="urgency">إمتى</th>
+        </tr></thead>
+        <tbody data-draw="needs-rows"></tbody>
+      </table>
+      <p class="dl-fail" data-fail-for="needs" hidden>معرفتش أحمّل الجزء ده</p>
+    </div>
+  </section>
+
+  <section class="dl-sec" id="steps" aria-labelledby="steps-h">
+    <h2 class="dl-h2" id="steps-h">كل الخطوات لحد البيتا</h2>
+    <div class="dl-box">
+      <table class="dl-table dl-steps" data-source="steps" data-row-key="n" aria-labelledby="steps-h">
+        <thead><tr>
+          <th scope="col" data-field="n">#</th>
+          <th scope="col" data-field="step">الخطوة</th>
+          <th scope="col" data-field="status">الحالة</th>
+          <th scope="col" data-field="time">الوقت المتوقع</th>
+          <th scope="col" data-field="phase">المرحلة</th>
+          <th scope="col" data-field="note">ملاحظة</th>
+        </tr></thead>
+        <tbody data-draw="steps-rows"></tbody>
+      </table>
+      <p class="dl-fail" data-fail-for="steps" hidden>معرفتش أحمّل الجزء ده</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const dlNum = new Intl.NumberFormat('ar-EG-u-nu-latn', { maximumFractionDigits: 1 });
+const dlPct = new Intl.NumberFormat('ar-EG-u-nu-latn', { style: 'percent', maximumFractionDigits: 0 });
+const dlStamp = new Intl.DateTimeFormat('ar-EG-u-nu-latn', { timeZone: 'Africa/Cairo', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+const dlClock = new Intl.DateTimeFormat('ar-EG-u-nu-latn', { timeZone: 'Africa/Cairo', hour: 'numeric', minute: '2-digit' });
+
+dash.calc('progress', {
+  inputs: ['steps'],
+  title: 'Steps done',
+  description: 'Steps marked done, out of every step to the beta launch.',
+  fn: (steps) => {
+    const done = steps.filter((s) => s.state === 'done').length;
+    return [{ done, total: steps.length, pct: steps.length ? done / steps.length : 0 }];
+  },
+});
+
+dash.calc('remaining', {
+  inputs: ['steps'],
+  title: 'Build time left',
+  description: 'The low and high hour estimates of every step not done yet, added up; days assume 10 build hours a day.',
+  fn: (steps) => {
+    const perDay = 10;
+    const left = steps.filter((s) => s.state !== 'done');
+    const low = left.reduce((sum, s) => sum + Number(s.h_min), 0);
+    const high = left.reduce((sum, s) => sum + Number(s.h_max), 0);
+    return [{ h_min: low, h_max: high, d_min: Math.ceil(low / perDay), d_max: Math.ceil(high / perDay), per_day: perDay }];
+  },
+});
+
+dash.calc('asks', {
+  inputs: ['needs'],
+  title: 'Open asks',
+  description: 'Things Mohamed still has to give, and how many of them hold up work right now.',
+  fn: (needs) => [{ total: needs.length, urgent: needs.filter((n) => n.urgency_code === 'now').length }],
+});
+
+dash.calc('latest', {
+  inputs: ['now'],
+  title: 'Last update',
+  description: 'The newest update time among the activities listed as running now.',
+  fn: (now) => [{ updated: now.map((r) => String(r.updated)).sort().pop() || '' }],
+});
+
+const dlFirst = (rows) => rows[0];
+const dlCurrent = (rows) => rows.find((r) => r.state === 'now');
+
+const dlCell = (el, id, pick, show) => {
+  const got = dash.data(id);
+  const row = got.status === 'ok' ? pick(got.data) : undefined;
+  if (got.status !== 'loading') el.classList.remove('dash-skeleton');
+  el.textContent = row ? show(row) : '—';
+};
+
+const dlRows = (tbody, id, cols, rowClass, formats) => {
+  const got = dash.data(id);
+  if (got.status !== 'ok') { tbody.replaceChildren(); return; }
+  tbody.replaceChildren(...got.data.map((r) => {
+    const tr = document.createElement('tr');
+    tr.className = rowClass(r);
+    for (const c of cols) {
+      const td = document.createElement('td');
+      const v = r[c] == null ? '' : r[c];
+      td.textContent = formats && formats[c] ? formats[c](v) : String(v);
+      tr.append(td);
+    }
+    return tr;
+  }));
+};
+
+dash.draw('cur-n', (el) => dlCell(el, 'steps', dlCurrent, (r) => dlNum.format(r.n)));
+dash.draw('cur-step', (el) => dlCell(el, 'steps', dlCurrent, (r) => r.step));
+dash.draw('cur-phase', (el) => dlCell(el, 'steps', dlCurrent, (r) => r.phase));
+dash.draw('done', (el) => dlCell(el, 'progress', dlFirst, (r) => dlNum.format(r.done)));
+dash.draw('total', (el) => dlCell(el, 'progress', dlFirst, (r) => dlNum.format(r.total)));
+dash.draw('pct', (el) => dlCell(el, 'progress', dlFirst, (r) => dlPct.format(r.pct)));
+dash.draw('hmin', (el) => dlCell(el, 'remaining', dlFirst, (r) => dlNum.format(r.h_min)));
+dash.draw('hmax', (el) => dlCell(el, 'remaining', dlFirst, (r) => dlNum.format(r.h_max)));
+dash.draw('dmin', (el) => dlCell(el, 'remaining', dlFirst, (r) => dlNum.format(r.d_min)));
+dash.draw('dmax', (el) => dlCell(el, 'remaining', dlFirst, (r) => dlNum.format(r.d_max)));
+dash.draw('perday', (el) => dlCell(el, 'remaining', dlFirst, (r) => dlNum.format(r.per_day)));
+dash.draw('asks-total', (el) => dlCell(el, 'asks', dlFirst, (r) => dlNum.format(r.total)));
+dash.draw('asks-urgent', (el) => {
+  dlCell(el, 'asks', dlFirst, (r) => dlNum.format(r.urgent));
+  const got = dash.data('asks');
+  el.classList.toggle('dl-hot', got.status === 'ok' && Boolean(got.data[0]) && got.data[0].urgent > 0);
+});
+dash.draw('stamp', (el) => dlCell(el, 'latest', dlFirst, (r) => (r.updated ? dlStamp.format(new Date(r.updated)) : '—')));
+
+dash.draw('bar', (el) => {
+  const got = dash.data('progress');
+  if (got.status === 'loading') { el.replaceChildren(); return; }
+  el.classList.remove('dash-skeleton');
+  const row = got.status === 'ok' ? got.data[0] : undefined;
+  if (!row) { el.replaceChildren(); el.removeAttribute('aria-valuenow'); return; }
+  const share = Math.round(row.pct * 100);
+  const fill = document.createElement('div');
+  fill.className = 'dl-bar-fill';
+  fill.style.inlineSize = `${share}%`;
+  el.replaceChildren(fill);
+  el.setAttribute('aria-valuenow', String(share));
+});
+
+dash.draw('now-rows', (tb) => dlRows(tb, 'now', ['n', 'what', 'state', 'detail', 'updated'], (r) => `is-${r.state_code}`, { updated: (v) => (v ? dlClock.format(new Date(v)) : '') }));
+dash.draw('needs-rows', (tb) => dlRows(tb, 'needs', ['n', 'item', 'why', 'if_silent', 'urgency'], (r) => `is-${r.urgency_code}`));
+dash.draw('steps-rows', (tb) => dlRows(tb, 'steps', ['n', 'step', 'status', 'time', 'phase', 'note'], (r) => `is-${r.state}`));
+
+dash.onData(() => {
+  for (const p of document.querySelectorAll('.dl-fail[data-fail-for]')) {
+    p.hidden = dash.data(p.getAttribute('data-fail-for')).status !== 'error';
+  }
+});
+
+const dlAccent = dash.colors && dash.colors[0];
+if (typeof dlAccent === 'string' && dlAccent) {
+  for (const root of document.querySelectorAll('.dl')) root.style.setProperty('--dl-accent', dlAccent);
+}
+</script>

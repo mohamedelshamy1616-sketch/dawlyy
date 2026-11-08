@@ -1,0 +1,127 @@
+"""Single source of truth for the DAWLYY status dashboard data.
+
+Edit the lists below (short, plain Egyptian Arabic), then run `python tools/dashboard/build.py`. It writes
+steps.json / now.json / needs.json beside this file and `publish_request.json`, which the autopilot watchdog picks
+up and uploads to the private dashboard (at most every 90 minutes). Never put env values, keys or personal data here.
+"""
+import json
+import pathlib
+from datetime import datetime, timedelta, timezone
+
+OUT = pathlib.Path(__file__).resolve().parent
+ARTIFACT_URL = 'https://claude.ai/artifact/JkbMzpKAkRbVpN4zKFdwVT'
+CAIRO = timezone(timedelta(hours=2))  # Egypt is on UTC+2 in November (no DST)
+NOW_LOCAL = datetime.now(CAIRO).replace(microsecond=0).isoformat()
+NOW_UTC = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+
+STEP_LABEL = {'done': 'خلصت', 'now': 'شغالين فيها', 'next': 'الجاية', 'later': 'بعدين'}
+
+# (phase, step, state, low hours, high hours, note). Exactly one row is 'now'.
+STEPS = [
+    ('الأساس', 'الخطة ومراجعة المواصفات', 'done', 0, 0, 'اتفقنا على التقنيات وترتيب الشغل'),
+    ('الأساس', 'أساس الموقع: عربي وإنجليزي، تسجيل الدخول، الـ API', 'done', 0, 0, 'اتحفظ'),
+    ('الأساس', 'قاعدة البيانات الأولى، و210 تمرين و371 أكلة جاهزين', 'done', 0, 0, 'اتحفظ'),
+    ('الأساس', 'عقل التطبيق: البرامج، الاشتراكات، التجميد، الاستيراد من Excel', 'done', 0, 0, '559 اختبار ناجحين'),
+    ('الأمان', 'فحص أمان قاعدة البيانات', 'done', 0, 0, 'لقينا 51 ثغرة قبل ما أي عميل يستخدمها'),
+    ('الأمان', 'تصميم الحل لكل الثغرات ومراجعته', 'done', 0, 0, '8 مراجعين و Codex، و Codex صلح آخر الملاحظات'),
+    ('التشغيل الذاتي', 'نظام يشغّل Claude لوحده 24 ساعة ويكمل بعد كل حد', 'now', 1, 2,
+     'بيصحى كل 10 دقايق، ويختار الموديل المناسب لكل خطوة'),
+    ('الأمان', 'بناء الحل الأمني', 'next', 4, 6, 'Codex بيكتب الكود والوكلاء بيكتبوا الاختبارات'),
+    ('المميزات', 'تجهيز الأرضية للموجة الجاية، ودخول تجريبي على جهازك', 'later', 2, 3,
+     'عشان الوكلاء يشتغلوا مع بعض من غير ما يبوظوا شغل بعض'),
+    ('المميزات', 'فتح حساب المدرب، تسجيل الدخول، دعوة العملاء والمساعدين', 'later', 2, 3, ''),
+    ('المميزات', 'العملاء والباقات والاشتراكات والدفع اليدوي', 'later', 3, 4, ''),
+    ('المميزات', 'مكتبة التمارين وبناء البرامج', 'later', 3, 5, ''),
+    ('المميزات', 'تطبيق العميل: النهارده، برنامجي، تسجيل التمرين من غير نت', 'later', 3, 5, ''),
+    ('المميزات', 'التغذية: الأكل والمكملات وخطة العميل', 'later', 3, 4, ''),
+    ('المميزات', 'الفورمز: بيانات البداية، المتابعة الأسبوعية، التقييم', 'later', 2, 4, ''),
+    ('المميزات', 'التقويم والتذكيرات والقياسات والصور', 'later', 3, 4, ''),
+    ('المميزات', 'الرسائل والإشعارات', 'later', 2, 4, ''),
+    ('المميزات', 'لوحة المدرب، ملف العميل الكامل، المهام', 'later', 3, 5, ''),
+    ('المميزات', 'الإعدادات، الفريق والصلاحيات، البراند، الموافقات القانونية', 'later', 3, 4, ''),
+    ('الإطلاق', 'بيانات تجريبية واختبار المشوار كله بالعربي والإنجليزي', 'later', 4, 6, ''),
+    ('الاختبار', 'تشغيل كل الاختبارات، هجوم تجريبي على النظام، وإصلاح كل حاجة', 'later', 6, 10,
+     'محتاج مساحة على الهارد (شوف أول طلب تحت)'),
+    ('الإطلاق', 'مراجعة أمان أخيرة، وملف خطوات تجربه منه', 'later', 2, 3, 'بعدها أبلغك إنه جاهز'),
+]
+
+NOW_LABEL = {'running': 'شغال', 'done': 'خلص', 'failed': 'وقع', 'waiting': 'مستني'}
+
+# (what, state code, detail)
+NOW = [
+    ('نظام التشغيل الذاتي', 'running',
+     'برنامج صغير بيصحى كل 10 دقايق من غير ما يصرف حاجة: لو حد الـ 5 ساعات خلص يستنى ويكمل بعد الريست بدقيقتين، '
+     'ولو الجلسة وقعت يرجعها. Codex كتب أجزاءه وأنا براجعها وبجربها'),
+    ('Codex بيبني جداول قاعدة البيانات الآمنة', 'running', 'أول دفعة من 3 دفعات في البناء الأمني'),
+    ('مراجعة Codex لتصميم الأمان', 'done',
+     'صلح الـ SQL في 13 جزء. فاضل سؤالين صغيرين ليك، أخدت فيهم الاختيار الأأمن (OPEN_DECISIONS)'),
+    ('Fable 5.1', 'waiting', 'محتاج رصيد مدفوع دلوقتي، فالشغل ماشي بـ Opus و Sonnet و Codex'),
+]
+
+# (item, why, what I do if there is no answer, when label, urgency code)
+NEEDS = [
+    ('موافقة إني أفضّي مساحة على C: كاش npm (1.3 جيجا) وكاش huggingface (5.1 جيجا). وبعدين نسخ الآيفون (221 جيجا) تتنقل لهارد خارجي',
+     'C فاضل فيه حوالي 1 جيجا بس، والتثبيت والاختبارات الأخيرة محتاجين 3 جيجا على الأقل',
+     'بكمل كتابة الكود، ولو المساحة خلصت هقف وأبلغك. مش همسح أي حاجة', 'قبل مرحلة الاختبار', 'now'),
+    ('موافقة على repo خاص على GitHub وأرفع عليه الكود',
+     'نسخة من الكود برا جهازك، و Vercel بينشر منه', 'الكود فاضل على جهازك بس', 'قريب', 'soon'),
+    ('حساب Supabase: رابط المشروع والمفاتيح وباسورد قاعدة البيانات',
+     'قاعدة البيانات الحقيقية أونلاين وتسجيل الدخول الحقيقي',
+     'بكمل على قاعدة بيانات على جهازك، ودخول تجريبي للتجربة', 'قبل النشر أونلاين', 'later'),
+    ('تسجيل دخول Vercel', 'عشان نرفع نسخة أونلاين تجربها من الموبايل', 'بتجرب على جهازك الأول', 'قبل النشر أونلاين', 'later'),
+    ('حساب Resend للإيميلات', 'دعوات العملاء ونسيت الباسورد والتذكيرات', 'الإيميلات بتتسجل بس ومش بتتبعت', 'قبل النشر أونلاين', 'later'),
+    ('البراند والدومين: اللوجو والألوان والخط واسم الموقع', 'عشان الشكل النهائي',
+     'بشتغل بشكل بسيط مؤقت، وإنت تحط تصميمك بعدين', 'قبل الإطلاق', 'later'),
+    ('باقات أول مدرب حقيقي: الأسماء والأسعار والمدد', 'بدل البيانات التجريبية', 'بيانات تجريبية', 'قبل الإطلاق', 'later'),
+    ('محامي مصري يراجع قانون حماية البيانات 151/2020', 'قبل ما أي عميل حقيقي يحط بياناته',
+     'البيتا تفضل بعملاء تجريبيين بس', 'قبل أول عميل حقيقي', 'later'),
+    ('5 قرارات صغيرة في المنتج (التجميد، صلاحيات المساعد، مسح بيانات الدفع)', 'مكتوبين في OPEN_DECISIONS',
+     'أخدت في كل واحد الاختيار الأأمن، وتقدر تغيره بعدين', 'وقت ما تحب', 'later'),
+    ('ميزانية الإطلاق (تقدير، اتأكد من الأسعار قبل الدفع): Supabase Pro حوالي 25 دولار في الشهر، Vercel Pro حوالي 20 دولار في الشهر، '
+     'الدومين حوالي 10 إلى 15 دولار في السنة. المجموع تقريباً 45 دولار في الشهر + الدومين. GitHub الخاص ببلاش. Codex على اشتراكك الحالي',
+     'ده الحد الأدنى لتجربة أونلاين بعملاء حقيقيين. للتجربة الأولى ممكن نبدأ بالباقات المجانية',
+     'مش هدفع ولا أفتح أي حساب. الشغل كله بيكمل على جهازك', 'قبل النشر أونلاين', 'later'),
+    ('حدود اشتراك Claude: النظام بيشتغل لحد ما الحد يخلص، وبعدين يستنى الريست ويكمل',
+     'كده الحد الأسبوعي بيخلص أسرع، وده بيأثر على شغلك إنت كمان',
+     'بيشتغل لوحده. لو عايز توقفه: اضغط "DAWLYY autopilot - PAUSE" على الديسكتوب', 'وقت ما تحب', 'later'),
+]
+
+
+def hours_text(low, high):
+    if low == high:
+        return {1: 'حوالي ساعة', 2: 'حوالي ساعتين'}.get(low, f'حوالي {low} ساعات')
+    if high == 2:
+        return 'من ساعة لساعتين'
+    return f'من {low} لـ {high} ساعات'
+
+
+def main():
+    steps = []
+    for n, (phase, step, state, low, high, note) in enumerate(STEPS, start=1):
+        steps.append({
+            'n': n, 'phase': phase, 'step': step, 'state': state, 'status': STEP_LABEL[state],
+            'h_min': 0 if state == 'done' else low, 'h_max': 0 if state == 'done' else high,
+            'time': '' if state == 'done' else hours_text(low, high), 'note': note,
+        })
+    assert sum(1 for s in steps if s['state'] == 'now') == 1, 'exactly one step must be now'
+    now = [{'n': n, 'what': what, 'state': NOW_LABEL[code], 'state_code': code, 'detail': detail, 'updated': NOW_LOCAL}
+           for n, (what, code, detail) in enumerate(NOW, start=1)]
+    needs = [{'n': n, 'item': item, 'why': why, 'if_silent': silent, 'urgency': when, 'urgency_code': code}
+             for n, (item, why, silent, when, code) in enumerate(NEEDS, start=1)]
+    datasets = []
+    for name, rows in (('steps', steps), ('now', now), ('needs', needs)):
+        path = OUT / f'{name}.json'
+        path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding='utf-8', newline='\n')
+        datasets.append({'doc_id': name, 'path': str(path)})
+    request = {'created_at_iso': NOW_LOCAL, 'artifact_url': ARTIFACT_URL, 'datasets': datasets}
+    (OUT / 'publish_request.json').write_text(json.dumps(request, ensure_ascii=False, indent=1), encoding='utf-8',
+                                              newline='\n')
+    left = [s for s in steps if s['state'] != 'done']
+    print('utc', NOW_UTC, 'local', NOW_LOCAL)
+    print('steps', len(steps), 'done', len(steps) - len(left), 'hours', sum(s['h_min'] for s in left),
+          sum(s['h_max'] for s in left))
+    print('now', len(now), 'needs', len(needs), 'request', OUT / 'publish_request.json')
+
+
+if __name__ == '__main__':
+    main()

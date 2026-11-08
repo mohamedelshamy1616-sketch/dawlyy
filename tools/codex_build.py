@@ -41,13 +41,15 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=5400, help="seconds before the Codex process is killed")
     ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh"], help="model_reasoning_effort")
     ap.add_argument("--cwd", type=Path, default=REPO, help="repository root Codex works in")
+    ap.add_argument("--common", default=str(COMMON), help="shared rules file prepended to the brief, or 'none'")
     args = ap.parse_args()
 
     brief_path: Path = args.brief if args.brief.is_absolute() else (REPO / args.brief)
     if not brief_path.exists():
         print(f"brief not found: {brief_path}", file=sys.stderr)
         return 2
-    prompt = COMMON.read_text(encoding="utf-8") + "\n\n---\n\n" + brief_path.read_text(encoding="utf-8")
+    common = "" if args.common == "none" else Path(args.common).read_text(encoding="utf-8") + "\n\n---\n\n"
+    prompt = common + brief_path.read_text(encoding="utf-8")
 
     ANSWERS.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -74,27 +76,34 @@ def main() -> int:
 
     started = dt.datetime.now()
     print(f"[codex_build] {brief_path.name} started {started:%H:%M:%S}, answer -> {answer}")
+    flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    proc = subprocess.Popen(
+        cmd,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        cwd=str(args.cwd),
+        env=env,
+        creationflags=flags,
+    )
     try:
-        proc = subprocess.run(
-            cmd,
-            input=prompt,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            cwd=str(args.cwd),
-            env=env,
-            capture_output=True,
-            timeout=args.timeout,
-        )
+        out, err = proc.communicate(input=prompt, timeout=args.timeout)
         code = proc.returncode
-        log.write_text((proc.stdout or "") + "\n--- stderr ---\n" + (proc.stderr or ""), encoding="utf-8")
-    except subprocess.TimeoutExpired as exc:
+    except subprocess.TimeoutExpired:
         code = 124
-        log.write_text(
-            (exc.stdout or "") if isinstance(exc.stdout, str) else "" + "\n--- stderr ---\n" + ((exc.stderr or "") if isinstance(exc.stderr, str) else ""),
-            encoding="utf-8",
-        )
-        print(f"[codex_build] TIMEOUT after {args.timeout}s", file=sys.stderr)
+        # Kill the whole tree: codex.exe starts shells and node processes of its own.
+        subprocess.run(["taskkill.exe", "/PID", str(proc.pid), "/T", "/F"],
+                       capture_output=True, timeout=30, creationflags=flags)
+        try:
+            out, err = proc.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            out, err = "", "(could not collect output after the timeout kill)"
+        print(f"[codex_build] TIMEOUT after {args.timeout}s; process tree killed", file=sys.stderr)
+    log.write_text((out or "") + "\n--- stderr ---\n" + (err or ""), encoding="utf-8", newline="\n")
 
     elapsed = dt.datetime.now() - started
     status = subprocess.run(["git", "status", "--porcelain"], cwd=str(args.cwd), capture_output=True, text=True, encoding="utf-8")

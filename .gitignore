@@ -33,3 +33,10 @@ Thumbs.db
 
 # codex / agent scratch
 tools/.codex-answers/
+
+# autopilot (state, logs, evidence) and the copied scratch kit
+.autopilot/
+.work/
+
+# dashboard build outputs (rebuilt by tools/dashboard/build.py; must not dirty the tree)
+tools/dashboard/*.json
