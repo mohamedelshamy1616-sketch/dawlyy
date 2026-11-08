@@ -3,11 +3,39 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { HTTPException } from 'hono/http-exception';
 import { ZodError } from 'zod';
 import { ApiError, validationError, type ApiErrorBody, type ApiErrorStatus } from './errors';
-import { requireAuthMiddleware, type AuthVariables } from './middleware/auth';
-import { idempotencyMiddleware, type IdempotencyVariables } from './middleware/idempotency';
+import type { ApiEnv } from './env';
+import { idempotencyMiddleware } from './middleware/idempotency';
+import { router as authRouter } from './auth';
+import { router as invitationsRouter } from './invitations';
+import { router as clientsRouter } from './clients';
+import { router as packagesRouter } from './packages';
+import { router as subscriptionsRouter } from './subscriptions';
+import { router as paymentsRouter } from './payments';
+import { router as exercisesRouter } from './exercises';
+import { router as programsRouter } from './programs';
+import { router as meRouter } from './me';
+import { router as workoutSessionsRouter } from './workout-sessions';
+import { router as nutritionRouter } from './nutrition';
+import { router as foodsRouter } from './foods';
+import { router as mealLogsRouter } from './meal-logs';
+import { router as formsRouter } from './forms';
+import { router as submissionsRouter } from './submissions';
+import { router as calendarRouter } from './calendar';
+import { router as metricsRouter } from './metrics';
+import { router as measurementsRouter } from './measurements';
+import { router as photosRouter } from './photos';
+import { router as conversationsRouter } from './conversations';
+import { router as notificationsRouter } from './notifications';
+import { router as dashboardRouter } from './dashboard';
+import { router as tasksRouter } from './tasks';
+import { router as settingsRouter } from './settings';
+import { router as teamRouter } from './team';
+import { router as mediaRouter } from './media';
 
-export type ApiEnv = { Variables: AuthVariables & IdempotencyVariables };
+/** doc §12.1 / build-plan API: preserve the shared environment type's original import location. */
+export type { ApiEnv } from './env';
 
+/** doc §12.1 / build-plan API: versioned API with module routers, OpenAPI, and standard error envelopes. */
 export const app = new OpenAPIHono<ApiEnv>({
   // Request validation failures use the standard error envelope (400).
   defaultHook: (result) => {
@@ -16,10 +44,6 @@ export const app = new OpenAPIHono<ApiEnv>({
 }).basePath('/api/v1');
 
 app.use('*', idempotencyMiddleware);
-
-const errorSchema = z.object({
-  error: z.object({ code: z.string(), message: z.string(), details: z.unknown().optional() }),
-});
 
 const healthRoute = createRoute({
   method: 'get',
@@ -34,33 +58,32 @@ const healthRoute = createRoute({
 
 app.openapi(healthRoute, (c) => c.json({ ok: true as const, time: new Date().toISOString() }, 200));
 
-const meRoute = createRoute({
-  method: 'get',
-  path: '/me',
-  responses: {
-    200: {
-      description: 'The authenticated caller',
-      content: {
-        'application/json': {
-          schema: z.object({
-            userId: z.string(),
-            tenantId: z.string(),
-            membershipId: z.string(),
-            role: z.enum(['owner', 'staff', 'client']),
-            clientId: z.string().optional(),
-          }),
-        },
-      },
-    },
-    401: { description: 'Not signed in', content: { 'application/json': { schema: errorSchema } } },
-  },
-});
-
-app.use('/me', requireAuthMiddleware);
-app.openapi(meRoute, (c) => {
-  const { userId, tenantId, membershipId, role, clientId } = c.get('auth');
-  return c.json({ userId, tenantId, membershipId, role, clientId }, 200);
-});
+app.route('/auth', authRouter);
+app.route('/invitations', invitationsRouter);
+app.route('/clients', clientsRouter);
+app.route('/packages', packagesRouter);
+app.route('/subscriptions', subscriptionsRouter);
+app.route('/payments', paymentsRouter);
+app.route('/exercises', exercisesRouter);
+app.route('/programs', programsRouter);
+app.route('/me', meRouter);
+app.route('/workout-sessions', workoutSessionsRouter);
+app.route('/nutrition', nutritionRouter);
+app.route('/foods', foodsRouter);
+app.route('/meal-logs', mealLogsRouter);
+app.route('/forms', formsRouter);
+app.route('/submissions', submissionsRouter);
+app.route('/calendar', calendarRouter);
+app.route('/metrics', metricsRouter);
+app.route('/measurements', measurementsRouter);
+app.route('/photos', photosRouter);
+app.route('/conversations', conversationsRouter);
+app.route('/notifications', notificationsRouter);
+app.route('/dashboard', dashboardRouter);
+app.route('/tasks', tasksRouter);
+app.route('/settings', settingsRouter);
+app.route('/team', teamRouter);
+app.route('/media', mediaRouter);
 
 app.doc('/openapi.json', { openapi: '3.1.0', info: { title: 'DAWLYY API', version: '1' } });
 app.get('/docs', swaggerUI({ url: '/api/v1/openapi.json' }));
