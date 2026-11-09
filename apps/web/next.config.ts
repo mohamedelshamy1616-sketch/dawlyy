@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     ? ['tsx', 'ts', 'jsx', 'js']
     : ['tsx', 'ts', 'jsx', 'js', 'dev.tsx', 'dev.ts'],
   cacheComponents: true,
+  // The floating dev badge covers the bottom navigation on phones (preview screenshots, Mohamed's own testing).
+  devIndicators: false,
   partialPrefetching: true,
   transpilePackages: ["@dawlyy/core", "@dawlyy/db"],
   serverExternalPackages: ["postgres"],

@@ -1,6 +1,7 @@
 import 'server-only';
 import { and, asc, eq } from 'drizzle-orm';
 import { headers as nextHeaders } from 'next/headers';
+import { connection } from 'next/server';
 import { withUserTx, type AuthContext } from '@dawlyy/db';
 import { memberships } from '@dawlyy/db/schema';
 import { unauthorized } from '@/src/api/errors';
@@ -21,6 +22,9 @@ export async function getAuthContext(headers?: Headers): Promise<AuthContext | n
 
 /** doc §14 / P2B local testing: resolve a session identity before membership discovery; production uses Supabase only. */
 export async function getSessionUser(headers?: Headers): Promise<{ id: string; email: string | null } | null> {
+  // Server Components: mark the render as request-time before reading the clock in readDevSession (cacheComponents
+  // rejects `new Date()` during prerender). API handlers pass their own headers and are always dynamic.
+  if (!headers) await connection();
   const requestHeaders = headers ?? await nextHeaders();
   if (process.env.NODE_ENV !== 'production') {
     const dev = await import('./dev-login');
