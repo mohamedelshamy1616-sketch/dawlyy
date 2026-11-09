@@ -8,6 +8,27 @@ Last update: 2026-11-08 23:55 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 9 Nov 13:35, migrations 0003-0006 committed; P2.5 gate met
+
+- `2fe149b` migrations 0003-0006. Codex M6 (job `20261109-124834-m6`) found 0003 equal to doc §4, applied H1-H3 to
+  0004 (20 unique indexes moved above their FKs) and wrote 0006 (277 statements, 34 functions, 93 triggers, §11.4 block
+  last; it reports no deviation). Evidence on fresh `dawlyy_p1gate`: migrate exit 0; 287 policies all `TO dawlyy_rls`;
+  RLS on 47/47 tables; 100 user triggers; no table grant to `anon`/`authenticated`; no `app` function executable by
+  PUBLIC; 0003 and 0006 re-run in one transaction with ON_ERROR_STOP exit 0; library seed 210/371; demo seed 5
+  memberships, codes DW-000001..3; `drizzle-kit generate` "No schema changes". Upgrade rehearsal on a copy of
+  `dawlyy_test` (0002 with data) to 0006: exit 0, both seeds load; the copy was dropped. The local migrator warns "no
+  ADMIN OPTION on authenticated" (doc §11.4 step 2, expected locally).
+- `20e4ebe` P2.5 screenshots: 64/64 in `docs/qa/screens/` (job `20261109-131220-screens3`, 1 passed, no overflow).
+  `@playwright/test` pinned to 1.63.0 (browser build 1243 is installed; 1.65 wanted 1254). `getSessionUser` awaits
+  `connection()` before the dev-session clock read; `devIndicators: false` (the badge covered the phone nav).
+- Known for P6 `build-web`: the dev server still logs "runtime data during prerendering" for `/[locale]/app/today` and
+  `/[locale]/app/[...rest]` (the client area only; `AuthGate` is already inside Suspense). Pages render. Check with
+  `next build` in P6.
+- `dawlyy_p1gate` (migrated, seeded) stays for the suite runs. `.work/tmp/run_with_db.py <db> <cmd>` runs a command with
+  the `.env` URLs pointed at another database, without printing them.
+- Running: Codex S1, S2 (since 12:48) and S3 (since 13:00). Next: review each suite answer and diff, `pnpm --filter
+  @dawlyy/db typecheck`, commit the P1 gate; then hand off fresh to P3 (sonnet high) per the playbook.
+
 ### 9 Nov 13:20, P1 step 3 moved to Codex; P2.5 files committed
 
 - Workflow `wf_c9f6c478-525` died with its session (limit). It wrote no suite file and no report. Its migrations
