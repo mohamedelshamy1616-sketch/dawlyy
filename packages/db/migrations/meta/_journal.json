@@ -22,6 +22,34 @@
       "when": 1794057234824,
       "tag": "0002_app_post_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794176832247,
+      "tag": "0003_rls_role_and_helpers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794194065248,
+      "tag": "0004_policies_off",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794221205694,
+      "tag": "0005_policies",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794221217937,
+      "tag": "0006_guards_and_grants",
+      "breakpoints": true
     }
   ]
 }
