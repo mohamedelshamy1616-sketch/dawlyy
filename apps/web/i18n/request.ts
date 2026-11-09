@@ -19,6 +19,9 @@ const loaders = {
     billing: () => import('../messages/ar/billing.json'),
     exercises: () => import('../messages/ar/exercises.json'),
     programs: () => import('../messages/ar/programs.json'),
+    workout: () => import('../messages/ar/workout.json'),
+    nutrition: () => import('../messages/ar/nutrition.json'),
+    forms: () => import('../messages/ar/forms.json'),
   },
   en: {
     common: () => import('../messages/en/common.json'),
@@ -36,6 +39,9 @@ const loaders = {
     billing: () => import('../messages/en/billing.json'),
     exercises: () => import('../messages/en/exercises.json'),
     programs: () => import('../messages/en/programs.json'),
+    workout: () => import('../messages/en/workout.json'),
+    nutrition: () => import('../messages/en/nutrition.json'),
+    forms: () => import('../messages/en/forms.json'),
   },
 } satisfies Record<(typeof routing.locales)[number], Record<string, () => Promise<{ default: AbstractIntlMessages }>>>;
 
