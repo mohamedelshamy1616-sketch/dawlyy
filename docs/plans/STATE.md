@@ -4,9 +4,31 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 17:55 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
+Last update: 2026-11-09 20:00 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 20:00, T2, T3a, T3b reviewed and committed; T4a and T4b running
+
+- Commits: `fef64a1` T2 auth, `2535301` T3b billing, `4f8ec88` T3a clients and packages, plus the coach nav links to
+  Exercises and Packages. Codex jobs T3b, T3a, T2 ended exit 0 (about 1.5 h).
+- Evidence on the three together: web typecheck exit 0, lint 0 errors, `vitest run` of their 16 test files on
+  `dawlyy_p1gate` 76/76, no skips; `check-messages.mjs` 435 then 436 keys per locale, none missing.
+- Review fix: both `api/clients.ts` and `api/packages.ts` had a missing `}` on the `errorResponse` constant (parse
+  error). Fixed; no test or check changed.
+- Reviewed by hand: invitation accept (user lock, row lock, status and expiry, one service transaction, tokens hashed).
+  The full security review of bootstrap, accept and the T3b service transactions is for P7.
+- Facts from the answers other tasks need: receipts are assigned by the DB at verification (not at insert); payment
+  verify, reject and refund need `billing:verify` AND `billing:edit`; override writes need `clients:edit` AND
+  `billing:edit`; the payment method enum value is `bank_transfer`; freeze start dates are stored as versioned JSON
+  in `subscription_events.reason`; `syncSubscriptionCalendar(tenantId, subscriptionId, reason)` and
+  `sweepSubscriptions(tenantId, today)` (`apps/web/src/server/subscriptions/`) are ready for the T8 cron. Unarchive
+  returns a client to `inactive`. Known gap (T3a): assigned-scope staff cannot see duplicate clients hidden by RLS, so
+  `duplicate_client` is checked only within their view. Calendar generation runs after the money commit; a failure
+  needs `syncSubscriptionCalendar` to repair it.
+- Postgres had stopped; restarted with `tools/local_pg.ps1 -Action start`.
+- Running: `20261109-192055-t4a`, `20261109-192056-t4b` (since 19:21). Next: review, typecheck, lint, tests, commit per
+  task; then P4 (T5, T6, T7 in parallel, then T8-T11) with briefs written the same way (`_common_web.md`).
 
 ### 9 Nov 17:55, Codex back; T3b, T3a, T2 running
 
