@@ -17,6 +17,7 @@
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "seed": "node --env-file=.env --import tsx ./seed/index.ts",
+    "seed:demo": "node --env-file=.env --import tsx ./seed/demo.ts",
     "db:local:up": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action start",
     "db:local:down": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action stop",
     "db:local:reset": "powershell -NoProfile -File ../../tools/local_pg.ps1 -Action reset",
