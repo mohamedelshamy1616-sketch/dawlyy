@@ -13,6 +13,12 @@ const loaders = {
     client: () => import('../messages/ar/client.json'),
     notFound: () => import('../messages/ar/notFound.json'),
     api: () => import('../messages/ar/api.json'),
+    onboarding: () => import('../messages/ar/onboarding.json'),
+    clients: () => import('../messages/ar/clients.json'),
+    packages: () => import('../messages/ar/packages.json'),
+    billing: () => import('../messages/ar/billing.json'),
+    exercises: () => import('../messages/ar/exercises.json'),
+    programs: () => import('../messages/ar/programs.json'),
   },
   en: {
     common: () => import('../messages/en/common.json'),
@@ -24,6 +30,12 @@ const loaders = {
     client: () => import('../messages/en/client.json'),
     notFound: () => import('../messages/en/notFound.json'),
     api: () => import('../messages/en/api.json'),
+    onboarding: () => import('../messages/en/onboarding.json'),
+    clients: () => import('../messages/en/clients.json'),
+    packages: () => import('../messages/en/packages.json'),
+    billing: () => import('../messages/en/billing.json'),
+    exercises: () => import('../messages/en/exercises.json'),
+    programs: () => import('../messages/en/programs.json'),
   },
 } satisfies Record<(typeof routing.locales)[number], Record<string, () => Promise<{ default: AbstractIntlMessages }>>>;
 
