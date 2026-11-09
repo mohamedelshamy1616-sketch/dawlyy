@@ -4,7 +4,98 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-08 07:00 (Africa/Cairo), by Claude (Opus 5.5), session `4eebc630` (setup of the autopilot).
+Last update: 2026-11-08 23:55 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5, P1).
+
+## Autopilot worker log (newest first)
+
+### 9 Nov 13:20, P1 step 3 moved to Codex; P2.5 files committed
+
+- Workflow `wf_c9f6c478-525` died with its session (limit). It wrote no suite file and no report. Its migrations
+  integrator left, uncommitted: `0003_rls_role_and_helpers.sql` (8.3 KB, from doc §4) and `0004_policies_off.sql`
+  (47.7 KB, generated with `DRIZZLE_NO_POLICIES=1`; 119 `DROP POLICY`, the new tables and columns). Hand edits H1-H3
+  of doc §11.2 were NOT applied (no `USING` on `source_event_id`, no `*_current_version_fk`, unique indexes after FKs).
+- This session generated `0005_policies.sql` (287 `CREATE POLICY`, no other statement; the §11.3 step 3 filter prints
+  nothing) and the empty custom `0006_guards_and_grants.sql`, with their snapshots and journal entries. Uncommitted
+  until the P1 gate.
+- Per the playbook (9 Nov, Codex builds), no workflow was re-run. Four Codex briefs, effort xhigh:
+  `sec-m6-migrations.md` (check 0003 against §4, apply H1-H3 to 0004, write 0006 in the §11.3 step 4 order),
+  `sec-s1-catalog-matrix.md` (suites C, S + `matrix.ts`, N, Z, and `scripts/db-migration-check.ps1`),
+  `sec-s2-guard-team-payments.md` (G + `guard-matrix.ts`, I, T, L, P, X), `sec-s3-documents-events.md` (D, M, K, E, A).
+  Running since 12:48: jobs `20261109-124834-m6`, `20261109-124835-s1`, `20261109-124835-s2`. S3 starts when one ends
+  (3 Codex jobs at most).
+- Committed `5932ed2`: Codex P2.5 (job `20261109-051355-p25`) demo seed, `tools/start_preview.ps1`, Playwright config
+  and `e2e/screens.spec.ts`, first `docs/qa/HOW_TO_TEST.md`, plus the four briefs. Review fixes: package schedule rules
+  from `ScheduleRules.parse({})` (typecheck failed on the fixture literal); the seed prints the Postgres code and
+  message on failure. Evidence: db typecheck 0, web typecheck 0. Codex said the system library has 12 exercises and 12
+  foods; that counted files: it has 210 exercises and 371 foods (`.work/tmp/count_seed.py`).
+- Screenshot choice: the spec runs `next dev` on port 3210 under Playwright `webServer`, because the dev login (needed
+  for signed-in screens) is excluded from production builds. Recorded in OPEN_DECISIONS.
+- Root `test:db` script added (doc §13.5).
+- Next: when M6 ends, review its diff, migrate a fresh scratch database 0000-0006, run the seed and demo seed; when
+  the suites end, review them and typecheck. Then the P1 gate and commit, then the P2.5 screenshots.
+
+### 9 Nov 05:05, P2b committed; P1 suite workflow re-launched
+
+- The session that started workflow `wf_1dc10d5f-405` ended (5-hour limit at 01:20, then API connection failures until
+  04:51). The workflow died with it: no suite file and no report exist. Its only output is an empty custom
+  migration `packages/db/migrations/0003_rls_role_and_helpers.sql` (53 bytes, the drizzle-kit placeholder), its
+  snapshot and a journal entry, all left uncommitted for the integrator to fill.
+- Codex P2b (job `20261109-001905-p2b`, exit 0) reviewed and committed as `807e52e`. Review: dev login is gated by
+  `NODE_ENV !== 'production'`, `DAWLYY_DEV_LOGIN=1` and a secret of at least 32 characters; the HMAC cookie is
+  compared in constant time; dev sessions resolve through `withUserTx` like Supabase sessions; `route.dev.ts` is
+  outside production `pageExtensions`. Evidence: `pnpm --filter @dawlyy/web typecheck` exit 0;
+  `check-messages.mjs` 95 keys per locale, none missing; `vitest run src/server/dev-login.test.ts` 20/20.
+- Local Postgres was down; started with `tools/local_pg.ps1 -Action start`.
+- Running: workflow `wf_c9f6c478-525` (fresh run of `b_build2_wf.js` with `args.codexPaths`, the 15 suites and
+  `docSha` 549ee55b...). Never resume it to re-run one agent (hard rule 6).
+- Next: when it ends, read `.work/kit/build/*.md`, check the P1 gate (typecheck, migrations 0000-0006 on a fresh
+  scratch database, seed loader) and commit. Meanwhile, P2.5 work that touches no file of the workflow.
+
+### 9 Nov 00:30, P1 step 3 running; P2 and P2.5 partly done
+
+- Committed: `ed53598` P2.5 app shell (Sonnet builder, report `.work/kit/build/p25-shell.md`); `c5902be` Codex X2
+  (client library on `dawlyy_rls`, `withErasureTx`, `AuthContext.permissions`, `require-permission.ts` renamed from
+  the brief name to the doc 12.1 name, `machines.payment`); `6d69b4b` Codex P2a (pagination, idempotency replay,
+  `requireActiveAccess`, 26 router stubs, `env.ts`); `71d7dec` Codex X3 (doc 13.2 fixtures, factories, 13.3 helpers;
+  two UUID-type fixes and a `test/factories.ts` facade added in review).
+- Evidence at 00:20: core typecheck 0 and vitest 564/564; web typecheck 0 and `vitest run src/server src/api` 67/67;
+  `tsc --noEmit -p packages/db/tsconfig.json` 0.
+- Running: workflow `wf_1dc10d5f-405` (`.work/kit/design-review/b_build2_wf.js`, now taking `args.codexPaths`;
+  15 Sonnet suite writers, then the migrations integrator, then the typecheck integrator, which must not edit
+  `apps/web/src/server/auth.ts` or `dev-login*`). Reports land in `.work/kit/build/`. Never resume it to re-run
+  one failed agent (hard rule 6).
+- Running: Codex P2b (job `20261109-001905-p2b`, brief `tools/codex_briefs/p2b-dev-login-session.md`): dev-only
+  login (cookie HMAC, `route.dev.ts` excluded from production by `pageExtensions`), `getSessionUser`,
+  `getAuthContext(headers)`, onboarding redirect, per-namespace message files, `check-no-dev-login.mjs`, the API test
+  harness.
+- Open choice for P2.5 screenshots: the production build has no dev login, so signed-in screens need the dev server
+  under Playwright `webServer`. Decide when writing `e2e/screens.spec.ts`.
+- Next: review P2b and commit; when the workflow ends, read its reports, check the gate (typecheck, migrations
+  0000-0006 on a fresh scratch database, seed loader), commit, then the P2 demo seed and P2.5 screenshots.
+
+### 8 Nov 23:55, P1 steps 1-2
+
+- Codex X1 reviewed and committed as `3b24864`. Evidence: a `getTableConfig` dump of every schema table gives 47
+  tables, 287 policies (240 permissive, 47 restrictive guards) and 103 foreign keys. Every policy name of doc §5.2
+  plus one `<table>_tenant_guard` per table is present, with no extras, and each command matches its suffix
+  (script `.work/tmp/cmp.py`). `_rls.ts` matches doc §5.1. `pnpm --filter @dawlyy/db typecheck` exits 0. The
+  pre-existing `test/fixtures.ts` changes and the new `test/helpers.ts` went into the same commit.
+- The X2 and X3 briefs were checked against the fixed doc (section numbers 3, 6.3, 12, 13.2-13.5 and 14 all match)
+  and given a note that the two run at the same time and code against the doc §14 signatures.
+- Running: Codex X2 (job `20261108-234930-x2`) and X3 (job `20261108-234930-x3`), effort xhigh, started 23:49.
+- Prepared: `.work/kit/build/args_base.json` holds `docSha` 549ee55b... and the 15 suites of doc §13.1 for
+  `b_build2_wf.js`; the Codex answers x1, x2 and x3 are added when X2 and X3 finish.
+- Next: review X2 and X3 (answer files, diffs, `pnpm --filter @dawlyy/db typecheck`), commit, then run
+  `b_build2_wf.js` (15 Sonnet suite writers, the migrations integrator, the typecheck integrator).
+- Also running since 23:53, on disjoint files: Codex P2a (job `20261108-235307-p2a`, brief
+  `tools/codex_briefs/p2a-api-platform.md`: pagination, idempotency replay, `requireActiveAccess`, router stubs) and
+  a Sonnet builder for the P2.5 app shell, branded loading states and the `/ar/login` RTL fix (report to
+  `.work/kit/build/p25-shell.md`).
+- Known brief gap: doc §12.1 item 1 names `apps/web/src/server/require-permission.ts`; the X2 brief says
+  `permissions.ts`. Rename during the X2 review if Codex followed the brief.
+- Disk: 16.1 GB free on C: at 23:45 (was 1.1 GB on 8 Nov morning).
+- The guard hook fails with `ValueError` on a Bash command containing an unbalanced apostrophe (for example
+  "doc's" in a heredoc); write such text with the Edit or Write tool.
 
 ## 8 Nov 2026: autopilot setup (read this first)
 

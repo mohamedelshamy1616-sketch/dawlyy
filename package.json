@@ -13,6 +13,7 @@
     "start": "pnpm --filter @dawlyy/web start",
     "test": "pnpm -r --if-present test",
     "test:rls": "pnpm --filter @dawlyy/db test:rls",
+    "test:db": "pnpm --filter @dawlyy/db exec vitest run",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present lint",
     "db:generate": "pnpm --filter @dawlyy/db generate",
