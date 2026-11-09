@@ -4,9 +4,29 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-08 23:55 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5, P1).
+Last update: 2026-11-09 14:00 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5, end of P1).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 14:00, P1 closed; handoff to P3 (sonnet high, fresh)
+
+- `fac4fc0` the 15 security suites (doc §13.1 files, `matrix.ts`, `guard-matrix.ts`) and `scripts/db-migration-check.ps1`
+  (C99, CI only). S3 exited 0; S1 and S2 stopped on the Codex usage limit after writing every file (no answer files).
+  `.work/tmp/case_cov.py`: no §13.4 case id missing in any suite (N15/N18/N20 are triage tags, not N cases). No skip,
+  todo, skipIf, runIf or only. Integration fixes were types only (no assertion changed).
+- P1 gate met: `pnpm -r --workspace-concurrency=1 typecheck` exit 0 (core, db, web); migrations 0000-0006 and both seeds on
+  fresh `dawlyy_p1gate` (2fe149b). P2 and P2.5 were already done. Dashboard rows updated (P1, P2, P2.5 done; T2 now).
+- Known for P6: (1) K11 expects `set_logs.client_updated_at` to store null; the column is NOT NULL. Decide from the doc
+  which is wrong; never weaken the test. (2) Dev server "runtime data during prerendering" on `/[locale]/app/today` and
+  `/[locale]/app/[...rest]`; check with `next build`. (3) A16 tests only the W04 contract text; no outbox worker yet.
+- **Codex is unavailable until 17:48 Cairo on 9 Nov** (its usage limit, from the S1/S2 logs).
+- **What the next session (P3, sonnet high) does first:** read the playbook (P3 section and the 9 Nov "Codex builds"
+  rule), the build plan's T2, T3a, T3b, T4a and T4b file sets, and `docs/product/COMPETITOR_GAPS.md` rows they own.
+  Write one Codex brief per task (format of `tools/codex_briefs/p2a-api-platform.md` with `_common.md`; disjoint files;
+  apply freeze answers S14 and S32 as in OPEN_DECISIONS rows 3-4). After 17:48 run up to 3 as `job.py` jobs, effort
+  high; set WAITING with `wait_until` 17:50 until then. Review each answer and diff, gate typecheck and lint, commit
+  per task. `dawlyy_p1gate` is a migrated, seeded scratch database for any manual check
+  (`.work/tmp/run_with_db.py dawlyy_p1gate <cmd>`).
 
 ### 9 Nov 13:35, migrations 0003-0006 committed; P2.5 gate met
 
