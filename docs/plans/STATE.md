@@ -4,9 +4,33 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 20:00 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
+Last update: 2026-11-09 21:45 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 21:45, P3 closed (wave 2 committed); handoff to P4 (sonnet high, fresh)
+
+- Commits: `1e496df` T4a exercises, `d9e9b57` T4b programs (after `fef64a1` T2, `2535301` T3b, `4f8ec88` T3a, `5fe39c6` nav).
+  Codex jobs T4a and T4b ended exit 0 after about 1.5 h.
+- Evidence: web typecheck exit 0, lint 0 errors, `vitest run` of the T4 files on `dawlyy_p1gate` 42/42 with no skips
+  (T2, T3a and T3b: 76/76 earlier), `check-messages.mjs` 766 keys per locale, none missing. Postgres had stopped twice
+  (`ECONNREFUSED 127.0.0.1:54329`); `tools/local_pg.ps1 -Action start` fixes it, check it before any DB test.
+- T4a known deviation: the `exercises` table has no `name_key`, so the list scans scoped metadata and paginates in memory
+  (fine for 210 rows; revisit at scale). T4b added `baseRevision` (optimistic concurrency on the draft row), `replace`
+  on assign, and `GET /programs/{id}/assignment-clients`. The reusable `ExercisePicker` is in
+  `apps/web/components/exercises/exercise-picker.tsx`; the program builder has its own picker.
+- Dashboard rows updated (T2, T3, T4 done; T5 client portal now).
+- **What the next session (P4, sonnet high) does first:** wave 3 = T5 client portal (Today, My Program, offline workout
+  session, history; needs `GET /me/program` and the program API of T4b), T6 nutrition (builder, foods, client view; the
+  300-food seed exists in `packages/db/seed`), T7 forms engine (intake, check-ins, assessments). Read build plan Tasks
+  5-7, `COMPETITOR_GAPS.md` rows G2, G3, G4, G5, G9, doc section 12.1 items 10, 12, 15 and the core modules
+  `workout`, `nutrition`, `forms`. Write one brief each in the format of `tools/codex_briefs/p3-t4b-programs.md` with
+  `--common tools/codex_briefs/_common_web.md` (disjoint files; pre-register new message namespaces in
+  `apps/web/i18n/request.ts` with empty `{}` files first, as done for P3, and pre-decide shared routes). Launch the three
+  as `job.py` jobs, effort high, then review each (answer file, diff, typecheck, lint, tests via
+  `.work/tmp/run_with_db.py dawlyy_p1gate`, check-messages), fix small things yourself, commit per task. Then wave 4
+  (T8 calendar and tracking, T9 messaging, T10 coach dashboard and Client 360, T11 settings and team) the same way.
+  T5 needs the service-worker and Dexie outbox files (`apps/web/app/sw.ts`, `src/lib/outbox/*`): list them in the brief.
 
 ### 9 Nov 20:00, T2, T3a, T3b reviewed and committed; T4a and T4b running
 
