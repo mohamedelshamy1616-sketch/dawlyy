@@ -1,6 +1,6 @@
 # Message keys
 
-Source of truth for `messages/ar.json` and `messages/en.json`. Both files must have identical key sets. Arabic uses a natural Egyptian coaching register, not literal translation. Status words are fixed across the app (spec section 61).
+Source of truth for `messages/ar/<namespace>.json` and `messages/en/<namespace>.json`. Both locales must have identical namespace files and key sets. Each file contains the contents of its namespace, without an extra namespace wrapper. Arabic uses a natural Egyptian coaching register, not literal translation. Status words are fixed across the app (spec section 61).
 
 ## common
 - `common.appName`: product name in the header and sign-in screen.
@@ -33,6 +33,10 @@ Source of truth for `messages/ar.json` and `messages/en.json`. Both files must h
 - `auth.magicLinkSent`: confirmation after the magic link is requested.
 - `auth.emailRequired`: shown when the magic link is requested without an email.
 - `auth.genericError`: fallback for any other sign-in failure.
+
+- `auth.devLogin.title`, `description`: label and explanation for the development-only login panel.
+- `auth.devLogin.empty`: no demo memberships were seeded.
+- `auth.devLogin.roles.owner`, `staff`, `client`: translated demo-role button labels.
 
 ## landing, coach.dashboard, client.today, notFound (P2.5 shell screens)
 - `landing.opening`: status line on the full-screen branded state shown while `/[locale]` redirects.

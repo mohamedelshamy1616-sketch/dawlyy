@@ -5,9 +5,9 @@ import { unauthorized } from '../errors';
 
 export type AuthVariables = { auth: AuthContext };
 
-/** Requires a signed-in caller with an active membership; exposes it as `c.get('auth')`. */
+/** doc §14: resolve request headers and require an active membership, exposed as `c.get('auth')`. */
 export const requireAuthMiddleware = createMiddleware<{ Variables: AuthVariables }>(async (c, next) => {
-  const ctx = await getAuthContext();
+  const ctx = await getAuthContext(c.req.raw.headers);
   if (!ctx) throw unauthorized();
   c.set('auth', ctx);
   await next();

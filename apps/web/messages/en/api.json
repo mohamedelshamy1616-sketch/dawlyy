@@ -1,0 +1,7 @@
+{
+  "unauthenticated": "Sign in to continue",
+  "forbidden": "You do not have permission to do that",
+  "notFound": "We could not find what you were looking for",
+  "validation": "Some of the data is invalid, check it and try again",
+  "conflict": "This conflicts with existing data"
+}

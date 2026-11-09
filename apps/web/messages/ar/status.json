@@ -1,0 +1,14 @@
+{
+  "complete": "مكتمل",
+  "due": "مستحق",
+  "overdue": "متأخر",
+  "waitingForCoach": "في انتظار الكوتش",
+  "waitingForClient": "في انتظار العميل",
+  "needsReview": "يحتاج مراجعة",
+  "expired": "منتهي",
+  "draft": "مسودة",
+  "published": "منشور",
+  "active": "نشط",
+  "paused": "متوقف مؤقتًا",
+  "cancelled": "ملغي"
+}

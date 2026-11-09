@@ -5,10 +5,19 @@ import { LocaleSwitch } from "@/src/components/shell/locale-switch";
 import { PageHeader } from "@/src/components/shell/page-header";
 import { Wordmark } from "@/src/components/shell/wordmark";
 
+/** doc §14 / P2B local testing: normal sign-in plus a development-only seeded-user panel. */
 export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("auth");
+  let devPanel = null;
+  if (process.env.NODE_ENV !== 'production') {
+    const dev = await import('@/src/server/dev-login');
+    if (dev.devLoginEnabled()) {
+      const { DevLoginPanel } = await import('@/components/app/dev-login-panel');
+      devPanel = <DevLoginPanel locale={locale} users={await dev.listDemoUsers()} />;
+    }
+  }
 
   // Logical utilities only (px, ms, start/end): the page must not clip or scroll sideways in RTL at 360 to 420 px.
   // `min-w-0` and `max-w-full` stop any child from forcing the column wider than the screen, and
@@ -29,6 +38,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
             <LoginForm />
           </CardContent>
         </Card>
+        {devPanel}
       </div>
     </main>
   );

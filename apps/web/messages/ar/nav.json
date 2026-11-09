@@ -1,0 +1,24 @@
+{
+  "coach": {
+    "dashboard": "لوحة التحكم",
+    "clients": "العملاء",
+    "programs": "البرامج",
+    "nutrition": "التغذية",
+    "checkins": "المتابعات",
+    "calendar": "التقويم",
+    "messages": "الرسائل",
+    "packages": "الباقات",
+    "billing": "المدفوعات",
+    "settings": "الإعدادات"
+  },
+  "client": {
+    "today": "النهارده",
+    "program": "البرنامج",
+    "nutrition": "الأكل",
+    "progress": "تقدّمي",
+    "tracking": "التتبّع",
+    "checkins": "المتابعات",
+    "messages": "الرسائل",
+    "profile": "حسابي"
+  }
+}

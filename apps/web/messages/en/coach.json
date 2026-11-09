@@ -1,0 +1,7 @@
+{
+  "dashboard": {
+    "subtitle": "A quick look at where your clients stand today",
+    "emptyTitle": "No clients yet",
+    "emptyBody": "Once you add clients, their check-ins, payments and renewals show up here."
+  }
+}

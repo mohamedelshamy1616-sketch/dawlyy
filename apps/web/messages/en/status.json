@@ -1,0 +1,14 @@
+{
+  "complete": "Complete",
+  "due": "Due",
+  "overdue": "Overdue",
+  "waitingForCoach": "Waiting for Coach",
+  "waitingForClient": "Waiting for Client",
+  "needsReview": "Needs Review",
+  "expired": "Expired",
+  "draft": "Draft",
+  "published": "Published",
+  "active": "Active",
+  "paused": "Paused",
+  "cancelled": "Cancelled"
+}
