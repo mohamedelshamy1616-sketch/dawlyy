@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/src/lib/supabase-browser";
 
 export function LoginForm() {
@@ -93,6 +93,8 @@ export function LoginForm() {
       <Button type="button" variant="outline" disabled={pending} onClick={sendMagicLink}>
         {t("magicLink")}
       </Button>
+      <Link href="/signup" className="inline-flex min-h-11 items-center justify-center text-sm underline">{t("createAccount")}</Link>
+      <Link href="/reset" className="inline-flex min-h-11 items-center justify-center text-sm underline">{t("forgotPassword")}</Link>
     </form>
   );
 }

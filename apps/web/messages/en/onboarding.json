@@ -1,1 +1,15 @@
-{}
+{
+  "title": "Welcome to DAWLYY",
+  "subtitle": "Choose how you'd like to get started",
+  "startBusiness": "Start your coaching business",
+  "haveInvitation": "I have an invitation link",
+  "businessName": "Business name",
+  "yourName": "Your name",
+  "timezone": "Timezone",
+  "createBusiness": "Create my business",
+  "invitationLink": "Invitation link or token",
+  "openInvitation": "Open invitation",
+  "continueSetup": "Continue setup",
+  "signupUnavailableTitle": "Try the demo",
+  "signupUnavailable": "Sign-up isn't available in this local build. Use the demo logins on the sign-in page."
+}

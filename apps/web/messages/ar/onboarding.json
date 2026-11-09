@@ -1,1 +1,15 @@
-{}
+{
+  "title": "أهلاً بيك في دولي",
+  "subtitle": "اختار تحب تبدأ إزاي",
+  "startBusiness": "ابدأ شغلك ككوتش",
+  "haveInvitation": "معايا رابط دعوة",
+  "businessName": "اسم النشاط",
+  "yourName": "اسمك",
+  "timezone": "المنطقة الزمنية",
+  "createBusiness": "جهّز نشاطي",
+  "invitationLink": "رابط الدعوة أو رمز الدعوة",
+  "openInvitation": "افتح الدعوة",
+  "continueSetup": "كمّل التجهيز",
+  "signupUnavailableTitle": "جرّب النسخة التجريبية",
+  "signupUnavailable": "إنشاء حساب مش متاح في النسخة المحلية دي. استخدم الحسابات التجريبية من صفحة تسجيل الدخول."
+}
