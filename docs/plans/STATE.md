@@ -4,9 +4,16 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 14:25 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
+Last update: 2026-11-09 17:55 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 17:55, Codex back; T3b, T3a, T2 running
+
+- Jobs started 17:51 (effort high, `--common _common_web.md`): `20261109-175144-t3b`, `20261109-175145-t3a`,
+  `20261109-175146-t2`. All still running after 90 s (no usage-limit error). T4a and T4b start when a slot frees.
+- Next: on each job end, read the answer in `tools/.codex-answers/*p3-<brief>*.md`, `git status --short`, review diffs,
+  typecheck, lint, tests, check-messages, commit per task with explicit paths.
 
 ### 9 Nov 14:25, P3 briefs written; waiting for Codex (back at 17:48)
 
