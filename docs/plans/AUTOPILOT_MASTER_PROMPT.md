@@ -134,20 +134,31 @@ exact action, why, the cost, what it unblocks), then continue with other work:
 
 Never use Fable: since 8 Nov it needs paid usage credits.
 
+**Codex builds; Claude briefs, reviews and integrates (Mohamed, 9 Nov 2026: "khly codex ybny 3ashan fe tokens
+raheeba bttakl" - let Codex build, the tokens are being eaten).** On 9 Nov the 5-hour window reached 87% and the
+week 72% with a day to the weekly reset, mostly from Sonnet writer workflows. From now on:
+- Every piece of code, tests, fixtures, seeds, scripts and docs that can be written from a brief goes to Codex
+  (`codex_build.py`, zero Claude usage). This includes the security suites: split them into up to 3 Codex briefs
+  on disjoint files instead of running Sonnet writer workflows.
+- Claude's own work is limited to: writing briefs, reviewing Codex diffs, running pnpm/node/psql gates, small
+  integration fixes (a few lines), commits and STATE.md.
+- No Workflow and no subagent fan-out while Codex is available. When Codex is unavailable (its own limit, or two
+  failed runs on the same brief), at most one Sonnet builder at a time, effort medium.
+- Waiting for Codex is cheap: set WAITING with `waiting_for` and `wait_until` and end the turn instead of polling.
+
 | Work | Main session (via HANDOFF) | Subagents and workflow agents | Codex `--effort` |
 |---|---|---|---|
 | Phase planning, product judgement, final security review, red-team synthesis | opus xhigh | sonnet high; opus high for at most 3 adversarial verifiers | none |
 | DB security build: RLS, guards, SQL integration, review of Codex SQL, debugging after 2 failed rounds | opus high | sonnet high | xhigh |
-| Build waves T2 to T12, integrating Codex and Sonnet output, routine fixes | sonnet high | sonnet high | high |
+| Build waves T2 to T12, integrating Codex output, routine fixes | sonnet high | none (Codex builds) | high |
 | Mechanical work: STATE edits, file moves, scripts, dashboard | sonnet medium | haiku low (search), sonnet low | medium |
 | Text and data drafts: Arabic copy, glossary, seed text, catalogs | none | freellm `auto` when health passes, else sonnet medium | none |
 
 How to apply it:
 - Set `model` and `effort` explicitly on every Agent call and every Workflow `agent()`, from this table. Never omit
   them and never name fable.
-- Codex first. Pure TypeScript modules, Drizzle schema files, client libraries, fixtures, test suites and mechanical
-  refactors go to Codex as briefs. Run up to 3 Codex jobs at once, on disjoint files. Sonnet does what needs pnpm,
-  node or psql runs, migrations and integration.
+- Codex first, always (see the rule above). Run up to 3 Codex jobs at once, on disjoint files. The main session
+  runs what needs pnpm, node or psql: migrations, gates and integration.
 - Change your own model or effort only by handoff. Write state.json `{"status": "HANDOFF", "next_model": "...",
   "next_effort": "...", "fresh": true, "reason": "..."}` with `updated_at` now. Make sure STATE.md says exactly
   what the next session does first, then end the turn. `fresh: true` (the default at phase boundaries and model
@@ -194,9 +205,10 @@ verification died on a usage limit, Codex reviewed the doc and fixed its SQL in 
 2. Before running X2 and X3, re-read `tools/codex_briefs/sec-x2-lib-core.md` and `sec-x3-fixtures.md` against the
    fixed doc (section numbers, function and table names, the Codex-changed SQL) and update them. Then run X2 and
    X3 in parallel; their files are disjoint.
-3. Run `.work/kit/design-review/b_build2_wf.js`: Sonnet writers, one per security suite, against the Codex
-   fixtures, then the migrations integrator and the typecheck integrator. Its header shows its `args` (`docSha` is
-   the sha256 of the doc). Its reports land in `.work/kit/build/`. Read them.
+3. The security suites, the migrations and the typecheck integration: if `.work/kit/build/` already holds finished
+   reports from `b_build2_wf.js`, use them. Otherwise do not run that workflow again (9 Nov: token cost); write up to
+   3 Codex briefs that split the 15 suites across disjoint test files, run them as jobs, then do the migrations and
+   typecheck integration yourself.
 4. Gate: `pnpm -r --workspace-concurrency=1 typecheck` exits 0, migrations 0000 to 0006 apply on a fresh scratch
    database, and the seed loader runs. Commit. The suites run in P6 (`b_run_wf.js`).
 
@@ -213,7 +225,7 @@ STATE.md next action 5, so that parallel builders never edit the same file:
 
 Gate: typecheck. Commit.
 
-### P2.5: a preview Mohamed can open and click (sonnet high)
+### P2.5: a preview Mohamed can open and click (Codex builds, brief `tools/codex_briefs/p25-preview.md`)
 
 Mohamed, 8 Nov 2026: "I want to start seeing what the app looks like, so everything is clear and I can test
 everything." Do not wait for P5 to make the app visible:
