@@ -1,1 +1,104 @@
-{}
+{
+  "title": "Packages",
+  "subtitle": "Build clear, flat coaching plans with the services your clients need.",
+  "newTitle": "Build a package",
+  "newSubtitle": "Set the duration, one price and the included services.",
+  "add": "Add package",
+  "save": "Save changes",
+  "saving": "Saving…",
+  "saved": "Changes saved.",
+  "readOnly": "You have view access to this package.",
+  "back": "Back to packages",
+  "archive": "Archive package",
+  "duplicate": "Duplicate package",
+  "archived": "Archived",
+  "showArchived": "Include archived",
+  "hideArchived": "Active packages only",
+  "loadMore": "Load more",
+  "loading": "Loading…",
+  "name": {
+    "ar": "Package name in Arabic",
+    "en": "Package name in English"
+  },
+  "description": {
+    "ar": "Description in Arabic",
+    "en": "Description in English"
+  },
+  "price": "Package price",
+  "currency": "Currency code",
+  "durationDays": "Duration in days",
+  "graceDays": "Grace period in days",
+  "duration": "{days} days",
+  "snapshotHint": "Changes here apply to future sales. Existing subscriptions keep the package values agreed at sale.",
+  "entitlementMatrix": "Included services",
+  "enabled": "Included",
+  "customKey": "Custom service name",
+  "frequency": "Frequency",
+  "limit": "Usage limit",
+  "turnaroundHours": "Review time in hours",
+  "inherit": "No frequency specified",
+  "more": "Notes and media",
+  "note": {
+    "ar": "Service note in Arabic",
+    "en": "Service note in English"
+  },
+  "mediaTypes": "Accepted media",
+  "empty": {
+    "title": "No packages yet",
+    "body": "Build your first package with one price and the services you include."
+  },
+  "entitlements": {
+    "workout_program": "Workout program",
+    "nutrition_plan": "Nutrition plan",
+    "weekly_checkin": "Weekly check-in",
+    "daily_checkin": "Daily check-in",
+    "technique_review": "Technique review",
+    "chat": "Chat",
+    "voice_notes": "Voice notes",
+    "video_call": "Video call",
+    "progress_photos": "Progress photos",
+    "measurements": "Measurements",
+    "inbody_review": "InBody review",
+    "assessments": "Assessments",
+    "supplements_plan": "Supplement plan",
+    "program_updates": "Program updates",
+    "custom": "Custom service"
+  },
+  "frequencies": {
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "biweekly": "Every two weeks",
+    "monthly": "Monthly",
+    "per_cycle": "Per cycle",
+    "per_subscription": "Per subscription",
+    "unlimited": "Unlimited"
+  },
+  "media": {
+    "photo": "Photos",
+    "video": "Videos",
+    "file": "Files",
+    "voice": "Voice"
+  },
+  "schedule": {
+    "title": "Schedule settings",
+    "weekly": "Weekly check-ins",
+    "daily": "Daily check-ins",
+    "firstAfterDays": "First check-in after days",
+    "everyDays": "Days between check-ins",
+    "cycleWeeks": "Cycle length in weeks",
+    "windowDays": "Response window in days",
+    "perCycle": "Check-ins per cycle (optional)",
+    "weeklyTime": "Weekly check-in time",
+    "dailyTime": "Daily check-in time",
+    "technique": "Technique reviews",
+    "firstWeeks": "Technique review weeks",
+    "maxPerWeek": "Technique reviews per week"
+  },
+  "errors": {
+    "failed": "Could not save or load the changes. Check your connection and try again.",
+    "validation_error": "Check the package fields, service names and limits, then try again.",
+    "forbidden": "You do not have permission for this action.",
+    "not_found": "This package is no longer available.",
+    "duplicate_client": "A client with these details already exists."
+  }
+}

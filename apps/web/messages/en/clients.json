@@ -1,1 +1,88 @@
-{}
+{
+  "title": "Clients",
+  "subtitle": "Find your clients and keep their coaching details together.",
+  "newTitle": "Add client",
+  "newSubtitle": "Start with their name. You can fill in the rest later.",
+  "add": "Add client",
+  "save": "Save changes",
+  "saving": "Saving…",
+  "saved": "Changes saved.",
+  "readOnly": "You have view access to this profile.",
+  "back": "Back to clients",
+  "backToClient": "Back to client",
+  "search": "Search clients",
+  "searchHint": "Name, client code, phone or email",
+  "filterStatus": "Filter by status",
+  "allStatuses": "All statuses",
+  "allPackages": "All packages",
+  "allTags": "All tags",
+  "clearPackage": "Clear package filter",
+  "clearTag": "Remove tag: {tag}",
+  "noPackage": "No package",
+  "tagsHint": "Separate tags with commas.",
+  "notesPrivate": "Private coach notes. Your client cannot see these.",
+  "saleHint": "After adding the client, continue to the package sale. No subscription starts here.",
+  "openDuplicate": "Open existing client",
+  "daysLeft": "Days left",
+  "loadMore": "Load more",
+  "loading": "Loading…",
+  "archive": "Archive client",
+  "unarchive": "Restore client",
+  "sellPackage": "Sell a package",
+  "subscriptionStatus": "View subscription",
+  "fields": {
+    "name": "Name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "displayName": "Display name",
+    "phone": "Phone",
+    "email": "Email",
+    "locale": "Client language",
+    "tags": "Tags",
+    "source": "Source",
+    "notes": "Coach notes",
+    "package": "Package",
+    "code": "Client code",
+    "status": "Status"
+  },
+  "languages": {
+    "ar": "Arabic",
+    "en": "English"
+  },
+  "statuses": {
+    "lead": "Lead",
+    "inactive": "Inactive",
+    "archived": "Archived"
+  },
+  "tabs": {
+    "profile": "Profile",
+    "package": "Package and overrides",
+    "subscription": "Subscription",
+    "history": "History"
+  },
+  "history": {
+    "soon": "Coming with Client 360."
+  },
+  "empty": {
+    "title": "No clients found",
+    "body": "Try another search or filter, or add your first client."
+  },
+  "overrides": {
+    "title": "Entitlement overrides",
+    "subtitle": "Adjust this client's package entitlements.",
+    "hint": "These changes apply to this client only. Reset returns a service to its package values.",
+    "overridden": "Overridden",
+    "packageValue": "Package values",
+    "reset": "Reset to package",
+    "emptyTitle": "No package entitlements yet",
+    "emptyBody": "Sell a package with entitlements to set up this client's services.",
+    "billingPermission": "Your access lets you view overrides. Changing them also requires billing edit permission."
+  },
+  "errors": {
+    "failed": "Could not save or load the changes. Check your connection and try again.",
+    "validation_error": "Check the form fields and try again.",
+    "duplicate_client": "A client with this phone or email already exists.",
+    "forbidden": "You do not have permission for this action.",
+    "not_found": "This record is no longer available."
+  }
+}
