@@ -4,9 +4,27 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 21:45 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
+Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, P4 wave 3 launched).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 21:40, P4 wave 3 launched: T5, T6, T7 Codex jobs running
+
+- Commit `f299b2e`: briefs `tools/codex_briefs/p4-t5-client-portal.md`, `p4-t6-nutrition.md`, `p4-t7-forms.md` (use with
+  `--common _common_web.md`) and three new registered message namespaces (`workout` for T5, `nutrition` for T6, `forms` for
+  T7; T5 also owns `client.json`). Evidence: check-messages 769 keys per locale none missing, web tsc exit 0.
+- Jobs started 21:36 (effort high, timeout 5400 s): `20261109-213624-p4-t5`, `-p4-t6`, `-p4-t7`. All running after 1 min with
+  no usage-limit text in the logs.
+- Contracts fixed in the briefs: Today (T5) links to `/app/nutrition` (T6), `/app/checkins/<calendarEventId>` and `/app/intake` (T7);
+  T5 builds the Dexie outbox, a hand-written `public/sw.js` (no Serwist, no new dependency) and `POST /workout-sessions/sync`;
+  T6 writes water through `metric_entries` (T8 owns the metrics router later); T7 finds the form from the calendar event
+  payload and falls back to the tenant default template. G4 (coach comment on a set) is left to T9.
+- **Next (the session that resumes when the jobs end):** for each job read `tools/.codex-answers/*p4-t*.md`, `git status --short`,
+  diff every touched file, then `pnpm --filter @dawlyy/web typecheck`, `lint`, tests via
+  `.work/tmp/run_with_db.py dawlyy_p1gate <cmd>` (start Postgres first: `tools/local_pg.ps1 -Action start`), then
+  `node apps/web/scripts/check-messages.mjs`. Fix small things, commit per task with explicit paths. Add coach nav links for
+  intake and assessments if T7 left them out (nav-items.ts is the integrator's). Then wave 4: briefs for T8 calendar and
+  tracking, T9 messaging, T10 coach dashboard and Client 360, T11 settings and team.
 
 ### 9 Nov 21:45, P3 closed (wave 2 committed); handoff to P4 (sonnet high, fresh)
 
