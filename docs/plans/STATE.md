@@ -4,9 +4,32 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 14:00 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5, end of P1).
+Last update: 2026-11-09 14:25 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, start of P3).
 
 ## Autopilot worker log (newest first)
+
+### 9 Nov 14:25, P3 briefs written; waiting for Codex (back at 17:48)
+
+- `20eb32d` five Codex briefs for wave 2 plus the shared rules `tools/codex_briefs/_common_web.md` (use it with
+  `--common`): `p3-t2-auth.md`, `p3-t3a-clients-packages.md`, `p3-t3b-billing.md`, `p3-t4a-exercises.md`,
+  `p3-t4b-programs.md`. Files are disjoint; the cross-task route contracts are written into each brief
+  (`/coach/billing/sell?clientId=`, `/coach/clients/<id>/subscription`, `GET /api/v1/exercises` item shape).
+- Shared files were handled up front so builders never collide: six message namespaces (`onboarding`, `clients`,
+  `packages`, `billing`, `exercises`, `programs`) are registered in `apps/web/i18n/request.ts` with empty `{}` ar/en
+  files. Builders may not edit `request.ts`, the shell, `nav-items.ts`, `api/index.ts` or the middleware; nav links to
+  `/coach/packages` and `/coach/exercises` are added by the integrator (the worker) after review.
+- Evidence: web typecheck exit 0; `check-messages.mjs` 101 keys per locale, none missing.
+- Design facts the briefs rely on (found while writing them): there is no DB function for sign-up or invitation
+  acceptance, so T2 uses `withServiceTx` for both (reviewed in P7); runtime inserts into `calendar_events` must be
+  `source = manual`, so T3b writes package-rule events in a service transaction (`syncSubscriptionCalendar`).
+- Probe at 14:16 (job `20261109-141618-t2`): Codex still answers "usage limit, try again at 5:48 PM". Nothing changed in the
+  tree. Per the playbook I do not start a Sonnet writer while waiting (usage 5h 67%, week 82%).
+- **Next (the session that starts after 17:48):** launch up to 3 jobs, effort high, each
+  `python tools/codex_build.py tools/codex_briefs/<brief>.md --common tools/codex_briefs/_common_web.md --effort high`
+  via `job.py start --timeout 5400`: first T3b, T3a, T2; then T4a, T4b when a slot frees. Review each answer and diff,
+  run `pnpm --filter @dawlyy/web typecheck`, `lint`, `vitest run` for its files (DB tests need
+  `.work/tmp/run_with_db.py dawlyy_p1gate <cmd>`), `node apps/web/scripts/check-messages.mjs`, commit per task with
+  explicit paths. Then add nav links and handle P4.
 
 ### 9 Nov 14:00, P1 closed; handoff to P3 (sonnet high, fresh)
 
