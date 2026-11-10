@@ -33,4 +33,4 @@ An attended session (Mohamed watching) must not edit this repo while the worker 
   Never start `pnpm dev` or `next dev` from an agent.
 - Local Postgres 18.1 on 127.0.0.1:54329 (`tools/local_pg.ps1`). Roles are cluster-wide: never change roles
   outside a full migration run.
-- Codex builds: `python tools/codex_build.py <brief>`; Codex never commits, Codex reviews first.
+- Codex builds: `python tools/codex_build.py <brief>`; Codex never commits, Claude reviews first.
