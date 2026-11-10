@@ -145,6 +145,11 @@ week 72% with a day to the weekly reset, mostly from Sonnet writer workflows. Fr
 - No Workflow and no subagent fan-out while Codex is available. When Codex is unavailable (its own limit, or two
   failed runs on the same brief), at most one Sonnet builder at a time, effort medium.
 - Waiting for Codex is cheap: set WAITING with `waiting_for` and `wait_until` and end the turn instead of polling.
+- Weekly usage at 85% or more (`.autopilot/usage.json`): review Codex output, run gates and commit only. Write no
+  code yourself and start no Sonnet builder; while Codex runs, set WAITING with `wait_until` and end the turn. P7
+  (the opus xhigh review) waits for the weekly reset.
+- At the end of every wave, re-run the screens job (`apps/web/e2e/screens.spec.ts`) so `docs/qa/screens/` shows the
+  current app, and update `docs/qa/HOW_TO_TEST.md` (the owner dashboard must show the 3 demo clients).
 
 | Work | Main session (via HANDOFF) | Subagents and workflow agents | Codex `--effort` |
 |---|---|---|---|
