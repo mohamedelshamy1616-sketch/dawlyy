@@ -101,6 +101,21 @@ test('capture every route for both demo roles, locales and viewport widths', asy
   if (!screensDirectory || !baseURL) throw new Error('Screenshot directory and baseURL must be configured.');
   const outputDirectory = screensDirectory;
 
+  // Warm-up: the first request to each route makes the dev server compile it, which can take longer than the page
+  // checks allow. Visit every route once per role (the compile is locale- and viewport-independent) before capturing.
+  for (const actor of actors) {
+    const context = await browser.newContext({ baseURL });
+    try {
+      const login = await context.request.post('/api/dev-login', { data: { userId: actor.userId, locale: 'ar' }, maxRedirects: 0 });
+      expect(login.status(), 'Dev login must issue a redirect; run both database seeds first.').toBe(303);
+      for (const route of actorRoutes(actor.role)) {
+        await context.request.get(`/ar${route.path}`, { timeout: 240_000, failOnStatusCode: false }).catch(() => undefined);
+      }
+    } finally {
+      await context.close();
+    }
+  }
+
   // A single test keeps every soft overflow failure in one worker, so afterAll writes one complete index.
   for (const actor of actors) {
     for (const locale of locales) {

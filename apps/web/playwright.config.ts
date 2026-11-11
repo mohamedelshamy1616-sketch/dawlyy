@@ -28,7 +28,7 @@ export default defineConfig({
     command: 'pnpm exec next dev --port 3210',
     url: 'http://localhost:3210/ar/login',
     reuseExistingServer: false,
-    timeout: 180_000,
+    timeout: 600_000,
     env: {
       NODE_ENV: 'development',
       DAWLYY_DIST_DIR: '.next-screens',

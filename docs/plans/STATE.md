@@ -8,6 +8,14 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 11:40, T12a (demo seed) committed 87517af; screens run restarted
+
+- Codex T12a reviewed. Evidence on fresh scratch database `dawlyy_t12`: migrations 0000 to last applied, system seed 210 exercises and 371 foods, `seed/demo.ts` ran, a second run left every table count unchanged, `demo-reset.ts` then reseed restored 1 tenant, 8 clients, 10 payments, 192 set logs; db `tsc` exit 0; `seed/demo.test.ts` 7/7 (vitest now also discovers `seed/**/*.test.ts`). Upgrade path from the old 3-client seed (`dawlyy_t12b`, old demo.ts at 41a5016 then the new one) also works: 8 clients, 10 payments, 7 programs.
+- Demo logins are now 10 (owner, staff, 8 clients; see `docs/qa/HOW_TO_TEST.md`, rewritten in Egyptian Arabic for the current state).
+- Screens job: `screens5` hit the 1-hour test cap and its cold dev compiles gave false FAIL rows; `screens6` died because the dev server did not answer in 180 s. Fixes: warm-up pass visits every route once per role before capturing, webServer timeout 600 s. `screens7` is running (dev server in `.next-screens`; Mohamed's own `next dev` on :3200 PID 28080 holds `.next`, never touch it).
+- Codex `p5-t12c` (vercel.json, env examples, LAUNCH_RUNBOOK, RESTORE_DRILL) is running, effort medium.
+- Next: review screens7 (fix real FAIL rows), review t12c, then Astryx theme builder and polish builders (briefs `tools/codex_briefs/p5-astryx-*.md`), then T12b Playwright beta-gate suites.
+
 ### 11 Nov 10:20, T8 committed (da7cf91); wave 4 complete (T5 to T11)
 
 - Codex T8 (45 files) reviewed and integrated. Fixes: `FileInput` has no `className` (wrapped in a div); a raw `Date` bound in a `sql` template in `processor.ts` (now ISO string cast to `timestamptz`); four T8 tests imported `./index` before `test/api-harness`, so the Supabase mock was never applied (500 `cookies called outside a request scope`); `access.test.ts` mocked `@dawlyy/db` whole, which broke once T6 read `clientColumns` at module scope (now a partial mock, assertions untouched); vitest `testTimeout`/`hookTimeout` 30 s because a cold import of the router tree takes about 10 s.
