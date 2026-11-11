@@ -8,6 +8,13 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 04:55, T5 committed, wave 4 started (speed mode: 3 tasks at once)
+
+- T5 committed `5eb4f52` after fixes: a raw `Date` bound inside `setWhere` (postgres.js refuses it; now an ISO string cast to `timestamptz`), `app.audit`/`app.emit_event` entity ids are `text` (the `::uuid` casts failed with "function does not exist"), and two test type errors. Evidence: web `tsc` exit 0, vitest `dawlyy_p1gate` me.test + workout-sessions.test 9/9, eslint 0 errors (4 unused-var warnings), check-messages 1431 keys per locale. Not run: offline Playwright spec, iOS device check, RTL render at 360 px (screens job).
+- `eeccfaf`: briefs `p4-t8-calendar-tracking.md`, `p4-t10-dashboard.md`, `p4-t11-settings-team.md`; six empty message namespaces registered (calendar, tracking, messaging, dashboard, settings, legal).
+- Running: Codex job `20261111-045317-p4-t8` (effort high), Sonnet builders T10 and T11 (effort medium, no commits). T9 messaging is briefed when one slot frees.
+- Usage at start of this run: 5-hour 9%, weekly 40%.
+
 ### 11 Nov 04:00, resume after the attended Astryx session: T5 T6 T7 finished in round 3
 
 - Playbook sha256 matched (402b9468...). Usage at start: 5-hour 30%, weekly 19% (usage.json: 16% / 30%). The six Codex jobs of 9-10 Nov all failed on the ChatGPT usage limit; their partial files (3265 lines, untracked) are what the tree holds.
