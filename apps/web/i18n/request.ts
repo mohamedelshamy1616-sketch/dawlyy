@@ -22,6 +22,12 @@ const loaders = {
     workout: () => import('../messages/ar/workout.json'),
     nutrition: () => import('../messages/ar/nutrition.json'),
     forms: () => import('../messages/ar/forms.json'),
+    calendar: () => import('../messages/ar/calendar.json'),
+    tracking: () => import('../messages/ar/tracking.json'),
+    messaging: () => import('../messages/ar/messaging.json'),
+    dashboard: () => import('../messages/ar/dashboard.json'),
+    settings: () => import('../messages/ar/settings.json'),
+    legal: () => import('../messages/ar/legal.json'),
   },
   en: {
     common: () => import('../messages/en/common.json'),
@@ -42,6 +48,12 @@ const loaders = {
     workout: () => import('../messages/en/workout.json'),
     nutrition: () => import('../messages/en/nutrition.json'),
     forms: () => import('../messages/en/forms.json'),
+    calendar: () => import('../messages/en/calendar.json'),
+    tracking: () => import('../messages/en/tracking.json'),
+    messaging: () => import('../messages/en/messaging.json'),
+    dashboard: () => import('../messages/en/dashboard.json'),
+    settings: () => import('../messages/en/settings.json'),
+    legal: () => import('../messages/en/legal.json'),
   },
 } satisfies Record<(typeof routing.locales)[number], Record<string, () => Promise<{ default: AbstractIntlMessages }>>>;
 
