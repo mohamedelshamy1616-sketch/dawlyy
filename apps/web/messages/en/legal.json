@@ -1,1 +1,49 @@
-{}
+{
+  "draftBanner": "Draft for legal review (Egypt Law 151/2020)",
+  "draftBannerBody": "This text is a working draft. It is not final until counsel has filled every [PLACEHOLDER] and approved it.",
+  "version": "Text version {version}",
+  "nav": { "label": "Legal pages", "terms": "Terms of service", "privacy": "Privacy notice", "consent": "Consent", "home": "Back to the app" },
+  "terms": {
+    "title": "Terms of service",
+    "intro": "These terms apply when you use the coaching app run by [PLACEHOLDER: company name, commercial register number].",
+    "sections": {
+      "service": { "title": "The service", "body": "The app lets your coach share training programmes, nutrition plans, forms and messages with you, and lets you log your progress. The coach, not the app, is responsible for the coaching advice." },
+      "accounts": { "title": "Your account", "body": "You sign in with the invitation your coach sent you. Keep your sign-in private and tell your coach if you think someone else has used it." },
+      "payments": { "title": "Packages and payments", "body": "Packages, prices and renewal dates are set by your coach. Payments are recorded in the app and confirmed by your coach. Refunds follow [PLACEHOLDER: refund policy]." },
+      "health": { "title": "Health and training", "body": "Training and nutrition advice does not replace a doctor. Tell your coach about injuries, pain and medical conditions, and stop any exercise that hurts." },
+      "conduct": { "title": "Use of the app", "body": "Use the app only for your own coaching. Do not upload anything unlawful, and do not try to reach another person's data." },
+      "liability": { "title": "Responsibility", "body": "To the extent the law allows, [PLACEHOLDER: company name] is not liable for injury or loss that comes from following a programme without suitable medical clearance." },
+      "termination": { "title": "Ending your use", "body": "You can stop at any time and ask for your data to be exported or erased as described in the privacy notice. The coach can end access if these terms are broken." },
+      "changes": { "title": "Changes", "body": "When the terms change you will be asked to read and accept the new version before you carry on." },
+      "law": { "title": "Governing law", "body": "These terms are governed by the laws of the Arab Republic of Egypt. Disputes go to [PLACEHOLDER: competent court or arbitration centre]." },
+      "contact": { "title": "Contact", "body": "[PLACEHOLDER: company address] - [PLACEHOLDER: contact email and phone]." }
+    }
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "intro": "This notice explains how personal data is handled under the Egyptian Personal Data Protection Law (Law 151 of 2020).",
+    "sections": {
+      "controller": { "title": "Who is responsible", "body": "The controller is [PLACEHOLDER: company name and address]. The data protection contact is [PLACEHOLDER: name and email of the data protection contact]." },
+      "collect": { "title": "What we collect", "body": "Your name and contact details, your goals, measurements, training and nutrition logs, check-in answers, messages and payment records. Progress photos and videos are collected only with your separate consent." },
+      "purpose": { "title": "Why we use it", "body": "To deliver the coaching you signed up for: planning, tracking, reviewing check-ins, billing and keeping you informed." },
+      "basis": { "title": "Your consent", "body": "Sensitive data such as health information, photos and videos is used only with your explicit consent, which you can withdraw at any time from your consent screen." },
+      "sharing": { "title": "Who can see it", "body": "Your coach and the team members your coach has given access to. We use service providers for hosting and messaging under written terms. We do not sell personal data." },
+      "retention": { "title": "How long we keep it", "body": "Coaching records are kept for [PLACEHOLDER: retention period] after your subscription ends. Payment records are kept for [PLACEHOLDER: legal retention period]. After that the data is erased or made anonymous." },
+      "rights": { "title": "Your rights", "body": "You can ask to see, correct, export or erase your data, withdraw any consent, and object to its use. Ask your coach or write to the data protection contact." },
+      "security": { "title": "Security", "body": "Data is stored with access limited to your business, encrypted in transit, and every access is checked on the server." },
+      "transfers": { "title": "Storage location", "body": "Data is stored in [PLACEHOLDER: hosting region and any cross-border transfer basis]." },
+      "contact": { "title": "Questions and complaints", "body": "Write to [PLACEHOLDER: data protection contact email]. You may also complain to the Personal Data Protection Centre." }
+    }
+  },
+  "consent": {
+    "title": "Consent",
+    "intro": "Each consent is separate and optional unless it is marked as needed. You can withdraw any of them at any time from the consent screen inside the app. Withdrawing does not undo what already happened while you had agreed.",
+    "sections": {
+      "health_data": { "title": "Health and training data", "body": "You allow your coach to record and use your measurements, training results, nutrition logs, check-in answers and health information in order to coach you." },
+      "photos": { "title": "Progress photos", "body": "You allow your coach to receive and view the progress photos you upload. Photos are private to your coach and the team members your coach chooses." },
+      "videos": { "title": "Videos", "body": "You allow your coach to receive and view the technique videos you upload for form checks." },
+      "communications": { "title": "Messages and reminders", "body": "You allow reminders and updates from your coach by app notification, email or WhatsApp. Marketing messages are never sent under this consent." },
+      "withdrawal": { "title": "Withdrawing", "body": "To withdraw, open the consent screen and press Withdraw on that item. We keep a record that you agreed and when you withdrew, as the law requires. For erasure of your data write to [PLACEHOLDER: data protection contact email]." }
+    }
+  }
+}
