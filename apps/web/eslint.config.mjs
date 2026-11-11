@@ -9,6 +9,11 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    // Generated output: per-run dist dirs (DAWLYY_DIST_DIR), Playwright results and the built Astryx theme.
+    ".next-*/**",
+    "test-results/**",
+    "playwright-report/**",
+    "theme/built/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
