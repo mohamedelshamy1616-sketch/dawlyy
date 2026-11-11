@@ -6,7 +6,7 @@ import type { SessionDetail, PortalToday } from '../../src/server/workout/contra
 import type { FormBundle } from '../../components/form-runner/contracts';
 import {
   api, billingDate, browserHealth, button, cairoToday, devLogin, labels,
-  mutation, plusDays, proofPng, responseJson, visit, type Locale,
+  labelPrefix, mutation, plusDays, proofPng, responseJson, visit, type Locale,
 } from './helpers';
 
 // Public demo ID, retained from screens.spec.ts and seed/demo/ids.ts. No seeded client is repurposed.
@@ -174,7 +174,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         await owner.getByRole('spinbutton', { name: t('billing.amount'), exact: true }).fill('100');
         await expect(owner.getByRole('switch', { name: t('billing.markPaid'), exact: true })).not.toBeChecked();
         const png = proofPng();
-        await owner.getByLabel(t('billing.proofOptional'), { exact: true }).setInputFiles({ name: 'beta-proof.png', mimeType: 'image/png', buffer: png });
+        // The Astryx file field is a labelled button plus a hidden input carrying the same label, so target the input itself.
+        await owner.locator('#sale-proof[type="file"]').setInputFiles({ name: 'beta-proof.png', mimeType: 'image/png', buffer: png });
         const upload = owner.waitForResponse(response => new URL(response.url()).pathname.startsWith('/api/v1/media/local-upload/') && response.request().method() === 'PUT');
         const [created, stored] = await Promise.all([
           mutation<Sale>(owner, 'POST', '/subscriptions', 201, () => button(owner, t('billing.sell')).click()),
@@ -187,7 +188,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         expect(sale.subscription.state).toBe('pending');
         expect(sale.subscription.endsOn).toBe(plusDays(startsOn, 28));
         await expect(owner.getByRole('heading', { name: t('billing.saleComplete'), exact: true })).toBeVisible();
-        await expect(owner.getByRole('status')).toContainText(t('billing.awaitingVerification'));
+        // Astryx adds its own live regions (file field, buttons), so pick the sale result by its text.
+        await expect(owner.getByRole('status').filter({ hasText: t('billing.awaitingVerification') })).toBeVisible();
         if (!sale.payment?.proofMediaId) throw new Error('The sale must retain its uploaded proof.');
         const download = await api<{ url: string }>(owner, 'GET', `/media/${sale.payment.proofMediaId}/url`);
         expect(download.url.startsWith('/api/v1/media/local-download/'), 'Proof must use local filesystem storage').toBe(true);
@@ -225,8 +227,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
     test('05 owner publishes and assigns a workout program and two-food nutrition plan', async () => {
       await step('5. Build, publish and assign program and nutrition through the UI', true, async () => {
         await visit(owner, locale, '/coach/programs/new');
-        await owner.getByRole('textbox', { name: t('programs.name'), exact: true }).fill(programName);
-        await owner.getByRole('spinbutton', { name: t('programs.weeks'), exact: true }).fill('1');
+        await owner.getByRole('textbox', { name: labelPrefix(t('programs.name')) }).fill(programName);
+        await owner.getByRole('spinbutton', { name: labelPrefix(t('programs.weeks')) }).fill('1');
         for (const day of [2, 4]) {
           const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 10, 8 + day)));
           await button(owner, weekday).click();
@@ -238,13 +240,13 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         const library = await api<{ items: LibraryRow[] }>(owner, 'GET', '/exercises?limit=100');
         const exercise = library.items.find(item => !item.hidden);
         if (!exercise) throw new Error('System seed must provide an exercise.');
-        await owner.getByRole('textbox', { name: t('programs.workoutName'), exact: true }).fill(workoutName);
-        await owner.getByRole('textbox', { name: t('programs.workoutName'), exact: true }).press('Tab');
+        await owner.getByRole('textbox', { name: labelPrefix(t('programs.workoutName')) }).fill(workoutName);
+        await owner.getByRole('textbox', { name: labelPrefix(t('programs.workoutName')) }).press('Tab');
         // A new program already holds one empty block (clicking add block made a second, empty one that publish refuses with 422).
         await button(owner, t('programs.addExercise')).click();
         const picker = owner.getByRole('dialog', { name: t('programs.chooseExercise'), exact: true });
         const exerciseName = localize(exercise.name, locale);
-        await picker.getByRole('textbox', { name: t('programs.exerciseSearch'), exact: true }).fill(exerciseName);
+        await picker.getByRole('textbox', { name: labelPrefix(t('programs.exerciseSearch')) }).fill(exerciseName);
         await picker.getByRole('button', { name: exerciseName, exact: true }).click();
         await expect(picker).not.toBeVisible();
         // Item creation defaults to three sets. Keep one set, selected by its localized legend.
@@ -253,10 +255,10 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
           await row.getByRole('button', { name: t('programs.removeSet'), exact: true }).click();
         }
         const planned = owner.getByRole('group', { name: t('programs.setNumber', { number: new Intl.NumberFormat(locale).format(1) }), exact: true });
-        await planned.getByRole('textbox', { name: t('programs.reps'), exact: true }).fill('8');
-        await planned.getByRole('textbox', { name: t('programs.reps'), exact: true }).press('Tab');
-        await planned.getByRole('spinbutton', { name: t('programs.load'), exact: true }).fill('20');
-        await planned.getByRole('spinbutton', { name: t('programs.load'), exact: true }).press('Tab');
+        await planned.getByRole('textbox', { name: labelPrefix(t('programs.reps')) }).fill('8');
+        await planned.getByRole('textbox', { name: labelPrefix(t('programs.reps')) }).press('Tab');
+        await planned.getByRole('spinbutton', { name: labelPrefix(t('programs.load')) }).fill('20');
+        await planned.getByRole('spinbutton', { name: labelPrefix(t('programs.load')) }).press('Tab');
         await button(owner, t('programs.publish')).click();
         const publish = owner.getByRole('dialog', { name: t('programs.publishTitle'), exact: true });
         await mutation(owner, 'POST', `/programs/${programId}/publish`, 200,
@@ -268,17 +270,17 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         expect(training).toHaveLength(1);
         expect(training.flatMap(day => day.workout?.blocks.flatMap(block => block.items) ?? [])).toHaveLength(1);
         await owner.getByRole('main').getByRole('link', { name: t('programs.assign'), exact: true }).click();
-        await owner.getByRole('textbox', { name: t('programs.clientSearch'), exact: true }).fill(clientName);
+        await owner.getByRole('textbox', { name: labelPrefix(t('programs.clientSearch')) }).fill(clientName);
         await owner.getByRole('group', { name: t('programs.chooseClient'), exact: true })
           .getByRole('button', { name: new RegExp(`^${clientName} · `) }).click();
-        await owner.getByLabel(t('programs.startDate'), { exact: true }).fill(today);
+        await owner.getByLabel(labelPrefix(t('programs.startDate'))).fill(today = cairoToday()); // fresh: a run can cross midnight in Cairo
         await mutation(owner, 'POST', `/programs/${programId}/assign`, 201,
           () => button(owner, t('programs.assign')).click());
         await expect(owner.getByRole('heading', { name: t('programs.assignSuccess'), exact: true })).toBeVisible();
 
         await visit(owner, locale, '/coach/nutrition/new');
         for (const lang of ['ar', 'en']) {
-          await owner.getByRole('textbox', { name: `${t('nutrition.common.name')} · ${t(`nutrition.common.${lang}`)}`, exact: true }).fill(nutritionName);
+          await owner.getByRole('textbox', { name: labelPrefix(`${t('nutrition.common.name')} · ${t(`nutrition.common.${lang}`)}`) }).fill(nutritionName);
         }
         const nutrition = await mutation<{ head: { id: string } }>(owner, 'POST', '/nutrition', 201,
           () => button(owner, t('nutrition.plans.create')).click());
@@ -305,7 +307,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         const secondFood = foods[1];
         if (!secondFood) throw new Error('Two foods must be seeded.');
         const secondName = localize(secondFood.name, locale);
-        await foodDialog.getByRole('textbox', { name: t('nutrition.foods.search'), exact: true }).fill(secondName);
+        await foodDialog.getByRole('textbox', { name: labelPrefix(t('nutrition.foods.search')) }).fill(secondName);
         await foodDialog.getByRole('button', { name: secondName, exact: true }).click();
         await expect(foodDialog).not.toBeVisible();
         await button(owner, t('nutrition.builder.publish')).click();
@@ -314,7 +316,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
           () => nutritionPublish.getByRole('button', { name: t('nutrition.builder.publish'), exact: true }).click());
         await expect(nutritionPublish).not.toBeVisible();
         await owner.getByRole('main').getByRole('link', { name: t('nutrition.assign.title'), exact: true }).click();
-        await owner.getByRole('searchbox', { name: t('nutrition.assign.clientSearch'), exact: true }).fill(clientName);
+        await owner.getByRole('searchbox', { name: labelPrefix(t('nutrition.assign.clientSearch')) }).fill(clientName);
         await owner.getByRole('group', { name: t('nutrition.assign.chooseClient'), exact: true })
           .getByRole('button', { name: new RegExp(`^${clientName} · `) }).click();
         await mutation(owner, 'POST', `/nutrition/${nutritionId}/assign`, 201,
@@ -356,7 +358,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         expect(meal.mealId).toBeTruthy();
         await client.reload();
         await expect(client.getByRole('main')).toContainText(t('nutrition.client.status.eaten'));
-        const logged = await api<{ items: Array<{ id: string; status: string }> }>(client, 'GET', `/meal-logs?date=${today}`);
+        const logged = await api<{ items: Array<{ id: string; status: string }> }>(client, 'GET', `/meal-logs?date=${cairoToday()}`);
         expect(logged.items).toEqual([expect.objectContaining({ id: meal.id, status: 'eaten' })]);
         expect(await client.evaluate(() => navigator.onLine)).toBe(true);
       });
@@ -484,7 +486,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         expect(renewal.payment?.state).toBe('verified'); expect(renewal.payment?.receiptNo).toBeTruthy();
         // Core: renewalDate is the day after the last covered day (endsOn + 1), as asserted in subscriptions.test.ts.
         expect(renewal.renewalDate).toBe(plusDays(renewalStart, 29));
-        await expect(owner.getByRole('status')).toContainText(billingDate(renewal.renewalDate, locale));
+        await expect(owner.getByRole('status').filter({ hasText: billingDate(renewal.renewalDate, locale) })).toBeVisible();
         const renewed = await api<SubscriptionDetail>(owner, 'GET', `/subscriptions/${renewal.subscription.id}`);
         expect(renewed.upcoming.some(event => event.type === 'weekly_checkin' && event.localDate === plusDays(renewalStart, 7))).toBe(true);
       });

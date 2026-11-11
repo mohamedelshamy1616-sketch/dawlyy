@@ -38,10 +38,23 @@ def run(cmd: list[str], env: dict[str, str], cwd: pathlib.Path = ROOT) -> None:
         sys.exit(code)
 
 
+def ensure_cluster() -> None:
+    """The local cluster has died twice on 11 Nov (postgres child exit 0xC000026B); start it when it is not ready."""
+    ready = PSQL.with_name('pg_isready.exe')
+    if subprocess.run([str(ready), '-h', '127.0.0.1', '-p', '54329', '-q']).returncode == 0:
+        return
+    print('run_e2e: local Postgres is down, starting it with tools/local_pg.ps1', flush=True)
+    code = subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+                           str(ROOT / 'tools/local_pg.ps1'), '-Action', 'start']).returncode
+    if code != 0:
+        sys.exit(code)
+
+
 def main() -> None:
-    if len(sys.argv) != 2 or sys.argv[1] not in ('e2e-ar', 'e2e-en'):
+    if len(sys.argv) < 2 or sys.argv[1] not in ('e2e-ar', 'e2e-en'):
         sys.exit('usage: python tools/run_e2e.py e2e-ar|e2e-en')
     project = sys.argv[1]
+    ensure_cluster()
     urls = read_env()
     for key in ('DATABASE_URL', 'DATABASE_URL_SERVICE'):
         if key not in urls or not re.search(r'//[^/@]*@?(127\.0\.0\.1|localhost)[:/]', urls[key]):
@@ -52,16 +65,21 @@ def main() -> None:
     env.pop('DRIZZLE_NO_POLICIES', None)
     env.setdefault('DAWLYY_DEV_LOGIN_SECRET', '0123456789abcdef0123456789abcdef0123456789abcdef')
 
-    admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
-    for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):
-        run([str(PSQL), admin, '-v', 'ON_ERROR_STOP=1', '-c', sql], env)
-    run(['pnpm', '--filter', '@dawlyy/db', 'migrate'], env)
-    run(['powershell', '-NoProfile', '-File', str(ROOT / 'tools/local_pg.ps1'), '-Action', 'prepare'], env)
-    db_dir = ROOT / 'packages/db'
-    for seed in ('seed/index.ts', 'seed/demo.ts'):
-        run(['node', '--env-file=.env', '--import', 'tsx', f'./{seed}'], env, db_dir)
+    extra = sys.argv[2:]
+    # --reuse-db: debugging only. Keeps the existing dawlyy_e2e (migrating it takes ~10 min on this disk).
+    reuse = '--reuse-db' in extra
+    extra = [a for a in extra if a != '--reuse-db']
+    if not reuse:
+        admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
+        for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):
+            run([str(PSQL), admin, '-v', 'ON_ERROR_STOP=1', '-c', sql], env)
+        run(['pnpm', '--filter', '@dawlyy/db', 'migrate'], env)
+        run(['powershell', '-NoProfile', '-File', str(ROOT / 'tools/local_pg.ps1'), '-Action', 'prepare'], env)
+        db_dir = ROOT / 'packages/db'
+        for seed in ('seed/index.ts', 'seed/demo.ts'):
+            run(['node', '--env-file=.env', '--import', 'tsx', f'./{seed}'], env, db_dir)
     run(['pnpm', '--filter', '@dawlyy/web', 'exec', 'playwright', 'test', '-c', 'playwright.e2e.config.ts',
-         '--project', project, '--reporter=line'], env)
+         '--project', project, '--reporter=line', *extra], env)
 
 
 if __name__ == '__main__':

@@ -166,3 +166,8 @@ export async function responseJson<T>(response: Response, status: number): Promi
   expect(response.status(), 'Observed API response status').toBe(status);
   return await response.json() as T;
 }
+
+/** Astryx adds a suffix (for example "required") to a field's accessible name, so match the translated label as a prefix. */
+export function labelPrefix(label: string): RegExp {
+  return new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
+}

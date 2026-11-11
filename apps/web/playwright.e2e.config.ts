@@ -14,7 +14,9 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   timeout: 300_000,
-  expect: { timeout: 20_000 },
+  // The server is `next dev`, which compiles each route on its first visit; on a loaded PC that took 10 to 15 s
+  // per route (trace of e2e-ar-trace2). Assertions are unchanged; only the wait for them is longer.
+  expect: { timeout: 45_000 },
   use: {
     baseURL: 'http://localhost:3220',
     browserName: 'chromium',
@@ -22,7 +24,7 @@ export default defineConfig({
     timezoneId: 'Africa/Cairo',
     reducedMotion: 'reduce',
     navigationTimeout: 240_000,
-    actionTimeout: 20_000,
+    actionTimeout: 60_000,
     // Invitation tokens and signed development cookies must remain in memory.
     trace: 'off',
     screenshot: 'off',
