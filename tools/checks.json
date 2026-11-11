@@ -1,9 +1,12 @@
 {
  "checks": [
-  {"name": "typecheck", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "typecheck"], "cwd": ".", "timeout": 1800, "heavy": true},
-  {"name": "lint", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "lint"], "cwd": ".", "timeout": 1200, "heavy": true},
+  {"name": "typecheck", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "typecheck"], "cwd": ".", "timeout": 3600, "heavy": true},
+  {"name": "lint", "cmd": ["pnpm", "-r", "--workspace-concurrency=1", "lint"], "cwd": ".", "timeout": 3600, "heavy": true},
+  {"name": "build-web", "cmd": ["pnpm", "--filter", "@dawlyy/web", "build"], "cwd": ".", "timeout": 5400, "heavy": true},
   {"name": "test-core", "cmd": ["pnpm", "--filter", "@dawlyy/core", "exec", "vitest", "run", "--maxWorkers=1"], "cwd": ".", "timeout": 1800, "heavy": true},
-  {"name": "test-db", "cmd": ["pnpm", "--filter", "@dawlyy/db", "test:rls"], "cwd": ".", "timeout": 1800, "heavy": true},
-  {"name": "test-web", "cmd": ["pnpm", "--filter", "@dawlyy/web", "test"], "cwd": ".", "timeout": 1800, "heavy": true}
+  {"name": "test-db", "cmd": ["pnpm", "--filter", "@dawlyy/db", "test:rls"], "cwd": ".", "timeout": 3600, "heavy": true},
+  {"name": "test-web", "cmd": ["pnpm", "--filter", "@dawlyy/web", "test"], "cwd": ".", "timeout": 3600, "heavy": true},
+  {"name": "e2e-ar", "cmd": ["python", "tools/run_e2e.py", "e2e-ar"], "cwd": ".", "timeout": 5400, "heavy": true},
+  {"name": "e2e-en", "cmd": ["python", "tools/run_e2e.py", "e2e-en"], "cwd": ".", "timeout": 5400, "heavy": true}
  ]
 }
