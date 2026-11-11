@@ -1,18 +1,13 @@
-import { CalendarCheck } from "lucide-react";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { EmptyState } from "@/src/components/shell/empty-state";
-import { PageHeader } from "@/src/components/shell/page-header";
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { requirePage } from '@/src/server/auth';
+import { withAuthTx } from '@/src/server/db';
+import { getToday } from '@/src/server/workout/portal';
+import { TodayCards } from '@/components/client-portal/today-cards';
+import { PortalFrame } from '@/components/client-portal/portal-frame';
 
+/** Task 5: own-client Today cards through the authenticated RLS boundary. */
 export default async function TodayPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const nav = await getTranslations("nav.client");
-  const t = await getTranslations("client.today");
-
-  return (
-    <div className="flex flex-col gap-6">
-      <PageHeader title={nav("today")} subtitle={t("subtitle")} />
-      <EmptyState Icon={CalendarCheck} title={t("emptyTitle")} description={t("emptyBody")} />
-    </div>
-  );
+  const { locale } = await params; setRequestLocale(locale); const auth = await requirePage();
+  const data = await withAuthTx(auth, tx => getToday(tx, auth)); const t = await getTranslations('nav.client');
+  return <PortalFrame title={t('today')}><TodayCards data={data} /></PortalFrame>;
 }

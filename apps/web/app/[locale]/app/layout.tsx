@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { AuthGate } from "@/components/app/auth-gate";
 import { ClientShell } from "@/src/components/shell/client-shell";
 import { PageSkeleton } from "@/src/components/shell/page-skeleton";
+import { ClientRuntimeMount } from "@/components/client-portal/runtime-mount";
 
 export default async function ClientAppLayout({
   children,
@@ -19,7 +20,7 @@ export default async function ClientAppLayout({
     <ClientShell>
       <Suspense fallback={<PageSkeleton />}>
         <AuthGate roles={["client"]} fallback="/coach">
-          {children}
+          <ClientRuntimeMount>{children}</ClientRuntimeMount>
         </AuthGate>
       </Suspense>
     </ClientShell>

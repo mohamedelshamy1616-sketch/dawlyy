@@ -2,6 +2,27 @@
   "today": {
     "subtitle": "Your workout, meals and check-in for today",
     "emptyTitle": "Nothing planned for today",
-    "emptyBody": "When your coach assigns your program, today's plan shows up here."
+    "emptyBody": "When your coach assigns your program, today's plan shows up here.",
+    "workout": "Today’s workout",
+    "restTitle": "Rest and recover",
+    "restBody": "Take it easy today. Recovery is part of your progress.",
+    "exercises": "{count, number} exercises",
+    "start": "Start workout",
+    "continue": "Continue workout",
+    "meals": "Your meals",
+    "kcal": "{count, number} kcal target",
+    "checkin": "Check-in due",
+    "intake": "Complete your intake",
+    "water": "Water",
+    "steps": "Steps",
+    "messages": "Messages · {count, number} unread",
+    "subscription": "Your subscription",
+    "daysLeft": "{count, number} days remaining",
+    "subscriptionStates": {
+      "none": "No subscription",
+      "pending": "Pending activation",
+      "grace": "Renewal grace period",
+      "suspended": "Suspended — contact your coach"
+    }
   }
 }
