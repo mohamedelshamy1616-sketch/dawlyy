@@ -1,1 +1,161 @@
-{}
+{
+  "title": "Dashboard",
+  "subtitle": "Who needs you today, at a glance.",
+  "noAccessTitle": "The dashboard is not open to you",
+  "noAccessBody": "Ask the account owner to give you dashboard access.",
+  "countsHeading": "Needs attention",
+  "viewQueue": "Open the list",
+  "counts": {
+    "attention": { "label": "Clients needing attention", "hint": "Active clients with at least one open item below" },
+    "overdue_checkins": { "label": "Overdue check-ins", "hint": "Check-ins past their due date" },
+    "waiting_review": { "label": "Check-ins to review", "hint": "Submitted and waiting for you" },
+    "missing_data": { "label": "No weight for 14 days", "hint": "Active clients with no recent weigh-in" },
+    "expiring_subscriptions": { "label": "Expiring within 14 days", "hint": "Subscriptions ending soon" },
+    "pending_payments": { "label": "Pending payments", "hint": "Waiting to be verified" },
+    "adherence_decline": { "label": "Adherence dropping", "hint": "Completed workouts fell 30 points or more vs last week" }
+  },
+  "queue": {
+    "back": "Back to the dashboard",
+    "emptyTitle": "Nothing here",
+    "emptyBody": "No client matches this list right now.",
+    "loadMore": "Show more",
+    "loadError": "Could not load more. Try again.",
+    "open": "Open",
+    "invalid": "This list does not exist."
+  },
+  "tasksPreview": {
+    "title": "Your open tasks",
+    "all": "All tasks",
+    "empty": "No open tasks. Nice and clear."
+  },
+  "tasks": {
+    "title": "Tasks",
+    "subtitle": "Follow-ups for you and your team.",
+    "noAccessTitle": "Tasks are not open to you",
+    "newHeading": "New task",
+    "titleLabel": "Task",
+    "titlePlaceholder": "e.g. Call Alaa about his macros",
+    "detailLabel": "Details (optional)",
+    "priorityLabel": "Priority",
+    "dueLabel": "Due (optional)",
+    "add": "Add task",
+    "adding": "Adding...",
+    "readOnly": "You can view tasks but not change them.",
+    "emptyTitle": "No tasks here",
+    "emptyBody": "Add a follow-up and it will show up in this list.",
+    "complete": "Done",
+    "reopen": "Reopen",
+    "snooze": "Snooze",
+    "snoozeTomorrow": "Tomorrow",
+    "snoozeNextWeek": "Next week",
+    "snoozedUntil": "Snoozed until {date}",
+    "dueOn": "Due {date}",
+    "noDue": "No due date",
+    "overdue": "Overdue",
+    "forClient": "Client: {name}",
+    "systemTask": "Created automatically",
+    "completedOn": "Completed {date}",
+    "loadMore": "Show more",
+    "actionError": "That did not work. Refresh and try again.",
+    "createdOk": "Task added.",
+    "filters": {
+      "label": "Show",
+      "open": "Open",
+      "snoozed": "Snoozed",
+      "done": "Done",
+      "all": "All"
+    },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    }
+  },
+  "timeline": {
+    "title": "Client timeline",
+    "subtitle": "Everything that happened with this client, newest first.",
+    "back": "Back to the client",
+    "emptyTitle": "Nothing yet",
+    "emptyBody": "Subscriptions, check-ins, workouts, payments and notes will appear here as they happen.",
+    "loadMore": "Show more",
+    "loadError": "Could not load more. Try again.",
+    "privateLabel": "Only you can see this",
+    "privateNote": "Private coach note",
+    "openSource": "Open",
+    "kinds": {
+      "subscription": "Subscription",
+      "submission": "Form",
+      "version": "Program",
+      "session": "Workout",
+      "metric": "Measurement",
+      "message": "Message",
+      "payment": "Payment",
+      "note": "Note"
+    },
+    "subscription": {
+      "created": "Subscription created, {startsOn} to {endsOn}",
+      "activated": "Subscription activated, ends {endsOn}",
+      "extension": "Extended by {days} days, ends {endsOn}",
+      "freeze": "Subscription frozen",
+      "resume": "Subscription resumed, ends {endsOn}",
+      "cancel": "Subscription cancelled",
+      "suspend": "Subscription suspended",
+      "reinstate": "Subscription reinstated",
+      "expired": "Subscription expired",
+      "grace": "Subscription in grace period"
+    },
+    "submission": {
+      "intake": "Intake form {state}",
+      "checkin": "Check-in {state}",
+      "assessment": "Assessment {state}",
+      "custom": "Form {state}",
+      "states": {
+        "submitted": "submitted",
+        "waiting_for_coach": "waiting for review",
+        "reviewed": "reviewed"
+      }
+    },
+    "version": {
+      "published": "Program version {versionNo} published",
+      "superseded": "Program version {versionNo} replaced by a newer one"
+    },
+    "session": {
+      "completed": "Workout completed",
+      "partially_completed": "Workout partly completed",
+      "abandoned": "Workout abandoned",
+      "skipped": "Workout skipped",
+      "named": "{name}: {state}"
+    },
+    "metric": {
+      "weight": "Weight",
+      "water": "Water",
+      "steps": "Steps",
+      "sleep_hours": "Sleep",
+      "habit": "Habit",
+      "cardio_minutes": "Cardio",
+      "calories_in": "Calories",
+      "mood": "Mood",
+      "energy": "Energy",
+      "custom": "Measurement",
+      "line": "{metric}: {value} {unit}"
+    },
+    "message": {
+      "fromClient": "Client wrote: {preview}",
+      "fromTeam": "You wrote: {preview}",
+      "attachments": "Attachments: {count}"
+    },
+    "payment": {
+      "line": "{amount} {currency}, {state}",
+      "states": {
+        "pending": "pending",
+        "verified": "verified",
+        "rejected": "rejected",
+        "refunded": "refunded"
+      }
+    },
+    "note": {
+      "line": "{preview}"
+    }
+  }
+}

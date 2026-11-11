@@ -1,1 +1,161 @@
-{}
+{
+  "title": "لوحة التحكم",
+  "subtitle": "مين محتاجك النهارده، في نظرة واحدة.",
+  "noAccessTitle": "لوحة التحكم مش متاحة ليك",
+  "noAccessBody": "اطلب من صاحب الحساب يديك صلاحية لوحة التحكم.",
+  "countsHeading": "محتاج انتباهك",
+  "viewQueue": "افتح القائمة",
+  "counts": {
+    "attention": { "label": "عملاء محتاجين متابعة", "hint": "عملاء نشطين عندهم بند مفتوح على الأقل من اللي تحت" },
+    "overdue_checkins": { "label": "متابعات متأخرة", "hint": "متابعات عدّى ميعادها" },
+    "waiting_review": { "label": "متابعات تستنى مراجعتك", "hint": "العميل بعتها وتستنى ردك" },
+    "missing_data": { "label": "من غير وزن بقاله ١٤ يوم", "hint": "عملاء نشطين ما سجلوش وزن قريب" },
+    "expiring_subscriptions": { "label": "اشتراكات بتخلص خلال ١٤ يوم", "hint": "اشتراكات قربت تنتهي" },
+    "pending_payments": { "label": "مدفوعات معلقة", "hint": "مستنية التأكيد" },
+    "adherence_decline": { "label": "الالتزام بينزل", "hint": "التمارين المكتملة قلت ٣٠ نقطة أو أكتر عن الأسبوع اللي فات" }
+  },
+  "queue": {
+    "back": "الرجوع للوحة التحكم",
+    "emptyTitle": "مفيش حاجة هنا",
+    "emptyBody": "مفيش عميل مطابق للقائمة دي دلوقتي.",
+    "loadMore": "اعرض أكتر",
+    "loadError": "ما قدرناش نحمّل المزيد. جرّب تاني.",
+    "open": "افتح",
+    "invalid": "القائمة دي مش موجودة."
+  },
+  "tasksPreview": {
+    "title": "مهامك المفتوحة",
+    "all": "كل المهام",
+    "empty": "مفيش مهام مفتوحة. كله تمام."
+  },
+  "tasks": {
+    "title": "المهام",
+    "subtitle": "متابعات ليك ولفريقك.",
+    "noAccessTitle": "المهام مش متاحة ليك",
+    "newHeading": "مهمة جديدة",
+    "titleLabel": "المهمة",
+    "titlePlaceholder": "مثلًا: كلّم علاء بخصوص الماكروز",
+    "detailLabel": "تفاصيل (اختياري)",
+    "priorityLabel": "الأولوية",
+    "dueLabel": "الموعد (اختياري)",
+    "add": "أضف المهمة",
+    "adding": "جاري الإضافة...",
+    "readOnly": "تقدر تشوف المهام بس مش تغيّرها.",
+    "emptyTitle": "مفيش مهام هنا",
+    "emptyBody": "أضف متابعة وهتظهر في القائمة دي.",
+    "complete": "تم",
+    "reopen": "إعادة فتح",
+    "snooze": "أجّل",
+    "snoozeTomorrow": "بكرة",
+    "snoozeNextWeek": "الأسبوع الجاي",
+    "snoozedUntil": "مؤجلة لحد {date}",
+    "dueOn": "الموعد {date}",
+    "noDue": "من غير موعد",
+    "overdue": "متأخرة",
+    "forClient": "العميل: {name}",
+    "systemTask": "اتعملت تلقائيًا",
+    "completedOn": "اكتملت {date}",
+    "loadMore": "اعرض أكتر",
+    "actionError": "ما نفعش. حدّث الصفحة وجرّب تاني.",
+    "createdOk": "اتضافت المهمة.",
+    "filters": {
+      "label": "اعرض",
+      "open": "المفتوحة",
+      "snoozed": "المؤجلة",
+      "done": "المنتهية",
+      "all": "الكل"
+    },
+    "priority": {
+      "low": "منخفضة",
+      "normal": "عادية",
+      "high": "عالية",
+      "urgent": "عاجلة"
+    }
+  },
+  "timeline": {
+    "title": "سجل العميل",
+    "subtitle": "كل اللي حصل مع العميل ده، من الأحدث للأقدم.",
+    "back": "الرجوع للعميل",
+    "emptyTitle": "لسه مفيش حاجة",
+    "emptyBody": "الاشتراكات والمتابعات والتمارين والمدفوعات والملاحظات هتظهر هنا أول بأول.",
+    "loadMore": "اعرض أكتر",
+    "loadError": "ما قدرناش نحمّل المزيد. جرّب تاني.",
+    "privateLabel": "إنت بس اللي تشوف ده",
+    "privateNote": "ملاحظة خاصة بالكوتش",
+    "openSource": "افتح",
+    "kinds": {
+      "subscription": "اشتراك",
+      "submission": "استمارة",
+      "version": "برنامج",
+      "session": "تمرينة",
+      "metric": "قياس",
+      "message": "رسالة",
+      "payment": "دفعة",
+      "note": "ملاحظة"
+    },
+    "subscription": {
+      "created": "اتعمل اشتراك من {startsOn} لحد {endsOn}",
+      "activated": "اتفعّل الاشتراك وينتهي {endsOn}",
+      "extension": "اتمدد {days} يوم وينتهي {endsOn}",
+      "freeze": "اتجمّد الاشتراك",
+      "resume": "الاشتراك رجع يشتغل وينتهي {endsOn}",
+      "cancel": "اتلغى الاشتراك",
+      "suspend": "اتعلّق الاشتراك",
+      "reinstate": "اتعاد تفعيل الاشتراك",
+      "expired": "الاشتراك خلص",
+      "grace": "الاشتراك في فترة السماح"
+    },
+    "submission": {
+      "intake": "استمارة التسجيل {state}",
+      "checkin": "المتابعة {state}",
+      "assessment": "التقييم {state}",
+      "custom": "الاستمارة {state}",
+      "states": {
+        "submitted": "اتبعتت",
+        "waiting_for_coach": "تستنى المراجعة",
+        "reviewed": "اتراجعت"
+      }
+    },
+    "version": {
+      "published": "اتنشرت النسخة {versionNo} من البرنامج",
+      "superseded": "النسخة {versionNo} من البرنامج اتبدلت بنسخة أحدث"
+    },
+    "session": {
+      "completed": "التمرينة اكتملت",
+      "partially_completed": "التمرينة اكتملت جزئيًا",
+      "abandoned": "التمرينة اتساب",
+      "skipped": "التمرينة اتخطت",
+      "named": "{name}: {state}"
+    },
+    "metric": {
+      "weight": "الوزن",
+      "water": "المياه",
+      "steps": "الخطوات",
+      "sleep_hours": "النوم",
+      "habit": "العادة",
+      "cardio_minutes": "الكارديو",
+      "calories_in": "السعرات",
+      "mood": "المزاج",
+      "energy": "الطاقة",
+      "custom": "قياس",
+      "line": "{metric}: {value} {unit}"
+    },
+    "message": {
+      "fromClient": "العميل كتب: {preview}",
+      "fromTeam": "إنت كتبت: {preview}",
+      "attachments": "مرفقات: {count}"
+    },
+    "payment": {
+      "line": "{amount} {currency}، {state}",
+      "states": {
+        "pending": "معلقة",
+        "verified": "متأكدة",
+        "rejected": "مرفوضة",
+        "refunded": "مستردة"
+      }
+    },
+    "note": {
+      "line": "{preview}"
+    }
+  }
+}
