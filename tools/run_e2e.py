@@ -51,8 +51,8 @@ def ensure_cluster() -> None:
 
 
 def main() -> None:
-    if len(sys.argv) < 2 or sys.argv[1] not in ('e2e-ar', 'e2e-en'):
-        sys.exit('usage: python tools/run_e2e.py e2e-ar|e2e-en')
+    if len(sys.argv) < 2 or sys.argv[1] not in ('e2e-ar', 'e2e-en', 'screens'):
+        sys.exit('usage: python tools/run_e2e.py e2e-ar|e2e-en|screens')
     project = sys.argv[1]
     ensure_cluster()
     urls = read_env()
@@ -78,6 +78,9 @@ def main() -> None:
         db_dir = ROOT / 'packages/db'
         for seed in ('seed/index.ts', 'seed/demo.ts'):
             run(['node', '--env-file=.env', '--import', 'tsx', f'./{seed}'], env, db_dir)
+    if project == 'screens':  # docs/qa/screens/*.png through playwright.config.ts (its own dev server on 3210)
+        run(['pnpm', '--filter', '@dawlyy/web', 'exec', 'playwright', 'test', 'e2e/screens.spec.ts', '--reporter=line', *extra], env)
+        return
     run(['pnpm', '--filter', '@dawlyy/web', 'exec', 'playwright', 'test', '-c', 'playwright.e2e.config.ts',
          '--project', project, '--reporter=line', *extra], env)
 

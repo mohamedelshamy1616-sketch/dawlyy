@@ -583,3 +583,16 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - The e2e server runs `next dev`, so its log shows dev-only instant-navigation warnings ("uncached data" on `/login`, `coach/packages/new`, `coach/packages/[packageId]`, `coach/clients/new`; "instant navigation" on several `/app/*` pages). They do not fail a test, and `build-web2` exited 0 earlier. Not fixed; revisit only if `build-web` turns red.
 - `apps/web/tsconfig.json` is rewritten by Next with extra dist dirs. It is left uncommitted on purpose; decide before the final `run_checks.py` (the tree must be clean).
 - Started job `20261111-200726-polish-abcd`: Codex Astryx polish groups A to D in sequence (`.work/tmp/run_polish.py`, effort high). Next: review each group's diff, run typecheck and lint, commit per group, rerun the screens job.
+
+## 12 Nov 2026 00:20 (Cairo): Astryx polish done, beta-gate green in ar and en on the polished UI
+
+- Polish A to D (Codex, one job at a time): commits `5419be3` (auth, login, shell), `16251c0` (program builder, exercises), `e9b0f2f` (billing, clients, packages), `be204cb` (nutrition), `a3c3e35` (eslint ignores generated dist dirs; it had linted 70,150 problems in `.next-*`). Two Codex mistakes fixed by me: the module path is `@astryxdesign/core/TextArea` (case matters), and `TextInput` needs a `TextInputType` cast.
+- Gates on the combined tree: typecheck exit 0 (`tc-polish3`), lint 0 errors, 4 old warnings (`lint-polish2`).
+- e2e: `e2e-ar-polish12` 10 passed (4.8 min, commit `c7b5705`), `e2e-en-polish1` 10 passed (5.7 min). It took twelve runs because of four separate causes, each read from a trace before the next run:
+  1. Postgres on 54329 died twice (postgres child exit `0xC000026B`). `tools/run_e2e.py` now starts it when `pg_isready` fails.
+  2. Slow `next dev` first-visit compiles on a disk-starved PC (10 to 15 s per route; one migrate took 10 min). Playwright `expect` timeout 45 s, `actionTimeout` 60 s; assertions unchanged.
+  3. Astryx controls: file field is a button plus a hidden input with the same label, buttons and file fields add `status` live regions, required fields add a suffix to the accessible name. The spec uses `#sale-proof[type=file]`, a `status` filtered by text, and `labelPrefix()` for test 05's text fields.
+  4. The spec cached `today` for the whole run and a run crossed midnight in Cairo: now taken at the assign step.
+- `tools/run_e2e.py` also takes extra Playwright args, `--reuse-db` (debug only; skips the 10 min migrate) and a `screens` target.
+- Not changed: dev-only "uncached data" and "instant navigation" log lines from `next dev`; `build-web` is the judge for those.
+- Next: screens job `screens9` (fresh database), commit `docs/qa/screens/`, restore `apps/web/tsconfig.json` (Next rewrites it), then `python AP/run_checks.py --project .` on a clean tree, then the remaining P5 items (HOW_TO_TEST.md update, LAUNCH_RUNBOOK, vercel.json) and P6/P7.
