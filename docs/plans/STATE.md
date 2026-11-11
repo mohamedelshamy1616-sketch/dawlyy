@@ -8,6 +8,13 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 05:25, T10 and T11 committed; T8 (Codex) and T9 (Sonnet) building
+
+- T10 `5355600` (dashboard, tasks, Client 360 timeline): vitest 3 files 18/18 (my rerun), eslint clean, messages parity. Builder notes: no audit/event names exist for tasks in doc 9.2 so none are called; system tasks go through the service-only `createSystemTask`; count hrefs are `/coach?queue=<kind>` (no filtered queue pages exist); timeline links to `/coach/programs/<id>` assume that route exists.
+- T11 `92ecc75` (settings, team, consents, legal): vitest 4 files 27/27 (my rerun), eslint clean, parity. Gaps: no logo upload (needs a branding upload API), staff client assignments not editable, legal text is a draft for counsel. Reactivation is audited as `team.disable`.
+- Not yet proved for T5, T6, T7, T10, T11: render at 360 px / RTL / 44 px targets and the Astryx proof (screens job). Whole-project `tsc` and `check-messages` must be re-run once T8 and T9 land.
+- Usage: 5-hour 66%, weekly 45% at 05:25. No new builder starts at 80%.
+
 ### 11 Nov 04:55, T5 committed, wave 4 started (speed mode: 3 tasks at once)
 
 - T5 committed `5eb4f52` after fixes: a raw `Date` bound inside `setWhere` (postgres.js refuses it; now an ISO string cast to `timestamptz`), `app.audit`/`app.emit_event` entity ids are `text` (the `::uuid` casts failed with "function does not exist"), and two test type errors. Evidence: web `tsc` exit 0, vitest `dawlyy_p1gate` me.test + workout-sessions.test 9/9, eslint 0 errors (4 unused-var warnings), check-messages 1431 keys per locale. Not run: offline Playwright spec, iOS device check, RTL render at 360 px (screens job).
