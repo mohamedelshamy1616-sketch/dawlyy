@@ -1,8 +1,9 @@
+"use client";
+
 import { Hammer } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { buttonVariants } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
+import { Button } from "@astryxdesign/core/Button";
+import { VStack } from "@astryxdesign/core/VStack";
 import { EmptyState } from "./empty-state";
 import { Wordmark } from "./wordmark";
 
@@ -26,12 +27,8 @@ export function NotFoundState({ area }: { area: keyof typeof TARGETS }) {
       title={t("title")}
       description={t("body")}
       action={
-        <Link
-          href={target.href}
-          className={cn(buttonVariants({ size: "lg" }), "focus-ring min-h-11 px-5")}
-        >
-          {t(target.label)}
-        </Link>
+        <Button href={target.href} variant="primary" size="lg" label={t(target.label)}
+          className="focus-ring min-h-11 px-5" />
       }
     />
   );
@@ -39,12 +36,12 @@ export function NotFoundState({ area }: { area: keyof typeof TARGETS }) {
   if (area !== "root") return state;
 
   return (
-    <main
+    <VStack as="main" gap={8} hAlign="center" vAlign="center"
       id="main"
-      className="mx-auto flex min-h-svh w-full max-w-md flex-col items-center justify-center gap-8 overflow-x-clip px-4 py-10"
+      className="mx-auto min-h-svh w-full max-w-md overflow-x-clip px-4 py-10"
     >
       <Wordmark />
       {state}
-    </main>
+    </VStack>
   );
 }

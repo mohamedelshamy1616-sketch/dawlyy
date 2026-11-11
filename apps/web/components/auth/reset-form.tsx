@@ -2,7 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+import { Button } from '@astryxdesign/core/Button';
+import { Text } from '@astryxdesign/core/Text';
 import { Link } from '@/i18n/navigation';
 import { createSupabaseBrowserClient } from '@/src/lib/supabase-browser';
 import { AuthFeedback, AuthField } from './form-fields';
@@ -58,14 +59,14 @@ export function ResetForm() {
     finally { setPending(false); }
   }
 
-  if (checking) return <p role="status" className="text-sm text-muted-foreground">{t('working')}</p>;
+  if (checking) return <Text as="p" role="status" type="supporting" color="secondary">{t('working')}</Text>;
   return <form className="flex min-w-0 flex-col gap-4" onSubmit={submit} aria-busy={pending}>
     {recovering ? <>
       <AuthField id="password" name="password" type="password" dir="ltr" label={t('reset.newPassword')} autoComplete="new-password" required minLength={8} maxLength={128} disabled={pending || done} />
       <AuthField id="confirmPassword" name="confirmPassword" type="password" dir="ltr" label={t('reset.confirmPassword')} autoComplete="new-password" required minLength={8} maxLength={128} disabled={pending || done} />
     </> : <AuthField id="email" name="email" type="email" dir="ltr" label={t('email')} autoComplete="email" required maxLength={254} disabled={pending} />}
     <AuthFeedback code={error} info={info} />
-    <Button type="submit" disabled={pending || done}>{pending ? t('working') : recovering ? t('reset.save') : t('reset.send')}</Button>
+    <Button variant="primary" className="min-h-11 min-w-11" type="submit" isDisabled={pending || done} label={pending ? t('working') : recovering ? t('reset.save') : t('reset.send')} />
     <Link href="/login" className="inline-flex min-h-11 items-center justify-center text-sm underline">{t('backToLogin')}</Link>
   </form>;
 }

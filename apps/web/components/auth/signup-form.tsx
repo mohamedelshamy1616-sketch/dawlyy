@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+import { Button } from '@astryxdesign/core/Button';
 import { Link, useRouter } from '@/i18n/navigation';
 import { createSupabaseBrowserClient } from '@/src/lib/supabase-browser';
 import { AuthFeedback, AuthField, authErrorCode, postAuth } from './form-fields';
@@ -47,7 +47,7 @@ export function SignupForm() {
     <AuthField id="email" name="email" type="email" dir="ltr" label={t('email')} autoComplete="email" required maxLength={254} disabled={pending || created} />
     <AuthField id="password" name="password" type="password" dir="ltr" label={t('password')} autoComplete="new-password" required minLength={8} maxLength={128} disabled={pending || created} />
     <AuthFeedback code={error} info={info} />
-    <Button type="submit" disabled={pending || Boolean(info)}>{pending ? t('working') : created ? o('createBusiness') : t('signUp')}</Button>
+    <Button variant="primary" className="min-h-11 min-w-11" type="submit" isDisabled={pending || Boolean(info)} label={pending ? t('working') : created ? o('createBusiness') : t('signUp')} />
     {created ? <Link className="inline-flex min-h-11 items-center justify-center text-sm underline" href="/onboarding">{o('continueSetup')}</Link> : null}
     <Link className="inline-flex min-h-11 items-center justify-center text-sm underline" href="/login">{t('alreadyHaveAccount')}</Link>
   </form>;

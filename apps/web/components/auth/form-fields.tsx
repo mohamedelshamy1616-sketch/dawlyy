@@ -1,16 +1,45 @@
 'use client';
 
-import type { InputHTMLAttributes } from 'react';
+import { useEffect, useRef, useState, type InputHTMLAttributes } from 'react';
 import { useTranslations } from 'next-intl';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Field } from '@astryxdesign/core/Field';
+import { TextInput, type TextInputType } from '@astryxdesign/core/TextInput';
+import { Text } from '@astryxdesign/core/Text';
 
 /** Task 2: consistently labelled, direction-safe auth inputs with 44px targets. */
 export function AuthField({ label, id, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string }) {
-  return <div className="flex min-w-0 flex-col gap-2">
-    <Label htmlFor={id}>{label}</Label>
-    <Input id={id} {...props} className="h-11 min-w-0 max-w-full text-start" />
-  </div>;
+  const { type = 'text', value, defaultValue, onChange, name, disabled, readOnly, autoFocus,
+    className, style, size, autoCapitalize, ...nativeProps } = props;
+  const [uncontrolledValue, setUncontrolledValue] = useState(() => String(defaultValue ?? ''));
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const form = inputRef.current?.form;
+    const reset = (event: Event) => {
+      // Native resets apply after the event dispatch; respect a cancelled reset.
+      queueMicrotask(() => {
+        if (!event.defaultPrevented) setUncontrolledValue(String(defaultValue ?? ''));
+      });
+    };
+    form?.addEventListener('reset', reset);
+    return () => form?.removeEventListener('reset', reset);
+  }, [defaultValue]);
+
+  // Preserve the public native-input contract for types/attributes outside TextInput's API.
+  if ((type !== 'text' && type !== 'password' && type !== 'email' && type !== 'search' && type !== 'tel' && type !== 'url')
+    || size !== undefined || autoCapitalize !== undefined || style !== undefined) {
+    return <Field label={label} inputID={id} className="min-w-0 max-w-full">
+      <input ref={inputRef} id={id} {...props} className="h-11 min-w-0 max-w-full rounded-md border border-input bg-background px-3 text-start text-sm" />
+    </Field>;
+  }
+
+  return <TextInput {...nativeProps} ref={inputRef} id={id} label={label} type={type as TextInputType}
+    htmlName={name} isDisabled={disabled} isReadOnly={readOnly} hasAutoFocus={autoFocus}
+    {...{ disabled }}
+    value={value === undefined ? uncontrolledValue : String(value)}
+    onChange={(nextValue, event) => { setUncontrolledValue(nextValue); onChange?.(event); }}
+    containerClassName="min-w-0 max-w-full [&_input]:min-h-11 [&_input]:text-start"
+    controlClassName={['min-h-11', className].filter(Boolean).join(' ')} />;
 }
 
 /** Task 2: only known, translated error messages reach the auth screens. */
@@ -25,9 +54,9 @@ export function AuthFeedback({ code, info }: { code?: string | null; info?: stri
               : code === 'credentials' ? t('invalidCredentials')
                 : code === 'passwordMismatch' ? t('reset.passwordMismatch')
                   : code === 'recovery' ? t('reset.invalidRecovery') : t('genericError');
-    return <p role="alert" className="break-words text-sm text-destructive">{message}</p>;
+    return <Text as="p" type="supporting" role="alert" className="break-words text-destructive">{message}</Text>;
   }
-  return info ? <p role="status" className="break-words text-sm text-muted-foreground">{info}</p> : null;
+  return info ? <Text as="p" type="supporting" color="secondary" role="status" className="break-words">{info}</Text> : null;
 }
 
 /** Task 2: typed HTTP error that keeps server messages out of visible UI. */

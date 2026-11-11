@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { Button } from "@astryxdesign/core/Button";
 import { useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/src/lib/supabase-browser";
 
@@ -16,8 +16,6 @@ export function SignOutButton() {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={signOut}>
-      {t("signOut")}
-    </Button>
+    <Button className="min-h-11 min-w-11" variant="secondary" size="sm" onClick={signOut} label={t("signOut")} />
   );
 }

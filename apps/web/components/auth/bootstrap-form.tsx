@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+import { Button } from '@astryxdesign/core/Button';
 import { useRouter } from '@/i18n/navigation';
 import { AuthFeedback, AuthField, authErrorCode, postAuth } from './form-fields';
 
@@ -34,6 +34,6 @@ export function BootstrapForm() {
     <AuthField id="displayName" name="displayName" label={t('yourName')} autoComplete="name" required maxLength={160} disabled={pending} />
     <AuthField id="timezone" name="timezone" label={t('timezone')} defaultValue="Africa/Cairo" dir="ltr" required maxLength={100} disabled={pending} />
     <AuthFeedback code={error} />
-    <Button type="submit" disabled={pending}>{pending ? a('working') : t('createBusiness')}</Button>
+    <Button variant="primary" className="min-h-11 min-w-11" type="submit" isDisabled={pending} label={pending ? a('working') : t('createBusiness')} />
   </form>;
 }

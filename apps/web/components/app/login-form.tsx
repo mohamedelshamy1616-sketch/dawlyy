@@ -2,9 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@astryxdesign/core/Button";
+import { Text } from "@astryxdesign/core/Text";
+import { AuthField } from "@/components/auth/form-fields";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/src/lib/supabase-browser";
 
@@ -57,42 +57,34 @@ export function LoginForm() {
 
   return (
     <form onSubmit={signInWithPassword} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="email">{t("email")}</Label>
-        <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          dir="ltr"
-          className="text-start"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="password">{t("password")}</Label>
-        <Input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          dir="ltr"
-          className="text-start"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </div>
+      <AuthField
+        label={t("email")}
+        id="email"
+        type="email"
+        autoComplete="email"
+        dir="ltr"
+        className="text-start"
+        required
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+      />
+      <AuthField
+        label={t("password")}
+        id="password"
+        type="password"
+        autoComplete="current-password"
+        dir="ltr"
+        className="text-start"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
       {message ? (
-        <p role={message.kind === "error" ? "alert" : "status"} className={message.kind === "error" ? "text-sm text-destructive" : "text-sm text-muted-foreground"}>
+        <Text as="p" type="supporting" role={message.kind === "error" ? "alert" : "status"} className={message.kind === "error" ? "text-sm text-destructive" : "text-sm text-muted-foreground"}>
           {message.text}
-        </p>
+        </Text>
       ) : null}
-      <Button type="submit" disabled={pending || !password}>
-        {t("signIn")}
-      </Button>
-      <Button type="button" variant="outline" disabled={pending} onClick={sendMagicLink}>
-        {t("magicLink")}
-      </Button>
+      <Button variant="primary" className="min-h-11 min-w-11" type="submit" isDisabled={pending || !password} label={t("signIn")} />
+      <Button className="min-h-11 min-w-11" type="button" variant="secondary" isDisabled={pending} onClick={sendMagicLink} label={t("magicLink")} />
       <Link href="/signup" className="inline-flex min-h-11 items-center justify-center text-sm underline">{t("createAccount")}</Link>
       <Link href="/reset" className="inline-flex min-h-11 items-center justify-center text-sm underline">{t("forgotPassword")}</Link>
     </form>

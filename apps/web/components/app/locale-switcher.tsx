@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { Button } from "@astryxdesign/core/Button";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 const LABELS = { ar: "العربية", en: "English" } as const;
@@ -14,14 +14,13 @@ export function LocaleSwitcher() {
   const other = locale === "ar" ? "en" : "ar";
 
   return (
-    <Button
+    <Button className="min-h-11 min-w-11"
       variant="ghost"
       size="sm"
       aria-label={t("language")}
-      lang={other}
+      {...{ lang: other }}
       onClick={() => router.replace(pathname, { locale: other })}
-    >
-      {LABELS[other]}
-    </Button>
+      label={LABELS[other]}
+    />
   );
 }

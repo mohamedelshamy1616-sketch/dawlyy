@@ -2,7 +2,8 @@
 
 import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
 import { useRouter } from '@/i18n/navigation';
 import { BootstrapForm } from './bootstrap-form';
 import { AuthFeedback, AuthField } from './form-fields';
@@ -27,14 +28,14 @@ export function OnboardingForm() {
     } catch { setError(true); }
   }
 
-  return <div className="flex min-w-0 flex-col gap-4">
-    <Button type="button" variant={choice === 'business' ? 'default' : 'outline'} className="h-auto min-h-11 whitespace-normal" aria-pressed={choice === 'business'} onClick={() => setChoice('business')}>{t('startBusiness')}</Button>
-    <Button type="button" variant={choice === 'invite' ? 'default' : 'outline'} className="h-auto min-h-11 whitespace-normal" aria-pressed={choice === 'invite'} onClick={() => setChoice('invite')}>{t('haveInvitation')}</Button>
+  return <VStack gap={4} className="min-w-0">
+    <Button type="button" variant={choice === 'business' ? 'primary' : 'secondary'} className="h-auto min-h-11 whitespace-normal" aria-pressed={choice === 'business'} onClick={() => setChoice('business')} label={t('startBusiness')} />
+    <Button type="button" variant={choice === 'invite' ? 'primary' : 'secondary'} className="h-auto min-h-11 whitespace-normal" aria-pressed={choice === 'invite'} onClick={() => setChoice('invite')} label={t('haveInvitation')} />
     {choice === 'business' ? <BootstrapForm /> : null}
     {choice === 'invite' ? <form onSubmit={openInvite} className="flex min-w-0 flex-col gap-4">
       <AuthField id="invitationLink" name="invitationLink" dir="ltr" label={t('invitationLink')} required autoComplete="off" />
       <AuthFeedback code={error ? 'invalid_invitation' : null} />
-      <Button type="submit">{t('openInvitation')}</Button>
+      <Button variant="primary" className="min-h-11 min-w-11" type="submit" label={t('openInvitation')} />
     </form> : null}
-  </div>;
+  </VStack>;
 }
