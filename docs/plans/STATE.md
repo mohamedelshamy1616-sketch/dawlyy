@@ -8,6 +8,13 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 14:05, T12b and T12c in; screens job needs a smaller scope
+
+- T12c committed `cf84e8c` (vercel.json, env examples, LAUNCH_RUNBOOK, RESTORE_DRILL; OPEN_DECISIONS 11 to 13). T12b (Codex, 498-line beta-gate spec in `apps/web/e2e/beta/`, own config `playwright.e2e.config.ts`) is written but not yet run; its answer lists the GAPs: no client-invite control (invitation API used), dev login refuses identities without a demo membership (step 2 blocked), first meal through the draft API, weekly check-in sent manually because core emits `weekly_checkin` while the runner reads `checkin`, second payment recorded through the API, a freeze must elapse before an extension.
+- Screens: `screens5` to `screens8` all hit the 1-hour single-test cap or a Turbopack panic. Cause: `next dev` compiling about 55 routes on a RAM-starved machine is too slow for one 284-shot test. Decision: stop running the full screens job after every task. Run it once at the end of P5, after the Astryx polish, split per role and locale, or on a production build with a different login path. The 205 shots of `screens7` stay as the baseline of the pre-polish state.
+- A production-style check is still owed: the dev log reports "Next.js encountered runtime data during prerendering" for `app/[locale]/layout.tsx` (`NextIntlClientProvider`) and the `[locale]` pages. `next build` (check `build-web`) must be run; it may fail on this.
+- Next: tsc/eslint on the e2e files, a `next build` run with `DAWLYY_DIST_DIR=.next-build`, Astryx theme builder, polish builders, T12b fixes and a first run.
+
 ### 11 Nov 11:40, T12a (demo seed) committed 87517af; screens run restarted
 
 - Codex T12a reviewed. Evidence on fresh scratch database `dawlyy_t12`: migrations 0000 to last applied, system seed 210 exercises and 371 foods, `seed/demo.ts` ran, a second run left every table count unchanged, `demo-reset.ts` then reseed restored 1 tenant, 8 clients, 10 payments, 192 set logs; db `tsc` exit 0; `seed/demo.test.ts` 7/7 (vitest now also discovers `seed/**/*.test.ts`). Upgrade path from the old 3-client seed (`dawlyy_t12b`, old demo.ts at 41a5016 then the new one) also works: 8 clients, 10 payments, 7 programs.
