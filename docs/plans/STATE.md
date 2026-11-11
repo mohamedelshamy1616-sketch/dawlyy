@@ -8,6 +8,12 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 05:35, T9 committed; waiting for Codex T8
+
+- T9 `0396309` (messaging, notification center, delivery processor): vitest 5 files 36/36 (my rerun), eslint clean, parity 2219 keys. Notifications are written by a service transaction after the message commits (runtime role has no INSERT on `notifications`). Email is log-only and push cancelled without keys. `064e4d8` adds the missing `push` and `notificationclick` handlers to `public/sw.js` (node --check only).
+- Open for T8 integration: nothing calls `processDeliveries` yet (the T8 cron route `app/api/cron/due-events` should call it); the `message_attachment` media purpose is not added.
+- Usage jumped to 5-hour 98% (weekly 48%): the brake (80%) holds, no new builder. Codex job `20261111-045317-p4-t8` keeps running (zero Claude usage). On wake: review T8 (files listed in its brief), whole-project `tsc`, eslint, vitest, check-messages, commit; then client nav-items (tracking, checkins), screens job, HOW_TO_TEST, Astryx polish.
+
 ### 11 Nov 05:25, T10 and T11 committed; T8 (Codex) and T9 (Sonnet) building
 
 - T10 `5355600` (dashboard, tasks, Client 360 timeline): vitest 3 files 18/18 (my rerun), eslint clean, messages parity. Builder notes: no audit/event names exist for tasks in doc 9.2 so none are called; system tasks go through the service-only `createSystemTask`; count hrefs are `/coach?queue=<kind>` (no filtered queue pages exist); timeline links to `/coach/programs/<id>` assume that route exists.
