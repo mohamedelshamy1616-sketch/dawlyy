@@ -1,14 +1,17 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { z } from 'zod';
+import { Button } from '@astryxdesign/core/Button';
+import { Field } from '@astryxdesign/core/Field';
+import { Text } from '@astryxdesign/core/Text';
+import { TextArea } from '@astryxdesign/core/TextArea';
+import { TextInput } from '@astryxdesign/core/TextInput';
+import { VStack } from '@astryxdesign/core/VStack';
 import { localize } from '@dawlyy/core/types';
-import { Link, useRouter } from '@/i18n/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { z } from 'zod';
 import { useMutation } from './use-mutation';
+import { Link, useRouter } from '@/i18n/navigation';
 
 type Initial = { id: string; firstName: string; lastName: string | null; displayName: string | null; phone: string | null; email: string | null; locale: string; tags: string[]; source: string | null; notes: string };
 
@@ -18,7 +21,11 @@ export function ClientForm({ initial, packages = [], editable = true }: { initia
   const locale = useLocale() === 'ar' ? 'ar' : 'en';
   const router = useRouter();
   const mutation = useMutation();
+  const id = useId();
+  const [values, setValues] = useState(() => ({ firstName: initial?.firstName ?? '', lastName: initial?.lastName ?? '', displayName: initial?.displayName ?? '', phone: initial?.phone ?? '', email: initial?.email ?? '', tags: initial?.tags.join(', ') ?? '', source: initial?.source ?? '', notes: initial?.notes ?? '' }));
+  function setValue(field: keyof typeof values, value: string) { setValues(previous => ({ ...previous, [field]: value })); }
   const [localError, setLocalError] = useState(false);
+  // Forward native validation attributes: Astryx's isRequired also adds text to the label.
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setLocalError(false);
     const data = new FormData(event.currentTarget);
@@ -36,18 +43,17 @@ export function ClientForm({ initial, packages = [], editable = true }: { initia
   }
   return <form onSubmit={submit} className="grid min-w-0 gap-5">
     <fieldset disabled={!editable || mutation.pending} className="grid min-w-0 gap-4 sm:grid-cols-2">
-      {(['firstName', 'lastName', 'displayName', 'phone', 'email'] as const).map(field => <label key={field} className="grid min-w-0 gap-2 text-sm font-medium">{t(`fields.${field}`)}
-        <Input name={field} className="min-h-11 min-w-0" required={field === 'firstName'} maxLength={field === 'displayName' ? 400 : field === 'email' ? 320 : 200} type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'} defaultValue={initial?.[field] ?? ''} autoComplete={field === 'phone' ? 'tel' : field === 'email' ? 'email' : field === 'firstName' ? 'given-name' : field === 'lastName' ? 'family-name' : 'off'} />
-      </label>)}
-      <label className="grid min-w-0 gap-2 text-sm font-medium">{t('fields.locale')}<select name="locale" defaultValue={initial?.locale ?? locale} className="min-h-11 rounded-lg border bg-background px-3 text-start"><option value="ar">{t('languages.ar')}</option><option value="en">{t('languages.en')}</option></select></label>
-      <label className="grid min-w-0 gap-2 text-sm font-medium">{t('fields.tags')}<Input name="tags" className="min-h-11" defaultValue={initial?.tags.join(', ') ?? ''} /><span className="text-xs text-muted-foreground">{t('tagsHint')}</span></label>
-      <label className="grid min-w-0 gap-2 text-sm font-medium">{t('fields.source')}<Input name="source" className="min-h-11" maxLength={500} defaultValue={initial?.source ?? ''} /></label>
-      <label className="grid min-w-0 gap-2 text-sm font-medium sm:col-span-2">{t('fields.notes')}<Textarea name="notes" className="min-h-28 min-w-0" maxLength={10000} defaultValue={initial?.notes ?? ''} /><span className="text-xs text-muted-foreground">{t('notesPrivate')}</span></label>
-      {!initial && packages.length ? <label className="grid min-w-0 gap-2 text-sm font-medium sm:col-span-2">{t('fields.package')}<select name="packageId" className="min-h-11 w-full min-w-0 rounded-lg border bg-background px-3 text-start"><option value="">{t('noPackage')}</option>{packages.map(pkg => <option key={pkg.id} value={pkg.id}>{localize(pkg.name, locale)}</option>)}</select><span className="text-xs text-muted-foreground">{t('saleHint')}</span></label> : null}
+      {(['firstName', 'lastName', 'displayName', 'phone', 'email'] as const).map(field => <TextInput key={field} label={t(`fields.${field}`)} htmlName={field} containerClassName="min-w-0" controlClassName="min-h-11 min-w-0"
+        {...{ required: field === 'firstName', maxLength: field === 'displayName' ? 400 : field === 'email' ? 320 : 200 }} type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'} value={values[field]} onChange={value => setValue(field, value)} autoComplete={field === 'phone' ? 'tel' : field === 'email' ? 'email' : field === 'firstName' ? 'given-name' : field === 'lastName' ? 'family-name' : 'off'} />)}
+      <Field label={t('fields.locale')} inputID={`${id}-locale`} className="min-w-0"><select id={`${id}-locale`} name="locale" defaultValue={initial?.locale ?? locale} className="min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3 text-start"><option value="ar">{t('languages.ar')}</option><option value="en">{t('languages.en')}</option></select></Field>
+      <VStack gap={2} className="min-w-0"><TextInput label={t('fields.tags')} aria-label={`${t('fields.tags')} ${t('tagsHint')}`} htmlName="tags" controlClassName="min-h-11" value={values.tags} onChange={value => setValue('tags', value)} /><Text type="supporting">{t('tagsHint')}</Text></VStack>
+      <TextInput label={t('fields.source')} htmlName="source" controlClassName="min-h-11" {...{ maxLength: 500 }} value={values.source} onChange={value => setValue('source', value)} />
+      <VStack gap={2} className="min-w-0 sm:col-span-2"><TextArea label={t('fields.notes')} aria-label={`${t('fields.notes')} ${t('notesPrivate')}`} htmlName="notes" controlClassName="min-h-28 min-w-0" ref={element => { if (element) element.maxLength = 10000; }} value={values.notes} onChange={value => setValue('notes', value)} /><Text type="supporting">{t('notesPrivate')}</Text></VStack>
+      {!initial && packages.length ? <Field label={t('fields.package')} inputID={`${id}-package`} className="min-w-0 sm:col-span-2"><select id={`${id}-package`} aria-label={`${t('fields.package')} ${t('saleHint')}`} name="packageId" className="min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3 text-start"><option value="">{t('noPackage')}</option>{packages.map(pkg => <option key={pkg.id} value={pkg.id}>{localize(pkg.name, locale)}</option>)}</select><Text type="supporting">{t('saleHint')}</Text></Field> : null}
     </fieldset>
-    {mutation.error || localError ? <p role="alert" className="break-words text-sm text-destructive">{t(`errors.${mutation.error ?? 'failed'}`)}</p> : null}
+    {mutation.error || localError ? <Text type="supporting" as="p" display="block" role="alert" className="break-words !text-destructive">{t(`errors.${mutation.error ?? 'failed'}`)}</Text> : null}
     {mutation.duplicateId ? <Link className="inline-flex min-h-11 items-center underline" href={`/coach/clients/${mutation.duplicateId}`}>{t('openDuplicate')}</Link> : null}
-    {mutation.saved ? <p role="status" className="text-sm">{t('saved')}</p> : null}
-    {editable ? <Button type="submit" disabled={mutation.pending} className="min-h-11 w-full sm:w-fit">{t(mutation.pending ? 'saving' : initial ? 'save' : 'add')}</Button> : <p className="text-sm text-muted-foreground">{t('readOnly')}</p>}
+    {mutation.saved ? <Text type="supporting" as="p" display="block" role="status" >{t('saved')}</Text> : null}
+    {editable ? <Button type="submit" isDisabled={mutation.pending} className="min-h-11 w-full sm:w-fit" variant="primary" label={t(mutation.pending ? 'saving' : initial ? 'save' : 'add')} /> : <Text type="supporting" as="p" display="block">{t('readOnly')}</Text>}
   </form>;
 }

@@ -2,14 +2,17 @@
 
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { Button } from '@astryxdesign/core/Button';
+import { Card } from '@astryxdesign/core/Card';
+import { HStack } from '@astryxdesign/core/HStack';
+import { Text } from '@astryxdesign/core/Text';
+import { VStack } from '@astryxdesign/core/VStack';
+import { localize } from '@dawlyy/core/types';
 import { Package } from 'lucide-react';
 import { z } from 'zod';
-import { localize } from '@dawlyy/core/types';
-import { Link } from '@/i18n/navigation';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/src/components/shell/empty-state';
 import { PackageActions } from './package-actions';
+import { Link } from '@/i18n/navigation';
+import { EmptyState } from '@/src/components/shell/empty-state';
 
 const itemSchema = z.object({ id: z.string(), name: z.object({ ar: z.string().optional(), en: z.string().optional() }), price: z.number(), currency: z.string(), durationDays: z.number(), createdAt: z.string(), archivedAt: z.string().nullable() });
 type Item = Omit<z.infer<typeof itemSchema>, 'archivedAt' | 'createdAt'> & { archivedAt: Date | string | null; createdAt: Date | string };
@@ -44,16 +47,16 @@ export function PackageList({ initial, archived, canCreate, canEdit }: { initial
       setItems(previous => [...previous, ...result.items.filter(row => !previous.some(item => item.id === row.id))]); setCursor(result.nextCursor);
     } catch { setError(true); } finally { setLoading(false); }
   }
-  const add = canCreate ? <Button asChild className="min-h-11"><Link href="/coach/packages/new">{t('add')}</Link></Button> : undefined;
-  return <div className="grid min-w-0 gap-5">
-    <div className="flex flex-wrap gap-3">{add}<Button asChild variant="outline" className="min-h-11"><Link href={archived ? '/coach/packages' : '/coach/packages?archived=1'}>{t(archived ? 'hideArchived' : 'showArchived')}</Link></Button></div>
-    {!items.length ? <EmptyState Icon={Package} title={t('empty.title')} description={t('empty.body')} action={add} /> : <div className="grid min-w-0 gap-4 lg:grid-cols-2">{items.map(item => <article key={item.id} className="grid min-w-0 gap-4 rounded-xl border bg-card p-5">
-      <div className="flex min-w-0 flex-wrap items-start justify-between gap-2"><Link className="inline-flex min-h-11 min-w-0 max-w-full items-center break-words text-lg font-semibold hover:underline" href={`/coach/packages/${item.id}`}>{localize(item.name, locale)}</Link><Badge variant="secondary">{item.archivedAt ? t('archived') : status('active')}</Badge></div>
-      <p className="break-words text-xl font-semibold">{new Intl.NumberFormat(locale, { style: 'currency', currency: item.currency }).format(item.price)}</p>
-      <p className="text-sm text-muted-foreground">{t('duration', { days: new Intl.NumberFormat(locale).format(item.durationDays) })}</p>
+  const add = canCreate ? <Button className="min-h-11" href="/coach/packages/new" variant="primary" label={t('add')} /> : undefined;
+  return <VStack gap={5} className="min-w-0">
+    <HStack wrap="wrap" gap={3}>{add}<Button variant="secondary" className="min-h-11" href={archived ? '/coach/packages' : '/coach/packages?archived=1'} label={t(archived ? 'hideArchived' : 'showArchived')} /></HStack>
+    {!items.length ? <EmptyState Icon={Package} title={t('empty.title')} description={t('empty.body')} action={add} /> : <VStack gap={4} className="!grid min-w-0 lg:grid-cols-2">{items.map(item => <Card role="article" key={item.id} className="!grid min-w-0 gap-4" padding={5}>
+      <HStack wrap="wrap" align="start" justify="between" gap={2} className="min-w-0"><Link className="inline-flex min-h-11 min-w-0 max-w-full items-center break-words text-lg font-semibold hover:underline" href={`/coach/packages/${item.id}`}>{localize(item.name, locale)}</Link><Text type="supporting" weight="medium">{item.archivedAt ? t('archived') : status('active')}</Text></HStack>
+      <Text weight="semibold" size="xl" as="p" display="block" className="break-words">{new Intl.NumberFormat(locale, { style: 'currency', currency: item.currency }).format(item.price)}</Text>
+      <Text type="supporting" as="p" display="block">{t('duration', { days: new Intl.NumberFormat(locale).format(item.durationDays) })}</Text>
       <PackageActions id={item.id} archived={item.archivedAt !== null} canCreate={canCreate} canEdit={canEdit} onArchived={onArchived} />
-    </article>)}</div>}
-    {error ? <p role="alert" className="text-sm text-destructive">{t('errors.failed')}</p> : null}
-    {cursor ? <Button className="min-h-11" variant="outline" disabled={loading} onClick={loadMore}>{t(loading ? 'loading' : 'loadMore')}</Button> : null}
-  </div>;
+    </Card>)}</VStack>}
+    {error ? <Text type="supporting" as="p" display="block" role="alert" className="!text-destructive">{t('errors.failed')}</Text> : null}
+    {cursor ? <Button className="min-h-11" variant="secondary" isDisabled={loading} onClick={loadMore} label={t(loading ? 'loading' : 'loadMore')} /> : null}
+  </VStack>;
 }
