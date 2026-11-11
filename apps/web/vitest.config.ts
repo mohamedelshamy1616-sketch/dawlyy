@@ -14,5 +14,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
+    // The router tree is large: a cold import of ./api/index and the DB fixtures take several seconds under parallel load.
+    testTimeout: 30000,
+    hookTimeout: 30000,
   },
 });

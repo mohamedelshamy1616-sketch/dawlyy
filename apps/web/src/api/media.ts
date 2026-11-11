@@ -6,12 +6,13 @@ import { and, eq, isNull, sql } from 'drizzle-orm';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { notFound, validationError } from './errors';
-import { withAuthTx } from '../server/db';
+import { forbidden, notFound, validationError } from './errors';
+import { withAuthTx, type AuthContext } from '../server/db';
 import { billingErrorHandler } from '../server/subscriptions/http';
 import { requirePermission } from '../server/require-permission';
 import { requireBillingPermission } from '../server/payments/permission';
-import { getStorage, LocalFsStorage, validateProof, MAX_PROOF_BYTES } from '../server/storage';
+import { getStorage, LocalFsStorage, validateMediaUpload, MAX_PROOF_BYTES } from '../server/storage';
+import { requirePhotoConsent } from '../server/tracking/consent-gate';
 import { errors, jsonResult, idParams } from '../server/subscriptions/contracts';
 
 // T3b owns payment proof; T8 extends this router with photo/review workflows.
@@ -19,31 +20,38 @@ import { errors, jsonResult, idParams } from '../server/subscriptions/contracts'
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: (result) => { if (!result.success) throw validationError(result.error.issues); } });
 router.onError(billingErrorHandler);
 router.use('*', requireAuthMiddleware);
-router.use('*', async (c, next) => {
-  if (c.req.method === 'POST' || c.req.method === 'PUT') requireBillingPermission(c.get('auth'), 'create');
-  await next();
-});
 router.use('*', idempotentReplay);
 
+function mediaPermission(auth: AuthContext, purpose: string, action: 'view' | 'create') {
+  if (purpose === 'payment_proof') {
+    if (action === 'create') requireBillingPermission(auth, 'create');
+    else if (auth.role !== 'client') requirePermission(auth, 'billing', 'view');
+  } else requirePermission(auth, purpose === 'progress_photo' ? 'tracking' : 'media', action);
+}
+
 // Payment proof; photo and review workflows belong to T8.
-const uploadInput = z.object({ clientId: z.uuid(), purpose: z.literal('payment_proof'),
-  contentType: z.enum(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']),
+const uploadInput = z.object({ clientId: z.uuid(), purpose: z.enum(['payment_proof', 'form_answer', 'progress_photo']),
+  contentType: z.enum(['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'text/plain', 'video/mp4', 'video/webm', 'video/quicktime']),
   sizeBytes: z.number().int().min(1).max(MAX_PROOF_BYTES), filename: z.string().trim().min(1).max(255) }).strict();
 
 router.openapi(createRoute({ method: 'post', path: '/uploads', request: { body: { required: true, content: { 'application/json': { schema: uploadInput } } } }, responses: { 201: jsonResult, ...errors } }), async (c) => {
-  const auth = c.get('auth'); requireBillingPermission(auth, 'create');
-  const storage = getStorage();
+  const auth = c.get('auth');
   const input = c.req.valid('json');
-  const extension = validateProof(input.contentType, input.sizeBytes);
-  const value = `${auth.tenantId}/clients/${input.clientId}/payments/${randomUUID()}.${extension}`;
-  const row = await withAuthTx(auth, async (tx) => {
-    const [client] = await tx.select({ id: clients.id }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, input.clientId))).limit(1);
+  mediaPermission(auth, input.purpose, 'create');
+  if (auth.role === 'client' && auth.clientId !== input.clientId) throw forbidden();
+  const extension = validateMediaUpload(input.purpose, input.contentType, input.sizeBytes);
+  const folder = input.purpose === 'payment_proof' ? 'payments' : input.purpose;
+  const value = `${auth.tenantId}/clients/${input.clientId}/${folder}/${randomUUID()}.${extension}`;
+  const { row, storage } = await withAuthTx(auth, async (tx) => {
+    if (input.purpose === 'progress_photo') await requirePhotoConsent(tx, auth);
+    const storage = getStorage();
+    const [client] = await tx.select({ id: clientColumns.clients.id }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, input.clientId))).limit(1);
     if (!client) throw notFound();
     const [inserted] = await tx.insert(media).values({ tenantId: auth.tenantId, clientId: client.id, ownerUserId: auth.userId,
-      bucket: 'client-media', path: value, kind: input.contentType === 'application/pdf' ? 'file' : 'photo',
-      purpose: 'payment_proof', mimeType: input.contentType, bytes: input.sizeBytes }).returning({ id: media.id });
+      bucket: 'client-media', path: value, kind: input.contentType.startsWith('video/') ? 'video' : input.contentType.startsWith('image/') ? 'photo' : 'file',
+      purpose: input.purpose, mimeType: input.contentType, bytes: input.sizeBytes }).returning({ id: clientColumns.media.id });
     if (!inserted) throw notFound();
-    return inserted;
+    return { row: inserted, storage };
   });
   const upload = await storage.createUpload(value, input.contentType, input.sizeBytes);
   return c.json({ mediaId: row.id, upload }, 201);
@@ -51,8 +59,9 @@ router.openapi(createRoute({ method: 'post', path: '/uploads', request: { body: 
 
 router.openapi(createRoute({ method: 'get', path: '/{id}/url', request: { params: idParams }, responses: { 200: jsonResult, ...errors } }), async (c) => {
   const auth = c.get('auth');
-  if (auth.role !== 'client') requirePermission(auth, 'billing', 'view');
   const row = await withAuthTx(auth, async (tx) => {
+    const [kind] = await tx.select({ purpose: clientColumns.media.purpose }).from(media).where(and(eq(media.tenantId, auth.tenantId), eq(media.id, c.req.valid('param').id), isNull(media.deletedAt))).limit(1);
+    if (!kind) throw notFound(); mediaPermission(auth, kind.purpose, 'view');
     const [found] = await tx.select({ path: clientColumns.media.path }).from(media)
       .where(and(eq(media.tenantId, auth.tenantId), eq(media.id, c.req.valid('param').id), isNull(media.deletedAt))).limit(1);
     if (!found) throw notFound();
@@ -66,17 +75,20 @@ const tokenParams = z.object({ token: z.string().min(1).max(4096) });
 const binaryProof = { schema: z.string().openapi({ format: 'binary' }) };
 router.openapi(createRoute({ method: 'put', path: '/local-upload/{token}', request: { params: tokenParams, body: { required: true, content: {
   'image/jpeg': binaryProof, 'image/png': binaryProof, 'image/webp': binaryProof, 'application/pdf': binaryProof,
+  'text/plain': binaryProof, 'video/mp4': binaryProof, 'video/webm': binaryProof, 'video/quicktime': binaryProof,
 } } }, responses: { 200: jsonResult, ...errors } }), async (c) => {
   if (process.env.NODE_ENV === 'production') throw notFound();
   const storage = getStorage();
   if (!(storage instanceof LocalFsStorage)) throw notFound();
-  const auth = c.get('auth'); requireBillingPermission(auth, 'create');
+  const auth = c.get('auth');
   const token = c.req.valid('param').token;
   const signed = storage.decode(token, 'upload', auth.tenantId);
   const row = await withAuthTx(auth, async (tx) => {
-    const [found] = await tx.select({ id: media.id, mimeType: media.mimeType }).from(media)
+    const [found] = await tx.select({ id: clientColumns.media.id, mimeType: clientColumns.media.mimeType, purpose: clientColumns.media.purpose }).from(media)
       .where(and(eq(media.tenantId, auth.tenantId), eq(media.path, signed.path), isNull(media.deletedAt))).limit(1);
     if (!found) throw notFound();
+    mediaPermission(auth, found.purpose, 'create');
+    if (found.purpose === 'progress_photo') await requirePhotoConsent(tx, auth);
     return found;
   });
   const contentType = c.req.header('content-type') ?? '';
@@ -107,10 +119,12 @@ router.openapi(createRoute({ method: 'get', path: '/local-download/{token}', req
   if (process.env.NODE_ENV === 'production') throw notFound();
   const storage = getStorage();
   if (!(storage instanceof LocalFsStorage)) throw notFound();
-  const auth = c.get('auth'); if (auth.role !== 'client') requirePermission(auth, 'billing', 'view');
+  const auth = c.get('auth');
   const token = c.req.valid('param').token;
   const signed = storage.decode(token, 'download', auth.tenantId);
   const row = await withAuthTx(auth, async (tx) => {
+    const [kind] = await tx.select({ purpose: clientColumns.media.purpose }).from(media).where(and(eq(media.tenantId, auth.tenantId), eq(media.path, signed.path), isNull(media.deletedAt))).limit(1);
+    if (!kind) throw notFound(); mediaPermission(auth, kind.purpose, 'view');
     const [found] = await tx.select({ mimeType: clientColumns.media.mimeType }).from(media)
       .where(and(eq(media.tenantId, auth.tenantId), eq(media.path, signed.path), isNull(media.deletedAt))).limit(1);
     if (!found) throw notFound(); return found;

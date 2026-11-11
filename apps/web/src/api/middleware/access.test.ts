@@ -5,7 +5,8 @@ import { ApiError } from '../errors';
 import type { AuthVariables } from './auth';
 import { decideAccess, requireActiveAccess, type AccessSubscription } from './access';
 
-vi.mock('@dawlyy/db', () => ({ withAuthTx: vi.fn() }));
+// Partial mock: routers imported through ../index read other @dawlyy/db exports (e.g. clientColumns) at module scope.
+vi.mock('@dawlyy/db', async (importOriginal) => ({ ...(await importOriginal<typeof import('@dawlyy/db')>()), withAuthTx: vi.fn() }));
 vi.mock('@/src/server/auth', () => ({ getAuthContext: vi.fn() }));
 
 const today = '2026-11-08';

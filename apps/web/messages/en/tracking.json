@@ -1,1 +1,140 @@
-{}
+{
+    "title":  "Tracking",
+    "coachTitle":  "Client tracking",
+    "progressTitle":  "Progress",
+    "subtitle":  "Your entries, measurements and private progress photos.",
+    "date":  "Entry date",
+    "timezone":  "Timezone",
+    "metric":  "Metric",
+    "customKey":  "Metric name",
+    "unit":  "Unit",
+    "value":  "Value",
+    "missing":  "Missing entry",
+    "checking":  "Checking this date…",
+    "cadenceEvidence":  "Measurements and photos follow the intervals selected by your coach.",
+    "notExpected":  "No entry required on this date",
+    "entriesOnDate":  "Entries on this date: {count}",
+    "logTitle":  "Log your metrics",
+    "history":  "Entry history",
+    "historyEmpty":  "No entries yet",
+    "weightProgress":  "Weight change",
+    "noWeights":  "No weight entries yet.",
+    "noBaseline":  "No baseline",
+    "delta":  "Change: {absolute} · {percent}",
+    "empty":  {
+                  "title":  "No tracking cadence yet",
+                  "description":  "Your coach will choose which metrics to track and when."
+              },
+    "metrics":  {
+                    "weight":  "Weight",
+                    "water":  "Water",
+                    "steps":  "Steps",
+                    "sleep_hours":  "Sleep",
+                    "habit":  "Habit",
+                    "cardio_minutes":  "Cardio",
+                    "calories_in":  "Calories",
+                    "mood":  "Mood",
+                    "energy":  "Energy",
+                    "custom":  "Custom metric"
+                },
+    "units":  {
+                  "kg":  "kg",
+                  "lb":  "lb",
+                  "cm":  "cm",
+                  "in":  "in",
+                  "ml":  "ml",
+                  "steps":  "steps",
+                  "h":  "hours",
+                  "count":  "count",
+                  "min":  "minutes",
+                  "kcal":  "kcal",
+                  "score":  "score"
+              },
+    "cadence":  {
+                    "title":  "Tracking cadence",
+                    "description":  "Only configured dates generate reminders. Weekly weighing stays weekly. Day 1 is the day after the start date.",
+                    "startsOn":  "Start date (Day 0)",
+                    "endsOn":  "End date",
+                    "frequency":  "Frequency",
+                    "none":  "Off",
+                    "daily_fasted":  "Daily",
+                    "weekly":  "Weekly",
+                    "days_of_week":  "Selected weekdays",
+                    "custom":  "Custom dates",
+                    "customDates":  "Dates separated by commas (YYYY-MM-DD)",
+                    "enable":  "Enable reminders",
+                    "disable":  "Disable reminders",
+                    "everyDays":  "Repeat every (days)",
+                    "firstAfterDays":  "First event after start (days)",
+                    "measurementFields":  "Measurement names separated by commas",
+                    "requiredPoses":  "Required photo poses",
+                    "timeOfDay":  "Local time (HH:mm)"
+                },
+    "weekdays":  {
+                     "0":  "Sunday",
+                     "1":  "Monday",
+                     "2":  "Tuesday",
+                     "3":  "Wednesday",
+                     "4":  "Thursday",
+                     "5":  "Friday",
+                     "6":  "Saturday"
+                 },
+    "measurements":  {
+                         "title":  "Measurements",
+                         "name":  "Measurement",
+                         "customName":  "Custom measurement name",
+                         "side":  "Side",
+                         "empty":  "No measurement sets yet.",
+                         "names":  {
+                                       "waist":  "Waist",
+                                       "hip":  "Hip",
+                                       "chest":  "Chest",
+                                       "arm":  "Arm",
+                                       "thigh":  "Thigh",
+                                       "calf":  "Calf",
+                                       "neck":  "Neck",
+                                       "custom":  "Custom"
+                                   },
+                         "sides":  {
+                                       "none":  "Not sided",
+                                       "left":  "Left",
+                                       "right":  "Right"
+                                   }
+                     },
+    "photos":  {
+                   "title":  "Progress photos",
+                   "private":  "Photos are private. Active photos consent is required before uploading. Choose JPEG, PNG or WebP up to 8 MiB per image.",
+                   "compare":  "Compare dates",
+                   "before":  "First date",
+                   "after":  "Second date",
+                   "timeline":  "Photo timeline",
+                   "empty":  "No progress photos yet.",
+                   "alt":  "{pose} progress photo from {date}",
+                   "poses":  {
+                                 "front":  "Front",
+                                 "left":  "Left side",
+                                 "right":  "Right side",
+                                 "back":  "Back",
+                                 "custom":  "Custom pose"
+                             }
+               },
+    "actions":  {
+                    "refresh":  "Refresh",
+                    "log":  "Log entry",
+                    "more":  "Load more entries",
+                    "moreMeasurements":  "More measurements",
+                    "morePhotos":  "More photos",
+                    "addMetric":  "Add metric",
+                    "remove":  "Remove",
+                    "saveCadence":  "Save cadence",
+                    "addMeasurement":  "Add measurement",
+                    "saveMeasurements":  "Save measurement set",
+                    "savePhotos":  "Save photo set",
+                    "deletePhotos":  "Delete photo set"
+                },
+    "errors":  {
+                   "request_failed":  "Could not save or load data. Check the fields and try again.",
+                   "validation_error":  "Check the dates, units and cadence settings, then try again.",
+                   "consent_required":  "Accept photos consent in Settings before uploading progress photos."
+               }
+}

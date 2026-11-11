@@ -1,1 +1,24 @@
-{}
+{
+  "title": "Calendar",
+  "subtitle": "Online coaching events in your business timezone.",
+  "date": "Date",
+  "client": "Client",
+  "grid": "Calendar grid",
+  "agenda": "Agenda",
+  "loading": "Loading events…",
+  "addTitle": "Add an event",
+  "editTitle": "Edit this event",
+  "eventTitle": "Event title",
+  "dueAt": "Event or reschedule date and time",
+  "timezone": "Timezone",
+  "windowDays": "Days allowed after the due date",
+  "rescheduleHelp": "Reschedule uses the date, time and timezone below. Changes apply to one occurrence.",
+  "views": { "day": "Day", "week": "Week", "month": "Month" },
+  "filters": { "client": "Client", "type": "Event type", "state": "Status", "all": "All" },
+  "states": { "scheduled": "Scheduled", "skipped": "Skipped", "rescheduled": "Rescheduled" },
+  "types": { "weekly_checkin": "Weekly check-in", "daily_checkin": "Daily check-in", "weigh_in": "Weigh-in", "measurements": "Measurements", "progress_photos": "Progress photos", "technique_review": "Technique review", "renewal_reminder": "Renewal reminder", "program_review": "Program review", "custom": "Custom event" },
+  "actions": { "apply": "Apply filters", "complete": "Mark complete", "skip": "Skip", "cancel": "Cancel event", "reschedule": "Reschedule", "edit": "Edit", "save": "Save changes", "add": "Add event", "more": "Load more events", "closeEdit": "Close editor" },
+  "empty": { "title": "No events in this range", "description": "Try another date or add a coaching event." },
+  "errors": { "request_failed": "Could not save or load events. Check the fields and try again.", "illegal_transition": "This event has already changed. Refresh the calendar." },
+  "reminders": { "due": "A coaching event is due", "overdue": "A coaching event is overdue" }
+}

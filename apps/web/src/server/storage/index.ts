@@ -34,6 +34,21 @@ export function validateProof(contentType: string, sizeBytes: number): string {
   return extension;
 }
 
+/** Task 8 / OPEN_DECISIONS 9: purpose-specific upload MIME validation; payment proof stays unchanged. */
+export function validateMediaUpload(purpose: string, contentType: string, sizeBytes: number): string {
+  if (purpose === 'payment_proof') return validateProof(contentType, sizeBytes);
+  const images: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+  const types: Record<string, string> = purpose === 'progress_photo' ? images : purpose === 'form_answer' ? { ...images, 'application/pdf': 'pdf', 'text/plain': 'txt', 'video/mp4': 'mp4', 'video/webm': 'webm', 'video/quicktime': 'mov' } : {};
+  const extension = Object.hasOwn(types, contentType) ? types[contentType] : undefined;
+  if (!extension || !Number.isSafeInteger(sizeBytes) || sizeBytes < 1 || sizeBytes > MAX_PROOF_BYTES) throw validationError(undefined, 'Invalid media purpose, MIME type or size');
+  return extension;
+}
+
+function validateUploadPath(value: string, contentType: string, sizeBytes: number) {
+  const purpose = value.split('/')[3];
+  return validateMediaUpload(purpose === 'progress_photo' || purpose === 'form_answer' ? purpose : 'payment_proof', contentType, sizeBytes);
+}
+
 const capability = z.object({ path: z.string(), purpose: z.enum(['upload', 'download']), expires: z.number().int(),
   contentType: z.string().optional(), maxBytes: z.number().int().optional() }).strict();
 type Capability = z.infer<typeof capability>;
@@ -85,7 +100,7 @@ export class LocalFsStorage implements StorageProvider {
 
   /** T3b: local capabilities expire in fifteen minutes and cannot overwrite an existing proof. */
   async createUpload(value: string, contentType: string, maxBytes: number) {
-    validateStoragePath(value); validateProof(contentType, maxBytes);
+    validateStoragePath(value); validateUploadPath(value, contentType, maxBytes);
     const token = this.sign({ path: value, purpose: 'upload', expires: Date.now() + 900000, contentType, maxBytes });
     return { url: `/api/v1/media/local-upload/${token}`, method: 'PUT', headers: { 'Content-Type': contentType } };
   }
@@ -137,7 +152,7 @@ export class SupabaseStorage implements StorageProvider {
   private bucket(value: string) { validateStoragePath(value); return this.storage.from(value.split('/')[1] === 'assets' ? 'tenant-assets' : 'client-media'); }
   /** T3b: signed uploads use PUT, no upsert, and the exact path issued after the RLS insert. */
   async createUpload(value: string, contentType: string, maxBytes: number) {
-    validateProof(contentType, maxBytes);
+    validateUploadPath(value, contentType, maxBytes);
     // Signed-upload API has no per-token size/MIME limits. Configure client-media bucket to enforce 8 MiB and this MIME allowlist.
     const { data, error } = await this.bucket(value).createSignedUploadUrl(value, { upsert: false });
     if (error || !data) throw new Error('Could not create upload instruction');
