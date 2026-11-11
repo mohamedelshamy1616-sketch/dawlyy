@@ -10,18 +10,37 @@ const actors = [
 const locales = ['ar', 'en'] as const;
 const viewports = [{ width: 390, height: 844 }, { width: 1366, height: 900 }] as const;
 
-// One entry per app/[locale]/**/page.tsx; route groups do not appear in URLs.
-// Each [...rest]/page.tsx gets an unknown URL in its own area.
-const routes = [
-  { path: '', slug: 'landing' },
-  { path: '/login', slug: 'login' },
-  { path: '/coach', slug: 'coach' },
-  { path: '/app', slug: 'app' },
-  { path: '/app/today', slug: 'app-today' },
-  { path: '/preview-not-found', slug: 'not-found' },
-  { path: '/coach/preview-not-found', slug: 'coach-not-found' },
-  { path: '/app/preview-not-found', slug: 'app-not-found' },
-] as const;
+// One entry per static app/[locale]/**/page.tsx plus detail pages for the demo records; route groups do not appear in URLs.
+// Each [...rest]/page.tsx gets an unknown URL in its own area. `area` decides which demo role visits the route.
+const FIRST_CLIENT = 'd0250000-0000-4000-8000-000000000301';
+const DEMO_PACKAGE = 'd0250000-0000-4000-8000-000000000401';
+const DEMO_PROGRAM = 'd0250000-0000-4000-8000-000000000501';
+type Area = 'public' | 'coach' | 'app';
+const routes: ReadonlyArray<{ path: string; slug: string; area: Area }> = [
+  { path: '', slug: 'landing', area: 'public' },
+  { path: '/login', slug: 'login', area: 'public' },
+  { path: '/signup', slug: 'signup', area: 'public' },
+  { path: '/reset', slug: 'reset', area: 'public' },
+  { path: '/privacy', slug: 'privacy', area: 'public' },
+  { path: '/terms', slug: 'terms', area: 'public' },
+  { path: '/preview-not-found', slug: 'not-found', area: 'public' },
+  { path: '/coach', slug: 'coach', area: 'coach' },
+  { path: '/coach/preview-not-found', slug: 'coach-not-found', area: 'coach' },
+  ...['clients', 'clients/new', `clients/${FIRST_CLIENT}`, `clients/${FIRST_CLIENT}/timeline`, `clients/${FIRST_CLIENT}/tracking`,
+    `clients/${FIRST_CLIENT}/subscription`, `clients/${FIRST_CLIENT}/overrides`, 'packages', 'packages/new', `packages/${DEMO_PACKAGE}`,
+    'programs', 'programs/new', `programs/${DEMO_PROGRAM}`, `programs/${DEMO_PROGRAM}/assign`, `programs/${DEMO_PROGRAM}/history`,
+    'exercises', 'exercises/new', 'exercises/import', 'foods', 'foods/new', 'nutrition', 'nutrition/new', 'billing', 'billing/sell',
+    'calendar', 'checkins', 'assessments', 'intake', 'messages', 'notifications', 'tasks', 'settings', 'settings/business',
+    'settings/branding', 'settings/language', 'settings/legal', 'settings/team',
+  ].map(path => ({ path: `/coach/${path}`, slug: `coach-${path.replace(FIRST_CLIENT, 'client').replace(DEMO_PACKAGE, 'package').replace(DEMO_PROGRAM, 'program').replaceAll('/', '-')}`, area: 'coach' as const })),
+  { path: '/app', slug: 'app', area: 'app' },
+  { path: '/app/preview-not-found', slug: 'app-not-found', area: 'app' },
+  ...['today', 'program', 'nutrition', 'nutrition/log', 'nutrition/history', 'workout/start', 'history', 'progress', 'tracking', 'checkins',
+    'intake', 'assessment', 'messages', 'notifications', 'subscription', 'consent',
+  ].map(path => ({ path: `/app/${path}`, slug: `app-${path.replaceAll('/', '-')}`, area: 'app' as const })),
+];
+const actorRoutes = (role: (typeof actors)[number]['role']) =>
+  routes.filter(route => route.area === 'public' || route.area === (role === 'owner' ? 'coach' : 'app'));
 
 type Screen = {
   image: string;
@@ -69,7 +88,7 @@ test.afterAll(async () => {
     'Page checks cover the expected redirect, visible content, completed loading, language and direction.',
     'Overflow PASS means document.documentElement.scrollWidth <= window.innerWidth + 1; FAIL fails the test.',
     'NOT CHECKED means the page could not be measured. Old PNGs may still exist.',
-    `Captured ${screens.filter((screen) => screen.saved).length} of ${actors.length * locales.length * viewports.length * routes.length} expected screenshots.`,
+    `Captured ${screens.filter((screen) => screen.saved).length} of ${actors.reduce((sum, actor) => sum + actorRoutes(actor.role).length, 0) * locales.length * viewports.length} expected screenshots.`,
     '',
     '| Image | Role | Requested route | Locale | Width (px) | Final route | Page checks | No horizontal overflow |',
     '| --- | --- | --- | --- | --- | --- | --- | --- |',
@@ -100,7 +119,7 @@ test('capture every route for both demo roles, locales and viewport widths', asy
           await login.dispose();
           const page = await context.newPage();
 
-          for (const route of routes) {
+          for (const route of actorRoutes(actor.role)) {
             const requestedRoute = `/${locale}${route.path}`;
             const screen: Screen = {
               image: `${actor.role}-${route.slug}-${locale}-${viewport.width}.png`,
@@ -152,5 +171,5 @@ test('capture every route for both demo roles, locales and viewport widths', asy
       }
     }
   }
-  expect(screens.filter((screen) => screen.saved)).toHaveLength(actors.length * locales.length * viewports.length * routes.length);
+  expect(screens.filter((screen) => screen.saved)).toHaveLength(actors.reduce((sum, actor) => sum + actorRoutes(actor.role).length, 0) * locales.length * viewports.length);
 });
