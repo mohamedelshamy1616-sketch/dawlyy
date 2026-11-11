@@ -142,8 +142,15 @@ week 72% with a day to the weekly reset, mostly from Sonnet writer workflows. Fr
   on disjoint files instead of running Sonnet writer workflows.
 - Claude's own work is limited to: writing briefs, reviewing Codex diffs, running pnpm/node/psql gates, small
   integration fixes (a few lines), commits and STATE.md.
-- No Workflow and no subagent fan-out while Codex is available. When Codex is unavailable (its own limit, or two
-  failed runs on the same brief), at most one Sonnet builder at a time, effort medium.
+- Speed mode (Mohamed, 11 Nov 2026: "shaghal el worker b sor3t el bar2", run the worker at lightning speed; this
+  replaces the 9 Nov limit of one Sonnet builder): three tasks build at once. Keep one Codex job running whenever
+  Codex is available, and beside it up to 2 Sonnet builders (effort medium, disjoint file sets, each with its
+  brief and the common brief). When Codex is unavailable, up to 3 Sonnet builders. Never wait idle for a Codex
+  job when another task of the phase can start: start the next wave's independent tasks at once. Review, gate and
+  commit each task the moment it ends; do not hold finished work for the rest of the wave. No Workflow tool.
+- Brakes that stay: 5-hour utilization at 80% or more (`.autopilot/usage.json`) means no new builder; finish
+  reviews and commits, then set WAITING with `wait_until` at `five_hour.resets_at`. The weekly 85% rule below
+  stays. The heavy cap of 3 stays (15 GB RAM): gates run one at a time.
 - Waiting for Codex is cheap: set WAITING with `waiting_for` and `wait_until` and end the turn instead of polling.
 - Weekly usage at 85% or more (`.autopilot/usage.json`): review Codex output, run gates and commit only. Write no
   code yourself and start no Sonnet builder; while Codex runs, set WAITING with `wait_until` and end the turn. P7
