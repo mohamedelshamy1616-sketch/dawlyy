@@ -8,6 +8,23 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 04:00, resume after the attended Astryx session: T5 T6 T7 finished in round 3
+
+- Playbook sha256 matched (402b9468...). Usage at start: 5-hour 30%, weekly 19% (usage.json: 16% / 30%). The six Codex jobs of 9-10 Nov all failed on the ChatGPT usage limit; their partial files (3265 lines, untracked) are what the tree holds.
+- Fixed the one typecheck error (`api/me.ts` TS2345): the per-route validation hook was replaced by the `defaultHook` on the router, as every other router does. Web `tsc` exit 0 afterwards.
+- Missing after the partial runs: every page, all `workout`/`nutrition`/`forms` messages, `public/sw.js`, the builder UI for forms, `me.test.ts`, `workout-sessions.test.ts`, the offline e2e spec and `docs/qa/ios-pwa.md`. Addenda listing exactly this: `tools/codex_briefs/p4r3-addendum-t5/t6/t7.md`.
+- 04:10: T6 done and committed `3909459` (Sonnet builder). Evidence: vitest `dawlyy_p1gate` 5 files 16/16 (rerun by me), check-messages 1431 keys per locale none missing, builder's eslint exit 0. Builder fixed two real bugs (food clone returned 400 for every system food; substitute test used zero-kcal water). Known gaps: older Codex-written nutrition components still use shadcn (Astryx polish wave), no render check at 360 px/RTL yet (screens job), touch targets not verified at 44 px.
+- 04:20: T7 done and committed `0fb5381` (Sonnet builder). Evidence: vitest `dawlyy_p1gate` 5 files 31/31 (rerun by me), check-messages 1431 keys none missing, builder's eslint exit 0, SSR smoke render in en/ar. Four product gaps went to OPEN_DECISIONS 7-10 (submit stops at `submitted`, no resubmit edge, form uploads wait for T8, no skip/mark-known buttons).
+- Launched: Codex job `20261111-034558-p4r3-t5` (effort high, one Codex job only) and two Sonnet builders (T6 nutrition, T7 forms), disjoint files, no commits by builders. I review and commit per task.
+
+### 10 Nov 15:58, T5 T6 T7 relaunched after Codex hit its usage limit
+
+- The three jobs of 9 Nov (`20261109-213624-p4-t5/t6/t7`) all failed with exit 1 about 5.5 minutes in. The logs end with "You've hit your usage limit ... try again at 10:52 PM". Partial files were left in `apps/web/src/server/{workout,nutrition,forms}/` (13 files, untracked, not reviewed).
+- Relaunched at 15:57 with the same briefs plus `tools/codex_briefs/_common_web_resume.md` (the web common rules plus a notice to read the partial files first and finish the brief). Started directly with `codex_build.py` as background Bash tasks, effort high, timeout 5400 s.
+- Why not `job.py`: it now fails with `SyntaxError: unterminated string literal (worker_guard.py, line 106)`. The file is `C:/Users/compuline/.claude/autopilot/hooks/worker_guard.py`, last written 9 Nov 22:26 (right after the `fix-git-sync` Codex job), so a fix to the autopilot broke it. It is outside the repo and the playbook forbids editing it. Mohamed or an attended session must repair it; `worker_guard.py.bak-r5` (22:25) is the version before the break. Until then `job.py start` is unusable, and the guard hook itself may be failing open.
+- 10 Nov 18:29 (resume): the 15:57 relaunch died when that session ended (background Bash tasks do not survive a turn end; no answer files were written). `worker_guard.py` was repaired in the meantime, so `job.py start` works again. Relaunched as detached jobs `20261110-182902-p4r2-t5`, `20261110-182909-p4r2-t6`, `20261110-182909-p4r2-t7` (same briefs plus `_common_web_resume.md`, effort high, timeout 5400 s). The playbook sha256 is now `6961e4d9...`; it adds: at weekly 85% or more only review, gates and commits, and re-run the screens job at the end of every wave. Usage at resume: 5-hour 7%, weekly 3%.
+- Session usage at start: weekly 100%, 5-hour 82%. Only cheap work (Codex jobs, review by reading, gates) until the reset on Tue 06:00.
+
 ### 9 Nov 21:40, P4 wave 3 launched: T5, T6, T7 Codex jobs running
 
 - Commit `f299b2e`: briefs `tools/codex_briefs/p4-t5-client-portal.md`, `p4-t6-nutrition.md`, `p4-t7-forms.md` (use with
@@ -508,7 +525,7 @@ Codex batches launched 15:20 (main thread now Opus 5.5 at max effort, ultracode 
 ## Waiting on Mohamed
 
 - Disk: a yes to delete or move the Apple MobileSync backups (221 GB) and `.cache\huggingface` (5 GB); until then the machine stays memory-starved.
-- Supabase project (URL, anon key, service key, DB password) into `apps/web/.env.local` and `packages/db/.env`; Vercel login; a yes for creating and pushing a private GitHub repo.
+- Supabase project (URL, anon key, service key, DB password) into `apps/web/.env.local` and `packages/db/.env`; Vercel login. (GitHub: done 8 Nov, private repo, the watchdog pushes.)
 - Brand assets and domain; the first coach's real packages; Egyptian counsel for Law 151/2020 before real clients.
 
 ## Failures and gotchas already paid for
