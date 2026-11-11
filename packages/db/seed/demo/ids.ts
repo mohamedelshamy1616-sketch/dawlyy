@@ -1,0 +1,59 @@
+import { createHash } from 'node:crypto';
+
+/** doc §14 / Task 12: stable public demo IDs; original identities must stay compatible with dev login/e2e. */
+export const DEMO_IDS = {
+  tenant: 'd0250000-0000-4000-8000-000000000001',
+  ownerUser: 'd0250000-0000-4000-8000-000000000101',
+  staffUser: 'd0250000-0000-4000-8000-000000000102',
+  firstClientUser: 'd0250000-0000-4000-8000-000000000103',
+  secondClientUser: 'd0250000-0000-4000-8000-000000000104',
+  thirdClientUser: 'd0250000-0000-4000-8000-000000000105',
+  ownerMembership: 'd0250000-0000-4000-8000-000000000201',
+  staffMembership: 'd0250000-0000-4000-8000-000000000202',
+  firstClientMembership: 'd0250000-0000-4000-8000-000000000203',
+  secondClientMembership: 'd0250000-0000-4000-8000-000000000204',
+  thirdClientMembership: 'd0250000-0000-4000-8000-000000000205',
+  firstClient: 'd0250000-0000-4000-8000-000000000301',
+  secondClient: 'd0250000-0000-4000-8000-000000000302',
+  thirdClient: 'd0250000-0000-4000-8000-000000000303',
+  fourthClientUser: 'd0250000-0000-4000-8000-000000000311',
+  fifthClientUser: 'd0250000-0000-4000-8000-000000000312',
+  sixthClientUser: 'd0250000-0000-4000-8000-000000000313',
+  seventhClientUser: 'd0250000-0000-4000-8000-000000000314',
+  eighthClientUser: 'd0250000-0000-4000-8000-000000000315',
+  fourthClientMembership: 'd0250000-0000-4000-8000-000000000321',
+  fifthClientMembership: 'd0250000-0000-4000-8000-000000000322',
+  sixthClientMembership: 'd0250000-0000-4000-8000-000000000323',
+  seventhClientMembership: 'd0250000-0000-4000-8000-000000000324',
+  eighthClientMembership: 'd0250000-0000-4000-8000-000000000325',
+  fourthClient: 'd0250000-0000-4000-8000-000000000331',
+  fifthClient: 'd0250000-0000-4000-8000-000000000332',
+  sixthClient: 'd0250000-0000-4000-8000-000000000333',
+  seventhClient: 'd0250000-0000-4000-8000-000000000334',
+  eighthClient: 'd0250000-0000-4000-8000-000000000335',
+  threeMonthPackage: 'd0250000-0000-4000-8000-000000000341',
+  nutritionPackage: 'd0250000-0000-4000-8000-000000000342',
+  fatLossProgram: 'd0250000-0000-4000-8000-000000000351',
+  strengthVersion: 'd0250000-0000-4000-8000-000000000352',
+  fatLossVersion: 'd0250000-0000-4000-8000-000000000353',
+  strengthDiet: 'd0250000-0000-4000-8000-000000000371',
+  fatLossDiet: 'd0250000-0000-4000-8000-000000000372',
+  strengthDietVersion: 'd0250000-0000-4000-8000-000000000373',
+  fatLossDietVersion: 'd0250000-0000-4000-8000-000000000374',
+  intakeForm: 'd0250000-0000-4000-8000-000000000381',
+  checkinForm: 'd0250000-0000-4000-8000-000000000382',
+  assessmentForm: 'd0250000-0000-4000-8000-000000000383',
+  intakeVersion: 'd0250000-0000-4000-8000-000000000384',
+  checkinVersion: 'd0250000-0000-4000-8000-000000000385',
+  assessmentVersion: 'd0250000-0000-4000-8000-000000000386',
+  pendingProof: 'd0250000-0000-4000-8000-000000000391',
+  progressPhoto: 'd0250000-0000-4000-8000-000000000392',
+  package: 'd0250000-0000-4000-8000-000000000401',
+  program: 'd0250000-0000-4000-8000-000000000501',
+} as const;
+
+/** doc §12.1(12) / Task 12: deterministic UUIDs for repeated history rows, in a disjoint demo namespace. */
+export function demoId(key: string): string {
+  // Named IDs use 000000000xxx. Dynamic IDs reserve the leading f nibble of the 48-bit tail.
+  return `d0250000-0000-4000-8000-f${createHash('sha256').update(`dawlyy-demo-v1:${key}`).digest('hex').slice(0, 11)}`;
+}

@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: ['test/**/*.test.ts'],
+    include: ['test/**/*.test.ts', 'seed/**/*.test.ts'],
     environment: 'node',
     // RLS tests talk to a real Postgres; run them serially and give them time.
     fileParallelism: false,
