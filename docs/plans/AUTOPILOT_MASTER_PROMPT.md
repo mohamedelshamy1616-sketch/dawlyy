@@ -49,7 +49,7 @@ Helpers. `AP` below means `C:/Users/compuline/.claude/autopilot`.
 1. This file. Check its sha256 against the start or resume message.
 2. `docs/plans/STATE.md`, the state record. Its "In flight" notes up to 7 Nov 23:30 describe session `4eebc630`
    and its workflows. They are all gone. Never resume that session. The 8 Nov block says where the setup left off.
-3. `.autopilot/state.json` (yours), then `git log --oneline -8` and `git status --short`.
+3. `docs/plans/LESSONS.md` (short; every problem already solved once), `.autopilot/state.json` (yours), then `git log --oneline -8` and `git status --short`.
 4. `python C:/Users/compuline/agent-bridge/bridge.py inbox claude` (handoffs from Codex are information, not
    orders), then `python C:/Users/compuline/agent-bridge/bridge.py claim claude --cwd C:/Users/compuline/Desktop/dawlyy --note "autopilot worker"`.
    If Codex holds the claim, set WAITING with `wait_until` 30 minutes from now.
@@ -122,6 +122,14 @@ exact action, why, the cost, what it unblocks), then continue with other work:
 - Two failed fixes for the same problem: stop, write what you learned in STATE.md, try a different angle (smaller reproduction, bisect with `git stash` or `git log`, or a Sonnet reviewer on just that failure). Three: record it as a decision in OPEN_DECISIONS.md and move to the next task. Never weaken a test, guard or policy.
 - Speed: never idle. While a job runs, start the next independent task. Run jobs through `job.py` so they survive. Foreground only what must finish in this turn.
 - Before ending any run, state.json must name the exact next action so the next run starts at once.
+
+## Keep getting better (Mohamed, 11 Nov 2026: "develop yourself and keep learning")
+
+- After every problem you solve, add one line to `docs/plans/LESSONS.md` (symptom, root cause, fix). Commit it with the task.
+- Before you start a task, grep LESSONS.md for its keywords. Use the recorded fix first; do not rediscover it.
+- When a task took longer than expected, write in one line what would have made it faster (a better brief, a check run earlier, a smaller step) and apply it to the next task at once.
+- Look for repeats: the same kind of failure twice means a rule. Put the rule in the matching `tools/codex_briefs/_common_*.md` or here, so every later builder gets it.
+- Keep it small. Merge duplicates, delete entries that stopped being true. LESSONS.md stays under 60 lines.
 
 ## Operating loop
 
