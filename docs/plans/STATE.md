@@ -8,6 +8,14 @@ Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 11 Nov 10:20, T8 committed (da7cf91); wave 4 complete (T5 to T11)
+
+- Codex T8 (45 files) reviewed and integrated. Fixes: `FileInput` has no `className` (wrapped in a div); a raw `Date` bound in a `sql` template in `processor.ts` (now ISO string cast to `timestamptz`); four T8 tests imported `./index` before `test/api-harness`, so the Supabase mock was never applied (500 `cookies called outside a request scope`); `access.test.ts` mocked `@dawlyy/db` whole, which broke once T6 read `clientColumns` at module scope (now a partial mock, assertions untouched); vitest `testTimeout`/`hookTimeout` 30 s because a cold import of the router tree takes about 10 s.
+- The cron route `app/api/cron/due-events` now also runs `processDeliveries({ tenantId })` after `processDueEvents`, so queued reminders are sent (log-only email, no push without keys).
+- Evidence: web `tsc` exit 0, eslint clean on touched files, check-messages 2219 keys per locale in parity, full web vitest on `dawlyy_p1gate`: 60 files, 380/380 passed.
+- Not proved: render at 360 px and RTL, 44 px targets and Astryx proof for T5 to T11 (screens job), production form uploads still lack an upload-completion hook that stamps `uploaded_at` (Codex note).
+- Usage at 10:00: 5-hour 6%, weekly 48%. Next: client nav-items (tracking, checkins), screens job, HOW_TO_TEST, Astryx polish wave, then T12 (P5).
+
 ### 11 Nov 05:35, T9 committed; waiting for Codex T8
 
 - T9 `0396309` (messaging, notification center, delivery processor): vitest 5 files 36/36 (my rerun), eslint clean, parity 2219 keys. Notifications are written by a service transaction after the message commits (runtime role has no INSERT on `notifications`). Email is log-only and push cancelled without keys. `064e4d8` adds the missing `push` and `notificationclick` handlers to `public/sw.js` (node --check only).
