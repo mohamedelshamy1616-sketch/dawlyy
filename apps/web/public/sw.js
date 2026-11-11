@@ -105,3 +105,25 @@ self.addEventListener('fetch', event => {
   if (request.mode === 'navigate' && portalPath(url.pathname)) { event.respondWith(networkFirst(request)); return; }
   if (url.pathname === '/api/v1/me/program' || url.pathname === '/api/v1/me/today') event.respondWith(networkFirst(request));
 });
+
+// Task 9: Web Push. The payload carries a title and a link only (never message text); the link must be a same-origin path.
+self.addEventListener('push', event => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch { data = {}; }
+  const title = typeof data.title === 'string' && data.title ? data.title.slice(0, 120) : 'DAWLYY';
+  const url = typeof data.url === 'string' && /^\/(?!\/)/.test(data.url) ? data.url : '/';
+  const options = { data: { url }, icon: '/icons/icon-192.png' };
+  if (typeof data.body === 'string') options.body = data.body.slice(0, 200);
+  if (typeof data.tag === 'string') options.tag = data.tag.slice(0, 64);
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const target = new URL(event.notification.data?.url || '/', self.location.origin).href;
+  event.waitUntil((async () => {
+    const open = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    const same = open.find(client => client.url === target);
+    if (same) return same.focus();
+    return self.clients.openWindow(target);
+  })());
+});
