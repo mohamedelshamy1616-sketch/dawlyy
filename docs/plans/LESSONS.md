@@ -11,3 +11,6 @@ Never record secrets, tokens or personal data here.
 - 2026-11-11 | worker stopped overnight with the autopilot left paused | an attended session paused it and never resumed | resume before ending any attended turn; a paused autopilot never resumes by itself
 - 2026-11-11 | `git commit` swept in another task's staged file | the worker had staged a file earlier | commit with `git commit --only <paths>` and check `git diff --cached --name-only` first
 
+- 2026-11-11 | `next build` fails "uncached or runtime data during prerendering" at `/ar/login` with cacheComponents | `NextIntlClientProvider` reads request config and messages at request time, outside Suspense | wrap the provider tree in the locale layout in `<Suspense fallback={null}>`; do not use `--experimental-build-mode generate` to diagnose (it gave unrelated useContext errors)
+- 2026-11-11 | a build took 37 min, the same build 1 min later | the machine was CPU-starved, not the code | before a long job look at `Get-Process | sort CPU`; rerun once CPU is free
+- 2026-11-11 | e2e invitee step blocked: dev login refuses identities without a demo membership | dev login only listed active demo memberships | `isUnattachedIdentity` allows a membership-free uuid (dev only); existing members must stay on the demo list

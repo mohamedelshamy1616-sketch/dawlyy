@@ -4,6 +4,7 @@ import "../globals.css";
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AstryxProvider } from "@/components/astryx-provider";
@@ -52,12 +53,16 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${inter.variable} ${plexArabic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider>
-          <AstryxProvider locale={locale}>
-            <TooltipProvider>{children}</TooltipProvider>
-            <Toaster />
-          </AstryxProvider>
-        </NextIntlClientProvider>
+        {/* cacheComponents: next-intl reads its request config and messages at request time, so the provider and
+            everything under it stream behind this boundary instead of blocking the route's prerender. */}
+        <Suspense fallback={null}>
+          <NextIntlClientProvider>
+            <AstryxProvider locale={locale}>
+              <TooltipProvider>{children}</TooltipProvider>
+              <Toaster />
+            </AstryxProvider>
+          </NextIntlClientProvider>
+        </Suspense>
       </body>
     </html>
   );
