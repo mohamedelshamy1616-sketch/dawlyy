@@ -576,3 +576,10 @@ Codex batches launched 15:20 (main thread now Opus 5.5 at max effort, ultracode 
 See memory `reference_pnpm12_nextjs16_scaffold_gotchas.md`. Short list: `pnpm approve-builds --all -y`; `pnpm add -D`
 for scoped names; pin `typescript ^5.9.3`; Zod 4 `.prefault({})`; `pgPolicy` helper functions must exist before the
 tables that reference them; Bash heredocs break under the rtk hook (use the Write tool); PowerShell 5.1 has no `&&`.
+
+## 11 Nov 2026 20:10 (Cairo): beta-gate e2e green in ar and en; Astryx polish started
+
+- Commit `6be4c4d`: e2e helper and selector fixes. Evidence: job `e2e-ar12` 10 passed (2.7 min), job `e2e-en1` 10 passed (2.3 min), both against the local cluster with the dev login.
+- The e2e server runs `next dev`, so its log shows dev-only instant-navigation warnings ("uncached data" on `/login`, `coach/packages/new`, `coach/packages/[packageId]`, `coach/clients/new`; "instant navigation" on several `/app/*` pages). They do not fail a test, and `build-web2` exited 0 earlier. Not fixed; revisit only if `build-web` turns red.
+- `apps/web/tsconfig.json` is rewritten by Next with extra dist dirs. It is left uncommitted on purpose; decide before the final `run_checks.py` (the tree must be clean).
+- Started job `20261111-200726-polish-abcd`: Codex Astryx polish groups A to D in sequence (`.work/tmp/run_polish.py`, effort high). Next: review each group's diff, run typecheck and lint, commit per group, rerun the screens job.
