@@ -2,35 +2,19 @@ import { expect, type BrowserContext, type Locator, type Page, type Response } f
 import { createTranslator } from 'next-intl';
 import { deflateSync } from 'node:zlib';
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 /** Task 12: the two catalog-backed beta gate languages. */
 export type Locale = 'ar' | 'en';
 
 /** Task 12: load actual product catalogs at runtime; ICU formatting stays identical to next-intl. */
 export async function labels(locale: Locale) {
-  const catalogs: Record<string, unknown> = locale === 'ar' ? {
-    auth: (await import('../../messages/ar/auth.json')).default,
-    billing: (await import('../../messages/ar/billing.json')).default,
-    clients: (await import('../../messages/ar/clients.json')).default,
-    packages: (await import('../../messages/ar/packages.json')).default,
-    programs: (await import('../../messages/ar/programs.json')).default,
-    nutrition: (await import('../../messages/ar/nutrition.json')).default,
-    forms: (await import('../../messages/ar/forms.json')).default,
-    workout: (await import('../../messages/ar/workout.json')).default,
-    client: (await import('../../messages/ar/client.json')).default,
-    status: (await import('../../messages/ar/status.json')).default,
-  } : {
-    auth: (await import('../../messages/en/auth.json')).default,
-    billing: (await import('../../messages/en/billing.json')).default,
-    clients: (await import('../../messages/en/clients.json')).default,
-    packages: (await import('../../messages/en/packages.json')).default,
-    programs: (await import('../../messages/en/programs.json')).default,
-    nutrition: (await import('../../messages/en/nutrition.json')).default,
-    forms: (await import('../../messages/en/forms.json')).default,
-    workout: (await import('../../messages/en/workout.json')).default,
-    client: (await import('../../messages/en/client.json')).default,
-    status: (await import('../../messages/en/status.json')).default,
-  };
+  // Playwright loads specs as native ESM, where a bare JSON import needs an attribute: read the files instead.
+  const catalogs: Record<string, unknown> = {};
+  for (const name of ['auth', 'billing', 'clients', 'packages', 'programs', 'nutrition', 'forms', 'workout', 'client', 'status']) {
+    catalogs[name] = JSON.parse(readFileSync(join(process.cwd(), 'messages', locale, `${name}.json`), 'utf8'));
+  }
   return (path: string, values: Record<string, string | number> = {}): string => {
     let value: unknown = catalogs;
     for (const key of path.split('.')) {
@@ -62,16 +46,24 @@ function redact(message: string): string {
 export function browserHealth(context: BrowserContext, locale: Locale) {
   const errors: string[] = [];
   const observed = new Set<Page>();
+  const failures: string[] = [];
   function observe(page: Page) {
     if (observed.has(page)) return;
     observed.add(page);
+    page.on('response', response => {
+      if (response.status() >= 400) failures.push(redact(`${response.status()} ${response.request().method()} ${new URL(response.url()).pathname}`));
+    });
     page.on('console', message => {
       if (message.type() !== 'error') return;
       const text = message.text();
       // The only permitted exception: Playwright's screenshot caret CSS hydration diagnostic.
       // This suite does not take screenshots, so ordinarily even this exception is unused.
       if (/caret-color/.test(text) && /hydrat/i.test(text) && /(?:Playwright|screenshot)/i.test(text)) return;
-      errors.push(redact(text));
+      // Second permitted exception: Next's development-only instant-navigation diagnostic, replayed from the server
+      // console. The same rule is enforced for production by `next build` (check build-web), which prerenders every route.
+      if (/^Error: Route "[^"]+": (?:Next\.js encountered uncached data during prerendering or a navigation|Could not validate that a segment in your UI has instant navigation)\./.test(text)) return;
+      // Browser 'Failed to load resource' lines carry no URL: name the most recent failing requests.
+      errors.push(redact(/^Failed to load resource/.test(text) ? `${text} (recent failing requests: ${failures.slice(-3).join('; ')})` : text));
     });
     page.on('pageerror', error => { errors.push(redact(error.message)); });
   }

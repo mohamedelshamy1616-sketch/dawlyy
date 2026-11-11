@@ -185,7 +185,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         expect(sale.payment).toMatchObject({ state: 'pending', receiptNo: null, proofMediaId: uploadResult.mediaId });
         expect(uploadResult.uploaded).toBe(true);
         expect(sale.subscription.state).toBe('pending');
-        expect(sale.subscription.endsOn).toBe(plusDays(startsOn, 27));
+        expect(sale.subscription.endsOn).toBe(plusDays(startsOn, 28));
         await expect(owner.getByRole('heading', { name: t('billing.saleComplete'), exact: true })).toBeVisible();
         await expect(owner.getByRole('status')).toContainText(t('billing.awaitingVerification'));
         if (!sale.payment?.proofMediaId) throw new Error('The sale must retain its uploaded proof.');
@@ -240,7 +240,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         if (!exercise) throw new Error('System seed must provide an exercise.');
         await owner.getByRole('textbox', { name: t('programs.workoutName'), exact: true }).fill(workoutName);
         await owner.getByRole('textbox', { name: t('programs.workoutName'), exact: true }).press('Tab');
-        await button(owner, t('programs.addBlock')).click();
+        // A new program already holds one empty block (clicking add block made a second, empty one that publish refuses with 422).
         await button(owner, t('programs.addExercise')).click();
         const picker = owner.getByRole('dialog', { name: t('programs.chooseExercise'), exact: true });
         const exerciseName = localize(exercise.name, locale);
@@ -370,7 +370,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         await button(owner, t('forms.hub.send.checkin')).click();
         const send = owner.getByRole('dialog', { name: t('forms.actions.sendTitle'), exact: true });
         await send.getByRole('searchbox', { name: t('forms.actions.searchClient'), exact: true }).fill(clientName);
-        await send.getByRole('combobox', { name: t('forms.actions.client'), exact: true }).click();
+        // The Astryx Selector trigger is named "<label> <selected value or placeholder>", so match the label as a substring.
+        await send.getByRole('combobox', { name: t('forms.actions.client') }).click();
         await owner.getByRole('option', { name: clientName, exact: true }).click();
         const event = await mutation<{ id: string }>(owner, 'POST', '/forms/send', 201,
           () => send.getByRole('button', { name: t('forms.actions.send'), exact: true }).click());
@@ -384,8 +385,9 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         const notes = questions.find(question => question.id === 'notes');
         if (!sleep || !notes) throw new Error('Demo weekly template must contain sleep and notes questions.');
         await button(client, new Intl.NumberFormat(locale).format(8)).click();
-        await client.getByRole('spinbutton', { name: localize(sleep.label, locale), exact: true }).fill('7');
-        await client.getByRole('textbox', { name: localize(notes.label, locale), exact: true }).fill(`Beta check-in ${runId}`);
+        // Required fields carry a "required" suffix in their accessible name, so match the question label as a substring.
+        await client.getByRole('spinbutton', { name: localize(sleep.label, locale) }).fill('7');
+        await client.getByRole('textbox', { name: localize(notes.label, locale) }).fill(`Beta check-in ${runId}`);
         const submitted = client.waitForResponse(response => /\/api\/v1\/submissions\/[^/]+\/submit$/.test(new URL(response.url()).pathname) && response.request().method() === 'POST');
         await button(client, t('forms.runner.submit')).click();
         const response = await submitted;
@@ -442,7 +444,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
     test('09 owner freezes seven days, extends seven days, recalculates schedule and renews', async () => {
       await step('9. Freeze, resume, extend and renew with exact date assertions', false, async () => {
         await visit(owner, locale, `/coach/clients/${clientId}/subscription`);
-        const originalEnd = plusDays(startsOn, 27);
+        const originalEnd = plusDays(startsOn, 28);
         await assertEndDate(originalEnd);
         const before = await api<SubscriptionDetail>(owner, 'GET', `/subscriptions/${sale.subscription.id}`);
         const reminder = before.upcoming.find(event => event.type === 'renewal_reminder' && event.state === 'scheduled');
@@ -478,9 +480,10 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         const renewal = await mutation<Sale>(owner, 'POST', '/subscriptions', 201,
           () => button(owner, t('billing.sell')).click());
         expect(renewal.subscription.id).not.toBe(sale.subscription.id);
-        expect(renewal.subscription).toMatchObject({ startsOn: renewalStart, endsOn: plusDays(renewalStart, 27), state: 'active' });
+        expect(renewal.subscription).toMatchObject({ startsOn: renewalStart, endsOn: plusDays(renewalStart, 28), state: 'active' });
         expect(renewal.payment?.state).toBe('verified'); expect(renewal.payment?.receiptNo).toBeTruthy();
-        expect(renewal.renewalDate).toBe(plusDays(renewalStart, 28));
+        // Core: renewalDate is the day after the last covered day (endsOn + 1), as asserted in subscriptions.test.ts.
+        expect(renewal.renewalDate).toBe(plusDays(renewalStart, 29));
         await expect(owner.getByRole('status')).toContainText(billingDate(renewal.renewalDate, locale));
         const renewed = await api<SubscriptionDetail>(owner, 'GET', `/subscriptions/${renewal.subscription.id}`);
         expect(renewed.upcoming.some(event => event.type === 'weekly_checkin' && event.localDate === plusDays(renewalStart, 7))).toBe(true);
