@@ -70,3 +70,18 @@ export async function listDemoUsers(): Promise<DemoUser[]> {
   if (!devLoginEnabled()) return [];
   return users.map((user) => ({ ...user, displayName: user.displayName ?? user.userId }));
 }
+
+/**
+ * Local testing of invitation acceptance: a development identity that holds no membership anywhere yet.
+ * Any identity that already belongs to a tenant must come from the demo list, so this can never impersonate a
+ * member of a non-demo tenant.
+ */
+export async function isUnattachedIdentity(userId: string): Promise<boolean> {
+  if (!devLoginEnabled() || !USER_ID.test(userId)) return false;
+  const rows = await withServiceTx(null, 'dev login: check that an invitee identity has no membership', (tx) => tx
+    .select({ id: memberships.id })
+    .from(memberships)
+    .where(eq(memberships.userId, userId))
+    .limit(1));
+  return devLoginEnabled() && rows.length === 0;
+}

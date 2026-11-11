@@ -27,11 +27,13 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const user = (await dev.listDemoUsers()).find((candidate) => candidate.userId === userId);
-  if (!user) return new Response(null, { status: 403 });
-  const session = dev.signDevSession(user.userId);
+  // An identity with no membership anywhere is allowed so the invitation flow can be tested; it lands on the root page.
+  const unattached = user ? false : await dev.isUnattachedIdentity(userId);
+  if (!user && !unattached) return new Response(null, { status: 403 });
+  const session = dev.signDevSession(user ? user.userId : userId);
   if (!session) return new Response(null, { status: 404 });
 
-  const destination = user.role === 'client' ? '/app/today' : '/coach';
+  const destination = !user ? '' : user.role === 'client' ? '/app/today' : '/coach';
   const response = NextResponse.redirect(new URL(`/${locale}${destination}`, request.url), 303);
   response.headers.set('cache-control', 'no-store');
   response.cookies.set(dev.DEV_SESSION_COOKIE, session, {

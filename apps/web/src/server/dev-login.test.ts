@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { devLoginEnabled, listDemoUsers, readDevSession, signDevSession } from './dev-login';
+import { devLoginEnabled, isUnattachedIdentity, listDemoUsers, readDevSession, signDevSession } from './dev-login';
+import { withServiceTx } from '@dawlyy/db';
 import { getSessionUser } from './auth';
 import { createSupabaseServerClient } from './supabase';
 
@@ -99,5 +100,16 @@ describe('development sessions', () => {
   it('rejects malformed identities and clocks when signing', () => {
     expect(signDevSession('bad', now)).toBeNull();
     expect(signDevSession(userId, new Date(NaN))).toBeNull();
+  });
+
+  it('accepts a membership-free identity for invitation tests, and nothing else', async () => {
+    vi.mocked(withServiceTx).mockResolvedValueOnce([]);
+    expect(await isUnattachedIdentity(userId)).toBe(true);
+    vi.mocked(withServiceTx).mockResolvedValueOnce([{ id: 'membership-1' }]);
+    expect(await isUnattachedIdentity(userId)).toBe(false);
+    expect(await isUnattachedIdentity('not-a-uuid')).toBe(false);
+    vi.stubEnv('NODE_ENV', 'production');
+    expect(await isUnattachedIdentity(userId)).toBe(false);
+    expect(withServiceTx).toHaveBeenCalledTimes(2);
   });
 });
