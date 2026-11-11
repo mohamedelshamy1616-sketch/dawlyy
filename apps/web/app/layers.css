@@ -1,0 +1,9 @@
+/*
+ * Cascade-layer order for the whole app. This file must be the FIRST stylesheet the root layout imports:
+ * a layer's rank is fixed by the first stylesheet that names it, and Next.js hoists @import content above
+ * inline rules, so the order cannot live inside globals.css.
+ *
+ * reset < Tailwind theme < Tailwind preflight (base) < Astryx components < Astryx theme < components < utilities.
+ * Tailwind utilities stay last so a className on an Astryx component can still override its default.
+ */
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;

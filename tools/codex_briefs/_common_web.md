@@ -58,8 +58,13 @@ disjoint files.
    only with names from the allow-lists in doc section 9.2 (`app.audit_actions`, `app.event_types`). Read the section
    before using a name; an unlisted name fails with 42501.
 9. UI: Server Components read through the same boundary: `requirePage()` from `apps/web/src/server/auth.ts` then
-   `withAuthTx`. Use `PageHeader`, `EmptyState`, `PageSkeleton` from `apps/web/src/components/shell/` and the shadcn
-   primitives in `apps/web/components/ui/`. Tailwind logical utilities only (`ms-`, `me-`, `ps-`, `pe-`, `start-`,
+   `withAuthTx`. Use `PageHeader`, `EmptyState`, `PageSkeleton` from `apps/web/src/components/shell/`. For every new
+   control and layout piece (buttons, inputs, selects, dialogs, tabs, tables, cards, badges, headings, text) use the
+   Astryx design system (`@astryxdesign/core`, pinned 0.7.11, already wired in the root layout): read the section
+   "Astryx in DAWLYY" and the managed Astryx block in `apps/web/AGENTS.md` first; import per component
+   (`@astryxdesign/core/Button`), inside a `"use client"` file. Use a shadcn primitive from `apps/web/components/ui/`
+   only when Astryx has no equivalent, and say so in your answer. Do not rewrite existing shadcn screens in this
+   batch. Do not import `tailwind-theme.css` from Astryx. Product copy stays in next-intl. Tailwind logical utilities only (`ms-`, `me-`, `ps-`, `pe-`, `start-`,
    `end-`, `text-start`); no `left`/`right` classes. Every screen works at 360 px in RTL with no horizontal scroll
    (`min-w-0`, `max-w-full`, wrap long text). Touch targets are at least 44 px. Every route has a loading state
    (`loading.tsx`) and an empty state; no blank page.

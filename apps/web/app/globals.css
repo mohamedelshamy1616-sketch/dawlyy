@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/*
+ * Astryx design system (Meta). Layer order is declared in app/layers.css, imported first by the root layout.
+ * The Astryx Tailwind bridge (@astryxdesign/core/tailwind-theme.css) is NOT imported on purpose: it redefines
+ * text-primary, border-border, rounded-lg and friends, which the shadcn screens already use with other meanings.
+ */
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/theme-neutral/theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -176,4 +184,17 @@
     outline: 2px solid var(--brand);
     outline-offset: 2px;
   }
+}
+
+/*
+ * Astryx reads its own font tokens. Point them at the app fonts so Arabic renders in IBM Plex Sans Arabic
+ * and Latin in Inter, the same as the rest of the app. Unlayered on purpose: it must beat the theme layer.
+ */
+[data-astryx-theme] {
+  --font-family-body: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-family-heading: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+}
+html[dir="rtl"] [data-astryx-theme] {
+  --font-family-body: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-family-heading: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }

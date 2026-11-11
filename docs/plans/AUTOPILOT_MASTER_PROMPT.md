@@ -270,6 +270,13 @@ T10 and T11. Same pattern as P3.
 - iOS has no background sync: the outbox flushes in the foreground, with client UUID idempotency keys.
 - The Resend sender and Web Push are built but stay off without keys. Nothing is ever sent from this PC.
 - Legal pages carry placeholders flagged for counsel (Egypt Law 151/2020).
+- UI (Mohamed, 10 Nov): every new screen is built with the Astryx design system (`@astryxdesign/core` 0.7.11,
+  wired in the root layout). Read "Astryx in DAWLYY" in `apps/web/AGENTS.md` before any UI work and put the same
+  rule in every UI brief. shadcn only where Astryx has no equivalent. After wave 4, one polish wave: build the
+  local teal theme (`defineTheme({extends: neutralTheme})` + `astryx theme build`), then move the existing shadcn
+  screens to Astryx one route group per task, each proved at /ar and /en, 375 and 1440 px, no console error.
+- Codex usage: never run three high-effort Codex jobs at once (the ChatGPT plan limit ran out in about 14 minutes
+  on 10 Nov). One Codex job at a time; the other tasks of a wave go to Sonnet builders.
 
 Gate: typecheck and lint. Commit per task.
 

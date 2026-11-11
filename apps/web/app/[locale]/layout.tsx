@@ -1,12 +1,15 @@
+// Stylesheets first: layers.css fixes the cascade-layer order before any Astryx or theme CSS loads.
+import "../layers.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AstryxProvider } from "@/components/astryx-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { isLocale, locales } from "@/i18n/routing";
-import "../globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,8 +53,10 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-          <Toaster />
+          <AstryxProvider locale={locale}>
+            <TooltipProvider>{children}</TooltipProvider>
+            <Toaster />
+          </AstryxProvider>
         </NextIntlClientProvider>
       </body>
     </html>
