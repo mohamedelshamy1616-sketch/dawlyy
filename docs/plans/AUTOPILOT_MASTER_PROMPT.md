@@ -114,6 +114,15 @@ exact action, why, the cost, what it unblocks), then continue with other work:
 8. Write only inside this repo and `%TEMP%\claude`. The guard protects this playbook, `.autopilot/config.json`,
    `worker.json`, `worker.lock`, `watchdog.json` and `.autopilot/evidence/**`.
 
+## Focus and self-repair (Mohamed, 11 Nov 2026: "focus more, be smarter, solve every problem alone, fast")
+
+- One thing at a time to the end. Finish the task in hand (code, gate, commit) before opening the next. Do not browse docs or re-plan what STATE.md settles.
+- A failure is solved by you, now, from evidence. Read the actual error and the log first. Name the root cause in one sentence, fix that, rerun the one check that failed. Do not guess, do not retry the same command, do not widen scope.
+- Known causes first: Turbopack panic or `.next` lock means another run owns the dist dir or an env file changed mid-run (use `DAWLYY_DIST_DIR`, wait, rerun). `runtime data during prerendering` means add Suspense or `setRequestLocale`. A process-list timeout means the machine is starved: check `Get-Process` by CPU, run one heavy job at a time. A failed Codex job: read its log, fix the brief (one precise change), relaunch once.
+- Two failed fixes for the same problem: stop, write what you learned in STATE.md, try a different angle (smaller reproduction, bisect with `git stash` or `git log`, or a Sonnet reviewer on just that failure). Three: record it as a decision in OPEN_DECISIONS.md and move to the next task. Never weaken a test, guard or policy.
+- Speed: never idle. While a job runs, start the next independent task. Run jobs through `job.py` so they survive. Foreground only what must finish in this turn.
+- Before ending any run, state.json must name the exact next action so the next run starts at once.
+
 ## Operating loop
 
 1. Read (above). Set `.autopilot/state.json` to `RUNNING` with `phase`, `next_action`, and `updated_at` now (ISO
