@@ -1,13 +1,20 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
+import { HStack } from '@astryxdesign/core/HStack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Text } from '@astryxdesign/core/Text';
+import { TextInput, type TextInputProps } from '@astryxdesign/core/TextInput';
+import { TextArea, type TextAreaProps } from '@astryxdesign/core/TextArea';
+import { Selector } from '@astryxdesign/core/Selector';
+import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
+
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { DIFFICULTIES, MOVEMENT_PATTERNS, PLANES, type LocalizedText } from '@dawlyy/core/types';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Link, useRouter } from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { exerciseInput } from '@/src/server/exercises/validation';
 import type { getExercise } from '@/src/server/exercises/service';
 import { exerciseRequest } from './http';
@@ -15,7 +22,6 @@ import { exerciseRequest } from './http';
 type Detail = Awaited<ReturnType<typeof getExercise>>;
 const listFields = ['aliases', 'primaryMuscles', 'secondaryMuscles', 'equipment', 'progressions', 'regressions', 'alternatives', 'tags'] as const;
 const rowFields = ['cues', 'commonMistakes', 'contraindications'] as const;
-const selectStyle = 'min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3';
 
 /** Task 4: shared localized create/edit form and read-only system detail. */
 export function ExerciseForm({ exercise, canEdit, canCreate }: { exercise?: Detail; canEdit: boolean; canCreate: boolean }) {
@@ -23,6 +29,9 @@ export function ExerciseForm({ exercise, canEdit, canCreate }: { exercise?: Deta
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [selections, setSelections] = useState({ movementPattern: exercise?.movementPattern ?? 'other', difficulty: exercise?.difficulty ?? 'beginner', plane: exercise?.plane ?? 'sagittal' });
+  const [unilateral, setUnilateral] = useState(exercise?.unilateral ?? false);
+  const [compound, setCompound] = useState(exercise?.compound ?? true);
   const [hidden, setHidden] = useState(exercise?.hidden ?? false);
   const [rows, setRows] = useState<Record<(typeof rowFields)[number], LocalizedText[]>>({ cues: exercise?.cues ?? [], commonMistakes: exercise?.commonMistakes ?? [], contraindications: exercise?.contraindications ?? [] });
   const request = useRef<{ body: string; key: string } | null>(null);
@@ -69,41 +78,53 @@ export function ExerciseForm({ exercise, canEdit, canCreate }: { exercise?: Deta
       router.refresh();
     } catch { setError(t('errors.request')); } finally { setBusy(false); }
   }
-  return <div className="flex min-w-0 max-w-full flex-col gap-5">
-    <div className="flex flex-wrap gap-2"><Button asChild variant="outline" className="min-h-11"><Link href="/coach/exercises">{t('back')}</Link></Button>
-      {exercise && !exercise.editable && canEdit && canCreate ? <Button className="min-h-11" disabled={busy} onClick={() => action('customise')}>{t('customise')}</Button> : null}
-      {exercise && canEdit ? <Button className="min-h-11" variant="outline" disabled={busy} onClick={() => action(hidden ? 'unhide' : 'hide')}>{hidden ? t('unhide') : t('hide')}</Button> : null}
-    </div>
-    {exercise && !exercise.editable ? <p className="rounded-lg bg-brand-soft p-4">{t('systemReadonly')}</p> : null}
-    {hidden ? <p>{t('hidden')}</p> : null}
+  return <VStack gap={5} className="min-w-0 max-w-full">
+    <HStack gap={2} wrap="wrap"><Button variant="secondary" className="min-h-11 min-w-11" href="/coach/exercises" label={t('back')} />
+      {exercise && !exercise.editable && canEdit && canCreate ? <Button className="min-h-11 min-w-11" isDisabled={busy} onClick={() => action('customise')} label={t('customise')} /> : null}
+      {exercise && canEdit ? <Button className="min-h-11 min-w-11" variant="secondary" isDisabled={busy} onClick={() => action(hidden ? 'unhide' : 'hide')} label={hidden ? t('unhide') : t('hide')} /> : null}
+    </HStack>
+    {exercise && !exercise.editable ? <Text as="p" className="rounded-lg bg-brand-soft p-4">{t('systemReadonly')}</Text> : null}
+    {hidden ? <Text as="p">{t('hidden')}</Text> : null}
     {exercise?.thumbnailUrl ? <Image src={exercise.thumbnailUrl} unoptimized width={640} height={360} alt="" className="max-w-full rounded-xl object-cover" /> : null}
-    {error ? <p role="alert">{error}</p> : null}
+    {error ? <Text as="p" role="alert">{error}</Text> : null}
     <form onSubmit={save} className="flex min-w-0 flex-col gap-5">
       <fieldset disabled={!writable || busy} className="grid min-w-0 gap-4 sm:grid-cols-2">
         <legend className="mb-3 font-semibold">{t('details')}</legend>
-        <label>{t('fields.name_ar')}<Input dir="rtl" lang="ar" name="name_ar" maxLength={200} defaultValue={exercise?.name.ar} className="min-h-11" /></label>
-        <label>{t('fields.name_en')}<Input dir="ltr" lang="en" name="name_en" maxLength={200} defaultValue={exercise?.name.en} className="min-h-11" /></label>
-        <label>{t('category')}<Input name="category" required maxLength={200} defaultValue={exercise?.category} className="min-h-11" /></label>
-        <label>{t('pattern')}<select name="movementPattern" defaultValue={exercise?.movementPattern ?? 'other'} className={selectStyle}>{MOVEMENT_PATTERNS.map((value) => <option key={value} value={value}>{t(`patterns.${value}`)}</option>)}</select></label>
-        <label>{t('difficulty')}<select name="difficulty" defaultValue={exercise?.difficulty ?? 'beginner'} className={selectStyle}>{DIFFICULTIES.map((value) => <option key={value} value={value}>{t(`difficulties.${value}`)}</option>)}</select></label>
-        <label>{t('plane')}<select name="plane" defaultValue={exercise?.plane ?? 'sagittal'} className={selectStyle}>{PLANES.map((value) => <option key={value} value={value}>{t(`planes.${value}`)}</option>)}</select></label>
-        {listFields.map((field) => <label key={field} className="min-w-0">{t(`form.${field}`)}<Textarea name={field} defaultValue={exercise?.[field].join(' | ')} className="min-h-20" /><span className="text-xs text-muted-foreground">{t('listHelp')}</span></label>)}
-        <label className="flex min-h-11 items-center gap-2"><input type="checkbox" name="unilateral" defaultChecked={exercise?.unilateral ?? false} />{t('form.unilateral')}</label>
-        <label className="flex min-h-11 items-center gap-2"><input type="checkbox" name="compound" defaultChecked={exercise?.compound ?? true} />{t('form.compound')}</label>
-        <label className="min-w-0">{t('form.videoUrl')}<Input type="url" name="videoUrl" defaultValue={exercise?.videoUrl ?? ''} className="min-h-11" /><span className="text-xs text-muted-foreground">{t('videoHelp')}</span></label>
-        <label className="min-w-0">{t('form.thumbnailMediaId')}<Input name="thumbnailMediaId" defaultValue={exercise?.thumbnailMediaId ?? ''} className="min-h-11" /><span className="text-xs text-muted-foreground">{t('thumbnailHelp')}</span></label>
+        <VStack><DraftTextInput label={t('fields.name_ar')} dir="rtl" htmlName="name_ar" defaultValue={exercise?.name.ar} controlClassName="min-h-11" ref={input => { if (input) { input.maxLength = 200; input.lang = 'ar'; } }} /></VStack>
+        <VStack><DraftTextInput label={t('fields.name_en')} dir="ltr" htmlName="name_en" defaultValue={exercise?.name.en} controlClassName="min-h-11" ref={input => { if (input) { input.maxLength = 200; input.lang = 'en'; } }} /></VStack>
+        <VStack><DraftTextInput label={t('category')} htmlName="category" isRequired defaultValue={exercise?.category} controlClassName="min-h-11" ref={input => { if (input) { input.maxLength = 200; input.required = true; } }} /></VStack>
+        <VStack><Selector label={t('pattern')} htmlName="movementPattern" isDisabled={!writable || busy} controlClassName="min-h-11" value={selections.movementPattern} onChange={value => { const selection = MOVEMENT_PATTERNS.find(option => option === value); if (selection) setSelections(previous => ({ ...previous, movementPattern: selection })); }} options={MOVEMENT_PATTERNS.map(value => ({ value, label: t(`patterns.${value}`) }))} /></VStack>
+        <VStack><Selector label={t('difficulty')} htmlName="difficulty" isDisabled={!writable || busy} controlClassName="min-h-11" value={selections.difficulty} onChange={value => { const selection = DIFFICULTIES.find(option => option === value); if (selection) setSelections(previous => ({ ...previous, difficulty: selection })); }} options={DIFFICULTIES.map(value => ({ value, label: t(`difficulties.${value}`) }))} /></VStack>
+        <VStack><Selector label={t('plane')} htmlName="plane" isDisabled={!writable || busy} controlClassName="min-h-11" value={selections.plane} onChange={value => { const selection = PLANES.find(option => option === value); if (selection) setSelections(previous => ({ ...previous, plane: selection })); }} options={PLANES.map(value => ({ value, label: t(`planes.${value}`) }))} /></VStack>
+        {listFields.map((field) => <VStack key={field} className="min-w-0"><DraftTextArea label={t(`form.${field}`)} htmlName={field} defaultValue={exercise?.[field].join(' | ')} controlClassName="min-h-20" /><Text className="text-xs text-muted-foreground">{t('listHelp')}</Text></VStack>)}
+        <CheckboxInput className="min-h-11" label={t('form.unilateral')} htmlName="unilateral" value={unilateral} onChange={setUnilateral} isDisabled={!writable || busy} />
+        <CheckboxInput className="min-h-11" label={t('form.compound')} htmlName="compound" value={compound} onChange={setCompound} isDisabled={!writable || busy} />
+        <VStack className="min-w-0"><DraftTextInput label={t('form.videoUrl')} type="url" htmlName="videoUrl" defaultValue={exercise?.videoUrl ?? ''} controlClassName="min-h-11" /><Text className="text-xs text-muted-foreground">{t('videoHelp')}</Text></VStack>
+        <VStack className="min-w-0"><DraftTextInput label={t('form.thumbnailMediaId')} htmlName="thumbnailMediaId" defaultValue={exercise?.thumbnailMediaId ?? ''} controlClassName="min-h-11" /><Text className="text-xs text-muted-foreground">{t('thumbnailHelp')}</Text></VStack>
       </fieldset>
       {exercise?.videoUrl ? <a href={exercise.videoUrl} target="_blank" rel="noreferrer" className="flex min-h-11 items-center underline">{t('watchVideo')}</a> : null}
       {rowFields.map((field) => <fieldset key={field} disabled={!writable || busy} className="flex min-w-0 flex-col gap-3 rounded-xl border p-4"><legend className="ps-2 pe-2 font-semibold">{t(`form.${field}`)}</legend>
-        {rows[field].length === 0 ? <p className="text-muted-foreground">{t('noNotes')}</p> : null}
-        {rows[field].map((row, index) => <div key={index} className="grid min-w-0 gap-2 sm:grid-cols-2">
-          <label>{t('languages.ar')}<Textarea dir="rtl" lang="ar" value={row.ar ?? ''} maxLength={200} onChange={(event) => rowChange(field, index, 'ar', event.target.value)} /></label>
-          <label>{t('languages.en')}<Textarea dir="ltr" lang="en" value={row.en ?? ''} maxLength={200} onChange={(event) => rowChange(field, index, 'en', event.target.value)} /></label>
-          {writable ? <Button type="button" variant="outline" className="min-h-11" onClick={() => setRows((previous) => ({ ...previous, [field]: previous[field].filter((_, position) => position !== index) }))}>{t('removeRow')}</Button> : null}
-        </div>)}
-        {writable ? <Button type="button" variant="outline" className="min-h-11" onClick={() => setRows((previous) => ({ ...previous, [field]: [...previous[field], {}] }))}>{t('addRow')}</Button> : null}
+        {rows[field].length === 0 ? <Text as="p" className="text-muted-foreground">{t('noNotes')}</Text> : null}
+        {rows[field].map((row, index) => <Grid gap={2} key={index} className="min-w-0 sm:grid-cols-2">
+          <VStack><TextArea label={t('languages.ar')} dir="rtl" ref={input => { if (input) input.lang = 'ar'; }} value={row.ar ?? ''} maxLength={200} onChange={value => rowChange(field, index, 'ar', value)} controlClassName="min-h-11" /></VStack>
+          <VStack><TextArea label={t('languages.en')} dir="ltr" ref={input => { if (input) input.lang = 'en'; }} value={row.en ?? ''} maxLength={200} onChange={value => rowChange(field, index, 'en', value)} controlClassName="min-h-11" /></VStack>
+          {writable ? <Button type="button" variant="secondary" className="min-h-11 min-w-11" onClick={() => setRows((previous) => ({ ...previous, [field]: previous[field].filter((_, position) => position !== index) }))} label={t('removeRow')} /> : null}
+        </Grid>)}
+        {writable ? <Button type="button" variant="secondary" className="min-h-11 min-w-11" onClick={() => setRows((previous) => ({ ...previous, [field]: [...previous[field], {}] }))} label={t('addRow')} /> : null}
       </fieldset>)}
-      {writable ? <Button type="submit" className="min-h-11" disabled={busy}>{busy ? t('saving') : t('save')}</Button> : null}
+      {writable ? <Button type="submit" className="min-h-11 min-w-11" isDisabled={busy} label={busy ? t('saving') : t('save')} /> : null}
     </form>
-  </div>;
+  </VStack>;
+}
+
+/** Keep the existing blur-triggered edit boundary while Astryx owns the field. */
+function DraftTextInput({ defaultValue = '', onValueBlur, ...props }: Omit<TextInputProps, 'value' | 'onChange' | 'onBlur'> & { defaultValue?: string; onValueBlur?: (value: string) => void }) {
+  const [value, setValue] = useState(defaultValue);
+  return <TextInput {...props} value={value} onChange={setValue} onBlur={event => onValueBlur?.((event.currentTarget as HTMLInputElement).value)} />;
+}
+
+/** Retain form-backed initial text while Astryx uses a controlled value. */
+function DraftTextArea({ defaultValue = '', ...props }: Omit<TextAreaProps, 'value' | 'onChange'> & { defaultValue?: string }) {
+  const [value, setValue] = useState(defaultValue);
+  return <TextArea {...props} value={value} onChange={setValue} />;
 }

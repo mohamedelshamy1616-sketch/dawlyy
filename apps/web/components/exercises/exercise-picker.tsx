@@ -1,10 +1,13 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
+import { Text } from '@astryxdesign/core/Text';
+import { TextInput } from '@astryxdesign/core/TextInput';
+
 import { useEffect, useId, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Dumbbell } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/src/components/shell/empty-state';
 import type { ExerciseListItem } from '@/src/server/exercises/service';
 import { exerciseRequest } from './http';
@@ -46,17 +49,15 @@ export function ExercisePicker({ onSelect }: { onSelect(exercise: PickerExercise
       if (current === generation.current) { setItems((previous) => [...previous, ...result.items]); setCursor(result.nextCursor); }
     } catch { if (current === generation.current) setError(true); } finally { if (current === generation.current) setBusy(false); }
   }
-  return <div className="flex min-w-0 max-w-full flex-col gap-3">
-    <label htmlFor={id}>{t('search')}</label>
-    <Input id={id} value={q} onChange={(event) => { setQ(event.target.value); setCursor(null); }} className="min-h-11" />
-    <div role="status" aria-live="polite">{busy ? t('loading') : null}</div>
-    {error ? <div role="alert">{t('errors.request')}<Button type="button" className="min-h-11" onClick={() => setRetry((value) => value + 1)}>{t('retry')}</Button></div> : null}
+  return <VStack gap={3} className="min-w-0 max-w-full">
+
+    <TextInput label={t('search')} id={id} value={q} onChange={value => { setQ(value); setCursor(null); }} controlClassName="min-h-11" />
+    <VStack role="status" aria-live="polite">{busy ? t('loading') : null}</VStack>
+    {error ? <VStack role="alert">{t('errors.request')}<Button type="button" className="min-h-11 min-w-11" onClick={() => setRetry((value) => value + 1)} label={t('retry')} /></VStack> : null}
     {!busy && !error && !items.length ? <EmptyState Icon={Dumbbell} title={t('noResults')} description={t('noResultsBody')} /> : null}
     <ul className="max-h-[60dvh] min-w-0 overflow-y-auto" aria-label={t('picker')} aria-busy={busy}>
-      {items.map((exercise) => <li key={exercise.id}><Button type="button" variant="ghost" disabled={busy || resolvedQuery !== q} className="h-auto min-h-11 w-full justify-start whitespace-normal text-start" onClick={() => onSelect(exercise)}>
-        <span className="min-w-0 break-words">{(locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar)}<span className="block text-xs text-muted-foreground">{exercise.primaryMuscles.join(' · ')}</span></span>
-      </Button></li>)}
+      {items.map((exercise) => <li key={exercise.id}><Button type="button" variant="ghost" isDisabled={busy || resolvedQuery !== q} className="h-auto min-h-11 min-w-11 w-full justify-start whitespace-normal text-start" onClick={() => onSelect(exercise)} label={[(locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar), exercise.primaryMuscles.join(' · ')].filter(Boolean).join(' ')}><Text className="min-w-0 break-words">{(locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar)}<Text className="block text-xs text-muted-foreground">{exercise.primaryMuscles.join(' · ')}</Text></Text></Button></li>)}
     </ul>
-    {cursor && resolvedQuery === q ? <Button type="button" className="min-h-11" variant="outline" disabled={busy} onClick={more}>{t('loadMore')}</Button> : null}
-  </div>;
+    {cursor && resolvedQuery === q ? <Button type="button" className="min-h-11 min-w-11" variant="secondary" isDisabled={busy} onClick={more} label={t('loadMore')} /> : null}
+  </VStack>;
 }

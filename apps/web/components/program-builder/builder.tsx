@@ -1,16 +1,23 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
+import { HStack } from '@astryxdesign/core/HStack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Text } from '@astryxdesign/core/Text';
+import { Heading } from '@astryxdesign/core/Heading';
+import { TextInput, type TextInputProps } from '@astryxdesign/core/TextInput';
+import { TextArea } from '@astryxdesign/core/TextArea';
+import { Selector } from '@astryxdesign/core/Selector';
+import { Dialog, DialogHeader } from '@astryxdesign/core/Dialog';
+
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { applyProgramOp, findDay, programStats, validateProgram, type ProgramIssue, type ProgramOp } from '@dawlyy/core/program-edit';
 import type { LocalizedText, ProgramDocument } from '@dawlyy/core/types';
 import { ClipboardList } from 'lucide-react';
 import { z } from 'zod';
-import { Link, useRouter } from '@/i18n/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useRouter } from '@/i18n/navigation';
 import { EmptyState } from '@/src/components/shell/empty-state';
 import { DayEditor } from './day-editor';
 import { ProgramStatus } from './status';
@@ -102,7 +109,7 @@ export function ProgramBuilder({ initial, grants }: { initial: ProgramDetail; gr
     model.current = fresh.currentVersion.document; pending.current = []; blocked.current = false;
     setDocument(model.current); setVersion({ number: saved.current.versionNo, status: saved.current.status }); setDirty(false); setStale(false); setError(''); setIssues(fresh.issues); setNames(fresh.exerciseNames);
   }
-  function navigate(event: MouseEvent<HTMLAnchorElement>, href: string) {
+  function navigate(event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>, href: string) {
     if (!dirty || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     void saveAll().then(ok => { if (ok) router.push(href); });
@@ -130,42 +137,48 @@ export function ProgramBuilder({ initial, grants }: { initial: ProgramDetail; gr
   const text = (value: LocalizedText) => value[lang] || value[lang === 'ar' ? 'en' : 'ar'] || '';
   const weekday = (value: number) => new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 10, 8 + value)));
 
-  return <div className="grid min-w-0 max-w-full gap-5 pb-28 [overflow-wrap:anywhere]">
-    <div className="flex flex-wrap gap-2"><Button asChild className="min-h-11" variant="outline"><Link href={`/coach/programs/${id}/history`} onClick={event => navigate(event, `/coach/programs/${id}/history`)}>{t('history')}</Link></Button>{initial.head.kind === 'template' && (grants.edit || grants.publish) ? <Button asChild className="min-h-11" variant="outline"><Link href={`/coach/programs/${id}/assign`} onClick={event => navigate(event, `/coach/programs/${id}/assign`)}>{t('assign')}</Link></Button> : null}</div>
-    <p className="text-sm text-muted-foreground">{t('builderStats', { phases: number(stats.phases), weeks: number(stats.weeks), exercises: number(stats.items) })}</p>
-    {version.status !== 'draft' ? <div className="grid gap-3 rounded-xl border bg-muted p-4"><p>{version.status === 'published' || version.status === 'superseded' || version.status === 'archived' ? t('readOnlyPublished') : t('readOnlyReview')}</p>{grants.edit && ['published', 'superseded', 'archived'].includes(version.status) ? <Button className="min-h-11 justify-self-start" disabled={busy || stale} onClick={() => void action('draft')}>{t('createDraft')}</Button> : null}</div> : null}
-    {error ? <div role="alert" className="grid gap-2 rounded-xl border border-destructive/40 p-3"><p>{error}</p>{stale ? <Button className="min-h-11" variant="outline" onClick={() => { void refresh().catch(() => setError(t('errors.requestFailed'))); }}>{t('reloadDraft')}</Button> : null}</div> : null}
-    {issues.length ? <details className="min-w-0 rounded-xl border p-3"><summary className="min-h-11 cursor-pointer font-medium">{t('validationIssues', { count: number(issues.length) })}</summary><ul className="grid min-w-0 gap-2 pt-2 text-sm">{issues.map((issue, index) => <li key={`${issue.path}-${index}`}>{text(issue.message)} <span className="text-muted-foreground">{issue.path}</span></li>)}</ul></details> : null}
-    <div className="grid min-w-0 gap-5 md:grid-cols-[14rem_minmax(0,1fr)]">
+  return <Grid gap={5} className="min-w-0 max-w-full pb-28 [overflow-wrap:anywhere]">
+    <HStack gap={2} wrap="wrap"><Button className="min-h-11 min-w-11" variant="secondary" href={`/coach/programs/${id}/history`} onClick={event => navigate(event, `/coach/programs/${id}/history`)} label={t('history')} />{initial.head.kind === 'template' && (grants.edit || grants.publish) ? <Button className="min-h-11 min-w-11" variant="secondary" href={`/coach/programs/${id}/assign`} onClick={event => navigate(event, `/coach/programs/${id}/assign`)} label={t('assign')} /> : null}</HStack>
+    <Text as="p" className="text-sm text-muted-foreground">{t('builderStats', { phases: number(stats.phases), weeks: number(stats.weeks), exercises: number(stats.items) })}</Text>
+    {version.status !== 'draft' ? <Grid gap={3} className="rounded-xl border bg-muted p-4"><Text as="p">{version.status === 'published' || version.status === 'superseded' || version.status === 'archived' ? t('readOnlyPublished') : t('readOnlyReview')}</Text>{grants.edit && ['published', 'superseded', 'archived'].includes(version.status) ? <Button className="min-h-11 min-w-11 justify-self-start" isDisabled={busy || stale} onClick={() => void action('draft')} label={t('createDraft')} /> : null}</Grid> : null}
+    {error ? <Grid gap={2} role="alert" className="rounded-xl border border-destructive/40 p-3"><Text as="p">{error}</Text>{stale ? <Button className="min-h-11 min-w-11" variant="secondary" onClick={() => { void refresh().catch(() => setError(t('errors.requestFailed'))); }} label={t('reloadDraft')} /> : null}</Grid> : null}
+    {issues.length ? <details className="min-w-0 rounded-xl border p-3"><summary className="min-h-11 cursor-pointer font-medium">{t('validationIssues', { count: number(issues.length) })}</summary><ul className="grid min-w-0 gap-2 pt-2 text-sm">{issues.map((issue, index) => <li key={`${issue.path}-${index}`}>{text(issue.message)} <Text className="text-muted-foreground">{issue.path}</Text></li>)}</ul></details> : null}
+    <Grid gap={5} className="min-w-0 md:grid-cols-[14rem_minmax(0,1fr)]">
       <nav aria-label={t('programTree')} className="hidden min-w-0 self-start rounded-xl border p-3 md:grid md:gap-3">
-        {document.phases.map((phase, pi) => <details key={phase.id} open={selected?.phase.id === phase.id}><summary className="min-h-11 cursor-pointer font-semibold">{text(phase.name) || t('phaseNumber', { number: number(pi + 1) })}</summary><div className="grid gap-2 ps-2">{phase.weeks.map(week => <details key={week.id} open={selected?.week.id === week.id}><summary className="min-h-11 cursor-pointer">{t('weekNumber', { number: number(week.index + 1) })}</summary><div className="grid gap-1 ps-2">{week.days.map(day => <Button key={day.id} type="button" className="min-h-11 justify-start whitespace-normal text-start" variant={selected?.day.id === day.id ? 'default' : 'ghost'} aria-pressed={selected?.day.id === day.id} onClick={() => setDayId(day.id)}>{weekday(day.index)} · {t(`dayKinds.${day.kind}`)}</Button>)}</div></details>)}</div></details>)}
+        {document.phases.map((phase, pi) => <details key={phase.id} open={selected?.phase.id === phase.id}><summary className="min-h-11 cursor-pointer font-semibold">{text(phase.name) || t('phaseNumber', { number: number(pi + 1) })}</summary><Grid gap={2} className="ps-2">{phase.weeks.map(week => <details key={week.id} open={selected?.week.id === week.id}><summary className="min-h-11 cursor-pointer">{t('weekNumber', { number: number(week.index + 1) })}</summary><Grid gap={1} className="ps-2">{week.days.map(day => <Button key={day.id} type="button" className="min-h-11 min-w-11 justify-start whitespace-normal text-start" variant={selected?.day.id === day.id ? 'primary' : 'ghost'} aria-pressed={selected?.day.id === day.id} onClick={() => setDayId(day.id)} label={`${weekday(day.index)} · ${t(`dayKinds.${day.kind}`)}`} />)}</Grid></details>)}</Grid></details>)}
       </nav>
-      <div className="grid min-w-0 gap-5">
+      <Grid gap={5} className="min-w-0">
         {selected ? <>
-          <div className="grid min-w-0 gap-3 md:hidden"><label className="grid min-w-0 gap-2">{t('selectWeek')}<select className="min-h-11 max-w-full rounded-lg border bg-background px-2" value={selected.week.id} onChange={e => { const week = document.phases.flatMap(phase => phase.weeks).find(week => week.id === e.target.value); if (week?.days[0]) setDayId(week.days[0].id); }}>{document.phases.map(phase => <optgroup key={phase.id} label={text(phase.name)}>{phase.weeks.map(week => <option key={week.id} value={week.id}>{t('weekNumber', { number: number(week.index + 1) })}</option>)}</optgroup>)}</select></label><div className="flex flex-wrap gap-1" role="group" aria-label={t('selectDay')}>{selected.week.days.map(day => <Button className="min-h-11" type="button" key={day.id} variant={day.id === selected.day.id ? 'default' : 'outline'} aria-pressed={day.id === selected.day.id} onClick={() => setDayId(day.id)}>{weekday(day.index)}</Button>)}</div></div>
+          <Grid gap={3} className="min-w-0 md:hidden"><VStack className="grid min-w-0 gap-2"><Selector label={t('selectWeek')} controlClassName="min-h-11" value={selected.week.id} onChange={value => { const week = document.phases.flatMap(phase => phase.weeks).find(week => week.id === value); if (week?.days[0]) setDayId(week.days[0].id); }} options={document.phases.map(phase => ({ type: 'section' as const, title: text(phase.name), options: phase.weeks.map(week => ({ value: week.id, label: t('weekNumber', { number: number(week.index + 1) }) })) }))} /></VStack><HStack gap={1} wrap="wrap" role="group" aria-label={t('selectDay')}>{selected.week.days.map(day => <Button className="min-h-11 min-w-11" type="button" key={day.id} variant={day.id === selected.day.id ? 'primary' : 'secondary'} aria-pressed={day.id === selected.day.id} onClick={() => setDayId(day.id)} label={weekday(day.index)} />)}</HStack></Grid>
           <fieldset disabled={readOnly || busy} className="grid min-w-0 gap-5 disabled:opacity-80">
-            <details className="min-w-0 rounded-xl border p-3"><summary className="min-h-11 cursor-pointer font-medium">{t('phaseWeekControls')}</summary><div className="grid min-w-0 gap-3 pt-3">
-              <label className="grid gap-1">{t('phaseName')}<Input className="min-h-11" key={`${selected.phase.id}-${text(selected.phase.name)}`} defaultValue={text(selected.phase.name)} onBlur={e => { if (e.target.value.trim()) edit({ type: 'phase.update', phaseId: selected.phase.id, patch: { name: { ...selected.phase.name, [lang]: e.target.value } } }); }} /></label>
-              <div className="flex flex-wrap gap-2"><Button className="min-h-11" type="button" variant="outline" onClick={() => edit({ type: 'phase.add', weeks: 1, name: { [lang]: t('phaseNumber', { number: number(document.phases.length + 1) }) } })}>{t('addPhase')}</Button><Button className="min-h-11" type="button" variant="outline" onClick={() => edit({ type: 'phase.duplicate', phaseId: selected.phase.id })}>{t('copyPhase')}</Button><Button className="min-h-11" type="button" variant="outline" disabled={selected.phaseIndex === 0} onClick={() => edit({ type: 'phase.move', phaseId: selected.phase.id, toIndex: selected.phaseIndex - 1 })}>{t('moveUp')}</Button><Button className="min-h-11" type="button" variant="outline" disabled={selected.phaseIndex === document.phases.length - 1} onClick={() => edit({ type: 'phase.move', phaseId: selected.phase.id, toIndex: selected.phaseIndex + 1 })}>{t('moveDown')}</Button><Button className="min-h-11" type="button" variant="destructive" disabled={document.phases.length === 1} onClick={() => edit({ type: 'phase.remove', phaseId: selected.phase.id })}>{t('removePhase')}</Button></div>
-              <div className="flex flex-wrap gap-2"><Button className="min-h-11" type="button" variant="outline" onClick={() => edit({ type: 'week.add', phaseId: selected.phase.id })}>{t('addWeek')}</Button><Button className="min-h-11" type="button" variant="outline" onClick={() => edit({ type: 'week.duplicate', phaseId: selected.phase.id, weekId: selected.week.id })}>{t('copyWeek')}</Button><Button className="min-h-11" type="button" variant="outline" disabled={selected.weekIndex === 0} onClick={() => edit({ type: 'week.move', phaseId: selected.phase.id, weekId: selected.week.id, toIndex: selected.weekIndex - 1 })}>{t('moveUp')}</Button><Button className="min-h-11" type="button" variant="outline" disabled={selected.weekIndex === selected.phase.weeks.length - 1} onClick={() => edit({ type: 'week.move', phaseId: selected.phase.id, weekId: selected.week.id, toIndex: selected.weekIndex + 1 })}>{t('moveDown')}</Button><Button className="min-h-11" type="button" variant="destructive" disabled={selected.phase.weeks.length === 1} onClick={() => edit({ type: 'week.remove', phaseId: selected.phase.id, weekId: selected.week.id })}>{t('removeWeek')}</Button></div>
-            </div></details>
-            <h2 className="text-lg font-semibold">{t('weekDay', { week: number(selected.week.index + 1), day: weekday(selected.day.index) })}</h2>
+            <details className="min-w-0 rounded-xl border p-3"><summary className="min-h-11 cursor-pointer font-medium">{t('phaseWeekControls')}</summary><Grid gap={3} className="min-w-0 pt-3">
+              <VStack className="grid gap-1"><DraftTextInput label={t('phaseName')} controlClassName="min-h-11" key={`${selected.phase.id}-${text(selected.phase.name)}`} defaultValue={text(selected.phase.name)} onValueBlur={value => { if (value.trim()) edit({ type: 'phase.update', phaseId: selected.phase.id, patch: { name: { ...selected.phase.name, [lang]: value } } }); }} /></VStack>
+              <HStack gap={2} wrap="wrap"><Button className="min-h-11 min-w-11" type="button" variant="secondary" onClick={() => edit({ type: 'phase.add', weeks: 1, name: { [lang]: t('phaseNumber', { number: number(document.phases.length + 1) }) } })} label={t('addPhase')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" onClick={() => edit({ type: 'phase.duplicate', phaseId: selected.phase.id })} label={t('copyPhase')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" isDisabled={selected.phaseIndex === 0} onClick={() => edit({ type: 'phase.move', phaseId: selected.phase.id, toIndex: selected.phaseIndex - 1 })} label={t('moveUp')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" isDisabled={selected.phaseIndex === document.phases.length - 1} onClick={() => edit({ type: 'phase.move', phaseId: selected.phase.id, toIndex: selected.phaseIndex + 1 })} label={t('moveDown')} /><Button className="min-h-11 min-w-11" type="button" variant="destructive" isDisabled={document.phases.length === 1} onClick={() => edit({ type: 'phase.remove', phaseId: selected.phase.id })} label={t('removePhase')} /></HStack>
+              <HStack gap={2} wrap="wrap"><Button className="min-h-11 min-w-11" type="button" variant="secondary" onClick={() => edit({ type: 'week.add', phaseId: selected.phase.id })} label={t('addWeek')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" onClick={() => edit({ type: 'week.duplicate', phaseId: selected.phase.id, weekId: selected.week.id })} label={t('copyWeek')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" isDisabled={selected.weekIndex === 0} onClick={() => edit({ type: 'week.move', phaseId: selected.phase.id, weekId: selected.week.id, toIndex: selected.weekIndex - 1 })} label={t('moveUp')} /><Button className="min-h-11 min-w-11" type="button" variant="secondary" isDisabled={selected.weekIndex === selected.phase.weeks.length - 1} onClick={() => edit({ type: 'week.move', phaseId: selected.phase.id, weekId: selected.week.id, toIndex: selected.weekIndex + 1 })} label={t('moveDown')} /><Button className="min-h-11 min-w-11" type="button" variant="destructive" isDisabled={selected.phase.weeks.length === 1} onClick={() => edit({ type: 'week.remove', phaseId: selected.phase.id, weekId: selected.week.id })} label={t('removeWeek')} /></HStack>
+            </Grid></details>
+            <Heading level={2} className="text-lg font-semibold">{t('weekDay', { week: number(selected.week.index + 1), day: weekday(selected.day.index) })}</Heading>
             <DayEditor key={selected.day.id} day={selected.day} document={document} names={names} onOp={edit} onName={(id, name) => setNames(old => ({ ...old, [id]: name }))} />
           </fieldset>
         </> : <EmptyState Icon={ClipboardList} title={t('noDays')} />}
-      </div>
-    </div>
-    <div className="sticky bottom-3 z-20 flex min-w-0 flex-wrap items-center gap-2 rounded-xl border bg-background/95 p-3 shadow-md" aria-live="polite">
-      <span>{t('versionNumber', { number: number(version.number) })}</span><ProgramStatus status={version.status} /><span className="text-sm">{busy ? t('saving') : dirty ? t('unsaved') : t('saved')}</span>
-      {grants.edit && version.status === 'draft' ? <Button className="min-h-11" variant="outline" disabled={busy || stale || !dirty} onClick={() => void saveAll()}>{t('saveDraft')}</Button> : null}
-      {grants.edit && version.status === 'draft' ? <Button className="min-h-11" variant="outline" disabled={busy || stale} onClick={() => void action('submit-review')}>{t('submitReview')}</Button> : null}
-      {grants.publish && version.status === 'in_review' ? <Button className="min-h-11" disabled={busy || stale} onClick={() => void action('approve')}>{t('approve')}</Button> : null}
-      {grants.publish && (version.status === 'draft' || version.status === 'approved') ? <Button className="min-h-11" disabled={busy || stale} onClick={() => setPublishOpen(true)}>{t('publish')}</Button> : null}
-    </div>
-    <Dialog open={publishOpen} onOpenChange={setPublishOpen}><DialogContent showCloseButton={false} className="max-h-[85dvh] max-w-[calc(100vw-2rem)] overflow-y-auto sm:max-w-lg"><DialogHeader><DialogTitle>{t('publishTitle')}</DialogTitle><DialogDescription>{t('publishDescription')}</DialogDescription></DialogHeader>
-      <label className="grid gap-2">{t('changeNote')}<Textarea value={changeNote} maxLength={2000} disabled={version.status === 'approved'} onChange={e => setChangeNote(e.target.value)} /></label>
-      {issues.length ? <ul className="grid min-w-0 gap-2 text-sm [overflow-wrap:anywhere]">{issues.map((issue, index) => <li key={`${issue.path}-${index}`}>{text(issue.message)} <span className="text-muted-foreground">{issue.path}</span></li>)}</ul> : <p>{t('validationReady')}</p>}
-      {error ? <p role="alert">{error}</p> : null}<Button className="min-h-11" disabled={busy || stale} onClick={() => void action('publish')}>{busy ? t('publishing') : t('publish')}</Button><Button type="button" variant="outline" className="min-h-11" disabled={busy} onClick={() => setPublishOpen(false)}>{t('close')}</Button>
-    </DialogContent></Dialog>
-  </div>;
+      </Grid>
+    </Grid>
+    <HStack gap={2} wrap="wrap" className="sticky bottom-3 z-20 min-w-0 items-center rounded-xl border bg-background/95 p-3 shadow-md" aria-live="polite">
+      <Text>{t('versionNumber', { number: number(version.number) })}</Text><ProgramStatus status={version.status} /><Text className="text-sm">{busy ? t('saving') : dirty ? t('unsaved') : t('saved')}</Text>
+      {grants.edit && version.status === 'draft' ? <Button className="min-h-11 min-w-11" variant="secondary" isDisabled={busy || stale || !dirty} onClick={() => void saveAll()} label={t('saveDraft')} /> : null}
+      {grants.edit && version.status === 'draft' ? <Button className="min-h-11 min-w-11" variant="secondary" isDisabled={busy || stale} onClick={() => void action('submit-review')} label={t('submitReview')} /> : null}
+      {grants.publish && version.status === 'in_review' ? <Button className="min-h-11 min-w-11" isDisabled={busy || stale} onClick={() => void action('approve')} label={t('approve')} /> : null}
+      {grants.publish && (version.status === 'draft' || version.status === 'approved') ? <Button className="min-h-11 min-w-11" isDisabled={busy || stale} onClick={() => setPublishOpen(true)} label={t('publish')} /> : null}
+    </HStack>
+    <Dialog isOpen={publishOpen} onOpenChange={setPublishOpen} width="var(--container-lg)" maxHeight="85dvh" aria-describedby="program-publish-description"><VStack gap={4}><DialogHeader title={t('publishTitle')} /><Text as="p" id="program-publish-description">{t('publishDescription')}</Text>
+      <VStack className="grid gap-2"><TextArea label={t('changeNote')} value={changeNote} maxLength={2000} isDisabled={version.status === 'approved'} onChange={value => setChangeNote(value)} controlClassName="min-h-11" /></VStack>
+      {issues.length ? <ul className="grid min-w-0 gap-2 text-sm [overflow-wrap:anywhere]">{issues.map((issue, index) => <li key={`${issue.path}-${index}`}>{text(issue.message)} <Text className="text-muted-foreground">{issue.path}</Text></li>)}</ul> : <Text as="p">{t('validationReady')}</Text>}
+      {error ? <Text as="p" role="alert">{error}</Text> : null}<Button className="min-h-11 min-w-11" isDisabled={busy || stale} onClick={() => void action('publish')} label={busy ? t('publishing') : t('publish')} /><Button type="button" variant="secondary" className="min-h-11 min-w-11" isDisabled={busy} onClick={() => setPublishOpen(false)} label={t('close')} />
+    </VStack></Dialog>
+  </Grid>;
+}
+
+/** Keep the existing blur-triggered edit boundary while Astryx owns the field. */
+function DraftTextInput({ defaultValue = '', onValueBlur, ...props }: Omit<TextInputProps, 'value' | 'onChange' | 'onBlur'> & { defaultValue?: string; onValueBlur?: (value: string) => void }) {
+  const [value, setValue] = useState(defaultValue);
+  return <TextInput {...props} value={value} onChange={setValue} onBlur={event => onValueBlur?.((event.currentTarget as HTMLInputElement).value)} />;
 }

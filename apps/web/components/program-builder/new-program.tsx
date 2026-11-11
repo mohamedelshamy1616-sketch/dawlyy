@@ -1,11 +1,14 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { HStack } from '@astryxdesign/core/HStack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Text } from '@astryxdesign/core/Text';
+import { TextInput } from '@astryxdesign/core/TextInput';
+
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { programErrorKey, programRequest } from './transport';
 
 /** Task 4: short template setup; core emptyProgram constructs the full builder document on the server. */
@@ -19,10 +22,13 @@ export function NewProgram() {
       router.push(`/coach/programs/${result.head.id}`);
     } catch (error) { setError(t(`errors.${programErrorKey(error)}`)); setBusy(false); }
   }}>
-    <div className="grid gap-2"><Label htmlFor="program-name">{t('name')}</Label><Input id="program-name" required maxLength={200} value={name} onChange={e => setName(e.target.value)} className="min-h-11" /></div>
-    <div className="grid gap-2"><Label htmlFor="program-weeks">{t('weeks')}</Label><Input id="program-weeks" type="number" required min={1} max={104} value={weeks} onChange={e => setWeeks(Number(e.target.value))} className="min-h-11" /></div>
-    <fieldset className="grid gap-2"><legend className="mb-3 font-medium">{t('trainingDays')}</legend><div className="flex flex-wrap gap-2">{Array.from({ length: 7 }, (_, day) => <Button key={day} type="button" className="min-h-11" variant={days.includes(day) ? 'default' : 'outline'} aria-pressed={days.includes(day)} onClick={() => setDays(old => old.includes(day) ? old.filter(value => value !== day) : [...old, day])}>{new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 10, 8 + day)))}</Button>)}</div></fieldset>
-    {error ? <p role="alert">{error}</p> : null}
-    <Button type="submit" className="min-h-11" disabled={busy || !name.trim()}>{busy ? t('creating') : t('createTemplate')}</Button>
+    <Grid gap={2}><TextInput label={t('name')} id="program-name" isRequired value={name} onChange={value => setName(value)} controlClassName="min-h-11" ref={input => { if (input) { input.maxLength = 200; input.required = true; } }} /></Grid>
+    <Grid gap={2}><TextInput label={t('weeks')} id="program-weeks" isRequired value={String(weeks)} onChange={value => setWeeks(Number(value))} controlClassName="min-h-11" ref={input => {
+      // Astryx's NumberInput clamps on blur; retain the existing native validation.
+      if (input) { input.type = 'number'; input.required = true; input.min = '1'; input.max = '104'; }
+    }} /></Grid>
+    <fieldset className="grid gap-2"><legend className="mb-3 font-medium">{t('trainingDays')}</legend><HStack gap={2} wrap="wrap">{Array.from({ length: 7 }, (_, day) => <Button key={day} type="button" className="min-h-11 min-w-11" variant={days.includes(day) ? 'primary' : 'secondary'} aria-pressed={days.includes(day)} onClick={() => setDays(old => old.includes(day) ? old.filter(value => value !== day) : [...old, day])} label={new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 10, 8 + day)))} />)}</HStack></fieldset>
+    {error ? <Text as="p" role="alert">{error}</Text> : null}
+    <Button type="submit" className="min-h-11 min-w-11" isDisabled={busy || !name.trim()} label={busy ? t('creating') : t('createTemplate')} />
   </form>;
 }

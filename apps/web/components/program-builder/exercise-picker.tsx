@@ -1,11 +1,15 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Text } from '@astryxdesign/core/Text';
+import { TextInput } from '@astryxdesign/core/TextInput';
+
 import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Dumbbell } from 'lucide-react';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/src/components/shell/empty-state';
 import { programRequest } from './transport';
 
@@ -43,13 +47,13 @@ export function ExercisePicker({ onPick, disabled = false }: { onPick: (exercise
     finally { if (!controller.signal.aborted && token === generation.current) setBusy(false); }
   }
   const visible = items.filter(item => !item.hidden);
-  return <div className="grid min-w-0 max-w-full gap-3">
-    <Input aria-label={t('exerciseSearch')} placeholder={t('exerciseSearch')} value={q} onChange={e => setQ(e.target.value)} className="min-h-11" />
-    <div aria-live="polite">{busy ? <p>{t('loading')}</p> : failed ? <p role="alert">{t('errors.requestFailed')}</p> : null}</div>
+  return <Grid gap={3} className="min-w-0 max-w-full">
+    <TextInput label={t('exerciseSearch')} isLabelHidden aria-label={t('exerciseSearch')} placeholder={t('exerciseSearch')} value={q} onChange={setQ} controlClassName="min-h-11" />
+    <VStack aria-live="polite">{busy ? <Text as="p">{t('loading')}</Text> : failed ? <Text as="p" role="alert">{t('errors.requestFailed')}</Text> : null}</VStack>
     {!busy && !failed && !visible.length ? <EmptyState Icon={Dumbbell} title={t('noExercises')} description={t('exerciseSearchHint')} /> : null}
-    <div className="grid max-h-72 min-w-0 gap-1 overflow-y-auto">
-      {visible.map(item => <Button key={item.id} type="button" variant="outline" disabled={disabled || busy} onClick={() => onPick(item)} className="h-auto min-h-11 max-w-full justify-start whitespace-normal py-3 text-start [overflow-wrap:anywhere]">{locale === 'ar' ? item.name.ar || item.name.en : item.name.en || item.name.ar}</Button>)}
-    </div>
-    {cursor ? <Button type="button" variant="outline" className="min-h-11" disabled={busy} onClick={() => void more()}>{t('loadMore')}</Button> : null}
-  </div>;
+    <Grid gap={1} className="max-h-72 min-w-0 overflow-y-auto">
+      {visible.map(item => <Button key={item.id} type="button" variant="secondary" isDisabled={disabled || busy} onClick={() => onPick(item)} className="h-auto min-h-11 min-w-11 max-w-full justify-start whitespace-normal py-3 text-start [overflow-wrap:anywhere]" label={(locale === 'ar' ? item.name.ar || item.name.en : item.name.en || item.name.ar) || ''} />)}
+    </Grid>
+    {cursor ? <Button type="button" variant="secondary" className="min-h-11 min-w-11" isDisabled={busy} onClick={() => void more()} label={t('loadMore')} /> : null}
+  </Grid>;
 }

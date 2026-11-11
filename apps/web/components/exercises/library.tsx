@@ -1,22 +1,30 @@
 'use client';
 
+import { Button } from '@astryxdesign/core/Button';
+import { VStack } from '@astryxdesign/core/VStack';
+import { HStack } from '@astryxdesign/core/HStack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Text } from '@astryxdesign/core/Text';
+import { Heading } from '@astryxdesign/core/Heading';
+import { Card } from '@astryxdesign/core/Card';
+import { TextInput } from '@astryxdesign/core/TextInput';
+import { TextArea } from '@astryxdesign/core/TextArea';
+import { Selector } from '@astryxdesign/core/Selector';
+import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
+import { BottomSheet } from '@astryxdesign/core/BottomSheet';
+import { TabList, Tab } from '@astryxdesign/core/TabList';
+
 import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Dumbbell } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
 import { EmptyState } from '@/src/components/shell/empty-state';
 import { DIFFICULTIES, MOVEMENT_PATTERNS } from '@dawlyy/core/types';
 import type { ExerciseListItem } from '@/src/server/exercises/service';
 import { exerciseRequest } from './http';
 
 type Result = { items: ExerciseListItem[]; nextCursor: string | null };
-const selectStyle = 'min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3';
 
 /** Task 4: responsive library with category tabs, filter Sheet and keyset load-more. */
 export function ExerciseLibrary({ initial, categories: initialCategories, canCreate, owner }: { initial: Result; categories: string[]; canCreate: boolean; owner: boolean }) {
@@ -31,6 +39,9 @@ export function ExerciseLibrary({ initial, categories: initialCategories, canCre
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
   const [retry, setRetry] = useState(0);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filtersTrigger = useRef<HTMLButtonElement>(null);
+  const [categoryText, setCategoryText] = useState(initialCategories.join('\n'));
   const generation = useRef(0);
   function parameters(cursor?: string) {
     const params = new URLSearchParams({ q, category, muscle: filters.muscle, equipment: filters.equipment, pattern: filters.pattern, difficulty: filters.difficulty, limit: '20', includeHidden: String(filters.includeHidden) });
@@ -65,43 +76,34 @@ export function ExerciseLibrary({ initial, categories: initialCategories, canCre
     try { await exerciseRequest('/categories', { method: 'PUT', body: { categories: values }, key: crypto.randomUUID() }); setCategories((await exerciseRequest<{ categories: string[] }>('/categories')).categories); }
     catch { setError(true); } finally { setBusy(false); }
   }
-  return <div className="flex min-w-0 max-w-full flex-col gap-5">
-    <div className="flex flex-wrap gap-2">{canCreate ? <><Button asChild className="min-h-11"><Link href="/coach/exercises/new">{t('new')}</Link></Button><Button asChild variant="outline" className="min-h-11"><Link href="/coach/exercises/import">{t('import')}</Link></Button></> : null}</div>
-    <div className="flex min-w-0 items-end gap-2"><label className="min-w-0 flex-1">{t('search')}<Input className="min-h-11" value={q} onChange={(event) => { setQ(event.target.value); setResult((old) => ({ ...old, nextCursor: null })); }} /></label>
-      <Sheet><SheetTrigger asChild><Button className="min-h-11" variant="outline">{t('filters')}</Button></SheetTrigger>
-        <SheetContent side="bottom" showCloseButton={false} className="max-h-[90dvh] overflow-y-auto"><SheetHeader><SheetTitle>{t('filters')}</SheetTitle><SheetDescription>{t('filterHelp')}</SheetDescription></SheetHeader>
-          <div className="grid min-w-0 gap-4 ps-4 pe-4 sm:grid-cols-2">
-            {(['muscle', 'equipment'] as const).map((key) => <label key={key}>{t(key)}<Input className="min-h-11" value={filters[key]} onChange={(event) => setFilters((value) => ({ ...value, [key]: event.target.value }))} /></label>)}
-            <label>{t('pattern')}<select className={selectStyle} value={filters.pattern} onChange={(event) => setFilters((value) => ({ ...value, pattern: event.target.value }))}><option value="">{t('all')}</option>{MOVEMENT_PATTERNS.map((value) => <option key={value} value={value}>{t(`patterns.${value}`)}</option>)}</select></label>
-            <label>{t('difficulty')}<select className={selectStyle} value={filters.difficulty} onChange={(event) => setFilters((value) => ({ ...value, difficulty: event.target.value }))}><option value="">{t('all')}</option>{DIFFICULTIES.map((value) => <option key={value} value={value}>{t(`difficulties.${value}`)}</option>)}</select></label>
-            <label>{t('source')}<select className={selectStyle} value={filters.source} onChange={(event) => setFilters((value) => ({ ...value, source: event.target.value }))}><option value="">{t('all')}</option><option value="system">{t('system')}</option><option value="coach">{t('mine')}</option></select></label>
-            <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={filters.includeHidden} onChange={(event) => setFilters((value) => ({ ...value, includeHidden: event.target.checked }))} />{t('includeHidden')}</label>
-          </div><SheetClose asChild><Button className="m-4 min-h-11">{t('done')}</Button></SheetClose>
-        </SheetContent>
-      </Sheet>
-    </div>
-    <div role="tablist" aria-label={t('category')} className="flex max-w-full gap-2 overflow-x-auto pb-2" onKeyDown={(event) => {
-      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-      const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-      const index = tabs.indexOf(document.activeElement as HTMLButtonElement);
-      const forward = event.key === (locale === 'ar' ? 'ArrowLeft' : 'ArrowRight');
-      const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (forward ? 1 : -1) + tabs.length) % tabs.length;
-      event.preventDefault(); tabs[next]?.focus(); tabs[next]?.click();
-    }}>
-      {['', ...categories].map((value) => <Button role="tab" tabIndex={category === value ? 0 : -1} aria-selected={category === value} key={value} className="min-h-11 shrink-0" variant={category === value ? 'default' : 'outline'} onClick={() => setCategory(value)}>{value || t('all')}</Button>)}
-    </div>
-    <div aria-live="polite" role="status">{busy ? t('loading') : null}</div>
-    {error ? <div role="alert">{t('errors.request')}<Button onClick={() => setRetry((value) => value + 1)} className="min-h-11">{t('retry')}</Button></div> : null}
+  return <VStack gap={5} className="min-w-0 max-w-full">
+    <HStack gap={2} wrap="wrap">{canCreate ? <><Button className="min-h-11 min-w-11" href="/coach/exercises/new" label={t('new')} /><Button variant="secondary" className="min-h-11 min-w-11" href="/coach/exercises/import" label={t('import')} /></> : null}</HStack>
+    <HStack gap={2} className="min-w-0 items-end"><VStack className="min-w-0 flex-1"><TextInput label={t('search')} controlClassName="min-h-11" value={q} onChange={value => { setQ(value); setResult((old) => ({ ...old, nextCursor: null })); }} /></VStack>
+      <Button ref={filtersTrigger} className="min-h-11 min-w-11" variant="secondary" onClick={() => setFiltersOpen(true)} label={t('filters')} />
+      <BottomSheet isOpen={filtersOpen} onOpenChange={setFiltersOpen} finalFocusRef={filtersTrigger} label={t('filters')} aria-describedby="exercise-filters-description" height="90dvh"><VStack gap={4}><Heading level={2}>{t('filters')}</Heading><Text as="p" id="exercise-filters-description">{t('filterHelp')}</Text>
+          <Grid gap={4} className="min-w-0 ps-4 pe-4 sm:grid-cols-2">
+            {(['muscle', 'equipment'] as const).map((key) => <VStack key={key}><TextInput label={t(key)} controlClassName="min-h-11" value={filters[key]} onChange={next => setFilters(previous => ({ ...previous, [key]: next }))} /></VStack>)}
+            <VStack><Selector label={t('pattern')} controlClassName="min-h-11" value={filters.pattern} onChange={value => setFilters(previous => ({ ...previous, pattern: value }))} options={[{ value: '', label: t('all') }, ...MOVEMENT_PATTERNS.map(value => ({ value, label: t(`patterns.${value}`) }))]} /></VStack>
+            <VStack><Selector label={t('difficulty')} controlClassName="min-h-11" value={filters.difficulty} onChange={value => setFilters(previous => ({ ...previous, difficulty: value }))} options={[{ value: '', label: t('all') }, ...DIFFICULTIES.map(value => ({ value, label: t(`difficulties.${value}`) }))]} /></VStack>
+            <VStack><Selector label={t('source')} controlClassName="min-h-11" value={filters.source} onChange={value => setFilters(previous => ({ ...previous, source: value }))} options={[{ value: '', label: t('all') }, { value: 'system', label: t('system') }, { value: 'coach', label: t('mine') }]} /></VStack>
+            <CheckboxInput className="min-h-11" label={t('includeHidden')} value={filters.includeHidden} onChange={includeHidden => setFilters(value => ({ ...value, includeHidden }))} />
+          </Grid><Button className="min-h-11 min-w-11" onClick={() => setFiltersOpen(false)} label={t('done')} /></VStack></BottomSheet>
+    </HStack>
+    <TabList role="tablist" aria-label={t('category')} value={category} onChange={setCategory} className="max-w-full">
+      {['', ...categories].map(value => <Tab key={value} value={value} label={value || t('all')} panelId="exercise-category-results" className="min-h-11 min-w-11" />)}
+    </TabList>
+    <VStack aria-live="polite" role="status">{busy ? t('loading') : null}</VStack>
+    {error ? <VStack role="alert">{t('errors.request')}<Button onClick={() => setRetry((value) => value + 1)} className="min-h-11 min-w-11" label={t('retry')} /></VStack> : null}
     {!busy && !error && result.items.length === 0 ? <EmptyState Icon={Dumbbell} title={q || category || Object.values(filters).some(Boolean) ? t('noResults') : t('empty')} description={t('noResultsBody')} /> : null}
-    <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-busy={busy}>
-      {result.items.map((exercise) => <Card key={exercise.id} className="min-w-0 overflow-hidden"><CardContent className="flex flex-col gap-3">
-        {exercise.thumbnailUrl ? <div className="aspect-video overflow-hidden rounded-lg bg-muted"><Image src={exercise.thumbnailUrl} unoptimized width={640} height={360} alt="" className="size-full object-cover" /></div> : <div className="grid aspect-video place-items-center rounded-lg bg-brand-soft"><Dumbbell aria-hidden className="size-9 text-brand" /></div>}
+    <Grid gap={4} id="exercise-category-results" role="tabpanel" aria-label={category || t('all')} className="min-w-0 sm:grid-cols-2 xl:grid-cols-3" aria-busy={busy}>
+      {result.items.map((exercise) => <Card key={exercise.id} className="min-w-0 overflow-hidden"><VStack gap={3}>
+        {exercise.thumbnailUrl ? <VStack className="aspect-video overflow-hidden rounded-lg bg-muted"><Image src={exercise.thumbnailUrl} unoptimized width={640} height={360} alt="" className="size-full object-cover" /></VStack> : <Grid className="aspect-video place-items-center rounded-lg bg-brand-soft"><Dumbbell aria-hidden className="size-9 text-brand" /></Grid>}
         <Link className="block min-h-11 break-words text-lg font-semibold" href={`/coach/exercises/${exercise.id}`}>{locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar}</Link>
-        <p className="break-words text-sm text-muted-foreground">{exercise.primaryMuscles.join(' · ')}</p>
-        <div className="flex flex-wrap gap-2"><Badge>{exercise.source === 'system' ? t('system') : t('mine')}</Badge>{exercise.hidden ? <Badge variant="outline">{t('hidden')}</Badge> : null}</div>
-      </CardContent></Card>)}
-    </div>
-    {result.nextCursor && resultParameters === params ? <Button variant="outline" className="min-h-11" disabled={busy} onClick={more}>{t('loadMore')}</Button> : null}
-    {owner ? <details className="rounded-xl border p-4"><summary className="min-h-11 cursor-pointer">{t('manageCategories')}</summary><form className="flex flex-col gap-3" onSubmit={saveCategories}><label>{t('categoriesHelp')}<textarea name="categories" defaultValue={categories.join('\n')} className="min-h-32 w-full rounded-lg border p-3" /></label><Button className="min-h-11" disabled={busy}>{t('saveCategories')}</Button></form></details> : null}
-  </div>;
+        <Text as="p" className="break-words text-sm text-muted-foreground">{exercise.primaryMuscles.join(' · ')}</Text>
+        <HStack gap={2} wrap="wrap"><Text type="label" className="rounded-full bg-muted ps-2 pe-2 py-1">{exercise.source === 'system' ? t('system') : t('mine')}</Text>{exercise.hidden ? <Text type="label" className="rounded-full border ps-2 pe-2 py-1">{t('hidden')}</Text> : null}</HStack>
+      </VStack></Card>)}
+    </Grid>
+    {result.nextCursor && resultParameters === params ? <Button variant="secondary" className="min-h-11 min-w-11" isDisabled={busy} onClick={more} label={t('loadMore')} /> : null}
+    {owner ? <details className="rounded-xl border p-4"><summary className="min-h-11 cursor-pointer">{t('manageCategories')}</summary><form className="flex flex-col gap-3" onSubmit={saveCategories}><TextArea label={t('categoriesHelp')} htmlName="categories" value={categoryText} onChange={setCategoryText} controlClassName="min-h-32" /><Button type="submit" className="min-h-11 min-w-11" isDisabled={busy} label={t('saveCategories')} /></form></details> : null}
+  </VStack>;
 }
