@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { clients, memberships } from '@dawlyy/db/schema';
 import { setupApiData, setupApiFixture } from '../../test/api-harness';
@@ -7,6 +8,8 @@ export async function trackingFixture() {
   const fixture = await setupApiFixture();
   try {
     const data = await setupApiData(fixture.owner.tenantId, 'two tracking clients', async tx => {
+      // Read first (db contract P30: a clients INSERT never relies on catching 23505): the fixture tenant starts empty.
+      if ((await tx.select({ id: clients.id }).from(clients).where(eq(clients.tenantId, fixture.owner.tenantId))).length > 0) throw new Error('fixture tenant must start without clients');
       const entries = [];
       for (const firstName of ['A', 'B']) {
         const [client] = await tx.insert(clients).values({ tenantId: fixture.owner.tenantId, firstName, timezone: 'Africa/Cairo' }).returning({ id: clients.id });

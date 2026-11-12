@@ -407,7 +407,7 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
     }
     case 'meal_logs': await create({ ...base, local_date: sql`current_date`, client_uuid: sql`${randomUUID()}`, client_updated_at: state === 'set' ? sql`'2026-01-01T00:00:00Z'` : sql`null` });
     break;
-    case 'supplement_logs': await create({ ...base, local_date: sql`current_date`, supplement_id: sql`'vitamin'`, client_uuid: sql`${randomUUID()}`, client_updated_at: state === 'set' ? sql`'2026-01-01T00:00:00Z'` : sql`null` });
+    case 'supplement_logs': await create({ ...base, local_date: sql`current_date`, supplement_id: sql`'vitamin'`, taken: sql`true`, client_uuid: sql`${randomUUID()}`, client_updated_at: state === 'set' ? sql`'2026-01-01T00:00:00Z'` : sql`null` });
     break;
     case 'form_submissions': await create({ ...base, form_id: sql`${f.templateForm}`, form_version_id: sql`${f.templateFormPub}`, form_kind: sql`'checkin'`, state: sql`${state}`, client_uuid: sql`${randomUUID()}`, submitted_at: ['submitted', 'waiting_for_coach', 'reviewed'].includes(state ?? '') ? sql`now()` : sql`null`, reviewed_at: state === 'reviewed' ? sql`now()` : sql`null`, reviewed_by: state === 'reviewed' ? sql`${ctx.userId}` : sql`null` });
     break;

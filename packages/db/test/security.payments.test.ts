@@ -467,10 +467,9 @@ describe('payments, subscription history and catalogue permissions', () => {
     const n = await counter(f);
     const pk = await primaryKey('payments');
     await as(f.o1, async tx => {
-      await tx.execute(sql`savepoint duplicate_payment`);
-      const e = await expectCode(tx.execute(insert(f, f.payA, { state: sql`'verified'` })), '23505');
+      // tx.transaction is Drizzle's SAVEPOINT; raw `savepoint` text through tx.execute makes postgres.js rethrow the handled error at commit.
+      const e = await expectCode(() => tx.transaction(sp => sp.execute(insert(f, f.payA, { state: sql`'verified'` }))), '23505');
       expect(e.constraint_name).toBe(pk);
-      await tx.execute(sql`rollback to savepoint duplicate_payment`);
     });
     expect(await image(f)).toEqual(before);
     expect((await verify(f.o1, f.payB)).receipt_no).toBe(receipt(n+1));

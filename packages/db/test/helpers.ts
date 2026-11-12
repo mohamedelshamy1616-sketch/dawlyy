@@ -32,7 +32,25 @@ export function erasure<T>(tenantId: string, fn: (tx: Tx) => Promise<T>): Promis
 
 /** doc §13.3: Execute parameterised Drizzle SQL and return its postgres-js row array. */
 export async function q<T = Record<string, unknown>>(tx: Tx, query: SQL): Promise<T[]> {
-  return rows<T>(await tx.execute(query));
+  const result = await tx.execute(query);
+  const stamped = new Set(((result as unknown as { columns?: { name: string; type: number }[] }).columns ?? [])
+    .filter((column) => column.type === TIMESTAMPTZ_OID).map((column) => column.name));
+  return rows<Record<string, unknown>>(result).map((row) => {
+    if (stamped.size === 0) return row as T;
+    const out: Record<string, unknown> = { ...row };
+    for (const name of stamped) if (typeof out[name] === 'string') out[name] = parseTimestamptz(out[name] as string);
+    return out as T;
+  });
+}
+
+/**
+ * The Drizzle postgres-js driver hands timestamptz columns back as the raw text Postgres sends ('2026-01-01 00:00:00+00'),
+ * but the suites compare instants as Date objects. Convert exactly the columns whose result type is timestamptz (OID 1184);
+ * an explicit ::text cast, date, timestamp without zone and jsonb contents are left untouched.
+ */
+const TIMESTAMPTZ_OID = 1184;
+function parseTimestamptz(text: string): Date {
+  return new Date(text.replace(' ', 'T').replace(/([+-]\d{2})$/, '$1:00'));
 }
 
 /** doc §13.3: Return exactly one row, failing setup on zero or multiple rows. */

@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { eq } from 'drizzle-orm';
 import { clients, memberships } from '@dawlyy/db/schema';
 import { setupApiData, setupApiFixture, call } from '../../test/api-harness';
 import { app } from '../../api/index';
@@ -10,6 +11,9 @@ export async function formsFixture(kind: 'intake' | 'checkin' | 'assessment' = '
   const fixture = await setupApiFixture();
   const userId = randomUUID(); const otherUserId = randomUUID(); const staffId = randomUUID();
   const ids = await setupApiData(fixture.owner.tenantId, 'forms clients and scoped reviewer', async tx => {
+    // Read first (db contract P30: a clients INSERT never relies on catching 23505): the fixture tenant must start empty.
+    const existing = await tx.select({ id: clients.id }).from(clients).where(eq(clients.tenantId, fixture.owner.tenantId));
+    if (existing.length > 0) throw new Error('forms fixture tenant must start without clients');
     const [a] = await tx.insert(clients).values({ tenantId: fixture.owner.tenantId, firstName: 'A' }).returning();
     const [b] = await tx.insert(clients).values({ tenantId: fixture.owner.tenantId, firstName: 'B' }).returning();
     if (!a || !b) throw new Error('Missing fixture client');

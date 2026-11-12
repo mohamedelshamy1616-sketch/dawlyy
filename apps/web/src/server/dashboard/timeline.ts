@@ -6,7 +6,7 @@ import { notFound } from '../../api/errors';
 import { requirePermission } from '../require-permission';
 import { timelineHref, type TimelineKind } from './logic';
 
-const ATOM_KEY = sql.raw(`'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'`);
+const ATOM_KEY = sql`'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'`;
 
 /** Task 10: the module whose `view` grant opens each timeline section. */
 const SECTION_MODULE: Record<TimelineKind, Module> = {

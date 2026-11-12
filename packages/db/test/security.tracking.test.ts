@@ -90,6 +90,8 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
     const f = await buildPrivateFixture(), v = await mkVersion(f.t1, { clientId: f.clientA }), id = randomUUID();
     if (state === 'in_review') await svc((tx) => q(tx, sql`update program_versions set status = 'in_review' where tenant_id = ${f.t1} and id = ${v.versionId}`), f.t1);
     await refusal(f, () => as(f.ua, (tx) => q(tx, insert('workout_sessions', f, id, { program_id: sql`${v.headId}::uuid`, program_version_id: sql`${v.versionId}::uuid` }))), 'parent:visible_refs', 'program_version_id', 'workout_sessions');
+    // doc §7.1 program_versions edges: in_review -> approved -> published (in_review -> published is not an edge).
+    if (state === 'in_review') await as(f.o1, (tx) => q(tx, sql`update program_versions set status = 'approved' where id = ${v.versionId}`));
     await as(f.o1, (tx) => q(tx, sql`update program_versions set status = 'published' where id = ${v.versionId}`));
     await as(f.ua, (tx) => q(tx, insert('workout_sessions', f, id, { program_id: sql`${v.headId}::uuid`, program_version_id: sql`${v.versionId}::uuid` })));
     expect(await serviceRow('workout_sessions', id)).toMatchObject({ program_id: v.headId, program_version_id: v.versionId });
@@ -208,10 +210,15 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
   for (const table of Object.keys(syncColumns) as SyncTable[]) for (const initial of ['null', 'non-null'] as const) it(`K11 ${table} ua UPSERT client_updated_at stored ${initial}/equal/older/newer`, async () => {
     const f = await buildPrivateFixture(), session = table === 'set_logs' ? await mkSession(f.t1, f.clientA) : undefined, offline = randomUUID(), id = randomUUID();
     const dependency: Record<string, SQL> = session ? { session_id: sql`${session}::uuid` } : {};
+    // set_logs declares client_updated_at NOT NULL (schema/tracking.ts; docs/plans/OPEN_DECISIONS.md item 15), so a stored-null
+    // set log cannot exist: pin that fact instead of arranging it. The null-safe predicate stays covered by the other five tables.
+    if (table === 'set_logs' && initial === 'null') {
+      await expectCode(() => svc((tx) => q(tx, insert(table, f, id, { ...dependency, client_uuid: sql`${offline}::uuid`, client_updated_at: sql`null` })), f.t1), '23502');
+      return;
+    }
     await svc((tx) => q(tx, insert(table, f, id, { ...dependency, client_uuid: sql`${offline}::uuid`, client_updated_at: initial === 'null' ? sql`null` : sql`'2026-01-01T00:00:00Z'::timestamptz` })), f.t1);
-    // set_logs currently declares NOT NULL: the null tuple deliberately exposes any schema/contract mismatch.
     const replay = async (time: string) => as(f.ua, (tx) => q(tx, sql`insert into ${sql.identifier(table)}
-      select (jsonb_populate_record(null::${sql.identifier(table)}, to_jsonb(t) || jsonb_build_object('id', ${randomUUID()}::text, 'client_updated_at', ${time}) || ${JSON.stringify(table === 'supplement_logs' ? { taken: false } : table === 'workout_sessions' ? { client_note: 'newer', active_seconds: 60 } : table === 'set_logs' ? { reps: 12, note: 'newer' } : table === 'measurement_sets' ? { values: [{ type: 'waist', value: 80, unit: 'cm' }], note: 'newer' } : table === 'progress_photo_sets' ? { poses: [], weight_kg: 79.5, note: 'newer' } : { note: 'newer', free_entry: { text: 'meal' } })}::jsonb)).*
+      select (jsonb_populate_record(null::${sql.identifier(table)}, to_jsonb(t) || jsonb_build_object('id', ${randomUUID()}::text, 'client_updated_at', ${time}::text) || ${JSON.stringify(table === 'supplement_logs' ? { taken: false } : table === 'workout_sessions' ? { client_note: 'newer', active_seconds: 60 } : table === 'set_logs' ? { reps: 12, note: 'newer' } : table === 'measurement_sets' ? { values: [{ type: 'waist', value: 80, unit: 'cm' }], note: 'newer' } : table === 'progress_photo_sets' ? { poses: [], weight_kg: 79.5, note: 'newer' } : { note: 'newer', free_entry: { text: 'meal' } })}::jsonb)).*
       from ${sql.identifier(table)} t where id = ${id}
       on conflict (tenant_id, client_id, client_uuid) do update set ${sql.join(syncColumns[table].map((column) => sql`${sql.identifier(column)} = excluded.${sql.identifier(column)}`), sql`, `)}
       where excluded.client_updated_at is not null and (${sql.identifier(table)}.client_updated_at is null or ${sql.identifier(table)}.client_updated_at < excluded.client_updated_at) returning id`));

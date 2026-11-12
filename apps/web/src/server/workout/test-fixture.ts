@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { emptyProgram } from '@dawlyy/core/program-edit';
 import { clients, exercises, memberships, programs, programVersions, staffClientAssignments } from '@dawlyy/db/schema';
@@ -19,6 +20,8 @@ export async function workoutFixture() {
       }
       async function actor(name: string) {
         const clientId = randomUUID(); const userId = randomUUID(); const programId = randomUUID(); const versionId = randomUUID();
+        // Read first (db contract P30: a clients INSERT never relies on catching 23505): the fixture client id is new.
+        if ((await tx.select({ id: clients.id }).from(clients).where(eq(clients.id, clientId))).length > 0) throw new Error('fixture client id already exists');
         await tx.insert(clients).values({ id: clientId, tenantId, firstName: name, timezone: 'Africa/Cairo' });
         await tx.insert(memberships).values({ tenantId, userId, clientId, role: 'client', status: 'active' });
         await tx.insert(programs).values({ id: programId, tenantId, clientId, kind: 'client', name: { en: `${name} plan` } });

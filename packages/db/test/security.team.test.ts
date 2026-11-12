@@ -412,10 +412,9 @@ describe('tenant, team and client identity writes', () => {
     const before = await snapshot(f);
     const pk = await svc(tx => one<{ name: string }>(tx, sql`select c.conname as name from pg_constraint c where c.conrelid='public.clients'::regclass and c.contype='p' and (select array_agg(a.attname::text order by k.n) from unnest(c.conkey) with ordinality k(num,n) join pg_attribute a on a.attrelid=c.conrelid and a.attnum=k.num)=array['id']::text[]`));
     await as(f.o1, async tx => {
-      await tx.execute(sql`savepoint duplicate_client`);
-      const e = await expectCode(tx.execute(sql`insert into clients(id,tenant_id,first_name) values(${f.clientA},${f.t1},'duplicate')`), '23505');
+      // tx.transaction is Drizzle's SAVEPOINT (raw `savepoint` text through tx.execute makes postgres.js rethrow at commit).
+      const e = await expectCode(() => tx.transaction(sp => sp.execute(sql`insert into clients(id,tenant_id,first_name) values(${f.clientA},${f.t1},'duplicate')`)), '23505');
       expect(e.constraint_name).toBe(pk.name);
-      await tx.execute(sql`rollback to savepoint duplicate_client`);
     });
     expect(await snapshot(f)).toEqual(before);
     const id = await createClient(f.o1);

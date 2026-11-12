@@ -74,7 +74,8 @@ describe('runtime connection escape resistance', () => {
           await deniedPrivilege(sql`insert into ${target} default values`, prefix);
           await deniedPrivilege(sql`delete from ${target} where false`, prefix);
           const column=table[0]==='app'?(table[1]==='audit_actions'?'action':'type'):keyColumns(table[1]as MatrixTable)[0]!;
-          await deniedPrivilege(sql`update ${target} set ${sql.identifier(column)}=${sql.identifier(column)} where false`,prefix);
+          // `= default` is the only assignment PostgreSQL accepts on a GENERATED ALWAYS identity key (events/audit_log ids raise 428C9 otherwise).
+          await deniedPrivilege(sql`update ${target} set ${sql.identifier(column)}=default where false`,prefix);
         }
         for (const fn of functions) {
           // Types determine only a callable probe, never expected privilege. Every probed EXECUTE must be denied.

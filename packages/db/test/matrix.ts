@@ -139,7 +139,11 @@ export function keyColumns(table: MatrixTable): readonly string[] {
 }
 /** doc §13.4 S: parameterised original-key predicate; no bigint Number conversion. */
 export function keyWhere(table: MatrixTable, row: Record<string, unknown>): SQL {
-  return sql.join(keyColumns(table).map((column) => sql`${sql.identifier(column)} = ${row[column]}`), sql` and `);
+  return sql.join(keyColumns(table).map((column) => sql`${sql.identifier(column)} = ${bindDate(row[column])}`), sql` and `);
+}
+/** The helpers return timestamptz columns as Date; postgres.js refuses a raw Date parameter, so bind the ISO instant. */
+function bindDate(value: unknown): SQL {
+  return value instanceof Date ? sql`${value.toISOString()}::timestamptz` : sql`${value}`;
 }
 /** doc §13.4 S/N: execute an explicitly supplied row; objects serialize as JSONB. */
 export function insertRow(tx: Tx, table: MatrixTable, row: Record<string, unknown>): Promise<Record<string, unknown>[]> {
@@ -150,13 +154,13 @@ function insertStatement(table: MatrixTable,row: Record<string,unknown>): SQL {
   const textArrays = ['aliases','tags','primary_muscles','secondary_muscles','equipment','progressions','regressions','alternatives','missing_required'];
   return sql`insert into ${sql.identifier(table)} (${sql.join(entries.map(([k]) => sql.identifier(k)), sql`, `)})
     values (${sql.join(entries.map(([k, v]) => Array.isArray(v) && textArrays.includes(k) ? sql`array[${sql.join(v.map((item: unknown) => sql`${item}`),sql`, `)}]::text[]`
-      : v !== null && typeof v === 'object' && !(v instanceof Date) ? sql`${JSON.stringify(v)}::jsonb` : sql`${v}`), sql`, `)}) returning *`;
+      : v !== null && typeof v === 'object' && !(v instanceof Date) ? sql`${JSON.stringify(v)}::jsonb` : bindDate(v)), sql`, `)}) returning *`;
 }
 function statement(table:MatrixTable,command:MatrixCommand,row:Record<string,unknown>,changes:Record<string,unknown>={}):SQL {
   if(command==='insert')return insertStatement(table,row);
   if(command==='select')return sql`select * from ${sql.identifier(table)}`;
   if(command==='delete')return sql`delete from ${sql.identifier(table)} where ${keyWhere(table,row)}`;
-  return sql`update ${sql.identifier(table)} set ${sql.join(Object.entries(changes).map(([column,value])=>sql`${sql.identifier(column)}=${value!==null&&typeof value==='object'?sql`${JSON.stringify(value)}::jsonb`:sql`${value}`}`),sql`, `)} where ${keyWhere(table,row)}`;
+  return sql`update ${sql.identifier(table)} set ${sql.join(Object.entries(changes).map(([column,value])=>sql`${sql.identifier(column)}=${value!==null&&typeof value==='object'&&!(value instanceof Date)?sql`${JSON.stringify(value)}::jsonb`:bindDate(value)}`),sql`, `)} where ${keyWhere(table,row)}`;
 }
 /** doc §13.2/S03: valid independent row recipe with private mutable parents. */
 export async function makeRow(table: MatrixTable, f: Fixture, actor: AuthContext = f.o1): Promise<Record<string, unknown>> {

@@ -4,7 +4,7 @@ import { sql, type SQL } from 'drizzle-orm';
 import { closeDb, withErasureTx, withServiceTx, type AuthContext, type Tx } from '../src/client';
 import { buildFixture, truncateAll, type Fixture } from './fixtures';
 import { buildPrivateFixture, mkClient, mkMembership, mkSession, mkTenant, mkVersion } from './factories';
-import { as, svc, q, one, expectCode, expectGuard, expectPrivilege, serviceRow } from './helpers';
+import { as, svc, q, one, expectCode, expectGuard, expectPrivilege, expectRls, serviceRow } from './helpers';
 
 let fx: Fixture;
 beforeAll(async () => { fx = await buildFixture(); });
@@ -223,7 +223,10 @@ describe('documents, publication and erasure (§7.1–7.3, §7.9)', () => {
     });
     for (const who of ['ua', 's1'] as const) it(`D09 ${t.versions} ${who} INSERT ${t.key} invisible template/B`, async () => {
       const v = await draft(t, fx.t1, who === 'ua' ? null : fx.clientB), id = randomUUID();
-      await unchanged(fx.t1, () => special(() => as(fx[who], (tx) => q(tx, append(t, v, id, 2))), '23503', 'version_rules', t.versions, t.key));
+      // forms_client_templates (doc §5.2: select where client_id is null) makes a template form head visible to clients, so for
+      // form_versions the head is NOT invisible to ua: version_rules passes and the missing client INSERT policy refuses (42501).
+      if (t.versions === 'form_versions' && who === 'ua') await unchanged(fx.t1, () => expectRls(() => as(fx[who], (tx) => q(tx, append(t, v, id, 2)))));
+      else await unchanged(fx.t1, () => special(() => as(fx[who], (tx) => q(tx, append(t, v, id, 2))), '23503', 'version_rules', t.versions, t.key));
       if (who === 'ua') {
         const own = await mkVersion(fx.t1, { family: t.family, clientId: fx.clientA, status: 'published' });
         expect(await as(fx.ua, (tx) => q(tx, sql`select id from ${sql.identifier(t.versions)} where id = ${own.versionId}`))).toEqual([{ id: own.versionId }]);

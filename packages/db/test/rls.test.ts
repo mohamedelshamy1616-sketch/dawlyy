@@ -32,7 +32,8 @@ describe('row level security', () => {
           (select tableowner from pg_tables where schemaname = 'public' and tablename = 'clients')::text as owner`),
       )[0]!,
     );
-    expect(info.cur).toBe('authenticated');
+    // doc §3.1 runtime role: transactions SET LOCAL ROLE dawlyy_rls (NOLOGIN, no BYPASSRLS); `authenticated` is never reachable.
+    expect(info.cur).toBe('dawlyy_rls');
     expect(info.bypass).toBe(false);
     expect(info.sess).toBe('dawlyy_app');
     expect(info.owner).not.toBe('dawlyy_app');
@@ -191,7 +192,8 @@ describe('row level security', () => {
       clients: rows<{ id: string; tenant_id: string }>(await tx.execute(sql`select id, tenant_id from clients where tenant_id = ${fx.t2}`)),
       packages: rows<{ tenant_id: string }>(await tx.execute(sql`select tenant_id from packages where tenant_id = ${fx.t2}`)),
     }));
-    expect(found.clients.map((c) => c.id)).toEqual([fx.clientC]);
+    // doc §13.2 baseline: tenant T2 owns clientC and clientD (the disabled-membership client); T1 rows must be absent.
+    expect(found.clients.map((c) => c.id).sort()).toEqual([fx.clientC, fx.clientD].sort());
     expect(found.clients.every((c) => c.tenant_id === fx.t2)).toBe(true);
     expect(found.packages).toHaveLength(1);
   });

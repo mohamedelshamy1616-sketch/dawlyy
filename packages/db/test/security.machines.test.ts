@@ -195,7 +195,9 @@ describe('ordered database machine contracts', () => {
     if (spec.id !== 'X09') {
       it(`${spec.id} ${spec.table} service SELECT ${spec.column} complete enum vocabulary`, async () => {
         const states = await svc(tx => q<{ state: string }>(tx, sql`select e.enumlabel::text as state from pg_attribute a join pg_enum e on e.enumtypid=a.atttypid where a.attrelid=${'public.'+spec.table}::regclass and a.attname=${spec.column} order by e.enumsortorder`));
-        expect(states.map(row => row.state)).toEqual(spec.states.filter(state => state !== null));
+        // Vocabulary, not label order: pg_enum order is declaration order (invitation_status declares expired before revoked,
+        // schema/enums.ts); the core machine check below keeps the spec order.
+        expect(states.map(row => row.state).sort()).toEqual(spec.states.filter(state => state !== null).sort());
       });
     }
     if (spec.core) {

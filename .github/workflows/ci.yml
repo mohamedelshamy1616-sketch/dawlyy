@@ -19,3 +19,50 @@ jobs:
       - run: pnpm -r --if-present lint
       # The db package's RLS suite ("test:rls") needs a database and is not part of "test".
       - run: pnpm -r --if-present test
+
+  # Security model section 13.5 / C22: PostgreSQL 17 (the Supabase major), one serial vitest process, a freshly migrated
+  # database, and a failure (never a skip) when the database is missing.
+  database:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: dawlyy_ci
+          TZ: UTC
+          PGTZ: UTC
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      CI: 'true'
+      DATABASE_URL_SERVICE: postgresql://postgres:postgres@localhost:5432/dawlyy_ci
+      DATABASE_URL: postgresql://dawlyy_app:dawlyy_app@localhost:5432/dawlyy_ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: psql "$DATABASE_URL_SERVICE" -v ON_ERROR_STOP=1 -c "alter database dawlyy_ci set timezone to 'UTC'"
+      - run: pnpm --filter @dawlyy/db migrate
+      # The migrations never set a password; the role is created by 0000, so set the CI-only secret here.
+      - run: psql "$DATABASE_URL_SERVICE" -v ON_ERROR_STOP=1 -c "alter role dawlyy_app password 'dawlyy_app'"
+      - run: pnpm --filter @dawlyy/db seed
+      - run: pnpm test:db
+      # C23/C98/C99 rehearsal needs a genuine 0002 dump; set the repository variable DAWLYY_DB_0002_DUMP_URL to enable it.
+      - name: Migration rehearsal (db-migration-check.ps1)
+        if: ${{ vars.DAWLYY_DB_0002_DUMP_URL != '' }}
+        shell: pwsh
+        env:
+          DAWLYY_DB_0002_DUMP_URL: ${{ vars.DAWLYY_DB_0002_DUMP_URL }}
+        run: |
+          Invoke-WebRequest -Uri $env:DAWLYY_DB_0002_DUMP_URL -OutFile "$env:RUNNER_TEMP/0002.dump"
+          ./scripts/db-migration-check.ps1 -BaselineDumpPath "$env:RUNNER_TEMP/0002.dump"

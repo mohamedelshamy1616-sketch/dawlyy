@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { ScheduleRules } from '@dawlyy/core/types';
 import { clients, memberships, packages } from '@dawlyy/db/schema';
@@ -12,6 +13,8 @@ export async function setupBillingFixture() {
     const clientUser = randomUUID(); const otherClientUser = randomUUID(); const staffUser = randomUUID(); const packageId = randomUUID();
     const tenantId = base.owner.tenantId;
     await setupApiData(tenantId, 'billing fixtures', async (tx) => {
+      // Read first (db contract P30: a clients INSERT never relies on catching 23505): the fixture tenant starts empty.
+      if ((await tx.select({ id: clients.id }).from(clients).where(eq(clients.tenantId, tenantId))).length > 0) throw new Error('fixture tenant must start without clients');
       await tx.insert(clients).values([{ id: clientId, tenantId, firstName: 'Client A' }, { id: otherClientId, tenantId, firstName: 'Client B' }]);
       await tx.insert(memberships).values([
         { tenantId, userId: clientUser, role: 'client', clientId, status: 'active', displayName: 'Client A' },

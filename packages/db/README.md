@@ -8,8 +8,8 @@ Drizzle schema, SQL migrations, row-level security (RLS) and the only allowed da
 ```powershell
 copy .env.example .env                                  # then keep the local values (see below)
 pnpm --filter @dawlyy/db db:local:reset                  # first time: creates the cluster; later: wipes it
-pnpm --filter @dawlyy/db migrate                         # applies the 3 migrations
-pnpm --filter @dawlyy/db test:rls                        # 12 RLS tests against the real database
+pnpm --filter @dawlyy/db migrate                         # applies every migration (0000 to the last)
+pnpm --filter @dawlyy/db test:rls                        # the 12 RLS tests against the real database
 pnpm --filter @dawlyy/db db:local:down                   # stop the cluster when done
 ```
 
@@ -20,6 +20,12 @@ pnpm --filter @dawlyy/db db:local:down                   # stop the cluster when
   `DATABASE_URL=postgresql://dawlyy_app:dawlyy_app@127.0.0.1:54329/dawlyy_test` (runtime role, RLS enforced).
 - `init`/`reset` create the `dawlyy_app` role and set its local password; the migrations never set a password.
   `db:local:prepare` re-applies it.
+- Runtime role: `dawlyy_app` logs in and has no privileges of its own; `withAuthTx`/`withUserTx` run `SET LOCAL ROLE dawlyy_rls`
+  (NOLOGIN, NOBYPASSRLS), the only role the policies apply to (security model §3.1).
+- Pool size: `DAWLYY_DB_POOL_MAX` (positive integer per process, default 10), read when a pool is first created.
+- The 15 security suites and `rls.test.ts` run on a fresh scratch database with `python tools/run_db_tests.py`
+  (drops and recreates `dawlyy_sec` in UTC, migrates, prepares the app role, loads the system seed, then runs vitest;
+  pass vitest arguments to select files, `--reuse-db` to skip the rebuild).
 - There is deliberately **no** `test` script: CI must not run RLS tests without a database. Run `test:rls` explicitly.
 - The suite truncates `tenants` and `audit_log` (cascading) before and after it runs, so it needs a dedicated test database.
 
@@ -31,6 +37,7 @@ reads `public.memberships`, which only exists after the tables. So the hand-writ
 | Migration | Kind | Content |
 |---|---|---|
 | `migrations/0000_app_schema.sql` | custom | `check_function_bodies = off`, roles `authenticated` and `dawlyy_app`, schema `app`, helper functions |
+| `migrations/0003` to `0006` | custom | the `dawlyy_rls` role and helpers, policies off/on, guard triggers and grants (security model v2) |
 | `migrations/0001_tables.sql` | generated from `src/schema` | tables, enums, indexes, `ENABLE ROW LEVEL SECURITY`, policies |
 | `migrations/0002_app_post_tables.sql` | custom | table and sequence grants, default privileges, published-version triggers, `app.next_client_code`, audit triggers |
 
@@ -50,4 +57,4 @@ matters (staging, production), never edit it; add a new one. Schema changes: edi
    `postgresql://dawlyy_app.<ref>:<secret>@aws-0-<region>.pooler.supabase.com:6543/postgres`.
    `client.ts` already sets `prepare: false`, which the pooler requires.
 4. Grant `dawlyy_app` to Supabase's pooler only if the pooler reports a missing role. The app role can do nothing until
-   `withAuthTx` runs `SET LOCAL ROLE authenticated`, which is the point of the design.
+   `withAuthTx` runs `SET LOCAL ROLE dawlyy_rls`, which is the point of the design.

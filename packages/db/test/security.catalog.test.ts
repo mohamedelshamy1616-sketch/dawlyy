@@ -211,7 +211,7 @@ describe('security catalog', () => {
       expect(p.table_grant, `${table}.${p.privilege}`).toBe(expected);
       if (p.column_grant !== null) expect(p.column_grant, `${table} column ${p.privilege}`).toBe(expected);
     }
-    expect(await svc((tx) => q(tx, sql`select c.relname from pg_class c where c.relnamespace in ('public'::regnamespace,'app'::regnamespace) and c.relkind='S' and has_sequence_privilege('dawlyy_rls',c.oid,'USAGE,SELECT,UPDATE')`))).toEqual([]);
+    expect(await svc((tx) => q(tx, sql`select c.relname from pg_class c where c.relnamespace in ('public'::regnamespace,'app'::regnamespace) and c.relkind='S' and case when c.relkind='S' then has_sequence_privilege('dawlyy_rls',c.oid,'USAGE,SELECT,UPDATE') else false end`))).toEqual([]);
     expect(await svc((tx) => q(tx, sql`select c.relname from pg_class c where c.oid in ('app.audit_actions'::regclass,'app.event_types'::regclass) and (has_table_privilege('dawlyy_rls',c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') or has_any_column_privilege('dawlyy_rls',c.oid,'SELECT,INSERT,UPDATE,REFERENCES'))`))).toEqual([]);
   });
   it('C05 app/public svc SELECT effective denial and PUBLIC ACL migrated', async () => {
@@ -282,7 +282,7 @@ describe('security catalog', () => {
   });
   it('C09 public svc SELECT complete runtime cascade/set-null map migrated', async () => {
     const deletable=tables.filter((t)=>TABLE_GRANTS[t].includes('D'));
-    const actual=await svc((tx)=>q(tx,sql`select child.relname as child,parent.relname as parent,c.confdeltype::text as action from pg_constraint c join pg_class child on child.oid=c.conrelid join pg_class parent on parent.oid=c.confrelid where c.contype='f' and c.confdeltype in ('c','n','d') and child.relnamespace='public'::regnamespace and parent.relnamespace='public'::regnamespace and parent.relname=any(${deletable}::text[]) order by 1,2,3`));
+    const actual=await svc((tx)=>q(tx,sql`select child.relname as child,parent.relname as parent,c.confdeltype::text as action from pg_constraint c join pg_class child on child.oid=c.conrelid join pg_class parent on parent.oid=c.confrelid where c.contype='f' and c.confdeltype in ('c','n','d') and child.relnamespace='public'::regnamespace and parent.relnamespace='public'::regnamespace and parent.relname=any(array[${sql.join(deletable.map((name)=>sql`${name}`),sql`,`)}]::text[]) order by 1,2,3`));
     const ordered=actual.sort((a,b)=>JSON.stringify([a.child,a.parent,a.action])<JSON.stringify([b.child,b.parent,b.action])?-1:1);
     expect(ordered).toEqual([['form_versions','forms','c'],['forms','form_versions','n'],['notification_deliveries','notifications','c'],['nutrition_plan_versions','nutrition_plans','c'],['nutrition_plans','nutrition_plan_versions','n'],['program_versions','programs','c'],['programs','program_versions','n']].map(([child,parent,action])=>({child,parent,action})));
   });

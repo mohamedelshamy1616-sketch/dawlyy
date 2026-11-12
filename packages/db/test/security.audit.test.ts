@@ -118,7 +118,7 @@ describe('audit and transactional outbox (§7.8, §10)', () => {
     const marker = new Error('rollback valid allowlist control'); const name = table === 'audit_actions' ? 'action' : 'type';
     await expect(svc(async (tx) => {
       const before = await q(tx, sql`select * from app.${sql.identifier(table)} order by ${sql.identifier(name)}`);
-      const statement = (value: readonly string[]) => table === 'audit_actions' ? sql`insert into app.audit_actions (action, entity, roles) values ('security.probe', 'payments', ${value}::text[])` : sql`insert into app.event_types (type, roles) values ('security.probe', ${value}::text[])`;
+      const statement = (value: readonly string[]) => table === 'audit_actions' ? sql`insert into app.audit_actions (action, entity, roles) values ('security.probe', 'payments', array[${sql.join(value.map((item) => sql`${item}`), sql`, `)}]::text[])` : sql`insert into app.event_types (type, roles) values ('security.probe', array[${sql.join(value.map((item) => sql`${item}`), sql`, `)}]::text[])`;
       const error = await expectCode(() => tx.transaction((sp) => q(sp, statement(roles === 'empty' ? [] : ['intruder']))), '23514'); expect(error.constraint_name).toBe(table + '_roles_ck'); expect(await q(tx, sql`select * from app.${sql.identifier(table)} order by ${sql.identifier(name)}`)).toEqual(before);
       await q(tx, statement(['owner', 'staff'])); expect(await one(tx, sql`select roles from app.${sql.identifier(table)} where ${sql.identifier(name)} = 'security.probe'`)).toEqual({ roles: ['owner', 'staff'] }); throw marker;
     })).rejects.toBe(marker);

@@ -5,7 +5,7 @@ import { requirePermission } from '../require-permission';
 import { QUEUE_KINDS, queueHref, queueRowHref, type QueueKind } from './logic';
 
 type Part = Exclude<QueueKind, 'attention'>;
-const ATOM_KEY = sql.raw(`'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'`);
+const ATOM_KEY = sql`'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'`;
 
 /**
  * Task 10: one SELECT per count, all returning (client_id, ref_id, sort_at, label). Everything runs inside the
@@ -66,7 +66,7 @@ function kindQuery(kind: QueueKind, tenantId: string): SQL {
   const parts = queueParts(tenantId);
   if (kind !== 'attention') return parts[kind];
   const T = sql`${tenantId}::uuid`;
-  const ids = (Object.keys(parts) as Part[]).map(key => sql`select client_id from (${parts[key]}) ${sql.raw(`u_${key}`)}`);
+  const ids = (Object.keys(parts) as Part[]).map(key => sql`select client_id from (${parts[key]}) ${sql.identifier(`u_${key}`)}`);
   return sql`select c.id as client_id, c.id::text as ref_id, c.created_at as sort_at, null::text as label
     from public.clients c
     where c.tenant_id = ${T} and c.status = 'active' and c.id in (${sql.join(ids, sql` union `)})`;
@@ -75,7 +75,7 @@ function kindQuery(kind: QueueKind, tenantId: string): SQL {
 /** Task 10 (spec dashboard): every count, each with the href of its filtered queue. */
 export async function dashboardSummary(tx: Tx, auth: AuthContext) {
   requirePermission(auth, 'dashboard', 'view');
-  const selects = QUEUE_KINDS.map(kind => sql`(select count(*)::int from (${kindQuery(kind, auth.tenantId)}) ${sql.raw(`q_${kind}`)}) as ${sql.raw(kind)}`);
+  const selects = QUEUE_KINDS.map(kind => sql`(select count(*)::int from (${kindQuery(kind, auth.tenantId)}) ${sql.identifier(`q_${kind}`)}) as ${sql.identifier(kind)}`);
   const rows = await tx.execute<Record<QueueKind, number>>(sql`select ${sql.join(selects, sql`, `)}`);
   const row = rows[0];
   const counts = Object.fromEntries(QUEUE_KINDS.map(kind => [kind, { count: Number(row?.[kind] ?? 0), href: queueHref(kind) }])) as Record<QueueKind, { count: number; href: string }>;
