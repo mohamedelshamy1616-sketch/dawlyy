@@ -42,3 +42,6 @@ tools/.codex-answers/
 # dashboard build outputs (rebuilt by tools/dashboard/build.py; must not dirty the tree)
 tools/dashboard/*.json
 .agents/
+
+# python bytecode
+__pycache__/
