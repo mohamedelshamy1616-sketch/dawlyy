@@ -36,7 +36,9 @@ export async function readLimitedBody(c: Context): Promise<Uint8Array<ArrayBuffe
   const bytes = new Uint8Array(length); let offset = 0;
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
   // Parsers/handlers receive an identical, bounded body; replay hashes the same exact bytes.
-  if (request.body) c.req.raw = new Request(request, { body: bytes });
+  // Built from plain fields, not `new Request(request, ...)`: under Next the incoming request is a NextRequest whose
+  // private state belongs to another class, so passing it to the global constructor throws a TypeError.
+  if (request.body) c.req.raw = new Request(request.url, { method: request.method, headers: new Headers(request.headers), body: bytes, signal: request.signal });
   bodies.set(c.req.raw, bytes);
   return bytes;
 }

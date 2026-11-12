@@ -72,6 +72,18 @@ describe('N4 bounded body reading before idempotency and handlers', () => {
       headers: { 'Content-Type': 'application/json', 'Content-Length': String(JSON_LIMIT), 'Idempotency-Key': 'boundary' } })).status).toBe(201);
     expect(f.handler).toHaveBeenCalledTimes(1);
   });
+  // Regression for the e2e run on e043399: under Next the incoming request is a NextRequest whose private state does not
+  // belong to the global Request class, so `new Request(thatRequest, ...)` threw "Cannot read private member #state".
+  // A proxy over a real Request reproduces the same failure in Node.
+  it('rebuilds the body for a request object that is not a plain global Request', async () => {
+    const f = fixture();
+    const real = new Request('http://localhost/items', { method: 'POST', body: JSON.stringify({ a: 1 }),
+      headers: { 'Content-Type': 'application/json', 'Idempotency-Key': 'foreign' } });
+    const foreign = new Proxy(real, { get: (target, prop) => { const value = Reflect.get(target, prop, target); return typeof value === 'function' ? value.bind(target) : value; } });
+    const response = await f.app.fetch(foreign);
+    expect(response.status).toBe(201); expect(await response.json()).toEqual({ a: 1 });
+    expect(f.handler).toHaveBeenCalledTimes(1);
+  });
   it('permits a binary upload larger than the JSON ceiling', async () => {
     const f = fixture(); const response = await f.app.request('/api/v1/media/local-upload/token', { method: 'PUT',
       body: new Uint8Array(JSON_LIMIT + 1), headers: { 'Content-Type': 'image/jpeg', 'Idempotency-Key': 'upload' } });
