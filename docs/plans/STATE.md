@@ -631,3 +631,10 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 
 - `run_checks` on `b4d32a5` (job checks-c15): typecheck, lint, build-web, test-core, test-db (759 s), test-web, e2e-en green; e2e-ar red once. Cause read from the log: step 5 `locator.fill` on the nutrition assign search box, Timeout 20000ms. `beta-gate.spec.ts` set the contexts' default timeout to 20 s, below the config's 60 s, and `next dev` compiles routes on first visit. A traced rerun of e2e-ar alone (job e2e-ar-trace) passed 10 of 10.
 - Fix: the contexts' default timeout is 60 s. No assertion changed. Next: a fresh `run_checks` on the clean tree.
+
+## 12 Nov 2026 08:10 (Cairo): all 8 required checks green on 54831a6; P7 pre-review by Codex
+
+- `run_checks` job checks-c15b on clean HEAD `54831a6`: typecheck, lint, build-web, test-core, test-db (760 s), test-web, e2e-ar (347 s), e2e-en (227 s) all exit 0. `done_check.py` now reports only `docs/qa/FINAL_REVIEW.md` missing (a P7 deliverable).
+- P6 probe kits (`.work/kit/g3_work`, `g4work`, `design-review/r2`) were built on scratch databases from the design document's SQL snippets, not from the real migrations; their cases live on in the 15 security suites that run against the migrated schema (11,791 tests). I did not re-run the kits.
+- Weekly usage is 86 percent, so P7 (opus xhigh) waits for the weekly reset on Tue 06:00. Meanwhile Codex pre-reviewed the riskiest code read-only: `docs/qa/p7-codex-prereview.md`. R1 (high): concurrent retries with one Idempotency-Key both run the mutation (Codex's probe: two refunds, both 201). R2 medium: replay skips permission checks. R3 medium: Web Push still sent to a deactivated member. R4 low: dev-login files in the production trace. Dev-login, the router split, `withServiceTx` callers and cron routes were found sound.
+- Fix brief `tools/codex_briefs/p7-prefix-r1-r4.md` (no migration): reserve the key before the handler with a placeholder row, 409 while in flight; authorization fingerprint mixed into the request hash; cancel deliveries for inactive members; exclude dev-login from the production trace. Codex builds, Claude reviews and runs the suites.
