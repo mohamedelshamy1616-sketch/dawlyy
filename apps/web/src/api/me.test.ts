@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { call } from '../test/api-harness';
+import { call, setupActiveSubscription } from '../test/api-harness';
 import { workoutFixture } from '../server/workout/test-fixture';
 import { app } from './index';
 
@@ -20,6 +20,8 @@ describe('Task 5 own client portal', () => {
   });
 
   it('returns only the own published copy without the current draft or internal notes', async () => {
+    // P7 N5 (docs/qa/FINAL_REVIEW.md; build plan Task 3 acceptance): the current program needs active access.
+    await setupActiveSubscription(fixture.owner.tenantId, fixture.a.clientId);
     const response = await call(app, 'GET', '/api/v1/me/program', { as: fixture.a.userId });
     expect(response.status).toBe(200);
     const program = z.object({ programId: z.string(), versionNo: z.number(), document: z.record(z.string(), z.unknown()), startDate: z.string(), progress: z.object({ weeksTotal: z.number(), currentWeekIndex: z.number() }) }).parse(response.json);

@@ -1,4 +1,9 @@
 {
+  "accessExpired": {
+    "title": "Active subscription needed",
+    "description": "Check your subscription status and renewal instructions to access your current nutrition plan.",
+    "subscription": "View subscription"
+  },
   "common": {
     "all": "All",
     "up": "Move up",

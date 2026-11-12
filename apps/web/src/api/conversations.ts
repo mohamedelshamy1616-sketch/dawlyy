@@ -3,6 +3,7 @@ import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import { validationError } from './errors';
+import { safeErrorMetadata } from './error-log';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapMessagingError } from '../server/messaging/errors';
 import { editMessageBody, idParams, inboxQuery, messageParams, messagesQuery, openConversationBody, sendMessageBody } from '../server/messaging/schemas';
@@ -57,7 +58,10 @@ router.openapi(createRoute({ method: 'post', path: '/{id}/messages', tags, reque
   // Idempotent per message id, so a retry also repairs a notification that failed after the message committed.
   let notified = true;
   try { await notifyMessage(auth, result.conversation, result.message); }
-  catch (failure) { notified = false; console.error('Message notification failed', failure instanceof Error ? failure.message : 'unknown'); }
+  catch (failure) {
+    notified = false;
+    console.error('Message notification failed', safeErrorMetadata(failure instanceof Error ? failure : new Error(), c.get('requestId') ?? 'unknown', c.req.routePath, 500));
+  }
   return c.json({ ...result.message, mine: true, notified }, result.created ? 201 : 200);
 });
 

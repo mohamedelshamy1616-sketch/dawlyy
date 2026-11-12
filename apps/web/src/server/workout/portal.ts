@@ -7,6 +7,7 @@ import { ProgramDocument } from '@dawlyy/core/types';
 import type { AuthContext, Tx } from '../db';
 import { forbidden, notFound } from '../../api/errors';
 import { requirePermission } from '../require-permission';
+import { assertActiveAccess } from '../access';
 import { resolveProgramDay } from './logic';
 import type { PortalProgram, PortalToday } from './contracts';
 
@@ -58,6 +59,7 @@ export async function completedDays(tx: Tx, auth: AuthContext, programId: string
 
 /** Task 5 cross-task GET /me/program contract. */
 export async function getPortalProgram(tx: Tx, auth: AuthContext): Promise<PortalProgram | null> {
+  await assertActiveAccess(tx, auth);
   const program = await publishedProgram(tx, auth);
   if (!program) return null;
   const identity = await portalIdentity(tx, auth);

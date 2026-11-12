@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
+import { requireActiveAccess } from './middleware/access';
 import { validationError } from './errors';
 import { withAuthTx } from '../server/db';
 import { getPortalProgram, getToday, requireClient } from '../server/workout/portal';
@@ -56,7 +57,7 @@ router.openapi(createRoute({ method: 'get', path: '/today', request: { query: z.
   const auth = c.get('auth'); requireClient(auth);
   return c.json(await withAuthTx(auth, tx => getToday(tx, auth, c.req.valid('query').date)), 200);
 });
-router.openapi(createRoute({ method: 'get', path: '/program', responses: { 200: portalResponse, 401: portalError, 403: portalError, 404: portalError } }), async c => {
+router.openapi(createRoute({ middleware: [requireActiveAccess] as const, method: 'get', path: '/program', responses: { 200: portalResponse, 401: portalError, 403: portalError, 404: portalError } }), async c => {
   const auth = c.get('auth'); requireClient(auth);
   return c.json(await withAuthTx(auth, tx => getPortalProgram(tx, auth)), 200);
 });

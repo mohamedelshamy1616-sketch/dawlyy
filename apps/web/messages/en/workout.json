@@ -1,4 +1,9 @@
 {
+  "accessExpired": {
+    "title": "Active subscription needed",
+    "description": "Check your subscription status and renewal instructions to access your current plan and start new workouts.",
+    "subscription": "View subscription"
+  },
   "program": "My Program",
   "workout": "Workout",
   "history": "Workout history",
