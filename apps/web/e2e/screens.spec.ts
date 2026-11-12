@@ -57,6 +57,13 @@ type Screen = {
 const screens: Screen[] = [];
 let screensDirectory: string | undefined;
 
+// SCREENS_ONLY=<substring>[,<substring>] reruns only the screens whose image name contains one of the parts, for
+// example SCREENS_ONLY=client-app-workout-start-ar-1366 (about 2 minutes instead of 45). A filtered run never
+// rewrites index.md, which must always describe a complete run.
+const only = (process.env.SCREENS_ONLY ?? '').split(',').map(part => part.trim()).filter(Boolean);
+const wanted = (image: string) => only.length === 0 || only.some(part => image.includes(part));
+const wantedRoute = (role: string, slug: string) => only.length === 0 || only.some(part => part.includes(`${role}-${slug}-`));
+
 function destination(role: Screen['role'], path: string): string {
   if (path === '') return role === 'owner' ? '/coach' : '/app/today';
   if (role === 'owner' && (path === '/app' || path.startsWith('/app/'))) return '/coach';
@@ -72,7 +79,7 @@ test.beforeAll(async ({}, testInfo) => {
 });
 
 test.afterAll(async () => {
-  if (!screensDirectory) return;
+  if (!screensDirectory || only.length > 0) return;
   const rows = screens.map((screen) => {
     const image = screen.saved ? `[${screen.image}](${screen.image})` : `${screen.image} (not captured)`;
     return `| ${image} | ${screen.role} | ${screen.route} | ${screen.locale} | ${screen.width} | ${screen.finalRoute} | ${screen.pageChecks} | ${screen.overflow} |`;
@@ -108,7 +115,7 @@ test('capture every route for both demo roles, locales and viewport widths', asy
     try {
       const login = await context.request.post('/api/dev-login', { data: { userId: actor.userId, locale: 'ar' }, maxRedirects: 0 });
       expect(login.status(), 'Dev login must issue a redirect; run both database seeds first.').toBe(303);
-      for (const route of actorRoutes(actor.role)) {
+      for (const route of actorRoutes(actor.role).filter(route => wantedRoute(actor.role, route.slug))) {
         await context.request.get(`/ar${route.path}`, { timeout: 240_000, failOnStatusCode: false }).catch(() => undefined);
       }
     } finally {
@@ -136,6 +143,7 @@ test('capture every route for both demo roles, locales and viewport widths', asy
 
           for (const route of actorRoutes(actor.role)) {
             const requestedRoute = `/${locale}${route.path}`;
+            if (!wanted(`${actor.role}-${route.slug}-${locale}-${viewport.width}.png`)) continue;
             const screen: Screen = {
               image: `${actor.role}-${route.slug}-${locale}-${viewport.width}.png`,
               role: actor.role,
@@ -151,7 +159,8 @@ test('capture every route for both demo roles, locales and viewport widths', asy
             await test.step(`${actor.role} ${requestedRoute} ${viewport.width}px`, async () => {
               try {
                 await page.goto(requestedRoute, { waitUntil: 'load' });
-                await expect(page).toHaveURL(`${baseURL}/${locale}${destination(actor.role, route.path)}`);
+                // The first visit of a run waits for a cold `next dev` compile of the redirect target (more than 45 s seen).
+                await expect(page).toHaveURL(`${baseURL}/${locale}${destination(actor.role, route.path)}`, { timeout: 150_000 });
                 await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
                 await expect(page.getByRole('heading').first()).toBeVisible();
                 await expect(page.locator('html')).toHaveAttribute('lang', locale);
@@ -160,7 +169,10 @@ test('capture every route for both demo roles, locales and viewport widths', asy
                 screen.pageChecks = 'PASS';
               } catch (error: unknown) {
                 // Still capture the visible result when a page check fails, and keep the test failing.
-                expect.soft(false, `${screen.image}: ${error instanceof Error ? error.message : String(error)}`).toBe(true);
+                // Name the cause in the message: the page URL and the HTML of every element still marked busy.
+                const busy = await page.locator('[aria-busy="true"]')
+                  .evaluateAll(nodes => nodes.map(node => node.outerHTML.slice(0, 240))).catch(() => []);
+                expect.soft(false, `${screen.image}: ${error instanceof Error ? error.message : String(error)}\n  url: ${page.url()}\n  busy: ${JSON.stringify(busy)}`).toBe(true);
               }
               try {
                 screen.finalRoute = new URL(page.url()).pathname;
@@ -185,6 +197,11 @@ test('capture every route for both demo roles, locales and viewport widths', asy
         }
       }
     }
+  }
+  if (only.length > 0) {
+    expect(screens, `SCREENS_ONLY=${only.join(',')} matched no screen`).not.toHaveLength(0);
+    expect(screens.filter((screen) => screen.saved)).toHaveLength(screens.length);
+    return;
   }
   expect(screens.filter((screen) => screen.saved)).toHaveLength(actors.reduce((sum, actor) => sum + actorRoutes(actor.role).length, 0) * locales.length * viewports.length);
 });

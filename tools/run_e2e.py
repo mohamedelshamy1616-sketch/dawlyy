@@ -69,6 +69,11 @@ def main() -> None:
     # --reuse-db: debugging only. Keeps the existing dawlyy_e2e (migrating it takes ~10 min on this disk).
     reuse = '--reuse-db' in extra
     extra = [a for a in extra if a != '--reuse-db']
+    # --only <parts> (screens target): rerun only the screens whose image name contains one of the comma-separated parts.
+    if '--only' in extra:
+        at = extra.index('--only')
+        env['SCREENS_ONLY'] = extra[at + 1]
+        del extra[at:at + 2]
     if not reuse:
         admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
         for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):

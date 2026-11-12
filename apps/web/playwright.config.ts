@@ -14,11 +14,13 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   timeout: 3_600_000,
-  expect: { timeout: 15_000 },
+  // `next dev` compiles each route on first visit (10 to 15 s, more on a loaded PC), so the waits are generous.
+  expect: { timeout: 45_000 },
   use: {
     baseURL: 'http://localhost:3210',
     browserName: 'chromium',
-    navigationTimeout: 60_000,
+    navigationTimeout: 240_000,
+    actionTimeout: 60_000,
     reducedMotion: 'reduce',
     // Keep the signed development cookie in memory, out of trace/storage-state files.
     trace: 'off',
