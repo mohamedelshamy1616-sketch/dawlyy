@@ -89,3 +89,14 @@ Prices are estimates; check each before paying.
 | Fable credits (optional) | | Anthropic usage page |
 | **Total for a paid beta** | **about $45/month** | **about $10-15/year + legal** |
 | Launch in Egypt (see BUDGET.md) | about $65-85 + usage; Paymob 2.75% + EGP 3 per card payment | domain, lawyer quote, PDPC licence |
+
+## 3. Free tiers of Supabase, Vercel and Resend for the beta (yes 12 Nov 2026, free plans only)
+
+- Mohamed said yes to the FREE plans of Supabase (database), Vercel (hosting) and Resend (email) for the beta.
+- Covers: choosing the free tier of each service. Cost: $0/month.
+- Does NOT cover: any paid plan, a domain purchase, Paymob, a lawyer, or anything that spends money. Moving to
+  Supabase Pro ($25) and Vercel Pro ($20) needs a new, specific yes before the first paying customer.
+- Account creation and logins are Mohamed's act (browser, his email, his verification). The autopilot prepares
+  everything else (`docs/plans/STAGING_SETUP.md`, env template, migration steps) and never handles his passwords.
+- Free-tier limits to remember: Supabase Free pauses a project after one week of inactivity and holds 500 MB;
+  Resend Free allows 3,000 emails a month and 100 a day; Vercel Hobby is for non-commercial use only.
