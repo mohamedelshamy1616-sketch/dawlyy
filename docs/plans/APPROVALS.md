@@ -1,9 +1,9 @@
 # DAWLYY: approvals waiting for Mohamed
 
 Every action here needs Mohamed's specific yes naming it. The autopilot never does them by itself; it keeps this
-list current and works around each item until it gets an answer. Item 1 blocks the most work.
+list current and works around pending items until it gets an answer. Items 1 and 2 are done. Item 3 records the free-tier approval.
 
-Last update: 2026-11-08 06:40 (Africa/Cairo), by the setup session (Claude Opus 5.5).
+Last update: 2026-11-12 (Africa/Cairo).
 
 Status 8 Nov 23:55: items 1 and 2 are done. After a restart and `powercfg /hibernate off` (his yes, run elevated),
 C: has about 14 GB free. The private GitHub repo exists and the watchdog pushes `main` to it hourly. The full,
@@ -39,41 +39,60 @@ startup); f) delete `%LOCALAPPDATA%\npm-cache\_npx` (1.0 GB; npx downloads its t
 - Why: an off-PC backup of the code, and Vercel deploys from GitHub.
 - Cost: free.
 
-## 3. Supabase project (database, auth, storage)
+## 3. Free tiers of Supabase, Vercel and Resend for the beta (yes 12 Nov 2026, free plans only)
+
+- Mohamed said yes to the FREE plans of Supabase (database), Vercel (hosting) and Resend (email) for the beta.
+- Covers: choosing the free tier of each service. Cost: $0/month.
+- Does NOT cover: any paid plan, a domain purchase, Paymob, a lawyer, or anything that spends money. Moving to
+  Supabase Pro (about $25/month) and Vercel Pro (about $20/user/month; check before paying for either) needs a new, specific yes before the first paying customer.
+- Account creation and logins are Mohamed's act (browser, his email, his verification). The autopilot prepares
+  everything else (`docs/plans/STAGING_SETUP.md`, env template, migration steps) and never handles his passwords.
+- Free-tier limits to remember: Supabase Free pauses a project after one week of inactivity and holds 500 MB;
+  Resend Free allows 3,000 emails a month and 100 a day; Vercel Hobby is for non-commercial use only.
+
+## 4. Supabase project (database, auth, storage)
 
 - Action: create a Supabase project in the EU (Frankfurt) region, then put its URL, anon key, service key and
   database password into `apps/web/.env.local` and `packages/db/.env` (never into git).
-- Why: the hosted database and login for the beta. Until then the app runs on the local database with the
-  development-only demo login.
-- Cost: Free plan for a small private beta (500 MB database; free projects pause after a week without traffic), or
+- Why: hosted database, login and storage. This unblocks hosted migration and Auth/Storage checks. Until then the app uses the local database and demo login.
+- Status: the free-tier choice is approved in item 3. Mohamed creates the account and logs in. Credential actions still need his specific yes. Paid upgrades need a new yes.
+- Cost: Free plan for a small private beta (small database; free projects pause after a week without traffic), or
   Pro about $25/month (check before paying).
 
-## 4. Vercel project (hosting)
+## 5. Vercel project (hosting)
 
-- Action: sign in to Vercel, import the GitHub repo, set the env vars from item 3, attach the domain.
+- Action: sign in to Vercel, import the GitHub repo, set the env vars from item 4, attach the domain after item 6.
+- Why: this unblocks a hosted beta and phone testing.
+- Status: the free-tier choice is approved in item 3. Mohamed creates the account and logs in. Import, configuration and deployment need his specific yes. A paid plan needs a new yes.
 - Cost: Hobby is free but for non-commercial use only; Pro is about $20/user/month (check before paying).
 
-## 5. Domain
+## 6. Domain
 
 - Action: buy the domain you choose for DAWLYY and point it at Vercel.
+- Why: this unblocks a branded HTTPS address and sender-domain verification.
 - Cost: about $10-15/year (check before paying).
 
-## 6. Email sending (Resend)
+## 7. Email sending (Resend)
 
-- Action: create a Resend account, verify the domain, put the API key into `apps/web/.env.local`.
-- Why: invitations, password reset and reminders by email. Without it the app logs emails instead of sending.
-- Cost: free up to 3,000 emails/month; Pro about $20/month (check before paying).
+- Action: create a Resend account, verify the domain, set `RESEND_API_KEY` and `EMAIL_FROM` in `apps/web/.env.local` for local use or the hosted server environment for deployment.
+- Why: this unblocks application notification email, including reminders. Without sender settings the app records `local-log` and sends nothing. Supabase Auth mail needs separate configuration. Invitation links are returned by the API; prove their delivery separately.
+- Status: the free-tier choice is approved in item 3. Mohamed creates the account and logs in. Domain verification, credentials and test messages need his specific yes. A paid plan needs a new yes.
+- Cost: free up to 3,000 emails/month and 100/day; Pro about $20/month (check before paying).
 
-## 7. Legal review before real clients
+## 8. Legal review before real clients
 
 - Action: an Egyptian lawyer reviews the Arabic consent texts and privacy notice (Law 151/2020 on personal data;
   health data and progress photos are sensitive data).
-- Cost: a quote is needed.
+- Why: this unblocks real-client use after counsel approves consent, privacy, hosting and any required compliance steps.
+- Cost: quote needed (BUDGET.md / Legal; check before paying).
 
-## 8. Optional: Fable credits for the final review
+## 9. Optional: Fable credits for the final review
 
 - Fable 5.1 now needs paid usage credits ("out of usage credits", 8 Nov 04:47). The autopilot uses Opus for the
-  final security review instead. Buying credits is optional; price on Anthropic's usage page.
+  final security review instead.
+- Action: buy optional Fable review credits only after a new yes naming the purchase.
+- Why: this unblocks an optional additional review; it does not block the beta.
+- Cost: no amount is established in BUDGET.md; check before paying.
 
 ## Budget total
 
@@ -86,17 +105,7 @@ Prices are estimates; check each before paying.
 | Resend | $0 up to 3,000 emails | |
 | Domain | | about $10-15/year |
 | Legal review | | quote needed |
-| Fable credits (optional) | | Anthropic usage page |
+| Fable credits (optional) | | no amount established in BUDGET.md |
+| Approved free beta tiers (12 Nov) | $0 | domain and legal review need separate approval |
 | **Total for a paid beta** | **about $45/month** | **about $10-15/year + legal** |
 | Launch in Egypt (see BUDGET.md) | about $65-85 + usage; Paymob 2.75% + EGP 3 per card payment | domain, lawyer quote, PDPC licence |
-
-## 3. Free tiers of Supabase, Vercel and Resend for the beta (yes 12 Nov 2026, free plans only)
-
-- Mohamed said yes to the FREE plans of Supabase (database), Vercel (hosting) and Resend (email) for the beta.
-- Covers: choosing the free tier of each service. Cost: $0/month.
-- Does NOT cover: any paid plan, a domain purchase, Paymob, a lawyer, or anything that spends money. Moving to
-  Supabase Pro ($25) and Vercel Pro ($20) needs a new, specific yes before the first paying customer.
-- Account creation and logins are Mohamed's act (browser, his email, his verification). The autopilot prepares
-  everything else (`docs/plans/STAGING_SETUP.md`, env template, migration steps) and never handles his passwords.
-- Free-tier limits to remember: Supabase Free pauses a project after one week of inactivity and holds 500 MB;
-  Resend Free allows 3,000 emails a month and 100 a day; Vercel Hobby is for non-commercial use only.
