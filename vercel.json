@@ -6,12 +6,6 @@
   "regions": [
     "fra1"
   ],
-  "crons": [
-    {
-      "path": "/api/cron/due-events",
-      "schedule": "0 * * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
