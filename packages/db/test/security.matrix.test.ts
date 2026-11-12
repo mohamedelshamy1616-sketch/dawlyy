@@ -229,7 +229,9 @@ describe('complete policy matrix', () => {
     expect((await serviceRowWhere(cell.table,keyWhere(cell.table,goodRow)))[0]?.[cell.column]).toBe(value);
   });
   for (const actorName of ['o1', 's1', 'ua'] as const) it(`S04 dawlyy_probe.t ${actorName} INSERT/UPDATE tenant_id T1/T2 empty guard`, async () => {
-    await withProbe({}, async () => {
+    // doc S04: no immutable/transition rule may mask WITH CHECK. A client role is refused any UPDATE by the guard unless the
+    // column is listed in client_update, so for ua list the two columns this test edits; the tenant guard policy still decides.
+    await withProbe(actorName === 'ua' ? { client_update: ['tenant_id', 'notes'] } : {}, async () => {
       const a = randomUUID(); const b = randomUUID(); const proposed = randomUUID();
       await svc((tx) => tx.execute(sql`insert into dawlyy_probe.t (id, tenant_id, notes) values (${a}, ${fx.t1}, 'T1'), (${b}, ${fx.t2}, 'T2')`));
       expect(await as(fx[actorName], (tx) => q(tx, sql`select id from dawlyy_probe.t order by id`))).toEqual([{ id: a }]);
