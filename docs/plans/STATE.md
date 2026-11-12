@@ -652,3 +652,9 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - My two edits on top: plain-http endpoints keep the old code `invalid_push_endpoint` (an existing assertion pins it), and the notifications test fixture host is now `fcm.googleapis.com` because S4 forbids `push.example.test`. No assertion was loosened; the registration unit test derives the expected code from the same rule.
 - S2 (hosted upload signatures bind neither size nor MIME) stays open until the hosted bucket carries MIME and size limits; to be recorded in LAUNCH_RUNBOOK and FINAL_REVIEW as accepted until hosted.
 - Evidence: typecheck exit 0; `run_db_tests.py --web` 65 files, 479 tests passed (400 before).
+
+## 12 Nov 2026 10:00 (Cairo): run_checks on e5d6351: 7 of 8 green, test-web red on a race
+
+- typecheck, lint, build-web, test-core, test-db, e2e-ar, e2e-en green (the same-origin guard works in the real browser runs). `test-web` failed once: `exercises.test.ts` "does not insert twice when first import requests overlap" expected two identical 200s; since the reservation fix the second overlapping request is either a replayed 200 or 409 `idempotency_in_progress`. Not a product bug: that is the designed R1 outcome.
+- Test change, citing pre-review R1 (`docs/qa/p7-codex-prereview.md`): the winner answers 200, a loser is 200 (identical) or 409 `idempotency_in_progress`, exactly one row is inserted, and a retry after both settle replays the 200 receipt. Four consecutive runs of the file passed (16 of 16 each).
+- Next: fresh `run_checks.py` on the clean tree; then wait for the weekly reset (Tue 06:00) for P7.

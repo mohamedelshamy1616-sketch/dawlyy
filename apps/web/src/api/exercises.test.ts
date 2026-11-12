@@ -158,7 +158,17 @@ describe.runIf(Boolean(process.env.DATABASE_URL && process.env.DATABASE_URL_SERV
     const before = await countTenantRows();
     const options = { ...asOwner(), headers: { 'Idempotency-Key': randomUUID() }, body: { csv: csv([`parallel-${randomUUID()}`]), mapping: { name_en: 0, category: 1, difficulty: 2 }, onDuplicate: 'import_anyway' } };
     const [first, second] = await Promise.all([call(app, 'POST', '/api/v1/exercises/import/commit', options), call(app, 'POST', '/api/v1/exercises/import/commit', options)]);
-    expect(first.status).toBe(200); expect(second).toEqual(first); expect(await countTenantRows()).toBe(before + 1);
+    // Pre-review R1: overlapping retries of one key run the import once. The request that reserved the key answers 200;
+    // the other either replays that receipt (it arrived after the commit) or is refused 409 idempotency_in_progress.
+    const settled = [first, second]; const winners = settled.filter(response => response.status === 200);
+    expect(winners.length).toBeGreaterThanOrEqual(1);
+    for (const response of settled.filter(candidate => candidate.status !== 200)) {
+      expect(response.status).toBe(409); expect(response.json).toMatchObject({ error: { code: 'idempotency_in_progress' } });
+    }
+    if (winners.length === 2) expect(second).toEqual(first);
+    expect(await countTenantRows()).toBe(before + 1);
+    const replay = await call(app, 'POST', '/api/v1/exercises/import/commit', options);
+    expect(replay.status).toBe(200); expect(replay.json).toEqual(winners[0]!.json); expect(await countTenantRows()).toBe(before + 1);
     expect((await call(app, 'POST', '/api/v1/exercises/import/commit', { ...options, body: { ...options.body, csv: csv(['different']) } })).status).toBe(409);
     expect((await call(app, 'POST', '/api/v1/exercises/import/commit', { ...asOwner(), body: options.body })).status).toBe(400);
   });
