@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { ApiError, forbidden, notFound, unprocessable, validationError } from '../../api/errors';
 import { withServiceTx, type AuthContext, type Tx } from '../db';
 import { assertActiveAccess } from '../access';
+import { assertWorkoutSyncAccess } from './access';
 import { buildSummary, coreRecord, isNewer, sessionTarget } from './logic';
 import { requireClient } from './portal';
 import { comparisonHistory, getSession, readSets, sessionProjection } from './read';
@@ -51,7 +52,7 @@ export async function startSession(tx: Tx, auth: AuthContext, body: z.infer<type
     if (existing.programId !== body.programId || existing.programVersionId !== body.programVersionId || existing.dayId !== body.dayId || existing.workoutId !== body.workoutId) throw conflict();
     return getSession(tx, auth, existing.id);
   }
-  
+
   const [version] = await tx.select({ document: clientColumns.programVersions.document }).from(programVersions)
     .innerJoin(programs, and(eq(programs.id, programVersions.programId), eq(programs.publishedVersionId, programVersions.id)))
     .where(and(eq(programVersions.tenantId, auth.tenantId), eq(programVersions.clientId, clientId),
@@ -137,10 +138,13 @@ async function syncSet(tx: Tx, auth: AuthContext, body: SetWrite) {
 
 /** Task 5 / §12.1(12): atomic batch, sessions first, row savepoints, stale LWW writes acknowledged. */
 export async function syncWorkout(tx: Tx, auth: AuthContext, body: { sessions: SessionWrite[]; sets: SetWrite[] }) {
-  requireClient(auth, true); await assertActiveAccess(tx, auth); await lockClient(tx, auth);
+  requireClient(auth, true); await lockClient(tx, auth);
+  const eligible = await assertWorkoutSyncAccess(tx, auth, body);
   const accepted: string[] = []; const rejected: Array<{ clientUuid: string; reason: string }> = []; const sessionIds = new Set<string>();
   for (const entry of [...body.sessions.map(record => ({ kind: 'session' as const, record })), ...body.sets.map(record => ({ kind: 'set' as const, record }))]) {
     try {
+      const sessionUuid = entry.kind === 'session' ? entry.record.clientUuid : entry.record.sessionClientUuid;
+      if (eligible && !eligible.has(sessionUuid)) throw forbidden('access_expired');
       const id = await tx.transaction(savepoint => entry.kind === 'session' ? syncSession(savepoint, auth, entry.record) : syncSet(savepoint, auth, entry.record));
       sessionIds.add(id); accepted.push(entry.record.clientUuid);
     } catch (error) {

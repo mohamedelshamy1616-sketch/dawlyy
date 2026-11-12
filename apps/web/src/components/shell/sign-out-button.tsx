@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/src/lib/supabase-browser";
+import { signOutWithPushCleanup } from "@/src/lib/push-sign-out";
 
 /** Icon button (44 px) that signs out and returns to the login page. `withLabel` also shows the text. */
 export function SignOutButton({ withLabel = false }: { withLabel?: boolean }) {
@@ -12,7 +13,7 @@ export function SignOutButton({ withLabel = false }: { withLabel?: boolean }) {
 
   async function signOut() {
     try {
-      await createSupabaseBrowserClient().auth.signOut();
+      await signOutWithPushCleanup(() => createSupabaseBrowserClient().auth.signOut());
     } finally {
       router.replace("/login");
       router.refresh();

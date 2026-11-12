@@ -6,7 +6,7 @@ import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapMessagingError } from '../server/messaging/errors';
 import { idParams, notificationsQuery, preferencesBody, pushSubscriptionBody } from '../server/messaging/schemas';
-import { deletePushSubscription, getPreferences, listNotifications, markAllNotificationsRead, markNotificationRead, putPreferences, registerPushSubscription } from '../server/notify/center';
+import { deletePushEndpoint, deletePushSubscription, getPreferences, listNotifications, markAllNotificationsRead, markNotificationRead, putPreferences, registerPushSubscription } from '../server/notify/center';
 
 /**
  * Task 9 / doc section 12.1: the signed-in user's notification center, preferences and Web Push subscriptions.
@@ -60,6 +60,13 @@ router.openapi(createRoute({ method: 'post', path: '/push-subscriptions', tags, 
 router.openapi(createRoute({ method: 'delete', path: '/push-subscriptions/{id}', tags, request: { params: idParams }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth');
   return c.json(await transaction(auth, tx => deletePushSubscription(tx, auth, c.req.valid('param').id)), 200);
+});
+
+// P7 D4: logout knows the browser endpoint even after a reload, without storing a server row id.
+router.openapi(createRoute({ method: 'delete', path: '/push-subscriptions', tags,
+  request: { body: body(pushSubscriptionBody.pick({ endpoint: true }).strict()) }, responses: { 200: json, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await transaction(auth, tx => deletePushEndpoint(tx, auth, c.req.valid('json').endpoint)), 200);
 });
 
 // Mark one own notification read. 404 for a missing or foreign id.

@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
+import { createMiddleware } from 'hono/factory';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
 import { requireActiveAccess } from './middleware/access';
@@ -6,6 +7,7 @@ import { idempotentReplay } from './middleware/idempotency';
 import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { requireClient } from '../server/workout/portal';
+import { assertWorkoutSyncAccess } from '../server/workout/access';
 import { getExerciseHistory, getSession, listSessions } from '../server/workout/read';
 import { finishSchema, historyQuerySchema, patchSessionSchema, startSessionSchema, syncSchema } from '../server/workout/contracts';
 import { finishSession, patchSession, refreshSummaries, startSession, syncWorkout, workoutError } from '../server/workout/write';
@@ -29,7 +31,16 @@ async function transaction<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T>) {
 router.openapi(createRoute({ middleware: [requireActiveAccess, idempotentReplay] as const, method: 'post', path: '/', request: { body: body(startSessionSchema) }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => startSession(tx, auth, c.req.valid('json'))), 200);
 });
-router.openapi(createRoute({ middleware: [requireActiveAccess, idempotentReplay] as const, method: 'post', path: '/sync', request: { body: body(syncSchema) }, responses: { 200: json, ...errors } }), async c => {
+// Check before replay too: an old success must not authorize a new session after access lapses.
+const requireSyncAccess = createMiddleware<ApiEnv>(async (c, next) => {
+  let input: unknown;
+  try { input = await c.req.json(); } catch { throw validationError(); }
+  const parsed = syncSchema.safeParse(input);
+  if (!parsed.success) throw validationError(parsed.error.issues);
+  await transaction(c.get('auth'), tx => assertWorkoutSyncAccess(tx, c.get('auth'), parsed.data));
+  await next();
+});
+router.openapi(createRoute({ middleware: [requireSyncAccess, idempotentReplay] as const, method: 'post', path: '/sync', request: { body: body(syncSchema) }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); const result = await transaction(auth, tx => syncWorkout(tx, auth, c.req.valid('json')));
   await refreshSummaries(auth, result.sessionIds);
   return c.json({ accepted: result.accepted, rejected: result.rejected, serverTime: result.serverTime }, 200);

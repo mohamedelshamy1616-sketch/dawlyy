@@ -4,7 +4,7 @@ import { clientColumns } from '@dawlyy/db';
 import { clients, nutritionPlans, nutritionPlanVersions, programs, programVersions } from '@dawlyy/db/schema';
 import type { AuthContext, Tx } from '../db';
 import { assertActiveAccess } from '../access';
-import { forbidden } from '../../api/errors';
+import { forbidden, notFound } from '../../api/errors';
 import { nutritionFoods } from './client-read';
 import { documentTotals } from './helpers';
 
@@ -13,12 +13,20 @@ export function nutritionDate(timezone: string, now = new Date()): string {
   const parts = new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
   return ['year', 'month', 'day'].map(type => parts.find(p => p.type === type)?.value ?? '').join('-');
 }
+/** P7 D1: resolve free-meal entry dates without reading a subscription-gated plan. */
+export async function nutritionLogContext(tx: Tx, auth: AuthContext) {
+  if (auth.role !== 'client' || !auth.clientId) throw forbidden();
+  const [client] = await tx.select({ timezone: clientColumns.clients.timezone }).from(clients)
+    .where(and(eq(clients.id, auth.clientId), eq(clients.tenantId, auth.tenantId))).limit(1);
+  if (!client) throw notFound();
+  const timezone = client.timezone ?? 'Africa/Cairo';
+  return { timezone, localDate: nutritionDate(timezone) };
+}
 /** Task 6: all client plan/program/food reads use the safe column maps and own-client predicates. */
 export async function myNutrition(tx: Tx, auth: AuthContext) {
   if (auth.role !== 'client' || !auth.clientId) throw forbidden();
   await assertActiveAccess(tx, auth);
-  const [client] = await tx.select({ timezone: clientColumns.clients.timezone }).from(clients).where(and(eq(clients.id, auth.clientId), eq(clients.tenantId, auth.tenantId))).limit(1);
-  const timezone = client?.timezone ?? 'Africa/Cairo'; const localDate = nutritionDate(timezone);
+  const { timezone, localDate } = await nutritionLogContext(tx, auth);
   const [head] = await tx.select(clientColumns.nutritionPlans).from(nutritionPlans).where(and(eq(nutritionPlans.tenantId, auth.tenantId), eq(nutritionPlans.clientId, auth.clientId), isNull(nutritionPlans.archivedAt))).orderBy(desc(nutritionPlans.createdAt), desc(nutritionPlans.id)).limit(1);
   const [version] = head?.publishedVersionId ? await tx.select(clientColumns.nutritionPlanVersions).from(nutritionPlanVersions).where(and(eq(nutritionPlanVersions.id, head.publishedVersionId), eq(nutritionPlanVersions.planId, head.id), eq(nutritionPlanVersions.clientId, auth.clientId), eq(nutritionPlanVersions.status, 'published'))).limit(1) : [];
   const [program] = await tx.select({ document: clientColumns.programVersions.document }).from(programVersions).innerJoin(programs, and(eq(programs.publishedVersionId, programVersions.id), eq(programs.id, programVersions.programId))).where(and(eq(programs.tenantId, auth.tenantId), eq(programs.clientId, auth.clientId), isNull(programs.archivedAt), eq(programVersions.status, 'published'))).orderBy(desc(programs.createdAt), desc(programs.id)).limit(1);

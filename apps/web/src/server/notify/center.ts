@@ -92,3 +92,10 @@ export async function deletePushSubscription(tx: Tx, auth: AuthContext, id: stri
   if (rows.length === 0) throw notFound('Push subscription not found');
   return { id, deleted: true as const };
 }
+
+/** P7 D4 / §12.1(9): logout resolves by browser endpoint and deletes only the caller's row under RLS. */
+export async function deletePushEndpoint(tx: Tx, auth: AuthContext, endpoint: string) {
+  await tx.delete(pushSubscriptions).where(and(eq(pushSubscriptions.tenantId, auth.tenantId),
+    eq(pushSubscriptions.userId, auth.userId), eq(pushSubscriptions.endpoint, endpoint)));
+  return { deleted: true as const };
+}

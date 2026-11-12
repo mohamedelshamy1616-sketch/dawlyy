@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ExerciseSeed, PLANES } from '@dawlyy/core/types';
 import { EXERCISE_IMPORT_FIELDS } from '@dawlyy/core/csv';
+import { MAX_CSV_BYTES } from '../request-limits';
 
 /** Task 4: exact external video host allow-list; own storage uses the configured Supabase origin. */
 export const VIDEO_HOSTS: readonly string[] = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'vimeo.com', 'www.vimeo.com', 'player.vimeo.com'];
@@ -43,6 +44,6 @@ export type ExerciseInput = z.infer<typeof exerciseInput>;
 export const columnMapping = z.partialRecord(z.enum(EXERCISE_IMPORT_FIELDS), z.number().int().min(0).max(1000));
 /** Task 4: CSV upload is bounded by UTF-8 bytes, not JavaScript code units. */
 export const importInput = z.object({
-  csv: z.string().max(1_048_576).refine((value) => new TextEncoder().encode(value).length <= 1_048_576, 'csv_too_large'),
+  csv: z.string().max(MAX_CSV_BYTES).refine((value) => new TextEncoder().encode(value).length <= MAX_CSV_BYTES, 'csv_too_large'),
   mapping: columnMapping.optional(),
 }).strict();

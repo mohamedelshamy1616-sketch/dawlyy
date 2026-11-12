@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { SESSION_STATES, type ProgramDocument, type Workout, type LocalizedText } from '@dawlyy/core/types';
 import type { PerformedSet, SessionRecord } from '@dawlyy/core/workout';
 import type { buildSummary } from './logic';
+import { MAX_SYNC_SESSIONS, MAX_SYNC_SETS, MAX_SYNC_TIMESTAMP_CHARS } from '../request-limits';
 
 const uuid = z.string().uuid();
-const stamp = z.iso.datetime({ offset: true });
+const stamp = z.iso.datetime({ offset: true }).max(MAX_SYNC_TIMESTAMP_CHARS);
 const date = z.iso.date();
 const zone = z.string().max(100).refine(value => { try { new Intl.DateTimeFormat('en', { timeZone: value }); return true; } catch { return false; } }, 'Invalid timezone');
 
@@ -22,7 +23,7 @@ export const setSyncSchema = z.object({ clientUuid: uuid, clientUpdatedAt: stamp
   completed: z.boolean().default(false), skipped: z.boolean().default(false), substitutedFor: uuid.nullable().optional(), painFlag: z.boolean().default(false), note: z.string().max(4000).nullable().optional(), deletedAt: stamp.nullable().optional(),
 }).strict();
 /** Task 5: bounded atomic outbox batch; rejected records do not abort other rows. */
-export const syncSchema = z.object({ sessions: z.array(sessionSyncSchema).max(100), sets: z.array(setSyncSchema).max(1000) }).strict();
+export const syncSchema = z.object({ sessions: z.array(sessionSyncSchema).max(MAX_SYNC_SESSIONS), sets: z.array(setSyncSchema).max(MAX_SYNC_SETS) }).strict();
 /** Task 5: explicit online transition events and editable personal notes. */
 export const patchSessionSchema = mutableSession.extend({ event: z.enum(['start', 'pause', 'resume']).optional() }).strict().refine(value => Object.keys(value).length > 0);
 /** Task 5: finish accepts observed facts; comparisons and summary remain server-owned. */
