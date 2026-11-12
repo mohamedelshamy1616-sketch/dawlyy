@@ -57,7 +57,9 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         timezoneId: 'Africa/Cairo', reducedMotion: 'reduce' as const };
       ownerContext = await browser.newContext(options);
       clientContext = await browser.newContext(options);
-      ownerContext.setDefaultTimeout(20_000); clientContext.setDefaultTimeout(20_000);
+      // 60 s like actionTimeout in playwright.e2e.config.ts: `next dev` compiles a route on its first visit (10 to 15 s,
+      // more on a loaded PC); a 20 s wait failed e2e-ar step 5 once at the assign page while en and a rerun passed.
+      ownerContext.setDefaultTimeout(60_000); clientContext.setDefaultTimeout(60_000);
       ownerContext.setDefaultNavigationTimeout(240_000); clientContext.setDefaultNavigationTimeout(240_000);
       ownerHealth = browserHealth(ownerContext, locale); clientHealth = browserHealth(clientContext, locale);
       owner = await ownerContext.newPage(); client = await clientContext.newPage();

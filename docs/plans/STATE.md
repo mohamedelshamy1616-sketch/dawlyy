@@ -626,3 +626,8 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - Evidence: `pnpm -r --workspace-concurrency=1 typecheck` exit 0; `python tools/run_db_tests.py` 16 files, 11,791 tests passed; `--web` 60 files, 382 passed; security.catalog 110 passed.
 - Not yet run on this HEAD: lint, build-web, test-core, e2e-ar, e2e-en (run_checks.py). The router split changes mounts, so e2e is the real proof for the client routes.
 - Next: commit this block, then `run_checks.py` on a clean tree as a job (never edit the repo while it runs), then P6 probes and red team, then P7 (waits for the weekly reset, Tue 06:00; weekly is at 85 percent, so Codex-only builds until then).
+
+## 12 Nov 2026 07:35 (Cairo): first full run_checks on the C15 commit: 7 of 8 green
+
+- `run_checks` on `b4d32a5` (job checks-c15): typecheck, lint, build-web, test-core, test-db (759 s), test-web, e2e-en green; e2e-ar red once. Cause read from the log: step 5 `locator.fill` on the nutrition assign search box, Timeout 20000ms. `beta-gate.spec.ts` set the contexts' default timeout to 20 s, below the config's 60 s, and `next dev` compiles routes on first visit. A traced rerun of e2e-ar alone (job e2e-ar-trace) passed 10 of 10.
+- Fix: the contexts' default timeout is 60 s. No assertion changed. Next: a fresh `run_checks` on the clean tree.
