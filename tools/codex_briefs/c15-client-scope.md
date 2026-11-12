@@ -94,6 +94,8 @@ Security model `docs/architecture/02-database-security-model.md`:
 
 ## You cannot run anything
 
+This brief replaces the usual common brief: its path limits are the list above, and `apps/web/src/api/index.ts` and `apps/web/src/api/middleware/**` are in scope here. Never run git, never create commits, never add dependencies, never print env values or keys. Server code stays `import 'server-only'` where it already is; Next.js 16 conventions apply (read `apps/web/AGENTS.md` first).
+
 No pnpm, node, vitest, tsc, psql, git or network. Check by reading: after each router change, re-read the handler
 list and compare method, path and response shape against the router's test file in `apps/web/src/api/<name>.test.ts`.
 Claude runs `python tools/run_db_tests.py --reuse-db test/security.catalog.test.ts`, typecheck and the web API suite.
