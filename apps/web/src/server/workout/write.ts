@@ -50,8 +50,8 @@ export async function startSession(tx: Tx, auth: AuthContext, body: z.infer<type
     if (existing.programId !== body.programId || existing.programVersionId !== body.programVersionId || existing.dayId !== body.dayId || existing.workoutId !== body.workoutId) throw conflict();
     return getSession(tx, auth, existing.id);
   }
-  const v = clientColumns.programVersions;
-  const [version] = await tx.select({ document: v.document }).from(programVersions)
+  
+  const [version] = await tx.select({ document: clientColumns.programVersions.document }).from(programVersions)
     .innerJoin(programs, and(eq(programs.id, programVersions.programId), eq(programs.publishedVersionId, programVersions.id)))
     .where(and(eq(programVersions.tenantId, auth.tenantId), eq(programVersions.clientId, clientId),
       eq(programVersions.programId, body.programId), eq(programVersions.id, body.programVersionId),

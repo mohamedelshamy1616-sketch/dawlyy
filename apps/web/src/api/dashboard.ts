@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
-import { forbidden, validationError } from './errors';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapDashboardError } from '../server/dashboard/helpers';
 import { dashboardQueue, dashboardSummary } from '../server/dashboard/queue';
@@ -14,11 +14,8 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 // Clients never read coach dashboard data: refuse before validation or any query.
-router.use('*', async (c, next) => {
-  if (c.get('auth').role === 'client') throw forbidden();
-  await next();
-});
 
 const json = { description: 'Coach dashboard data', content: { 'application/json': { schema: z.unknown() } } };
 const error = { description: 'Standard API error', content: { 'application/json': { schema: z.object({ error: z.object({ code: z.string(), message: z.string(), details: z.unknown().optional() }) }) } } };

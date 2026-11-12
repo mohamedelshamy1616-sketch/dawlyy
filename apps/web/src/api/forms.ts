@@ -1,21 +1,18 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { forbidden, validationError } from './errors';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapFormError } from '../server/forms/helpers';
-import { clientEvents, clientFormForEvent, clientIntake, getForm, getFormVersion, listForms, listFormVersions } from '../server/forms/read';
+import { getForm, getFormVersion, listForms, listFormVersions } from '../server/forms/read';
 import { copyForm, createForm, markKnown, patchForm, publishForm, putFormDraft, revertForm, sendForm, skipForm } from '../server/forms/service';
 import { createFormSchema, customizeSchema, draftSchema, formListSchema, knownSchema, patchFormSchema, publishSchema, revertSchema, sendSchema, skipSchema } from '../server/forms/schemas';
 
 /** Task 7 / §12.1: versioned templates and explicit own-client form projections. */
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!result.success) throw validationError(result.error.issues); } });
 router.use('*', requireAuthMiddleware);
-router.use('*', async (c, next) => {
-  if (c.get('auth').role === 'client' && !(c.req.method === 'GET' && /\/forms\/(for-client\/[^/]+|intake|events)\/?$/.test(c.req.path))) throw forbidden();
-  await next();
-});
+router.use('*', requireStaffRole);
 router.use('*', idempotentReplay);
 const params = z.object({ id: z.uuid() });
 const query = z.object({ limit: z.string().optional(), cursor: z.string().optional() });
@@ -27,15 +24,6 @@ const tags = ['Forms'];
 async function transaction<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T>) {
   try { return await withAuthTx(auth, fn); } catch (error) { throw mapFormError(error); }
 }
-router.openapi(createRoute({ method: 'get', path: '/intake', tags, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => clientIntake(tx, auth)), 200);
-});
-router.openapi(createRoute({ method: 'get', path: '/events', tags, request: { query: query.extend({ formKind: z.enum(['checkin', 'assessment']) }) }, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => clientEvents(tx, auth, c.req.valid('query'))), 200);
-});
-router.openapi(createRoute({ method: 'get', path: '/for-client/{eventId}', tags, request: { params: z.object({ eventId: z.uuid() }) }, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => clientFormForEvent(tx, auth, c.req.valid('param').eventId)), 200);
-});
 router.openapi(createRoute({ method: 'post', path: '/send', tags, request: { body: body(sendSchema) }, responses: { 201: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => sendForm(tx, auth, c.req.valid('json'))), 201);
 });

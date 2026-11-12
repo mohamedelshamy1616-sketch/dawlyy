@@ -9,19 +9,15 @@ import { and, asc, desc, eq, gte, isNull, lt, or, sql } from 'drizzle-orm';
 import { z } from '@hono/zod-openapi';
 import type { AuthContext, Tx } from '../db';
 import { requireBillingPermission } from '../payments/permission';
-import { forbidden, notFound, unprocessable, validationError } from '../../api/errors';
+import { notFound, unprocessable, validationError } from '../../api/errors';
 import { page, parseListQuery } from '../../api/lib/pagination';
 import { manualPaymentProvider } from '../payments/provider';
 import { moneyMinor, moneyNumber } from '../payments/money';
 import { saleInput, subscriptionQuery } from './contracts';
-import { buildCalendar, freezeReason, readReason, timelineFor, todayIn } from './timeline';
+import { buildCalendar, freezeReason, readReason, timelineFor } from './timeline';
 
-/** T3b: tenant date used by countdowns and expiry checks. */
-export async function tenantToday(tx: Tx, tenantId: string) {
-  const [tenant] = await tx.select({ timezone: tenants.timezone }).from(tenants).where(eq(tenants.id, tenantId)).limit(1);
-  if (!tenant) throw notFound();
-  return { today: todayIn(tenant.timezone), timezone: tenant.timezone };
-}
+import { tenantToday } from './client-read';
+export { tenantToday, mySubscription } from './client-read';
 
 /** T3b: staff subscriptions list; clients have a separate own-subscription boundary. */
 export async function listSubscriptions(tx: Tx, auth: AuthContext, query: z.infer<typeof subscriptionQuery>) {
@@ -55,19 +51,10 @@ export async function getSubscription(tx: Tx, auth: AuthContext, id: string) {
     .where(and(eq(clientEntitlementOverrides.tenantId, auth.tenantId), eq(clientEntitlementOverrides.clientId, sub.clientId),
       isNull(clientEntitlementOverrides.revokedAt), or(isNull(clientEntitlementOverrides.subscriptionId), eq(clientEntitlementOverrides.subscriptionId, id))))
     .orderBy(asc(clientEntitlementOverrides.createdAt), asc(clientEntitlementOverrides.id));
-  return { subscription: sub, events: events.map((e) => ({ ...e, ...(e.kind === 'freeze' ? readReason(e.reason) : { reason: e.reason }) })), upcoming,
+  return { subscription: sub, events: events.map((e) => ({ ...e, ...(e.kind === 'freeze' ? readReason(e.reason) : { reason: e.reason }) })), upcoming: upcoming.map(({ attachedFormId, pinnedVersionId, ...event }) => {
+    void attachedFormId; void pinnedVersionId; return event;
+  }),
     accessStatus: accessStatus(sub, today), entitlements: resolveEntitlements(sub.packageSnapshot.entitlements, overrides.map((e) => e.override), { today }) };
-}
-
-/** T3b / §12.1(2): countdown-only portal response, selected through clientColumns. */
-export async function mySubscription(tx: Tx, auth: AuthContext) {
-  if (auth.role !== 'client' || !auth.clientId) throw forbidden();
-  const rows = await tx.select(clientColumns.subscriptions).from(subscriptions)
-    .where(and(eq(subscriptions.tenantId, auth.tenantId), eq(subscriptions.clientId, auth.clientId)))
-    .orderBy(desc(subscriptions.createdAt), desc(subscriptions.id));
-  const { today } = await tenantToday(tx, auth.tenantId);
-  const sub = rows.find((row) => accessStatus(row, today).hasAccess) ?? rows[0];
-  return sub ? { subscription: sub, accessStatus: accessStatus(sub, today) } : { subscription: null, accessStatus: null };
 }
 
 /** T3b / G1: sale, optional pending payment, separate verification UPDATE and activation are atomic. */

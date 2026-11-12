@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import * as schema from './schema';
 
 /**
@@ -36,6 +37,28 @@ export const clientColumns = {
     createdAt: schema.memberships.createdAt,
     updatedAt: schema.memberships.updatedAt,
     disabledAt: schema.memberships.disabledAt,
+  },
+  // Invitation acceptance is bearer-scoped; the secret digest is only a predicate, never a selected field.
+  invitations: {
+    id: schema.invitations.id,
+    tenantId: schema.invitations.tenantId,
+    role: schema.invitations.role,
+    clientId: schema.invitations.clientId,
+    displayName: schema.invitations.displayName,
+    email: schema.invitations.email,
+    phone: schema.invitations.phone,
+    permissions: schema.invitations.permissions,
+    status: schema.invitations.status,
+    invitedBy: schema.invitations.invitedBy,
+    expiresAt: schema.invitations.expiresAt,
+    acceptedAt: schema.invitations.acceptedAt,
+    acceptedUserId: schema.invitations.acceptedUserId,
+    createdAt: schema.invitations.createdAt,
+  },
+  staffClientAssignments: {
+    tenantId: schema.staffClientAssignments.tenantId,
+    membershipId: schema.staffClientAssignments.membershipId,
+    clientId: schema.staffClientAssignments.clientId,
   },
   businessSettings: {
     tenantId: schema.businessSettings.tenantId,
@@ -330,6 +353,8 @@ export const clientColumns = {
   },
   calendarEvents: {
     id: schema.calendarEvents.id,
+    attachedFormId: sql<string | null>`${schema.calendarEvents.payload}->>'formId'`,
+    pinnedVersionId: sql<string | null>`${schema.calendarEvents.payload}->>'formVersionId'`,
     tenantId: schema.calendarEvents.tenantId,
     clientId: schema.calendarEvents.clientId,
     subscriptionId: schema.calendarEvents.subscriptionId,

@@ -1,6 +1,6 @@
 import 'server-only';
 import { and, eq, isNull, sql } from 'drizzle-orm';
-import type { Tx } from '@dawlyy/db';
+import { clientColumns, type Tx } from '@dawlyy/db';
 import { notificationDeliveries, notifications, pushSubscriptions, tenants, userPreferences } from '@dawlyy/db/schema';
 import { effectiveChannels, isValidTimeZone, quietWindowEnd, type NotifyChannel } from './logic';
 
@@ -42,10 +42,10 @@ export async function notify(tx: Tx, input: NotifyInput): Promise<NotifyResult> 
   const [inserted] = await tx.insert(notifications).values({
     tenantId: input.tenantId, userId: input.userId, clientId: input.clientId ?? null, type: input.type,
     title: input.title, body: input.body ?? null, link: input.link ?? null, dedupeKey: input.dedupeKey, payload: input.payload ?? null,
-  }).onConflictDoNothing({ target: [notifications.tenantId, notifications.userId, notifications.dedupeKey] }).returning({ id: notifications.id });
+  }).onConflictDoNothing({ target: [notifications.tenantId, notifications.userId, notifications.dedupeKey] }).returning({ id: clientColumns.notifications.id });
   let notificationId = inserted?.id;
   if (!notificationId) {
-    const [existing] = await tx.select({ id: notifications.id }).from(notifications)
+    const [existing] = await tx.select({ id: clientColumns.notifications.id }).from(notifications)
       .where(and(eq(notifications.tenantId, input.tenantId), eq(notifications.userId, input.userId), eq(notifications.dedupeKey, input.dedupeKey))).limit(1);
     if (!existing) throw new Error('notification neither inserted nor found');
     notificationId = existing.id;
@@ -53,22 +53,22 @@ export async function notify(tx: Tx, input: NotifyInput): Promise<NotifyResult> 
   // Two callers racing on the same notification must not both add delivery rows.
   await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${`notify:${notificationId}`}, 0))`);
 
-  const [prefsRow] = await tx.select({ preferences: userPreferences.preferences }).from(userPreferences)
+  const [prefsRow] = await tx.select({ preferences: clientColumns.userPreferences.preferences }).from(userPreferences)
     .where(and(eq(userPreferences.tenantId, input.tenantId), eq(userPreferences.userId, input.userId))).limit(1);
   const prefs = prefsRow?.preferences ?? {};
-  const [tenant] = await tx.select({ timezone: tenants.timezone }).from(tenants).where(eq(tenants.id, input.tenantId)).limit(1);
+  const [tenant] = await tx.select({ timezone: clientColumns.tenants.timezone }).from(tenants).where(eq(tenants.id, input.tenantId)).limit(1);
   const zoneCandidate = prefs.timezone ?? tenant?.timezone ?? 'Africa/Cairo';
   const zone = isValidTimeZone(zoneCandidate) ? zoneCandidate : 'Africa/Cairo';
   const channels = effectiveChannels(prefs);
   const [subscription] = channels.webpush
-    ? await tx.select({ id: pushSubscriptions.id }).from(pushSubscriptions)
+    ? await tx.select({ id: clientColumns.pushSubscriptions.id }).from(pushSubscriptions)
       .where(and(eq(pushSubscriptions.tenantId, input.tenantId), eq(pushSubscriptions.userId, input.userId), isNull(pushSubscriptions.failedAt))).limit(1)
     : [];
   const wanted: NotifyChannel[] = ['inapp'];
   if (channels.email) wanted.push('email');
   if (channels.webpush && subscription) wanted.push('webpush');
 
-  const present = new Set((await tx.select({ channel: notificationDeliveries.channel }).from(notificationDeliveries)
+  const present = new Set((await tx.select({ channel: clientColumns.notificationDeliveries.channel }).from(notificationDeliveries)
     .where(and(eq(notificationDeliveries.tenantId, input.tenantId), eq(notificationDeliveries.notificationId, notificationId)))).map(row => row.channel));
   const deferredUntil = quietWindowEnd(now, prefs.quietHours, zone);
   const created: NotifyResult['deliveries'] = [];

@@ -30,6 +30,28 @@ describe('Task 3 packages API', () => {
     expect(all.items.map(row => row.id)).toEqual([original.id, copy.id]);
   });
 
+  it('refuses a client on every package handler before validation or replay', async () => {
+    const { randomUUID } = await import('node:crypto');
+    const { clients, memberships } = await import('@dawlyy/db/schema');
+    const { setupApiData } = await import('../test/api-harness');
+    const userId = randomUUID();
+    const id = randomUUID();
+    await setupApiData(fixture.owner.tenantId, 'package client boundary', async tx => {
+      await tx.insert(clients).values({ id, tenantId: fixture.owner.tenantId, firstName: 'Client' });
+      await tx.insert(memberships).values({
+        tenantId: fixture.owner.tenantId, userId, role: 'client', status: 'active', clientId: id,
+      });
+    });
+    for (const [method, suffix] of [
+      ['GET', ''], ['POST', ''], ['GET', '/' + id], ['PATCH', '/' + id],
+      ['POST', '/' + id + '/archive'], ['POST', '/' + id + '/duplicate'],
+    ]) {
+      const response = await call(app, method!, '/api/v1/packages' + suffix, { as: userId });
+      expect(response.status).toBe(403);
+      expect(response.json).toMatchObject({ error: { code: 'forbidden' } });
+    }
+  });
+
   it.each([
     { entitlements: [{ key: 'invented', enabled: true }] }, { entitlements: [{ key: 'chat', enabled: true, limit: -1 }] },
     { entitlements: [{ key: 'custom', enabled: true }] }, { entitlements: [{ key: 'chat', enabled: true }, { key: 'chat', enabled: false }] },

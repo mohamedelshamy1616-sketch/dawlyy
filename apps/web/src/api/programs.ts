@@ -1,9 +1,9 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { ProgramDocument } from '@dawlyy/core/types';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { forbidden, validationError } from './errors';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapProgramError } from '../server/programs/helpers';
 import { getProgram, getProgramVersion, listPrograms, listProgramAssignmentClients, listProgramVersions, programDiff } from '../server/programs/read';
@@ -16,11 +16,8 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 // Deny client-role callers before validation, replay lookups or any coach-data read.
-router.use('*', async (c, next) => {
-  if (c.get('auth').role === 'client') throw forbidden();
-  await next();
-});
 router.use('*', idempotentReplay);
 
 const params = z.object({ id: z.string().uuid() });

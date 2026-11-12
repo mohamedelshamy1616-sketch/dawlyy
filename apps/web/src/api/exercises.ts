@@ -3,7 +3,7 @@ import { exerciseImportTemplate } from '@dawlyy/core/csv';
 import { ExerciseSeed } from '@dawlyy/core/types';
 import type { ApiEnv } from './env';
 import { forbidden, validationError } from './errors';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { hashIdempotencyRequest, idempotencyMiddleware, idempotentReplay } from './middleware/idempotency';
 import { withAuthTx } from '../server/db';
 import { requirePermission } from '../server/require-permission';
@@ -31,9 +31,9 @@ const importHashes = new WeakMap<Request, string>();
 /** Task 4: authenticated coach exercise library and CSV import, mounted at /api/v1/exercises. */
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: (result) => { if (!result.success) throw validationError(result.error.issues); } });
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 router.use('*', async (c, next) => {
   const auth = c.get('auth');
-  if (auth.role === 'client') throw forbidden();
   const path = c.req.path.replace(/\/$/, '');
   const action = c.req.method === 'GET' ? 'view'
     : path.endsWith('/import/preview') || path.endsWith('/import/commit') || (c.req.method === 'POST' && path.endsWith('/exercises')) ? 'create' : 'edit';

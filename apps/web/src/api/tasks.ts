@@ -1,8 +1,8 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { forbidden, validationError } from './errors';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapDashboardError } from '../server/dashboard/helpers';
 import { completeTask, createTask, listTasks, patchTask, reopenTask, snoozeTask } from '../server/dashboard/tasks';
@@ -14,11 +14,8 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 // Clients never read or write coach tasks: refuse before validation, replay lookups or any query.
-router.use('*', async (c, next) => {
-  if (c.get('auth').role === 'client') throw forbidden();
-  await next();
-});
 router.use('*', idempotentReplay);
 
 const json = { description: 'Coach task data', content: { 'application/json': { schema: z.unknown() } } };

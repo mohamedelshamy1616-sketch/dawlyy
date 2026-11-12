@@ -1,32 +1,21 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import { and, eq, inArray, isNull, or, sql } from 'drizzle-orm';
-import { clientColumns } from '@dawlyy/db';
-import { foods, nutritionPlans, nutritionPlanVersions, tenantHiddenItems } from '@dawlyy/db/schema';
+import { and, eq, isNull, or, sql } from 'drizzle-orm';
+import { foods, tenantHiddenItems } from '@dawlyy/db/schema';
 import { slugify } from '@dawlyy/core/text';
 import { z } from 'zod';
 import type { AuthContext, Tx } from '../db';
 import { requirePermission } from '../require-permission';
 import { forbidden, notFound, validationError } from '../../api/errors';
 import { page, parseListQuery } from '../../api/lib/pagination';
-import { foodSearchScore, foodSortKey, type NutritionFood } from './helpers';
+import { foodSearchScore, foodSortKey } from './helpers';
 import { foodInput, foodPatch, type foodListSchema } from './schemas';
+import { nutritionFoods } from './client-read';
+export { nutritionFoods, foodsByIds } from './client-read';
 
 const scope = (auth: AuthContext) => or(isNull(foods.tenantId), eq(foods.tenantId, auth.tenantId));
 const hiddenScope = (auth: AuthContext, id?: string) => and(eq(tenantHiddenItems.tenantId, auth.tenantId), eq(tenantHiddenItems.kind, 'food'), id ? eq(tenantHiddenItems.itemId, id) : undefined);
-const projection = { id: foods.id, slug: foods.slug, name: foods.name, aliases: foods.aliases, category: foods.category, per100: foods.per100, rawOrCooked: foods.rawOrCooked, counterpartSlug: foods.counterpartSlug, cookedYield: foods.cookedYield, measures: foods.measures, source: foods.source, brand: foods.brand, hidden: foods.hidden, isSystem: sql<boolean>`${foods.tenantId} is null` };
-// Use the registered map for every column selected in a client endpoint, but omit its private fields from the response.
-const cp = clientColumns.foods;
-const clientProjection = { id: cp.id, slug: cp.slug, name: cp.name, aliases: cp.aliases, category: cp.category, per100: cp.per100, rawOrCooked: cp.rawOrCooked, counterpartSlug: cp.counterpartSlug, cookedYield: cp.cookedYield, measures: cp.measures, source: cp.source, brand: cp.brand, hidden: cp.hidden, isSystem: sql<boolean>`${cp.tenantId} is null` };
 
-/** Task 6: resolve food ids under caller RLS, with tenant-local system hiding. */
-export async function nutritionFoods(tx: Tx, auth: AuthContext, ids?: string[], clientFacing = false): Promise<NutritionFood[]> {
-  const valid = ids?.filter(id => z.uuid().safeParse(id).success);
-  if (valid && !valid.length) return [];
-  const rows = await tx.select(clientFacing ? clientProjection : projection).from(foods).where(and(scope(auth), valid ? inArray(foods.id, valid) : undefined));
-  const hidden = new Set((await tx.select({ id: clientColumns.tenantHiddenItems.itemId }).from(tenantHiddenItems).where(hiddenScope(auth))).map(row => row.id));
-  return rows.map(row => ({ ...row, hidden: row.hidden || hidden.has(row.id) }));
-}
 /** Task 6: coach-only folded search with the shared keyset envelope. */
 export async function listFoods(tx: Tx, auth: AuthContext, query: z.infer<typeof foodListSchema> = {}) {
   if (auth.role === 'client') throw forbidden();
@@ -42,15 +31,6 @@ export async function listFoods(tx: Tx, auth: AuthContext, query: z.infer<typeof
     .filter(row => !cursor || row.nameKey > String(cursor.k) || (row.nameKey === cursor.k && row.id > cursor.id)).slice(0, limit + 1);
   const result = page(rows, limit, row => row.nameKey);
   return { ...result, items: result.items.map(({ nameKey, ...row }) => { void nameKey; return row; }) };
-}
-/** Task 6: clients can resolve only foods in their currently published plan, through the safe map. */
-export async function foodsByIds(tx: Tx, auth: AuthContext, ids: string[]) {
-  if (auth.role !== 'client' || !auth.clientId) throw forbidden();
-  const versions = await tx.select({ document: clientColumns.nutritionPlanVersions.document }).from(nutritionPlanVersions)
-    .innerJoin(nutritionPlans, and(eq(nutritionPlans.id, nutritionPlanVersions.planId), eq(nutritionPlans.publishedVersionId, nutritionPlanVersions.id)))
-    .where(and(eq(nutritionPlans.tenantId, auth.tenantId), eq(nutritionPlans.clientId, auth.clientId), isNull(nutritionPlans.archivedAt), eq(nutritionPlanVersions.status, 'published')));
-  const allowed = new Set(versions.flatMap(row => row.document.meals.flatMap(meal => meal.options.flatMap(option => option.items.map(item => item.foodId)))));
-  return { items: await nutritionFoods(tx, auth, ids.filter(id => allowed.has(id)), true) };
 }
 /** Task 6: single coach food lookup shares library visibility and module checks. */
 export async function getFood(tx: Tx, auth: AuthContext, id: string) {

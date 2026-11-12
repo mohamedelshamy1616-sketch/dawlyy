@@ -1,21 +1,18 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { forbidden, validationError } from './errors';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { isTransitionRefusal, mapFormError } from '../server/forms/helpers';
 import { coachSubmission, listSubmissions } from '../server/forms/read';
-import { reviewSubmission, saveAnswers, submitAnswers } from '../server/forms/submissions';
-import { answersSchema, reviewSchema, submissionListSchema } from '../server/forms/schemas';
+import { reviewSubmission } from '../server/forms/review';
+import { reviewSchema, submissionListSchema } from '../server/forms/schemas';
 
 /** Task 7 / §12.1: own-client answer sync and coach review of pinned form snapshots. */
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!result.success) throw validationError(result.error.issues); } });
 router.use('*', requireAuthMiddleware);
-router.use('*', async (c, next) => {
-  if (c.get('auth').role === 'client' && (c.req.method === 'GET' || /\/review\/?$/.test(c.req.path))) throw forbidden();
-  await next();
-});
+router.use('*', requireStaffRole);
 router.use('*', idempotentReplay);
 const params = z.object({ id: z.uuid() });
 const json = { description: 'Submission data', content: { 'application/json': { schema: z.unknown() } } };
@@ -37,12 +34,6 @@ router.openapi(createRoute({ method: 'get', path: '/', tags, request: { query: s
 });
 router.openapi(createRoute({ method: 'get', path: '/{id}', tags, request: { params }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => coachSubmission(tx, auth, c.req.valid('param').id)), 200);
-});
-router.openapi(createRoute({ method: 'put', path: '/{id}/answers', tags, request: { params, body: body(answersSchema) }, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => saveAnswers(tx, auth, c.req.valid('param').id, c.req.valid('json'))), 200);
-});
-router.openapi(createRoute({ method: 'post', path: '/{id}/submit', tags, request: { params }, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => submitAnswers(tx, auth, c.req.valid('param').id), true), 200);
 });
 router.openapi(createRoute({ method: 'post', path: '/{id}/review', tags, request: { params, body: body(reviewSchema) }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => reviewSubmission(tx, auth, c.req.valid('param').id, c.req.valid('json'))), 200);

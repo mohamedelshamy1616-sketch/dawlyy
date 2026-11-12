@@ -1,17 +1,17 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
-import { forbidden, validationError } from './errors';
+import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
 import { mapNutritionError } from '../server/nutrition/errors';
-import { cloneFood, createFood, foodsByIds, getFood, hideFood, listFoods, patchFood } from '../server/nutrition/foods';
+import { cloneFood, createFood, getFood, hideFood, listFoods, patchFood } from '../server/nutrition/foods';
 import { foodInput, foodListSchema, foodPatch } from '../server/nutrition/schemas';
 
 /** Task 6 / ?12.1: authenticated, validated nutrition boundaries. */
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!result.success) throw validationError(result.error.issues); } });
 router.use('*', requireAuthMiddleware);
-router.use('*', async (c, next) => { if (c.get('auth').role === 'client' && !(c.req.method === 'GET' && c.req.path.endsWith('/by-ids'))) throw forbidden(); await next(); });
+router.use('*', requireStaffRole);
 router.use('*', idempotentReplay);
 const params = z.object({ id: z.uuid() });
 const json = { description: 'Nutrition data', content: { 'application/json': { schema: z.unknown() } } };
@@ -23,9 +23,6 @@ async function transaction<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T>): Pr
 }
 router.openapi(createRoute({ method: 'get', path: '/', request: { query: foodListSchema }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => listFoods(tx, auth, c.req.valid('query'))), 200);
-});
-router.openapi(createRoute({ method: 'get', path: '/by-ids', request: { query: z.object({ ids: z.string().transform(v => v.split(',')).pipe(z.array(z.uuid()).min(1).max(100)) }) }, responses: { 200: json, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await transaction(auth, tx => foodsByIds(tx, auth, c.req.valid('query').ids)), 200);
 });
 router.openapi(createRoute({ method: 'post', path: '/', request: { body: body(foodInput) }, responses: { 201: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => createFood(tx, auth, c.req.valid('json'))), 201);

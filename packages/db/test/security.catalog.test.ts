@@ -18,24 +18,240 @@ const read = (path: string) => readFileSync(join(root, path), 'utf8');
 function files(path: string): string[] {
   return readdirSync(join(root, path), { withFileTypes: true }).flatMap((e) => e.isDirectory() ? files(`${path}/${e.name}`) : [`${path}/${e.name}`]);
 }
-function querySources(roots:string[]):string[]{
-  const found=new Set<string>();const pending=[...roots];
-  while(pending.length){const file=pending.pop()!;if(found.has(file))continue;found.add(file);
-    const ast=ts.createSourceFile(file,read(file),ts.ScriptTarget.Latest,true);
-    for(const node of ast.statements){
-      if(!ts.isImportDeclaration(node)&&!ts.isExportDeclaration(node))continue;
-      if(ts.isImportDeclaration(node)&&node.importClause?.isTypeOnly||ts.isExportDeclaration(node)&&node.isTypeOnly)continue;
-      if(!node.moduleSpecifier||!ts.isStringLiteral(node.moduleSpecifier))continue;
-      const module=node.moduleSpecifier.text;
-      const target=module.startsWith('.')?posix.normalize(posix.join(dirname(file).replace(/\\/g,'/'),module))
-        :module==='@dawlyy/db'?'packages/db/src/index':module.startsWith('@dawlyy/db/')?'packages/db/src/'+module.slice(11)
-          :module.startsWith('@/')?'apps/web/src/'+module.slice(2):null;
-      if(!target)continue;
-      const resolved=[target,target+'.ts',target+'.tsx',target+'/index.ts'].find((candidate)=>/\.tsx?$/.test(candidate)&&existsSync(join(root,candidate)));
-      if(resolved)pending.push(resolved);
+function querySources(roots: string[], sourceReader: (file: string) => string = read) {
+  const sources = new Map<string, string>();
+  const violations: string[] = [];
+  const routers: { file: string; staffOnly: boolean }[] = [];
+  const found = new Set<string>();
+  const pending = [...roots];
+  const source = (file: string): string | undefined => {
+    if (sources.has(file)) return sources.get(file)!;
+    if (sourceReader === read && !existsSync(join(root, file))) return undefined;
+    try { const value = sourceReader(file); sources.set(file, value); return value; } catch { return undefined; }
+  };
+  const parse = (file: string, value: string) => ts.createSourceFile(file, value, ts.ScriptTarget.Latest, true);
+  const localTarget = (file: string, module: string) =>
+    module.startsWith('.') ? posix.normalize(posix.join(dirname(file).replace(/\\/g, '/'), module))
+      : module === '@dawlyy/db' ? 'packages/db/src/index'
+        : module.startsWith('@dawlyy/db/') ? 'packages/db/src/' + module.slice('@dawlyy/db/'.length)
+          : module.startsWith('@/') ? 'apps/web/' + module.slice(2) : undefined;
+  const resolve = (file: string, module: string) => {
+    const target = localTarget(file, module);
+    if (!target) return undefined;
+    const stem = target.replace(/\.js$/, '');
+    const resolved = [target, stem + '.ts', stem + '.tsx', stem + '/index.ts', stem + '/index.tsx']
+      .find(candidate => /\.tsx?$/.test(candidate) && source(candidate) !== undefined);
+    if (!resolved) violations.push(file + ': unresolved local import ' + module);
+    return resolved;
+  };
+  const runtimeImport = (node: ts.ImportDeclaration | ts.ExportDeclaration) => {
+    if (ts.isImportDeclaration(node)) {
+      const clause = node.importClause;
+      if (!clause) return true;
+      if (clause.isTypeOnly) return false;
+      const bindings = clause.namedBindings;
+      return !!clause.name || !bindings || !ts.isNamedImports(bindings) || bindings.elements.some(element => !element.isTypeOnly);
     }
+    if (node.isTypeOnly) return false;
+    return !node.exportClause || !ts.isNamedExports(node.exportClause) || node.exportClause.elements.some(element => !element.isTypeOnly);
+  };
+  const imported = (ast: ts.SourceFile, name: string, moduleFile: string, exported = name) =>
+    ast.statements.some(node => ts.isImportDeclaration(node) && runtimeImport(node)
+      && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)
+      && resolve(ast.fileName, node.moduleSpecifier.text) === moduleFile
+      && node.importClause?.namedBindings && ts.isNamedImports(node.importClause.namedBindings)
+      && node.importClause.namedBindings.elements.some(element => !element.isTypeOnly
+        && element.name.text === name && (element.propertyName?.text ?? element.name.text) === exported));
+  const methodName = (node: ts.Expression): string | undefined =>
+    ts.isPropertyAccessExpression(node) ? node.name.text
+      : ts.isElementAccessExpression(node) && ts.isStringLiteral(node.argumentExpression) ? node.argumentExpression.text : undefined;
+  const registration = (node: ts.Node, receiver: string): node is ts.CallExpression =>
+    ts.isCallExpression(node) && (ts.isPropertyAccessExpression(node.expression) || ts.isElementAccessExpression(node.expression))
+      && ts.isIdentifier(node.expression.expression) && node.expression.expression.text === receiver;
+  const staffOnly = (ast: ts.SourceFile, receiver: string) => {
+    if (!imported(ast, 'requireStaffRole', 'apps/web/src/api/middleware/auth.ts')
+      && !imported(ast, 'requireStaffRole', 'apps/web/src/api/middleware/staff-only.ts')) return false;
+    let firstHandler = Infinity; let guard = Infinity; let auth = Infinity;
+    const visit = (node: ts.Node): void => {
+      if (registration(node, receiver)) {
+        const method = methodName(node.expression);
+        if (['openapi', 'get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'all', 'on', 'route', 'mount'].includes(method ?? '')) firstHandler = Math.min(firstHandler, node.pos);
+        // Only unconditional top-level wildcard middleware establishes the boundary.
+        const [path, middleware] = node.arguments;
+        if (method === 'use' && ts.isExpressionStatement(node.parent) && ts.isSourceFile(node.parent.parent)
+          && node.arguments.length === 2 && path && ts.isStringLiteral(path) && path.text === '*'
+          && middleware && ts.isIdentifier(middleware)) {
+          if (middleware.text === 'requireStaffRole') guard = Math.min(guard, node.pos);
+          if (middleware.text === 'requireAuthMiddleware'
+            && imported(ast, 'requireAuthMiddleware', 'apps/web/src/api/middleware/auth.ts')) auth = Math.min(auth, node.pos);
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(ast);
+    return auth < guard && guard < firstHandler;
+  };
+  while (pending.length) {
+    const file = pending.pop()!;
+    if (found.has(file)) continue;
+    found.add(file);
+    const value = source(file);
+    if (value === undefined) { violations.push(file + ': missing source'); continue; }
+    const ast = parse(file, value);
+    const imports = new Map<string, { file: string; exported: string }>();
+    for (const node of ast.statements) {
+      if (!ts.isImportDeclaration(node) || !runtimeImport(node) || !ts.isStringLiteral(node.moduleSpecifier)) continue;
+      const target = resolve(file, node.moduleSpecifier.text);
+      const bindings = node.importClause?.namedBindings;
+      if (target && bindings && ts.isNamedImports(bindings)) for (const binding of bindings.elements) {
+        if (!binding.isTypeOnly) imports.set(binding.name.text, { file: target, exported: binding.propertyName?.text ?? binding.name.text });
+      }
+    }
+    const excluded = new Set<string>();
+    const mounts = (node: ts.Node): void => {
+      if (registration(node, 'app') && (node.expression as ts.PropertyAccessExpression).name.text === 'route') {
+        const mounted = node.arguments[1];
+        const binding = mounted && ts.isIdentifier(mounted) ? imports.get(mounted.text) : undefined;
+        if (!binding) violations.push(file + ': unresolved mounted router ' + (mounted?.getText(ast) ?? '<missing>'));
+        else {
+          const routerAst = parse(binding.file, source(binding.file)!);
+          const staff = staffOnly(routerAst, binding.exported);
+          routers.push({ file: binding.file, staffOnly: staff });
+          if (staff) excluded.add(binding.file);
+          else pending.push(binding.file);
+        }
+      }
+      ts.forEachChild(node, mounts);
+    };
+    mounts(ast);
+    const enqueue = (module: string) => { const target = resolve(file, module); if (target && !excluded.has(target)) pending.push(target); };
+    for (const node of ast.statements) {
+      if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && runtimeImport(node)
+        && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) enqueue(node.moduleSpecifier.text);
+    }
+    const dynamicImports = (node: ts.Node): void => {
+      if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword
+        || ts.isIdentifier(node.expression) && node.expression.text === 'require')) {
+        const argument = node.arguments[0];
+        if (argument && ts.isStringLiteral(argument)) enqueue(argument.text);
+        else violations.push(file + ': nonliteral runtime import');
+      }
+      ts.forEachChild(node, dynamicImports);
+    };
+    dynamicImports(ast);
+    const unwrap = (node: ts.Expression): ts.Expression =>
+      ts.isParenthesizedExpression(node) || ts.isAsExpression(node) || ts.isSatisfiesExpression(node) || ts.isNonNullExpression(node) ? unwrap(node.expression) : node;
+    const rootName = (node: ts.Expression): string | undefined =>
+      ts.isIdentifier(node) ? node.text
+        : ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node) ? rootName(node.expression) : undefined;
+    const mutated = new Set<string>();
+    const mutations = (node: ts.Node): void => {
+      let target: ts.Expression | undefined;
+      if (ts.isBinaryExpression(node) && node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment
+        && node.operatorToken.kind <= ts.SyntaxKind.LastAssignment) target = node.left;
+      if (ts.isDeleteExpression(node)) target = node.expression;
+      if ((ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node))
+        && (node.operator === ts.SyntaxKind.PlusPlusToken || node.operator === ts.SyntaxKind.MinusMinusToken)) target = node.operand;
+      if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)
+        && ts.isIdentifier(node.expression.expression) && ['Object', 'Reflect'].includes(node.expression.expression.text)
+        && ['assign', 'defineProperty', 'defineProperties', 'set', 'setPrototypeOf'].includes(node.expression.name.text)) target = node.arguments[0];
+      const name = target ? rootName(target) : undefined;
+      if (name) mutated.add(name);
+      ts.forEachChild(node, mutations);
+    };
+    mutations(ast);
+    const binds = (name: ts.BindingName, target: string): boolean => ts.isIdentifier(name) ? name.text === target
+      : name.elements.some(element => ts.isBindingElement(element) && binds(element.name, target));
+    const binding = (name: string, at: ts.Node): { constant: boolean; initializer?: ts.Expression } | undefined => {
+      for (let scope: ts.Node | undefined = at; scope; scope = scope.parent) {
+        if (ts.isFunctionLike(scope) && scope.parameters.some(parameter => binds(parameter.name, name))) return { constant: false };
+        if ((ts.isFunctionExpression(scope) || ts.isClassExpression(scope)) && scope.name?.text === name) return { constant: false };
+        if (ts.isForStatement(scope) || ts.isForOfStatement(scope) || ts.isForInStatement(scope)) {
+          const declarations = scope.initializer;
+          if (declarations && ts.isVariableDeclarationList(declarations)
+            && declarations.declarations.some(declaration => binds(declaration.name, name))) return { constant: false };
+        }
+        if (ts.isCatchClause(scope) && scope.variableDeclaration && binds(scope.variableDeclaration.name, name)) return { constant: false };
+        if (!ts.isBlock(scope) && !ts.isSourceFile(scope)) continue;
+        for (const statement of scope.statements) {
+          if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) && statement.name?.text === name) return { constant: false };
+          if (!ts.isVariableStatement(statement)) continue;
+          for (const declaration of statement.declarationList.declarations) {
+            if (binds(declaration.name, name)) return {
+              constant: !!(statement.declarationList.flags & ts.NodeFlags.Const) && ts.isIdentifier(declaration.name),
+              ...(declaration.initializer ? { initializer: declaration.initializer } : {}),
+            };
+          }
+        }
+      }
+      return undefined;
+    };
+    const members = (node: ts.Expression): string[] | undefined => {
+      if (ts.isIdentifier(node)) return [node.text];
+      if (!ts.isPropertyAccessExpression(node)) return undefined;
+      const parent = members(node.expression);
+      return parent ? [...parent, node.name.text] : undefined;
+    };
+    // Static SQL may contain functions, casts, keywords and literals, but no unregistered column identifiers.
+    const sqlWords = new Set(['count', 'to_char', 'coalesce', 'case', 'when', 'then', 'else', 'end',
+      'at', 'time', 'zone', 'is', 'null', 'not', 'distinct', 'filter', 'where', 'and', 'or', 'as', 'cast',
+      'integer', 'int', 'int2', 'int4', 'int8', 'bigint', 'numeric', 'decimal', 'text', 'varchar',
+      'boolean', 'bool', 'date', 'timestamp', 'timestamptz', 'double', 'precision', 'real',
+      'current_timestamp', 'current_date', 'true', 'false', 'sum', 'avg', 'min', 'max', 'lower', 'upper',
+      'length', 'concat', 'round', 'abs', 'ceil', 'ceiling', 'floor', 'greatest', 'least', 'nullif',
+      'trim', 'ltrim', 'rtrim', 'btrim', 'replace', 'timezone', 'date_trunc']);
+    const sqlTextSafe = (value: string) => {
+      const executable = value.replace(/'(?:''|[^'])*'/g, '').replace(/\b\d+\.\d+\b/g, '0');
+      return !/["$.]/.test(executable) && (executable.match(/[a-z_][a-z_0-9]*/gi) ?? []).every(word => sqlWords.has(word.toLowerCase()));
+    };
+    const projectionImported = imported(ast, 'clientColumns', 'packages/db/src/index.ts')
+      || imported(ast, 'clientColumns', 'packages/db/src/client-columns.ts');
+    const sqlImported = ast.statements.some(node => ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)
+      && node.moduleSpecifier.text === 'drizzle-orm' && node.importClause?.namedBindings && ts.isNamedImports(node.importClause.namedBindings)
+      && node.importClause.namedBindings.elements.some(element => !element.isTypeOnly && element.name.text === 'sql' && !element.propertyName));
+    const projection = (input: ts.Expression, seen = new Set<ts.Node>(), columnOnly = false): boolean => {
+      const node = unwrap(input);
+      if (seen.has(node)) return false;
+      const next = new Set(seen).add(node);
+      if (ts.isIdentifier(node)) {
+        const local = binding(node.text, node);
+        return !!local?.constant && !mutated.has(node.text) && !!local.initializer && projection(local.initializer, next, columnOnly);
+      }
+      if (ts.isPropertyAccessExpression(node)) {
+        const parts = members(node);
+        if (!projectionImported || !parts || parts[0] !== 'clientColumns' || binding('clientColumns', node) || mutated.has('clientColumns')) return false;
+        const map = (clientColumns as Record<string, object>)[parts[1] ?? ''];
+        if (!Object.hasOwn(clientColumns, parts[1] ?? '') || !map) return false;
+        return parts.length === 2 ? !columnOnly : parts.length === 3 && Object.hasOwn(map, parts[2]!);
+      }
+      if (ts.isObjectLiteralExpression(node) && !columnOnly) return node.properties.length > 0 && node.properties.every(property =>
+        ts.isSpreadAssignment(property) ? projection(property.expression, next)
+          : ts.isPropertyAssignment(property) && projection(property.initializer, next, true));
+      if (ts.isTaggedTemplateExpression(node) && sqlImported && ts.isIdentifier(node.tag) && node.tag.text === 'sql' && !binding('sql', node)) {
+        if (ts.isNoSubstitutionTemplateLiteral(node.template)) return sqlTextSafe(node.template.text);
+        return node.template.templateSpans.every(span => projection(span.expression, next, true))
+          && [node.template.head.text, ...node.template.templateSpans.map(span => span.literal.text)].every(sqlTextSafe);
+      }
+      return false;
+    };
+    const visit = (node: ts.Node): void => {
+      if (ts.isCallExpression(node) && (ts.isPropertyAccessExpression(node.expression) || ts.isElementAccessExpression(node.expression))) {
+        const method = methodName(node.expression) ?? '';
+        if (['select', 'selectDistinct', 'selectDistinctOn'].includes(method)) {
+          const index = method === 'selectDistinctOn' ? 1 : 0;
+          if (node.arguments.length !== index + 1 || !projection(node.arguments[index]!)) {
+            const line = ast.getLineAndCharacterOfPosition(node.getStart(ast)).line + 1;
+            violations.push(file + ':' + line + ': forbidden SELECT projection ' + node.getText(ast).slice(0, 220));
+          }
+        }
+        if (/^find(?:First|Many)$/.test(method)) violations.push(file + ': client relational select-all is forbidden');
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(ast);
+    if (/select\s+\*/i.test(value)) violations.push(file + ': select * is forbidden');
   }
-  return [...found];
+  return { files: [...found], violations: [...new Set(violations)], routers };
 }
 beforeAll(async () => {
   if(!process.env.DATABASE_URL||!process.env.DATABASE_URL_SERVICE)throw new Error('Suite C requires DATABASE_URL and DATABASE_URL_SERVICE; security tests never skip.');
@@ -346,20 +562,99 @@ describe('security catalog', () => {
     }
     expect(clientColumns.payments).toHaveProperty('rejectedReason'); expect(clientColumns.media).toHaveProperty('reviewNote');
     expect(clientColumns.formSubmissions).toHaveProperty('coachFeedback');expect(clientColumns.formSubmissions).toHaveProperty('results');
-    const routeFiles=files('apps/web/src/api').filter((f)=>/\.tsx?$/.test(f)&&!f.includes('.test.')&&/\bclient\b|isClient|clientColumns|clientOnly/i.test(read(f)));
-    for(const file of querySources(routeFiles)) {
-      const source=read(file);
-      const ast=ts.createSourceFile(file,source,ts.ScriptTarget.Latest,true);
-      const visit=(node:ts.Node):void=>{
-        if(ts.isCallExpression(node)&&ts.isPropertyAccessExpression(node.expression)&&['select','selectDistinct','selectDistinctOn'].includes(node.expression.name.text)) {
-          const index=node.expression.name.text==='selectDistinctOn'?1:0;
-          expect(node.arguments.length,file).toBe(index+1); expect(node.arguments[index]?.getText(ast),file).toMatch(/^clientColumns\.[A-Za-z]+$/);
-        }
-        if(ts.isCallExpression(node)&&ts.isPropertyAccessExpression(node.expression))expect(node.expression.name.text,file+': client relational select-all is forbidden').not.toMatch(/^find(?:First|Many)$/);
-        ts.forEachChild(node,visit);
-      };visit(ast);
-      expect(source,file).not.toMatch(/select\s+\*/i);
+    const calendarKeys = Object.keys(clientColumns.calendarEvents);
+    expect(calendarKeys).toContain('attachedFormId');
+    expect(calendarKeys).toContain('pinnedVersionId');
+    expect(calendarKeys).not.toContain('payload');
+    // Notification payload is already client-visible; all other payload access must derive only the form IDs.
+    const notificationPayload = /^\s*payload: schema\.notifications\.payload,\s*$/;
+    const payloadLines = read('packages/db/src/client-columns.ts').split(/\r?\n/).filter(line => line.includes('.payload') && !notificationPayload.test(line));
+    expect(payloadLines).toHaveLength(2);
+    for (const line of payloadLines) {
+      expect(line).toMatch(/^\s*(?:attachedFormId: sql<string \| null>`\$\{schema\.calendarEvents\.payload\}->>'formId'`|pinnedVersionId: sql<string \| null>`\$\{schema\.calendarEvents\.payload\}->>'formVersionId'`),\s*$/);
     }
+    const scan = querySources(['apps/web/src/api/index.ts']);
+    expect(scan.routers.length, 'mounted routers must be classified').toBeGreaterThan(0);
+    expect(scan.violations).toEqual([]);
+  });
+  it('C15 scanner rejects leaks and fails closed over mounted routers and imports', () => {
+    const entry = 'apps/web/src/api/index.ts';
+    const route = 'apps/web/src/api/probe.ts';
+    const middleware = 'apps/web/src/api/middleware/auth.ts';
+    const fixture = (body: string, extra: Record<string, string> = {}) => {
+      const sources: Record<string, string> = {
+        [entry]: "import { router } from './probe'; app.route('/probe', router);",
+        [route]: "import { clientColumns } from '@dawlyy/db'; import { sql } from 'drizzle-orm';\n" + body,
+        'packages/db/src/index.ts': "export { clientColumns } from './client-columns';",
+        'packages/db/src/client-columns.ts': '',
+        ...extra,
+      };
+      return querySources([entry], file => {
+        if (!Object.hasOwn(sources, file)) throw new Error('missing ' + file);
+        return sources[file]!;
+      });
+    };
+    for (const expression of [
+      'clients', '', 'getTableColumns(clients)', '{ id: clients.id }',
+      '{ tags: clientColumns.clients.tags }', '{ createdBy: clientColumns.clients.createdBy }',
+      '{ ...clients }', '{ id: c.id }', '{ id: sql`${clients.id}` }',
+    ]) expect(fixture('tx.select(' + expression + ');').violations, expression).not.toEqual([]);
+    expect(fixture('tx.query.clients.findMany();').violations).not.toEqual([]);
+    expect(fixture('tx.query.clients.findFirst();').violations).not.toEqual([]);
+    expect(fixture("import './missing';").violations).toContain(route + ': unresolved local import ./missing');
+    expect(fixture("import type { Missing } from './missing'; import { type AlsoMissing } from './absent';").violations).toEqual([]);
+    for (const body of [
+      'tx.select(clientColumns.clients);',
+      'tx.select({ id: clientColumns.clients.id });',
+      'tx.select({ ...clientColumns.clients });',
+      'const fields = { id: clientColumns.clients.id }; tx.select(fields);',
+      'const fields = clientColumns.clients; tx.select(fields);',
+      'tx.select({ n: sql<number>`count(*)::int`, id: sql<string>`${clientColumns.clients.id}::text` });',
+      'tx.selectDistinct(clientColumns.clients);',
+      'tx.selectDistinctOn([clientColumns.clients.id], { id: clientColumns.clients.id });',
+    ]) expect(fixture(body).violations, body).toEqual([]);
+    expect(fixture('tx.selectDistinct(clients);').violations).not.toEqual([]);
+    expect(fixture('tx.selectDistinctOn([clients.id], clients);').violations).not.toEqual([]);
+    expect(fixture('const a = b; const b = a; tx.select(a);').violations).not.toEqual([]);
+    expect(fixture('let fields = clientColumns.clients; tx.select(fields);').violations).not.toEqual([]);
+    expect(fixture('function leak(clientColumns) { tx.select(clientColumns.clients); }').violations).not.toEqual([]);
+    expect(fixture('const fields = clientColumns.clients; function leak(fields) { tx.select(fields); }').violations).not.toEqual([]);
+    expect(fixture('tx.select({ id: sql`tags` });').violations).not.toEqual([]);
+    expect(fixture('tx.select({ id: sql`clients.tags` });').violations).not.toEqual([]);
+    expect(fixture('tx.select({ at: sql<string>`to_char(${clientColumns.clients.createdAt}, \'YYYY-MM-DD HH24:MI:SS.US\')` });').violations).toEqual([]);
+    expect(fixture("tx['select'](clients);").violations).not.toEqual([]);
+    expect(fixture("tx.query.clients['findMany']();").violations).not.toEqual([]);
+    expect(fixture('tx.select({ n: sql<number>`0.5 * sum(${clientColumns.payments.amount})` });').violations).toEqual([]);
+    expect(fixture("import('./missing');").violations).toContain(route + ': unresolved local import ./missing');
+    expect(fixture("export * from './missing';").violations).toContain(route + ': unresolved local import ./missing');
+    expect(fixture("export type { Missing } from './missing';").violations).toEqual([]);
+    expect(fixture('for (const clientColumns of sources) { tx.select(clientColumns.clients); }').violations).not.toEqual([]);
+    expect(fixture('const fields = { id: clientColumns.clients.id }; fields.id = clients.tags; tx.select(fields);').violations).not.toEqual([]);
+    expect(fixture('const fields = { id: clientColumns.clients.id }; Object.assign(fields, { tags: clients.tags }); tx.select(fields);').violations).not.toEqual([]);
+    const unguarded = fixture('router.get("/", () => tx.select(clients));');
+    expect(unguarded.routers).toEqual([{ file: route, staffOnly: false }]);
+    expect(unguarded.violations).not.toEqual([]);
+    const imports = "import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';\n";
+    const guarded = fixture(imports + "router.use('*', requireAuthMiddleware); router.use('*', requireStaffRole); router.get('/', () => tx.select(clients));", { [middleware]: '' });
+    expect(guarded.routers).toEqual([{ file: route, staffOnly: true }]);
+    expect(guarded.violations).toEqual([]);
+    expect(fixture(imports + "router.get('/', () => tx.select(clients)); router.use('*', requireStaffRole);", { [middleware]: '' }).violations).not.toEqual([]);
+    expect(fixture("import { requireStaffRole } from './fake'; router.use('*', requireStaffRole); tx.select(clients);", { 'apps/web/src/api/fake.ts': '' }).violations).not.toEqual([]);
+    expect(fixture(imports + "router['get']('/', () => tx.select(clients)); router.use('*', requireAuthMiddleware); router.use('*', requireStaffRole);", { [middleware]: '' }).violations).not.toEqual([]);
+    expect(fixture(imports + "router.use('*', requireStaffRole); router.get('/', () => tx.select(clients));", { [middleware]: '' }).violations).not.toEqual([]);
+    expect(fixture(imports + "router.use('*', requireAuthMiddleware); if (false) router.use('*', requireStaffRole); router.get('/', () => tx.select(clients));", { [middleware]: '' }).violations).not.toEqual([]);
+    const helper = 'apps/web/src/server/probe.ts';
+    for (const alias of ['@/src/server/probe', '@/src/server/probe.ts', '../server/probe']) {
+      expect(fixture("import '" + alias + "';", { [helper]: 'tx.select();' }).violations.some(issue => issue.startsWith(helper + ':'))).toBe(true);
+    }
+    expect(fixture("import '@/probe';", { 'apps/web/probe.ts': 'tx.select();' }).violations).not.toEqual([]);
+    expect(fixture("import '@dawlyy/db/client';", { 'packages/db/src/client.ts': 'tx.select();' }).violations).not.toEqual([]);
+    // A staff router's closure is scanned if another client-facing module imports it.
+    expect(fixture(imports + "router.use('*', requireAuthMiddleware); router.use('*', requireStaffRole); tx.select(clients);", {
+      [middleware]: '',
+      [entry]: "import { router } from './probe'; import './consumer'; app.route('/probe', router);",
+      'apps/web/src/api/consumer.ts': "import './probe';",
+    }).violations).not.toEqual([]);
   });
   it('C16 source snapshots catalog all database object names UTF8 limit', async () => {
     const actual=await svc((tx)=>q<{name:string}>(tx,sql`select conname::text as name from pg_constraint where connamespace in ('public'::regnamespace,'app'::regnamespace) union all select relname from pg_class where relnamespace in ('public'::regnamespace,'app'::regnamespace) union all select p.proname from pg_proc p where p.pronamespace in ('public'::regnamespace,'app'::regnamespace) and ${extensionFree} union all select polname from pg_policy union all select tgname from pg_trigger where not tgisinternal`));

@@ -4,7 +4,7 @@ import { clientColumns } from '@dawlyy/db';
 import { clients, nutritionPlans, nutritionPlanVersions, programs, programVersions } from '@dawlyy/db/schema';
 import type { AuthContext, Tx } from '../db';
 import { forbidden } from '../../api/errors';
-import { nutritionFoods } from './foods';
+import { nutritionFoods } from './client-read';
 import { documentTotals } from './helpers';
 
 /** Task 6: calendar date in the client's IANA timezone, independent of the server's timezone. */

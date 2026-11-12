@@ -1,13 +1,13 @@
 import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import { validationError } from './errors';
 import { withAuthTx } from '../server/db';
 import { requireBillingPermission } from '../server/payments/permission';
 import { billingErrorHandler } from '../server/subscriptions/http';
 import { syncSubscriptionCalendar } from '../server/subscriptions/calendar';
-import { listSubscriptions, getSubscription, mySubscription, sellPackage, changeSubscription } from '../server/subscriptions/service';
+import { listSubscriptions, getSubscription, sellPackage, changeSubscription } from '../server/subscriptions/service';
 import { subscriptionQuery, saleInput, extensionInput, freezeInput, resumeInput, reasonInput, idParams, errors, jsonResult } from '../server/subscriptions/contracts';
 
 // Task 3: subscription lifecycle.
@@ -16,6 +16,7 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: (result) => { if (!
 router.onError(billingErrorHandler);
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 router.use('*', async (c, next) => {
   if (c.req.method === 'POST') requireBillingPermission(c.get('auth'), /\/(extend|freeze|resume|cancel)$/.test(c.req.path) ? 'edit' : 'create');
   await next();
@@ -27,10 +28,6 @@ router.openapi(createRoute({ method: 'get', path: '/', request: { query: subscri
   return c.json(await withAuthTx(auth, (tx) => listSubscriptions(tx, auth, c.req.valid('query'))), 200);
 });
 // Static routes must precede /{id}.
-router.openapi(createRoute({ method: 'get', path: '/mine', responses: { 200: jsonResult, ...errors } }), async (c) => {
-  const auth = c.get('auth');
-  return c.json(await withAuthTx(auth, (tx) => mySubscription(tx, auth)), 200);
-});
 router.openapi(createRoute({ method: 'get', path: '/{id}', request: { params: idParams }, responses: { 200: jsonResult, ...errors } }), async (c) => {
   const auth = c.get('auth');
   return c.json(await withAuthTx(auth, (tx) => getSubscription(tx, auth, c.req.valid('param').id)), 200);

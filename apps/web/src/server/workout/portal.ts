@@ -20,10 +20,10 @@ export function requireClient(auth: AuthContext, write = false): string {
 /** Task 5: timezone and units are resolved from the existing T3 client profile. */
 export async function portalIdentity(tx: Tx, auth: AuthContext) {
   const clientId = requireClient(auth);
-  const c = clientColumns.clients; const t = clientColumns.tenants;
-  const [client] = await tx.select({ timezone: c.timezone, profile: c.profile }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, clientId))).limit(1);
+  
+  const [client] = await tx.select({ timezone: clientColumns.clients.timezone, profile: clientColumns.clients.profile }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, clientId))).limit(1);
   if (!client) throw notFound();
-  const [tenant] = await tx.select({ timezone: t.timezone }).from(tenants).where(eq(tenants.id, auth.tenantId)).limit(1);
+  const [tenant] = await tx.select({ timezone: clientColumns.tenants.timezone }).from(tenants).where(eq(tenants.id, auth.tenantId)).limit(1);
   const timezone = client.timezone || tenant?.timezone || 'Africa/Cairo';
   return { timezone, unit: client.profile.units?.weight ?? 'kg' as const };
 }
@@ -37,8 +37,8 @@ export function localDay(timezone: string, now = new Date()): string {
 
 /** Task 5: select only the published pointer of the caller's live client copy, never its draft pointer. */
 export async function publishedProgram(tx: Tx, auth: AuthContext) {
-  const clientId = requireClient(auth); const p = clientColumns.programs; const v = clientColumns.programVersions;
-  const [row] = await tx.select({ programId: p.id, name: p.name, versionId: v.id, versionNo: v.versionNo, document: v.document })
+  const clientId = requireClient(auth); 
+  const [row] = await tx.select({ programId: clientColumns.programs.id, name: clientColumns.programs.name, versionId: clientColumns.programVersions.id, versionNo: clientColumns.programVersions.versionNo, document: clientColumns.programVersions.document })
     .from(programs).innerJoin(programVersions, and(eq(programVersions.id, programs.publishedVersionId), eq(programVersions.programId, programs.id), eq(programVersions.tenantId, programs.tenantId), eq(programVersions.clientId, clientId)))
     .where(and(eq(programs.tenantId, auth.tenantId), eq(programs.clientId, clientId), eq(programs.kind, 'client'), isNull(programs.archivedAt), eq(programVersions.status, 'published')))
     .orderBy(desc(programVersions.publishedAt), desc(programs.id)).limit(1);
@@ -72,26 +72,26 @@ export async function getToday(tx: Tx, auth: AuthContext, requestedDate?: string
   const clientId = requireClient(auth); const identity = await portalIdentity(tx, auth); const date = requestedDate ?? localDay(identity.timezone);
   const program = await publishedProgram(tx, auth);
   const selected = program ? resolveProgramDay(program.document, program.document.startDate, date, await completedDays(tx, auth, program.programId)) : null;
-  const s = clientColumns.workoutSessions;
-  const [session] = await tx.select({ id: s.id, state: s.state, plannedWorkout: s.plannedWorkout }).from(workoutSessions)
+  
+  const [session] = await tx.select({ id: clientColumns.workoutSessions.id, state: clientColumns.workoutSessions.state, plannedWorkout: clientColumns.workoutSessions.plannedWorkout }).from(workoutSessions)
     .where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), eq(workoutSessions.localDate, date)))
     .orderBy(desc(workoutSessions.createdAt), desc(workoutSessions.id)).limit(1);
-  const n = clientColumns.nutritionPlans; const nv = clientColumns.nutritionPlanVersions;
-  const [nutrition] = await tx.select({ name: n.name, document: nv.document }).from(nutritionPlans)
+  
+  const [nutrition] = await tx.select({ name: clientColumns.nutritionPlans.name, document: clientColumns.nutritionPlanVersions.document }).from(nutritionPlans)
     .innerJoin(nutritionPlanVersions, and(eq(nutritionPlanVersions.id, nutritionPlans.publishedVersionId), eq(nutritionPlanVersions.planId, nutritionPlans.id)))
     .where(and(eq(nutritionPlans.tenantId, auth.tenantId), eq(nutritionPlans.clientId, clientId), isNull(nutritionPlans.archivedAt), eq(nutritionPlanVersions.status, 'published'))).orderBy(desc(nutritionPlanVersions.publishedAt)).limit(1);
-  const e = clientColumns.calendarEvents;
-  const due = await tx.select({ eventId: e.id, title: e.title, dueAt: e.dueAt, state: e.state }).from(calendarEvents)
+  
+  const due = await tx.select({ eventId: clientColumns.calendarEvents.id, title: clientColumns.calendarEvents.title, dueAt: clientColumns.calendarEvents.dueAt, state: clientColumns.calendarEvents.state }).from(calendarEvents)
     .where(and(eq(calendarEvents.tenantId, auth.tenantId), eq(calendarEvents.clientId, clientId), eq(calendarEvents.type, 'checkin'), lte(calendarEvents.localDate, date), inArray(calendarEvents.state, ['scheduled', 'due', 'overdue'])))
     .orderBy(calendarEvents.dueAt, calendarEvents.id);
-  const f = clientColumns.forms;
-  const assignedIntakes = await tx.select({ id: f.id }).from(forms).where(and(eq(forms.tenantId, auth.tenantId), eq(forms.clientId, clientId), eq(forms.formKind, 'intake'), isNotNull(forms.publishedVersionId), isNull(forms.archivedAt)));
+  
+  const assignedIntakes = await tx.select({ id: clientColumns.forms.id }).from(forms).where(and(eq(forms.tenantId, auth.tenantId), eq(forms.clientId, clientId), eq(forms.formKind, 'intake'), isNotNull(forms.publishedVersionId), isNull(forms.archivedAt)));
   const submitted = assignedIntakes.length ? await tx.select({ formId: clientColumns.formSubmissions.formId }).from(formSubmissions)
     .where(and(eq(formSubmissions.tenantId, auth.tenantId), eq(formSubmissions.clientId, clientId), inArray(formSubmissions.formId, assignedIntakes.map(row => row.id)), inArray(formSubmissions.state, ['submitted', 'waiting_for_coach', 'reviewed']))) : [];
   const unread = await tx.select({ count: clientColumns.conversations.unreadForClient }).from(conversations)
     .where(and(eq(conversations.tenantId, auth.tenantId), eq(conversations.clientId, clientId), isNull(conversations.archivedAt)));
-  const sub = clientColumns.subscriptions;
-  const [subscription] = await tx.select({ state: sub.state, endsOn: sub.endsOn }).from(subscriptions)
+  
+  const [subscription] = await tx.select({ state: clientColumns.subscriptions.state, endsOn: clientColumns.subscriptions.endsOn }).from(subscriptions)
     .where(and(eq(subscriptions.tenantId, auth.tenantId), eq(subscriptions.clientId, clientId))).orderBy(desc(subscriptions.createdAt), desc(subscriptions.id)).limit(1);
   const workout = session?.plannedWorkout ?? selected?.day?.workout;
   const state: PortalToday['workout']['state'] = session ? (['active', 'paused', 'not_started'].includes(session.state) ? 'active' : 'done') : selected?.state ?? 'none';

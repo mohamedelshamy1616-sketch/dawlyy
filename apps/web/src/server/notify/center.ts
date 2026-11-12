@@ -19,7 +19,7 @@ const fields = {
 export async function listNotifications(tx: Tx, auth: AuthContext, query: { limit?: string; cursor?: string; unread?: boolean | undefined }) {
   const { limit, cursor } = parseListQuery(query);
   const mine = and(eq(notifications.tenantId, auth.tenantId), eq(notifications.userId, auth.userId));
-  const rows = await tx.select({ ...fields, sortKey: sql<string>`${notifications.createdAt}::text` }).from(notifications)
+  const rows = await tx.select({ ...fields, sortKey: sql<string>`${clientColumns.notifications.createdAt}::text` }).from(notifications)
     .where(and(mine, ...(query.unread ? [isNull(notifications.readAt)] : []),
       ...(cursor ? [sql`(${notifications.createdAt}, ${notifications.id}) < (${String(cursor.k)}::timestamptz, ${cursor.id}::uuid)`] : [])))
     .orderBy(desc(notifications.createdAt), desc(notifications.id)).limit(limit + 1);

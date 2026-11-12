@@ -1,6 +1,6 @@
 import { createMiddleware } from 'hono/factory';
 import { createHash } from 'node:crypto';
-import { withAuthTx, type AuthContext } from '@dawlyy/db';
+import { clientColumns, withAuthTx, type AuthContext } from '@dawlyy/db';
 import { idempotencyKeys } from '@dawlyy/db/schema';
 import { and, eq, gt, lte } from 'drizzle-orm';
 import { ApiError, validationError } from '../errors';
@@ -41,9 +41,9 @@ export function hashIdempotencyRequest(method: string, path: string, body: Uint8
 const databaseStore: IdempotencyStore = {
   find: (auth, key, newerThan) => withAuthTx(auth, async (tx) => {
     const [row] = await tx.select({
-      requestHash: idempotencyKeys.requestHash,
-      status: idempotencyKeys.statusCode,
-      body: idempotencyKeys.responseBody,
+      requestHash: clientColumns.idempotencyKeys.requestHash,
+      status: clientColumns.idempotencyKeys.statusCode,
+      body: clientColumns.idempotencyKeys.responseBody,
     }).from(idempotencyKeys).where(and(
       eq(idempotencyKeys.tenantId, auth.tenantId), eq(idempotencyKeys.userId, auth.userId),
       eq(idempotencyKeys.key, key), gt(idempotencyKeys.createdAt, newerThan),

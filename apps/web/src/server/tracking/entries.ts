@@ -8,7 +8,7 @@ import { conflict, notFound, validationError } from '../../api/errors';
 import { page, parseListQuery } from '../../api/lib/pagination';
 import { measurementInput, metricInput, metricKinds, rangeQuery } from './contracts';
 import { trackingClient, visibleClient } from './access';
-import { completeTrackingEvents } from './cadence';
+import { completeTrackingEvents } from './client-read';
 import { measurementDeltas } from './helpers';
 
 /** Task 8: range query plus optional scalar kind/key filters. */

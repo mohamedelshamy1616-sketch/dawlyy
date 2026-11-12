@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { isAllowed } from '@dawlyy/core/authz';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import { forbidden, validationError } from './errors';
 import { withAuthTx } from '../server/db';
@@ -17,10 +17,10 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: (result) => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 // Clients never reach /team; staff need the `team` module (view to read, manage to change). Owners pass.
 router.use('*', async (c, next) => {
   const auth = c.get('auth');
-  if (auth.role === 'client') throw forbidden();
   if (!isAllowed(auth, 'team', c.req.method === 'GET' ? 'view' : 'manage')) throw forbidden();
   await next();
 });

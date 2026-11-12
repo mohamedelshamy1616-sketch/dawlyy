@@ -2,7 +2,7 @@ import 'server-only';
 import { and, asc, eq } from 'drizzle-orm';
 import { headers as nextHeaders } from 'next/headers';
 import { connection } from 'next/server';
-import { withUserTx, type AuthContext } from '@dawlyy/db';
+import { clientColumns, withUserTx, type AuthContext } from '@dawlyy/db';
 import { memberships } from '@dawlyy/db/schema';
 import { unauthorized } from '@/src/api/errors';
 import { createSupabaseServerClient } from './supabase';
@@ -51,7 +51,7 @@ export async function getSessionUser(headers?: Headers): Promise<{ id: string; e
 async function membershipForUser(userId: string): Promise<AuthContext | null> {
   const [membership] = await withUserTx(userId, (tx) =>
     tx
-      .select()
+      .select(clientColumns.memberships)
       .from(memberships)
       .where(and(eq(memberships.userId, userId), eq(memberships.status, 'active')))
       .orderBy(asc(memberships.createdAt))

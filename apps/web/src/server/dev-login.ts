@@ -1,7 +1,7 @@
 import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { and, asc, eq, like } from 'drizzle-orm';
-import { withServiceTx } from '@dawlyy/db';
+import { clientColumns, withServiceTx } from '@dawlyy/db';
 import { memberships, tenants } from '@dawlyy/db/schema';
 
 const SESSION_SECONDS = 12 * 60 * 60;
@@ -58,10 +58,10 @@ export async function listDemoUsers(): Promise<DemoUser[]> {
   if (!devLoginEnabled()) return [];
   const users = await withServiceTx(null, 'dev login: list demo users', (tx) => tx
     .select({
-      userId: memberships.userId,
-      displayName: memberships.displayName,
-      role: memberships.role,
-      tenantName: tenants.name,
+      userId: clientColumns.memberships.userId,
+      displayName: clientColumns.memberships.displayName,
+      role: clientColumns.memberships.role,
+      tenantName: clientColumns.tenants.name,
     })
     .from(memberships)
     .innerJoin(tenants, eq(tenants.id, memberships.tenantId))
@@ -79,7 +79,7 @@ export async function listDemoUsers(): Promise<DemoUser[]> {
 export async function isUnattachedIdentity(userId: string): Promise<boolean> {
   if (!devLoginEnabled() || !USER_ID.test(userId)) return false;
   const rows = await withServiceTx(null, 'dev login: check that an invitee identity has no membership', (tx) => tx
-    .select({ id: memberships.id })
+    .select({ id: clientColumns.memberships.id })
     .from(memberships)
     .where(eq(memberships.userId, userId))
     .limit(1));

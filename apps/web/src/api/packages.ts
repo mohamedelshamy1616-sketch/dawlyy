@@ -1,6 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import { validationError } from './errors';
 import { withAuthTx } from '../server/db';
@@ -14,6 +14,7 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 router.use('*', idempotentReplay);
 
 const params = z.object({ id: z.string().uuid() });

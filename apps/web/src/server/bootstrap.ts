@@ -3,6 +3,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { z } from '@hono/zod-openapi';
 import { businessSettings, memberships, tenants, userPreferences } from '@dawlyy/db/schema';
 import { ApiError } from '@/src/api/errors';
+import { clientColumns } from '@dawlyy/db';
 import { withServiceTx, type Tx } from './db';
 
 /** Task 2: bootstrap accepts profile settings only; identity always comes from the session. */
@@ -26,7 +27,7 @@ export function deriveTenantSlug(name: string): string {
 export async function lockUnassignedUser(tx: Tx, userId: string): Promise<void> {
   await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${'identity:' + userId}, 0))`);
   // Deliberately cross-tenant: beta permits only one active membership per session user.
-  const [existing] = await tx.select({ id: memberships.id }).from(memberships)
+  const [existing] = await tx.select({ id: clientColumns.memberships.id }).from(memberships)
     .where(and(eq(memberships.userId, userId), eq(memberships.status, 'active'))).limit(1);
   if (existing) throw new ApiError(409, 'already_member', 'This user already has an active membership');
 }

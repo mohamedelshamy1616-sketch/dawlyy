@@ -46,9 +46,9 @@ export async function readSets(tx: Tx, auth: AuthContext, clientId: string, sess
 /** Task 5: resolve exercise IDs under RLS; internal library tags/source never enter the response. */
 export async function readExercises(tx: Tx, ids: string[]): Promise<PortalExercise[]> {
   if (!ids.length) return [];
-  const e = clientColumns.exercises;
-  return tx.select({ id: e.id, name: e.name, cues: e.cues, primaryMuscles: e.primaryMuscles,
-    secondaryMuscles: e.secondaryMuscles, videoUrl: e.videoUrl, thumbnailMediaId: e.thumbnailMediaId })
+  
+  return tx.select({ id: clientColumns.exercises.id, name: clientColumns.exercises.name, cues: clientColumns.exercises.cues, primaryMuscles: clientColumns.exercises.primaryMuscles,
+    secondaryMuscles: clientColumns.exercises.secondaryMuscles, videoUrl: clientColumns.exercises.videoUrl, thumbnailMediaId: clientColumns.exercises.thumbnailMediaId })
     .from(exercises).where(inArray(exercises.id, [...new Set(ids)]));
 }
 

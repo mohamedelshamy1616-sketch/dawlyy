@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { CalendarEventState, ScheduleEventType } from '@dawlyy/core/types';
 import type { ApiEnv } from './env';
 import { validationError } from './errors';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import { withAuthTx } from '../server/db';
 import { trackingErrorHandler } from '../server/tracking/http';
@@ -14,6 +14,7 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!re
 router.onError(trackingErrorHandler);
 router.use('*', async (c, next) => { c.header('Cache-Control', 'private, no-store'); await next(); });
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 router.use('*', idempotentReplay);
 const query = z.object({ from: z.iso.datetime({ offset: true }).optional(), to: z.iso.datetime({ offset: true }).optional(), clientId: z.uuid().optional(), type: ScheduleEventType.optional(), state: CalendarEventState.optional(), cursor: z.string().optional(), limit: z.string().optional() });
 const title = z.object({ ar: z.string().trim().max(200).optional(), en: z.string().trim().max(200).optional() }).strict();
@@ -21,9 +22,6 @@ const createInput = z.object({ clientId: z.uuid(), type: ScheduleEventType, dueA
 const editInput = z.object({ type: ScheduleEventType.optional(), title: title.optional(), windowDays: z.number().int().min(0).max(365).optional() }).strict().refine(value => Object.keys(value).length > 0, 'Empty patch');
 router.openapi(createRoute({ method: 'get', path: '/', request: { query }, responses: { 200: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => listCalendar(tx, auth, c.req.valid('query'))), 200);
-});
-router.openapi(createRoute({ method: 'get', path: '/mine', request: { query: query.omit({ clientId: true }) }, responses: { 200: resultResponse, ...errors } }), async c => {
-  const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => listCalendar(tx, auth, c.req.valid('query'), true)), 200);
 });
 router.openapi(createRoute({ method: 'post', path: '/', request: { body: { required: true, content: { 'application/json': { schema: createInput } } } }, responses: { 201: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => createCalendarEvent(tx, auth, c.req.valid('json'))), 201);

@@ -1,15 +1,14 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { isAllowed } from '@dawlyy/core/authz';
-import { getSessionUser } from '@/src/server/auth';
 import { withAuthTx } from '@/src/server/db';
 import { requirePermission } from '@/src/server/require-permission';
 import {
-  acceptInvitationForUser, createInvitation, invitationInputSchema, listInvitations,
-  previewInvitation, regenerateInvitation, revokeInvitation,
+  createInvitation, invitationInputSchema, listInvitations,
+  regenerateInvitation, revokeInvitation,
 } from '@/src/server/invitations';
-import { ApiError, forbidden, unauthorized, unprocessable, validationError } from './errors';
+import { ApiError, forbidden, unprocessable, validationError } from './errors';
 import { pageSchema, parseListQuery } from './lib/pagination';
-import { requireAuthMiddleware } from './middleware/auth';
+import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
 import { idempotentReplay } from './middleware/idempotency';
 import type { ApiEnv } from './env';
 
@@ -28,7 +27,6 @@ const errors = {
   409: { description: 'Already used or already a member', content: { 'application/json': { schema: errorSchema } } },
   422: { description: 'Invitation is not pending', content: { 'application/json': { schema: errorSchema } } },
 };
-const tokenBody = z.object({ token: z.string().regex(/^[A-Za-z0-9_-]{43}$/) }).strict();
 const idParams = z.object({ id: z.uuid() });
 const invitationResult = z.object({ id: z.uuid(), role: z.enum(['staff', 'client']), expiresAt: z.string(), token: z.string(), link: z.string() });
 const jsonBody = <T extends z.ZodType>(schema: T) => ({ required: true as const, content: { 'application/json': { schema } } });
@@ -57,41 +55,11 @@ function linkFor(origin: string, locale: string, token: string) {
   return `${base}/${locale === 'en' ? 'en' : 'ar'}/invite/${token}`;
 }
 
-// Register the two membership-free endpoints before the protected wildcard middleware.
-router.use('/preview', async (c, next) => {
-  c.header('Cache-Control', 'no-store');
-  await next();
-});
-router.use('/accept', async (c, next) => {
-  if (!await getSessionUser(c.req.raw.headers)) throw unauthorized();
-  c.header('Cache-Control', 'no-store');
-  await next();
-});
-
-router.openapi(createRoute({
-  method: 'post', path: '/preview', request: { body: jsonBody(tokenBody) },
-  responses: { ...errors, 200: { description: 'Public invitation preview', content: { 'application/json': { schema: z.object({
-    businessName: z.string(), role: z.enum(['owner', 'staff', 'client']), displayName: z.string().nullable(), expired: z.boolean(),
-    status: z.enum(['pending', 'accepted', 'revoked', 'expired']),
-  }) } } } },
-}), async (c) => c.json(await guarded(() => previewInvitation(c.req.valid('json').token)), 200));
-
-router.openapi(createRoute({
-  method: 'post', path: '/accept', request: { body: jsonBody(tokenBody) },
-  responses: { ...errors, 200: { description: 'Membership activated', content: { 'application/json': { schema: z.object({
-    role: z.enum(['staff', 'client']), redirectTo: z.enum(['/app/today', '/coach']),
-  }) } } } },
-}), async (c) => {
-  const user = await getSessionUser(c.req.raw.headers);
-  if (!user) throw unauthorized();
-  return c.json(await guarded(() => acceptInvitationForUser(user.id, c.req.valid('json').token)), 200);
-});
-
 // The wildcard covers the root and every protected subpath served by this module.
 router.use('*', requireAuthMiddleware);
+router.use('*', requireStaffRole);
 router.use('*', async (c, next) => {
   const auth = c.get('auth');
-  if (auth.role === 'client') throw forbidden();
   if (c.req.method === 'GET') {
     if (isAllowed(auth, 'team', 'view')) requirePermission(auth, 'team', 'view');
     else requirePermission(auth, 'clients', 'view');

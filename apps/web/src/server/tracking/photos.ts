@@ -11,7 +11,7 @@ import { trackingClient, visibleClient } from './access';
 import { requirePhotoConsent } from './consent-gate';
 import { listPosition, type EntryQuery } from './entries';
 import { photoInput } from './contracts';
-import { completeTrackingEvents, getCadence } from './cadence';
+import { completeTrackingEvents, getCadence } from './client-read';
 
 // The frozen set table has no deleted_at. A set is soft-deleted when all its media are soft-deleted.
 const liveSet = sql`exists (select 1 from jsonb_array_elements(${progressPhotoSets.poses}) p join public.media m on m.id = (p->>'mediaId')::uuid where m.tenant_id = ${progressPhotoSets.tenantId} and m.client_id = ${progressPhotoSets.clientId} and m.purpose = 'progress_photo' and m.deleted_at is null)`;
@@ -41,8 +41,12 @@ export async function savePhotos(tx: Tx, auth: AuthContext, input: z.infer<typeo
     const config = await getCadence(tx, auth, clientId);
     if (config?.progressPhotos?.rule.enabled && config.progressPhotos.poses.some(pose => !input.poses.some(item => item.pose === pose))) throw validationError(undefined, 'Required photo poses are missing');
   }
-  const [existing] = await tx.select({ id: clientColumns.progressPhotoSets.id, live: sql<boolean>`${liveSet}` }).from(progressPhotoSets).where(and(eq(progressPhotoSets.tenantId, auth.tenantId), eq(progressPhotoSets.clientId, clientId), eq(progressPhotoSets.clientUuid, input.clientUuid))).limit(1);
-  if (existing && !existing.live) throw conflict('Deleted photo sets cannot be restored by sync');
+  const existingScope = and(eq(progressPhotoSets.tenantId, auth.tenantId), eq(progressPhotoSets.clientId, clientId), eq(progressPhotoSets.clientUuid, input.clientUuid));
+  const [existing] = await tx.select({ id: clientColumns.progressPhotoSets.id }).from(progressPhotoSets).where(existingScope).limit(1);
+  if (existing) {
+    const [live] = await tx.select({ id: clientColumns.progressPhotoSets.id }).from(progressPhotoSets).where(and(existingScope, liveSet)).limit(1);
+    if (!live) throw conflict('Deleted photo sets cannot be restored by sync');
+  }
   const ids = input.poses.map(pose => pose.mediaId);
   const assets = await tx.select({ id: clientColumns.media.id, kind: clientColumns.media.kind }).from(media).where(and(eq(media.tenantId, auth.tenantId), eq(media.clientId, clientId), eq(media.purpose, 'progress_photo'), inArray(media.id, ids), isNull(media.deletedAt))).for('update');
   if (assets.length !== ids.length || assets.some(asset => asset.kind !== 'photo')) throw validationError(undefined, 'Every pose must reference your own progress photo');

@@ -16,7 +16,7 @@ import type { SendMessageInput } from './schemas';
 
 const conversationFields = clientColumns.conversations;
 const messageFields = clientColumns.messages;
-const sortKey = sql`coalesce(${conversations.lastMessageAt}, ${conversations.createdAt})`;
+const sortKey = sql`coalesce(${clientColumns.conversations.lastMessageAt}, ${clientColumns.conversations.createdAt})`;
 
 export type ListQuery = { limit?: string; cursor?: string };
 
@@ -102,7 +102,7 @@ export async function listMessages(tx: Tx, auth: AuthContext, conversationId: st
   requirePermission(auth, 'messages', 'view');
   const { limit, cursor } = parseListQuery(query);
   await requireConversation(tx, auth, conversationId);
-  const rows = await tx.select({ ...messageFields, sortKey: sql<string>`${messages.createdAt}::text` }).from(messages)
+  const rows = await tx.select({ ...messageFields, sortKey: sql<string>`${clientColumns.messages.createdAt}::text` }).from(messages)
     .where(and(
       eq(messages.tenantId, auth.tenantId), eq(messages.conversationId, conversationId),
       ...(cursor ? [sql`(${messages.createdAt}, ${messages.id}) < (${String(cursor.k)}::timestamptz, ${cursor.id}::uuid)`] : []),
@@ -220,15 +220,15 @@ export async function notifyMessage(auth: AuthContext, conversation: { id: strin
   if (!conversation.clientId) return 0;
   const clientId = conversation.clientId;
   return withServiceTx(auth.tenantId, 'messaging: notify message recipients', async (tx) => {
-    const members = await tx.select({ id: memberships.id, userId: memberships.userId, role: memberships.role, permissions: memberships.permissions, displayName: memberships.displayName, clientId: memberships.clientId })
+    const members = await tx.select({ id: clientColumns.memberships.id, userId: clientColumns.memberships.userId, role: clientColumns.memberships.role, permissions: clientColumns.memberships.permissions, displayName: clientColumns.memberships.displayName, clientId: clientColumns.memberships.clientId })
       .from(memberships).where(and(eq(memberships.tenantId, auth.tenantId), eq(memberships.status, 'active')));
     const sender = members.find(member => member.userId === auth.userId);
     let senderName = sender?.displayName ?? null;
     if (auth.role === 'client' && !senderName) {
-      const [client] = await tx.select({ displayName: clients.displayName, firstName: clients.firstName }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, clientId))).limit(1);
+      const [client] = await tx.select({ displayName: clientColumns.clients.displayName, firstName: clientColumns.clients.firstName }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, clientId))).limit(1);
       senderName = client?.displayName ?? client?.firstName ?? null;
     }
-    const assigned = new Set((await tx.select({ membershipId: staffClientAssignments.membershipId }).from(staffClientAssignments)
+    const assigned = new Set((await tx.select({ membershipId: clientColumns.staffClientAssignments.membershipId }).from(staffClientAssignments)
       .where(and(eq(staffClientAssignments.tenantId, auth.tenantId), eq(staffClientAssignments.clientId, clientId)))).map(row => row.membershipId));
     const recipients = auth.role === 'client'
       ? members.filter(member => member.userId !== auth.userId && (member.role === 'owner'
