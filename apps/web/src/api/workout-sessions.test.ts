@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { sessionVolume } from '@dawlyy/core/workout';
-import { call, setupApiData } from '../test/api-harness';
+import { call, setupActiveSubscription, setupApiData } from '../test/api-harness';
 import { workoutFixture } from '../server/workout/test-fixture';
 import type { SessionDetail, SetWrite, WorkoutSummary } from '../server/workout/contracts';
 import { app } from './index';
@@ -11,7 +11,11 @@ const base = '/api/v1/workout-sessions';
 const syncReply = z.object({ accepted: z.array(z.string()), rejected: z.array(z.object({ clientUuid: z.string(), reason: z.string() })) });
 describe('Task 5 offline workout API / G2 and G3', () => {
   let f: Awaited<ReturnType<typeof workoutFixture>>;
-  beforeEach(async () => { f = await workoutFixture(); });
+  beforeEach(async () => {
+    f = await workoutFixture();
+    await setupActiveSubscription(f.owner.tenantId, f.a.clientId);
+    await setupActiveSubscription(f.owner.tenantId, f.b.clientId);
+  });
   afterEach(async () => { await f?.cleanup(); });
   const startBody = (actor = f.a, date = '2026-11-09') => ({ clientUuid: randomUUID(), programId: actor.programId, programVersionId: actor.versionId, dayId: f.dayId, workoutId: f.workoutId, localDate: date, timezone: 'Africa/Cairo' });
   async function start(actor = f.a, date?: string) {

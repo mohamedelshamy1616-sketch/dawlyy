@@ -3,6 +3,7 @@ import { and, desc, eq, isNull } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { clients, nutritionPlans, nutritionPlanVersions, programs, programVersions } from '@dawlyy/db/schema';
 import type { AuthContext, Tx } from '../db';
+import { assertActiveAccess } from '../access';
 import { forbidden } from '../../api/errors';
 import { nutritionFoods } from './client-read';
 import { documentTotals } from './helpers';
@@ -15,6 +16,7 @@ export function nutritionDate(timezone: string, now = new Date()): string {
 /** Task 6: all client plan/program/food reads use the safe column maps and own-client predicates. */
 export async function myNutrition(tx: Tx, auth: AuthContext) {
   if (auth.role !== 'client' || !auth.clientId) throw forbidden();
+  await assertActiveAccess(tx, auth);
   const [client] = await tx.select({ timezone: clientColumns.clients.timezone }).from(clients).where(and(eq(clients.id, auth.clientId), eq(clients.tenantId, auth.tenantId))).limit(1);
   const timezone = client?.timezone ?? 'Africa/Cairo'; const localDate = nutritionDate(timezone);
   const [head] = await tx.select(clientColumns.nutritionPlans).from(nutritionPlans).where(and(eq(nutritionPlans.tenantId, auth.tenantId), eq(nutritionPlans.clientId, auth.clientId), isNull(nutritionPlans.archivedAt))).orderBy(desc(nutritionPlans.createdAt), desc(nutritionPlans.id)).limit(1);

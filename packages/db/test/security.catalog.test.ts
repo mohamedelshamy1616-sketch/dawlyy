@@ -705,7 +705,7 @@ describe('security catalog', () => {
     for(const file of files('apps/web/src').filter((f)=>f.endsWith('.ts')&&!f.includes('.test.'))) for(const match of read(file).matchAll(/app\.(audit|emit_event)\(\s*'([^']+)'/g)) expect(match[1]==='audit'?audits.map((a)=>a.action):events.map((e)=>e.type),file).toContain(match[2]);
   });
   it('C20 migration source functions triggers breakpoints and terminal privilege block', () => {
-    for(const tag of ['0003_rls_role_and_helpers','0006_guards_and_grants']) {
+    for(const tag of ['0003_rls_role_and_helpers','0006_guards_and_grants','0007_push_tenant_scope']) {
       const source=read(`packages/db/migrations/${tag}.sql`);
       expect(source).toMatch(/set\s+check_function_bodies\s*=\s*on/i);
       expect(source).toMatch(/alter default privileges\s+(?:for role postgres\s+)?revoke execute on functions from public/i);
@@ -744,7 +744,7 @@ describe('security catalog', () => {
     for(const statement of m5.split(';').map((s)=>s.trim()).filter(Boolean)) expect(statement).toMatch(/^CREATE POLICY\b/i);
     for(const file of files('packages/db/migrations').filter((f)=>/000[3-6][^/]*\.sql$/.test(f))) expect(read(file),file).not.toMatch(/CREATE\s+(?:UNIQUE\s+)?INDEX\s+CONCURRENTLY|\bVACUUM\b|ALTER\s+SYSTEM|ALTER\s+TYPE[^;]+ADD\s+VALUE/i);
     const journal=JSON.parse(read('packages/db/migrations/meta/_journal.json')) as {entries:{idx:number;when:number;tag:string}[]};
-    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6]);
+    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6,7]);
     for(let i=1;i<journal.entries.length;i++) expect(journal.entries[i]!.when).toBeGreaterThan(journal.entries[i-1]!.when);
     for(const file of files('packages/db/src/schema').filter((f)=>f.endsWith('.ts')&&/pgTable\(/.test(read(f)))) expect(read(file),file).toMatch(/0006/);
   });

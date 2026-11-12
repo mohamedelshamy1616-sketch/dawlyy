@@ -1,4 +1,4 @@
-export type ApiErrorStatus = 400 | 401 | 403 | 404 | 409 | 422 | 500;
+export type ApiErrorStatus = 400 | 401 | 403 | 404 | 409 | 413 | 422 | 500;
 
 export type ApiErrorBody = {
   error: { code: string; message: string; details?: unknown };

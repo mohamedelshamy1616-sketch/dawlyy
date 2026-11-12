@@ -5,6 +5,7 @@ import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { conflict, forbidden, notFound, unprocessable, validationError } from '../../api/errors';
+import { MAX_PROOF_BYTES } from '../request-limits';
 
 /** T3b / §12.1(18): storage instructions; callers never receive service credentials. */
 export interface StorageProvider {
@@ -17,7 +18,7 @@ const uuid = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-
 const storageShape = new RegExp(`^(${uuid})/(?:assets/|clients/${uuid}/)[A-Za-z0-9._/-]+$`);
 const proofTypes: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'application/pdf': 'pdf' };
 /** T3b: maximum proof object size in bytes. */
-export const MAX_PROOF_BYTES = 8 * 1024 * 1024;
+export { MAX_PROOF_BYTES } from '../request-limits';
 
 /** T3b: enforce the database's tenant/client path shape before filesystem or remote storage access. */
 export function validateStoragePath(value: string, tenantId?: string): string {

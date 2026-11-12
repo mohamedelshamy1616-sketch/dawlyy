@@ -5,7 +5,7 @@ import { and, eq, isNull } from 'drizzle-orm';
 import { addMacros, itemMacros } from '@dawlyy/core/nutrition';
 import { foods, nutritionPlans, nutritionPlanVersions, clients, memberships, mealLogs } from '@dawlyy/db/schema';
 import { withAuthTx, type AuthContext } from '../server/db';
-import { call, setupApiData, setupApiFixture } from '../test/api-harness';
+import { call, setupActiveSubscription, setupApiData, setupApiFixture } from '../test/api-harness';
 import { draftDocumentSchema } from '../server/nutrition/schemas';
 import { mapNutritionError } from '../server/nutrition/errors';
 import { app } from './index';
@@ -65,6 +65,7 @@ describe('Task 6 nutrition versions and isolation', () => {
       } return result;
     });
     const a = people[0]!; const b = people[1]!;
+    await setupActiveSubscription(fixture.owner.tenantId, a.id);
     async function assign(clientId: string) { const r = await call(app, 'POST', `/api/v1/nutrition/${plan.head.id}/assign`, { as: fixture.owner.userId, body: { clientId, publish: true } }); expect(r.status).toBe(201); return detail.parse(r.json); }
     const ca = await assign(a.id); const cb = await assign(b.id);
     expect((await save(ca.head.id, { ...ca.currentVersion.document, instructions: { en: 'A only' } })).status).toBe(200);
@@ -134,6 +135,7 @@ describe('Task 6 nutrition versions and isolation', () => {
     expect((await save(plan.head.id, document)).status).toBe(200);
     expect((await call(app, 'POST', `/api/v1/nutrition/${plan.head.id}/publish`, { as: fixture.owner.userId, body: {} })).status).toBe(200);
     const client = (await makeClients(1))[0]!; await assignTo(plan.head.id, client.id); const as = client.userId;
+    await setupActiveSubscription(fixture.owner.tenantId, client.id);
     const me = z.object({ head: z.object({ id: z.string() }), dayType: z.string(), version: z.object({ document: draftDocumentSchema }), foods: z.array(z.object({ id: z.string() })) }).parse((await call(app, 'GET', '/api/v1/nutrition/me', { as })).json);
     expect(me.dayType).toBe('training'); expect(me.version.document.meals).toHaveLength(1); expect(me.foods.map(f => f.id)).toContain(food.id);
     const byIds = await call(app, 'GET', `/api/v1/foods/by-ids?ids=${food.id},${randomUUID()}`, { as });

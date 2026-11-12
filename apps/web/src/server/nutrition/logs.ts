@@ -1,22 +1,31 @@
 import 'server-only';
-import { and, desc, eq, lt, sql } from 'drizzle-orm';
+import { and, desc, eq, isNull, lt, sql } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
-import { clients, mealLogs, supplementLogs, metricEntries } from '@dawlyy/db/schema';
+import { clients, mealLogs, supplementLogs, metricEntries, nutritionPlans, nutritionPlanVersions } from '@dawlyy/db/schema';
 import { z } from 'zod';
 import type { AuthContext, Tx } from '../db';
 import { requirePermission } from '../require-permission';
 import { forbidden, notFound, unprocessable, validationError } from '../../api/errors';
 import { page, parseListQuery } from '../../api/lib/pagination';
-import { myNutrition } from './client';
 import type { mealLogSchema, supplementLogSchema, waterSchema, logListSchema } from './schemas';
 
 function own(auth: AuthContext): string {
   if (auth.role !== 'client' || !auth.clientId) throw forbidden();
   requirePermission(auth, 'nutrition', 'view'); return auth.clientId;
 }
+// Validate references for log writes without returning the current nutrition view or changing log access rules.
+async function logPlan(tx: Tx, auth: AuthContext) {
+  const [head] = await tx.select({ id: clientColumns.nutritionPlans.id, publishedVersionId: clientColumns.nutritionPlans.publishedVersionId })
+    .from(nutritionPlans).where(and(eq(nutritionPlans.tenantId, auth.tenantId), eq(nutritionPlans.clientId, own(auth)), isNull(nutritionPlans.archivedAt)))
+    .orderBy(desc(nutritionPlans.createdAt), desc(nutritionPlans.id)).limit(1);
+  const [version] = head?.publishedVersionId ? await tx.select({ id: clientColumns.nutritionPlanVersions.id, document: clientColumns.nutritionPlanVersions.document })
+    .from(nutritionPlanVersions).where(and(eq(nutritionPlanVersions.id, head.publishedVersionId), eq(nutritionPlanVersions.planId, head.id),
+      eq(nutritionPlanVersions.tenantId, auth.tenantId), eq(nutritionPlanVersions.clientId, own(auth)), eq(nutritionPlanVersions.status, 'published'))).limit(1) : [];
+  return { version };
+}
 /** Task 6 / §12.1.12: null-safe monotonic upsert of exactly the meal client-update columns. */
 export async function logMeal(tx: Tx, auth: AuthContext, body: z.infer<typeof mealLogSchema>) {
-  const clientId = own(auth); const plan = await myNutrition(tx, auth);
+  const clientId = own(auth); const plan = await logPlan(tx, auth);
   const meal = plan.version?.document.meals.find(m => m.id === body.mealId);
   if (body.mealId && (!meal || (body.optionId && !meal.options.some(o => o.id === body.optionId)))) throw unprocessable('meal_unknown');
   const values = { planVersionId: body.mealId ? plan.version?.id ?? null : null, localDate: body.localDate, mealId: body.mealId ?? null, optionId: body.optionId ?? meal?.options[0]?.id ?? null, freeEntry: body.freeEntry ?? null, status: body.status, note: body.note ?? null, clientUpdatedAt: new Date(body.clientUpdatedAt), recordedAt: new Date() };
@@ -26,7 +35,7 @@ export async function logMeal(tx: Tx, auth: AuthContext, body: z.infer<typeof me
 }
 /** Task 6: supplement sync shares meal-log freshness and caller-owned plan validation. */
 export async function logSupplement(tx: Tx, auth: AuthContext, body: z.infer<typeof supplementLogSchema>) {
-  const clientId = own(auth); const plan = await myNutrition(tx, auth);
+  const clientId = own(auth); const plan = await logPlan(tx, auth);
   if (!plan.version?.document.supplements.some(s => s.id === body.supplementId)) throw unprocessable('supplement_unknown');
   const values = { planVersionId: plan.version.id, supplementId: body.supplementId, localDate: body.localDate, taken: body.taken, clientUpdatedAt: new Date(body.clientUpdatedAt), recordedAt: new Date() };
   await tx.insert(supplementLogs).values({ tenantId: auth.tenantId, clientId, clientUuid: body.clientUuid, ...values }).onConflictDoUpdate({ target: [supplementLogs.tenantId, supplementLogs.clientId, supplementLogs.clientUuid], set: values,

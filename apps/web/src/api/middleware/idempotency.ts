@@ -5,6 +5,7 @@ import { idempotencyKeys } from '@dawlyy/db/schema';
 import { and, eq, gt, lte } from 'drizzle-orm';
 import { ApiError, validationError } from '../errors';
 import type { AuthVariables } from './auth';
+import { readLimitedBody } from './body-limit';
 
 /** doc §12.1 / build-plan API: optional key extracted by the existing header middleware. */
 export type IdempotencyVariables = { idempotencyKey?: string };
@@ -17,6 +18,7 @@ const MUTATING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
  */
 export const idempotencyMiddleware = createMiddleware<{ Variables: IdempotencyVariables }>(async (c, next) => {
   if (MUTATING.has(c.req.method)) {
+    await readLimitedBody(c);
     const key = c.req.header('Idempotency-Key')?.trim();
     if (key) c.set('idempotencyKey', key);
   }
@@ -124,7 +126,7 @@ export function createIdempotentReplay(store: IdempotencyStore) {
     }
     if (key.length > 200) throw validationError(undefined, 'Idempotency-Key must be at most 200 characters');
     const auth = c.get('auth');
-    const body = new Uint8Array(await c.req.raw.clone().arrayBuffer());
+    const body = await readLimitedBody(c);
     const requestHash = idempotencyRequestHash(auth, c.req.method, c.req.path, body);
     const cutoff = () => new Date(Date.now() - 24 * 60 * 60 * 1000);
     let reservedAt: Date | undefined;

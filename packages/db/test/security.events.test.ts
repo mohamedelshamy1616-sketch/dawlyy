@@ -249,7 +249,17 @@ describe('calendar, forms, consent, AI and personal rows (§13.4 E)', () => {
     let second: Promise<unknown> | undefined;
     try { const holder = await Promise.race([held.promise, first.then(() => { throw new Error('holder ended early'); })]); second = as(secondActor, async (tx) => { ready.resolve((await one<{ pid: number }>(tx, sql`select pg_backend_pid() as pid`)).pid); return q(tx, sql`select app.register_push(${endpoint}, '{"p256dh":"last","auth":"a"}', 'last')`); }); const finished = Promise.allSettled([second]); await blocked(await ready.promise, holder); release.resolve(); await first; expect((await finished)[0]?.status).toBe('fulfilled'); }
     finally { release.resolve(); await Promise.allSettled([first, ...(second ? [second] : [])]); }
-    expect(await svc((tx) => q(tx, sql`select tenant_id, user_id, keys from push_subscriptions where endpoint = ${endpoint}`))).toEqual([{ tenant_id: secondActor.tenantId, user_id: secondActor.userId, keys: { p256dh: 'last', auth: 'a' } }]);
+    if (across) {
+      const rows = await svc((tx) => q(tx, sql`select tenant_id, user_id, keys from push_subscriptions where endpoint = ${endpoint}`));
+      // N2 (docs/plans/OPEN_DECISIONS.md item 18): handover is tenant-scoped.
+      expect(rows).toHaveLength(2);
+      expect(rows).toEqual(expect.arrayContaining([
+        { tenant_id: f.ua.tenantId, user_id: f.ua.userId, keys: { p256dh: 'first', auth: 'a' } },
+        { tenant_id: secondActor.tenantId, user_id: secondActor.userId, keys: { p256dh: 'last', auth: 'a' } },
+      ]));
+    } else {
+      expect(await svc((tx) => q(tx, sql`select tenant_id, user_id, keys from push_subscriptions where endpoint = ${endpoint}`))).toEqual([{ tenant_id: secondActor.tenantId, user_id: secondActor.userId, keys: { p256dh: 'last', auth: 'a' } }]);
+    }
   });
   for (const caseId of ['E15', 'E18'] as const) for (const who of (caseId === 'E18' ? ['ua', 's2', 'o1'] : ['ua']) as readonly ('ua' | 's2' | 'o1')[]) for (const column of (caseId === 'E18' ? ['last_used_at', 'failed_at'] : ['id', 'tenant_id', 'user_id', 'endpoint', 'created_at', 'last_used_at', 'failed_at'])) it(`${caseId} push_subscriptions ${who} UPDATE ${column} own`, async () => {
     const f = await buildPrivateFixture(), actor = f[who], endpoint = 'https://push.example.test/' + randomUUID(), id = await register(actor, endpoint), value = column.endsWith('_at') ? sql`now()` : column === 'endpoint' ? sql`'https://push.example.test/changed'` : sql`${randomUUID()}::uuid`;

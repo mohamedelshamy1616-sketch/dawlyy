@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
+import { requireActiveAccess } from './middleware/access';
 import { idempotentReplay } from './middleware/idempotency';
 import { validationError } from './errors';
 import { withAuthTx, type AuthContext, type Tx } from '../server/db';
@@ -17,7 +18,7 @@ const body = <T extends z.ZodType>(schema: T) => ({ required: true as const, con
 async function transaction<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T>): Promise<T> {
   try { return await withAuthTx(auth, fn); } catch (error) { throw mapNutritionError(error); }
 }
-router.openapi(createRoute({ middleware: [requireAuthMiddleware, idempotentReplay] as const, method: 'get', path: '/me', request: {  }, responses: { 200: json, ...errors } }), async c => {
+router.openapi(createRoute({ middleware: [requireAuthMiddleware, requireActiveAccess, idempotentReplay] as const, method: 'get', path: '/me', request: {  }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => myNutrition(tx, auth)), 200);
 });
 router.openapi(createRoute({ middleware: [requireAuthMiddleware, idempotentReplay] as const, method: 'post', path: '/substitute', request: { body: body(z.object({ foodId: z.uuid(), toFoodId: z.uuid(), grams: z.number().positive().max(100000), rule: z.enum(['protein', 'carbs', 'fat', 'kcal']) }).strict()) }, responses: { 200: json, ...errors } }), async c => {

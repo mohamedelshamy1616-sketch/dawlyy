@@ -8,6 +8,7 @@ import { transition } from '@dawlyy/core/state';
 import { z } from 'zod';
 import { ApiError, forbidden, notFound, unprocessable, validationError } from '../../api/errors';
 import { withServiceTx, type AuthContext, type Tx } from '../db';
+import { assertActiveAccess } from '../access';
 import { buildSummary, coreRecord, isNewer, sessionTarget } from './logic';
 import { requireClient } from './portal';
 import { comparisonHistory, getSession, readSets, sessionProjection } from './read';
@@ -44,7 +45,7 @@ async function ownSession(tx: Tx, auth: AuthContext, uuid: string) {
 
 /** Task 5: create-or-resume by own UUID; prescriptions are copied from a published own-client version. */
 export async function startSession(tx: Tx, auth: AuthContext, body: z.infer<typeof startSessionSchema>) {
-  const clientId = requireClient(auth, true); await lockClient(tx, auth);
+  const clientId = requireClient(auth, true); await assertActiveAccess(tx, auth); await lockClient(tx, auth);
   const existing = await ownSession(tx, auth, body.clientUuid);
   if (existing) {
     if (existing.programId !== body.programId || existing.programVersionId !== body.programVersionId || existing.dayId !== body.dayId || existing.workoutId !== body.workoutId) throw conflict();
@@ -136,7 +137,7 @@ async function syncSet(tx: Tx, auth: AuthContext, body: SetWrite) {
 
 /** Task 5 / §12.1(12): atomic batch, sessions first, row savepoints, stale LWW writes acknowledged. */
 export async function syncWorkout(tx: Tx, auth: AuthContext, body: { sessions: SessionWrite[]; sets: SetWrite[] }) {
-  requireClient(auth, true); await lockClient(tx, auth);
+  requireClient(auth, true); await assertActiveAccess(tx, auth); await lockClient(tx, auth);
   const accepted: string[] = []; const rejected: Array<{ clientUuid: string; reason: string }> = []; const sessionIds = new Set<string>();
   for (const entry of [...body.sessions.map(record => ({ kind: 'session' as const, record })), ...body.sets.map(record => ({ kind: 'set' as const, record }))]) {
     try {

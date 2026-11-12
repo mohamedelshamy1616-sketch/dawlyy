@@ -3,6 +3,8 @@ import { vi } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withErasureTx, withServiceTx, type AuthContext, type Tx } from '@dawlyy/db';
 import { memberships, tenants } from '@dawlyy/db/schema';
+import { packages, subscriptions } from '@dawlyy/db/schema';
+import { ScheduleRules } from '@dawlyy/core/types';
 
 // Only Supabase identity is faked: membership discovery and downstream RLS use the real database.
 vi.mock('@/src/server/supabase', () => ({
@@ -50,6 +52,19 @@ export async function call(
 export async function setupApiData<T>(tenantId: string | null, reason: string, fn: (tx: Tx) => Promise<T>): Promise<T> {
   requireDatabase();
   return withServiceTx(tenantId, `api test: ${reason}`, fn);
+}
+
+/** N1 live-operation fixtures: the access-live date range covers today in every tenant timezone. */
+export async function setupActiveSubscription(tenantId: string, clientId: string): Promise<void> {
+  await setupApiData(tenantId, 'active subscription fixture', async tx => {
+    const [pkg] = await tx.insert(packages).values({ tenantId, name: { en: 'Access' }, durationDays: 30,
+      scheduleRules: ScheduleRules.parse({}) }).returning();
+    if (!pkg) throw new Error('Missing fixture package');
+    await tx.insert(subscriptions).values({ tenantId, clientId, packageId: pkg.id,
+      packageSnapshot: { name: pkg.name, entitlements: pkg.entitlements, scheduleRules: pkg.scheduleRules,
+        durationDays: pkg.durationDays, price: pkg.price, currency: pkg.currency },
+      state: 'active', startsOn: '2000-01-01', endsOn: '2099-01-01' });
+  });
 }
 
 /** doc §14 / P2B API tests: create an isolated owner and tenant; cleanup removes only this fixture's tenant. */

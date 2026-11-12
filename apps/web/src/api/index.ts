@@ -1,9 +1,11 @@
 import { swaggerUI } from '@hono/swagger-ui';
+import { randomUUID } from 'node:crypto';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { HTTPException } from 'hono/http-exception';
 import { ZodError } from 'zod';
 import { ApiError, validationError, type ApiErrorBody, type ApiErrorStatus } from './errors';
 import type { ApiEnv } from './env';
+import { safeErrorMetadata } from './error-log';
 import { idempotencyMiddleware } from './middleware/idempotency';
 import { requireSameOrigin } from './middleware/origin';
 import { router as authRouter } from './auth';
@@ -54,6 +56,12 @@ export const app = new OpenAPIHono<ApiEnv>({
   },
 }).basePath('/api/v1');
 
+app.use('*', async (c, next) => {
+  const requestId = randomUUID();
+  c.set('requestId', requestId);
+  c.header('X-Request-Id', requestId);
+  await next();
+});
 app.use('*', requireSameOrigin);
 app.use('*', idempotencyMiddleware);
 
@@ -139,7 +147,7 @@ app.onError((err, c) => {
     const [status, code] = map[err.status] ?? [500, 'internal_error'];
     result = envelope(status, code, err.message || 'Request failed');
   } else {
-    console.error('Unhandled API error', err);
+    console.error('Unhandled API error', safeErrorMetadata(err, c.get('requestId') ?? randomUUID(), c.req.routePath, 500));
     result = envelope(500, 'internal_error', 'Internal server error');
   }
   return c.json(result.body, result.status);
