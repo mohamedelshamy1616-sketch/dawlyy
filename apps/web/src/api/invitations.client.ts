@@ -3,6 +3,7 @@ import { getSessionUser } from '@/src/server/auth';
 import { acceptInvitationForUser, previewInvitation } from '@/src/server/invitations/client-read';
 import { ApiError, forbidden, unauthorized, unprocessable, validationError } from './errors';
 import type { ApiEnv } from './env';
+import { rateLimit } from './middleware/rate-limit';
 
 // Task 2: invitations and acceptance.
 /** doc §12.1 / build-plan API: module router mounted by the shared API entry point. */
@@ -54,7 +55,14 @@ router.use('/accept', async (c, next) => {
 
 router.openapi(createRoute({
   method: 'post', path: '/preview', request: { body: jsonBody(tokenBody) },
-  responses: { ...errors, 200: { description: 'Public invitation preview', content: { 'application/json': { schema: z.object({
+  middleware: [rateLimit({ windowMs: 60_000, max: 30 })] as const,
+  responses: { ...errors,
+    429: {
+      description: 'Preview rate limit exceeded',
+      headers: { 'Retry-After': { schema: { type: 'string' }, description: 'Seconds until this window expires' } },
+      content: { 'application/json': { schema: errorSchema } },
+    },
+    200: { description: 'Public invitation preview', content: { 'application/json': { schema: z.object({
     businessName: z.string(), role: z.enum(['owner', 'staff', 'client']), displayName: z.string().nullable(), expired: z.boolean(),
     status: z.enum(['pending', 'accepted', 'revoked', 'expired']),
   }) } } } },

@@ -7,6 +7,7 @@ import { page, parseListQuery } from '@/src/api/lib/pagination';
 import type { AuthContext, Tx } from '../db';
 import { dropSortKey } from '../messaging/logic';
 import { effectiveChannels, mergePreferences, type PreferencePatch } from './logic';
+import { isAllowedPushEndpoint } from './push-endpoints';
 
 /** Task 9: the signed-in user's notification center, preferences and push subscriptions. Own rows only, enforced by RLS. */
 
@@ -73,9 +74,11 @@ export async function putPreferences(tx: Tx, auth: AuthContext, patch: Preferenc
   return getPreferences(tx, auth);
 }
 
-/** Task 9: store a Web Push subscription for the caller through `app.register_push`; https endpoints only. */
+/** Task 9: store a Web Push subscription for the caller through `app.register_push`; trusted providers only. */
 export async function registerPushSubscription(tx: Tx, input: { endpoint: string; keys: { p256dh: string; auth: string }; userAgent?: string | undefined }) {
+  // The plain-https rule keeps its original code; a well-formed https host outside the provider allowlist is `invalid_endpoint` (pre-review S4).
   if (!/^https:\/\/[^/@]+\//.test(input.endpoint)) throw unprocessable('invalid_push_endpoint', 'Push endpoints must use https');
+  if (!isAllowedPushEndpoint(input.endpoint)) throw unprocessable('invalid_endpoint', 'Push endpoint must use an allowed HTTPS provider');
   const rows = await tx.execute<{ id: string }>(sql`select app.register_push(${input.endpoint}::text, ${JSON.stringify(input.keys)}::jsonb, ${input.userAgent ?? null}::text)::text as id`);
   const id = rows[0]?.id;
   if (!id) throw unprocessable('invalid_push_subscription');

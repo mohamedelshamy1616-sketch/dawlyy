@@ -2,9 +2,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { memberships, notificationDeliveries, notifications, pushSubscriptions, tenants, userPreferences } from '@dawlyy/db/schema';
 import { withServiceTx, type Tx } from '../db';
 import { processDeliveries } from './process';
-import type { EmailSender, PushSender } from './channels';
+import { createWebPushSender, type EmailSender, type PushSender } from './channels';
+import webpush from 'web-push';
 
 vi.mock('../db', () => ({ withServiceTx: vi.fn() }));
+vi.mock('web-push', () => ({ default: { sendNotification: vi.fn() } }));
 vi.mock('@/emails/render', () => ({
   renderEmail: async () => ({ subject: 'Reminder', html: '<p>Reminder</p>', text: 'Reminder' }),
 }));
@@ -13,6 +15,7 @@ vi.mock('@/emails/render', () => ({
 function fixture(active: boolean, channel: 'email' | 'webpush', notificationMissing = false) {
   const delivery = { id: 'delivery', tenantId: 'tenant', notificationId: 'notification', userId: 'user', channel, attempts: 0 };
   const outcomes: Record<string, unknown>[] = [];
+  const subscriptionUpdates: Record<string, unknown>[] = [];
   function query(rows: unknown[]) {
     return {
       where: vi.fn().mockReturnThis(), orderBy: vi.fn().mockReturnThis(), limit: vi.fn().mockReturnThis(),
@@ -36,6 +39,7 @@ function fixture(active: boolean, channel: 'email' | 'webpush', notificationMiss
       set: (values: Record<string, unknown>) => ({
         where: () => {
           if (table === notificationDeliveries && 'state' in values) outcomes.push(values);
+          if (table === pushSubscriptions) subscriptionUpdates.push(values);
           return { returning: async () => [{ id: delivery.id }] };
         },
       }),
@@ -44,7 +48,7 @@ function fixture(active: boolean, channel: 'email' | 'webpush', notificationMiss
   vi.mocked(withServiceTx).mockImplementation(async (_tenantId, _reason, fn) => fn(tx));
   const email: EmailSender = { mode: 'local-log', send: vi.fn<EmailSender['send']>().mockResolvedValue({ providerRef: 'email-ref' }) };
   const push: PushSender = { send: vi.fn<PushSender['send']>().mockResolvedValue(undefined) };
-  return { email, push, outcomes };
+  return { email, push, outcomes, subscriptionUpdates };
 }
 
 afterEach(() => { vi.clearAllMocks(); });
@@ -72,5 +76,15 @@ describe('delivery recipient membership', () => {
     expect(f.outcomes).toEqual([{ state: 'cancelled', lastError: 'notification_missing' }]);
     expect(f.push.send).not.toHaveBeenCalled();
     expect(f.email.send).not.toHaveBeenCalled();
+  });
+
+  it('retires a stored refused endpoint and cancels delivery without contacting a provider', async () => {
+    // The fixture stores push.example.test, which is outside the provider allowlist.
+    const f = fixture(true, 'webpush');
+    const push = createWebPushSender('public', 'private', 'mailto:admin@example.test');
+    expect(await processDeliveries({ tenantId: 'tenant', email: f.email, push })).toEqual({ claimed: 1, sent: 0, cancelled: 1, failed: 0, retried: 0 });
+    expect(webpush.sendNotification).not.toHaveBeenCalled();
+    expect(f.subscriptionUpdates).toEqual([{ failedAt: expect.any(Date) }]);
+    expect(f.outcomes).toEqual([{ state: 'cancelled', lastError: 'subscription_gone' }]);
   });
 });

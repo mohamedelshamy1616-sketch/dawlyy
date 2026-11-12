@@ -5,6 +5,7 @@ import { ZodError } from 'zod';
 import { ApiError, validationError, type ApiErrorBody, type ApiErrorStatus } from './errors';
 import type { ApiEnv } from './env';
 import { idempotencyMiddleware } from './middleware/idempotency';
+import { requireSameOrigin } from './middleware/origin';
 import { router as authRouter } from './auth';
 import { router as invitationsClientRouter } from './invitations.client';
 import { router as invitationsRouter } from './invitations';
@@ -53,6 +54,7 @@ export const app = new OpenAPIHono<ApiEnv>({
   },
 }).basePath('/api/v1');
 
+app.use('*', requireSameOrigin);
 app.use('*', idempotencyMiddleware);
 
 const healthRoute = createRoute({

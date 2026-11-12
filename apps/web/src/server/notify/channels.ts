@@ -1,6 +1,7 @@
 import 'server-only';
 import { Resend } from 'resend';
 import webpush from 'web-push';
+import { isAllowedPushEndpoint } from './push-endpoints';
 
 /** Task 9: delivery channels sit behind small interfaces so tests and local runs never send anything. */
 
@@ -59,6 +60,8 @@ export function createEmailSender(env: NodeJS.ProcessEnv = process.env): EmailSe
 export function createWebPushSender(publicKey: string, privateKey: string, subject: string): PushSender {
   return {
     async send(target, payload) {
+      // Retire legacy/refused subscriptions through the processor's existing 404/410 path.
+      if (!isAllowedPushEndpoint(target.endpoint)) throw new PushGoneError();
       try {
         await webpush.sendNotification({ endpoint: target.endpoint, keys: target.keys }, JSON.stringify(payload), {
           vapidDetails: { subject, publicKey, privateKey }, TTL: 60 * 60 * 24,

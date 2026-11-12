@@ -41,7 +41,7 @@ describe('Task 9 notifications API and delivery processing', () => {
     expect((await call(app, 'POST', `/api/v1/conversations/${id}/messages`, { as: owner, body: { body: text, clientUuid: randomUUID() } })).status).toBe(201);
     return id;
   }
-  async function subscribe(as: string, endpoint = `https://push.example.test/${randomUUID()}`) {
+  async function subscribe(as: string, endpoint = `https://fcm.googleapis.com/fcm/send/${randomUUID()}`) {
     const response = await call(app, 'POST', `${base}/push-subscriptions`, { as, body: { endpoint, keys } });
     return { response, endpoint };
   }
