@@ -32,3 +32,23 @@ Every `withServiceTx` caller checked (`S = apps/web/src/server/`):
 - `apps/web/src/test/api-harness.ts:52`: test fixtures only.
 
 No unchecked request identity reaching a service transaction was demonstrated.
+
+## Round 2 (thread 2026-11-12-085118, HEAD b306b28): web layer, uploads, payments, invitations
+
+Reviewed clean HEAD `b306b28`. Findings below are code-backed; probes used only in-memory framework/SDK calls, without network or database writes.
+
+| ID | severity | file:line | finding | how to prove it (a request or SQL) |
+|---|---|---|---|---|
+| S1 | medium | `apps/web/src/api/index.ts:56`; `apps/web/src/api/payments.ts:53` | **Conditional CSRF:** no Origin/Fetch Metadata guard. SameSite=Lax blocks ordinary cross-site POSTs, but permits cookies from a hostile same-site sibling origin. Optional-body refunds accept an empty POST; absent amount means full remaining refund (`payments/service.ts:114`). | From `https://evil.example.test`, use `fetch('https://app.example.test/api/v1/payments/KNOWN_ID/refund',{method:'POST',mode:'no-cors',credentials:'include'})`. Framework probe with this Origin and no body reached the handler, returning 200. Add an Origin check. |
+| S2 | medium | `apps/web/src/server/storage/index.ts:154` | Hosted upload signatures bind neither declared size nor MIME. Validation covers supplied metadata; shared bucket limits cannot enforce purpose-specific types or each declared size. | Request a `progress_photo` upload declaring JPEG, size 1; PUT a larger PDF to the signed URL where the bucket permits PDFs. SDK probe confirmed signing sends `{}`, without type/size constraints. Validate uploaded objects before making them available. |
+| S3 | low | `apps/web/src/api/invitations.client.ts:55`; `apps/web/src/server/invitations/client-read.ts:51` | Anonymous invitation preview has no application throttle; every correctly shaped guess opens a privileged database transaction. Token entropy prevents practical guessing, but not request-driven database load. | Repeat `POST /api/v1/invitations/preview` with distinct 43-character tokens. Each reaches the lookup; no application 429 path exists. Add throttling. |
+| S4 | medium | `apps/web/src/server/notify/center.ts:78`; `apps/web/src/server/notify/channels.ts:63` | Additional injection surface: push registration accepts arbitrary HTTPS hosts, then dispatch uses them directly—a blind SSRF primitive when VAPID is configured. | Register an endpoint such as `https://internal.example.test:8443/admin` with valid subscription keys; subsequent delivery targets it. Offline request generation confirmed POST to the supplied endpoint. Allowlist push providers. |
+
+Checked and found sound:
+
+- Payments/subscriptions deny client mutations; strict inputs exclude status/receipt overrides; sale prices come from stored packages.
+- Receipt allocation uses an atomic counter update; verification and lifecycle operations lock rows.
+- Invitations use 256-bit randomness, SHA-256 storage, expiry/status checks, locked acceptance, database-derived role/tenant, and membership serialization.
+- Media uses generated paths, traversal checks, RLS visibility, and authenticated local capabilities. Local downloads set `nosniff`.
+- Messages, answers and exercise cues render as text; exercise URLs enforce HTTPS/hosts; login redirects use fixed destinations. CSV output is a static template.
+- Installed JSON validation rejects form content types. Hosted authentication throttling and live bucket settings require deployment evidence.
