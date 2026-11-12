@@ -596,3 +596,10 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - `tools/run_e2e.py` also takes extra Playwright args, `--reuse-db` (debug only; skips the 10 min migrate) and a `screens` target.
 - Not changed: dev-only "uncached data" and "instant navigation" log lines from `next dev`; `build-web` is the judge for those.
 - Next: screens job `screens9` (fresh database), commit `docs/qa/screens/`, restore `apps/web/tsconfig.json` (Next rewrites it), then `python AP/run_checks.py --project .` on a clean tree, then the remaining P5 items (HOW_TO_TEST.md update, LAUNCH_RUNBOOK, vercel.json) and P6/P7.
+
+## 12 Nov 2026 02:50 (Cairo): screens green 284 of 284; next is the full run_checks
+
+- Commit `e5540f6`: screens spec gained `SCREENS_ONLY` and failure messages with url and busy element HTML; `playwright.config.ts` waits are longer (nav 240 s, expect 45 s, action 60 s); `run_e2e.py screens [--only parts]`. Job `screens14`: 1 passed (8.5 min), `index.md` says "Captured 284 of 284", 0 FAIL rows.
+- Unexplained and not hidden: `client-app-workout-start-ar-1366` failed its `aria-busy` check once (screens11) and `client-app-workout-start-ar-390` once (screens9). It passed alone (`screens-only1`, 31 s), as all four start screens (`screens-only2`, 32 s), and in the full `screens14`. The failing screenshot showed the rendered session page after the start page redirected into `/app/workout/<id>`. The sync button is not the cause (`isDisabled` does not set `aria-busy`). Cause unproven; if it comes back the message now prints the busy element's HTML. Beta-gate test 06 (start and finish a workout) passes in ar and en.
+- `5cc4044`: `apps/web/tsconfig.json` committed in Next's own format, so builds no longer dirty the tree.
+- Next: `run_checks.py` as one job (typecheck, lint, build-web, test-core, test-db, test-web, e2e-ar, e2e-en); then docs/plans/STAGING_SETUP.md (approved free tiers, see APPROVALS item 3, files only), FINAL_REVIEW.md, P6, P7.
