@@ -21,3 +21,9 @@ Why runs are slow: i5-1345U (15 W), little free RAM, Defender scanning, and data
 
 ## Measure
 Time `dbtests` before and after item 1 and write both numbers in `docs/plans/LESSONS.md`. A claim of "faster" needs those two numbers.
+
+## Added 12 Nov (measured, then proposed)
+- Measured: of the last 12 h, about 2 h were network outage (laptop on the iPhone hotspot) and about 2 h were three failing `screens` runs of 33 to 48 min. Gap between a job ending and the worker waking is only 1 to 3 min, so tick lag is not a problem.
+- UNPROVEN, test it: `apps/web/playwright.config.ts` starts `next dev --port 3210`, which compiles every route on first visit (10 to 15 s each, minutes on a loaded laptop) and caused the first-visit timeouts in LESSONS. Try `next build` once per source hash, then `next start --port 3210` for e2e and screens. Build cost is paid once, every route is then instant and timings stop depending on a cold compile. Keep a separate `DAWLYY_DIST_DIR`. Time one full e2e run both ways and write both numbers in LESSONS.md before switching for good. Do not start `next dev` for this.
+- Needs Mohamed's yes (not started): a GitHub Actions e2e job on a fast Linux runner (likely 3 to 5 times faster than this 15 W laptop, and immune to local network drops).
+
