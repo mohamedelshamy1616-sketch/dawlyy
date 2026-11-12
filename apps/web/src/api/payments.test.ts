@@ -3,6 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { subscriptions, payments, subscriptionEvents } from '@dawlyy/db/schema';
 import { call, setupApiData } from '../test/api-harness';
 import { setupBillingFixture } from '../server/subscriptions/test-fixture';
+import { manualPaymentProvider } from '../server/payments/provider';
 
 type Sale = { subscription: { id: string }; payment: { id: string } };
 describe.runIf(Boolean(process.env.DATABASE_URL))('T3b payment permissions, concurrency and refunds', () => {
@@ -46,6 +47,42 @@ describe.runIf(Boolean(process.env.DATABASE_URL))('T3b payment permissions, conc
       const ledger = await tx.select({ id: subscriptionEvents.id }).from(subscriptionEvents).where(and(eq(subscriptionEvents.tenantId, fixture.owner.tenantId), eq(subscriptionEvents.subscriptionId, sale.subscription.id), eq(subscriptionEvents.kind, 'activated')));
       expect(ledger).toHaveLength(1);
     });
+  });
+
+  it('reserves a concurrent refund key before mutation and replays the final refund', async () => {
+    const sale = await sell();
+    expect((await call(app, 'POST', `/api/v1/payments/${sale.payment.id}/verify`, { as: fixture.owner.userId })).status).toBe(200);
+    const path = `/api/v1/payments/${sale.payment.id}/refund`;
+    const refund = () => call(app, 'POST', path, { as: fixture.owner.userId, body: { amount: '10' }, headers: { 'Idempotency-Key': `refund/${sale.payment.id}` } });
+    const original = manualPaymentProvider.refund;
+    let entered!: () => void; let release!: () => void; let handlerCalls = 0;
+    const started = new Promise<void>((resolve) => { entered = resolve; });
+    const finish = new Promise<void>((resolve) => { release = resolve; });
+    const spy = vi.spyOn(manualPaymentProvider, 'refund').mockImplementation(async (...args) => {
+      if (++handlerCalls === 1) { entered(); await finish; }
+      return original(...args);
+    });
+    const first = refund();
+    try {
+      await started;
+      const second = await refund();
+      release();
+      const completed = await first;
+      expect(completed.status).toBe(200);
+      expect(completed.json).toMatchObject({ refundAmount: 10, state: 'verified' });
+      expect(second.status).toBe(409);
+      expect(second.json).toMatchObject({ error: { code: 'idempotency_in_progress' } });
+      expect(await refund()).toEqual(completed);
+      expect(spy).toHaveBeenCalledTimes(1);
+      await setupApiData(fixture.owner.tenantId, 'concurrent keyed refund read-back', async (tx) => {
+        const [payment] = await tx.select({ refundAmount: payments.refundAmount }).from(payments)
+          .where(and(eq(payments.tenantId, fixture.owner.tenantId), eq(payments.id, sale.payment.id)));
+        expect(Number(payment?.refundAmount)).toBe(10);
+      });
+    } finally {
+      release();
+      try { await first; } finally { spy.mockRestore(); }
+    }
   });
 
   it('partial refunds remain verified, are cumulative, and full refunds enter refunded', async () => {

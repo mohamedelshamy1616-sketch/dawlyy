@@ -65,9 +65,10 @@ async function dispatch(row: Claimed, email: EmailSender, push: PushSender | nul
       ? await tx.select({ id: pushSubscriptions.id, endpoint: pushSubscriptions.endpoint, keys: pushSubscriptions.keys }).from(pushSubscriptions)
         .where(and(eq(pushSubscriptions.tenantId, row.tenantId), eq(pushSubscriptions.userId, row.userId), isNull(pushSubscriptions.failedAt)))
       : [];
-    return { notification, address: member?.email ?? client?.email ?? null, language: resolveLanguage(prefs?.preferences.locale, member?.locale, tenant?.defaultLocale), subscriptions };
+    return { notification, member, address: member?.email ?? client?.email ?? null, language: resolveLanguage(prefs?.preferences.locale, member?.locale, tenant?.defaultLocale), subscriptions };
   });
   if (!context) return { state: 'cancelled', error: 'notification_missing' };
+  if (!context.member) return { state: 'cancelled', error: 'recipient_inactive' };
   const { notification, language } = context;
   const title = notification.title[language] ?? notification.title.en ?? notification.title.ar ?? '';
   const shareBody = notification.payload?.shareBody !== false;

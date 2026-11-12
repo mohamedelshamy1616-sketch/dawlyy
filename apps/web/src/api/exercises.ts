@@ -4,7 +4,7 @@ import { ExerciseSeed } from '@dawlyy/core/types';
 import type { ApiEnv } from './env';
 import { forbidden, validationError } from './errors';
 import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
-import { hashIdempotencyRequest, idempotencyMiddleware, idempotentReplay } from './middleware/idempotency';
+import { idempotencyRequestHash, idempotencyMiddleware, idempotentReplay } from './middleware/idempotency';
 import { withAuthTx } from '../server/db';
 import { requirePermission } from '../server/require-permission';
 import { exerciseInput, exercisePatch, importInput, columnMapping } from '../server/exercises/validation';
@@ -45,7 +45,7 @@ router.use('*', async (c, next) => {
 router.use('*', idempotencyMiddleware);
 router.use('*', async (c, next) => {
   if (c.req.method === 'POST' && c.req.path.endsWith('/import/commit')) {
-    importHashes.set(c.req.raw, hashIdempotencyRequest(c.req.method, c.req.path, new Uint8Array(await c.req.raw.clone().arrayBuffer())));
+    importHashes.set(c.req.raw, idempotencyRequestHash(c.get('auth'), c.req.method, c.req.path, new Uint8Array(await c.req.raw.clone().arrayBuffer())));
   }
   try { await next(); } finally { importHashes.delete(c.req.raw); }
 });

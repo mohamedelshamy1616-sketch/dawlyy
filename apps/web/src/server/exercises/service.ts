@@ -1,6 +1,6 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import { and, eq, isNull, lte, or, sql } from 'drizzle-orm';
+import { and, eq, isNull, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { exercises, tenantHiddenItems, businessSettings, media, idempotencyKeys } from '@dawlyy/db/schema';
 import { matchScore, searchKey, slugify } from '@dawlyy/core/text';
@@ -212,8 +212,9 @@ export async function commitExerciseImport(tx: Tx, auth: AuthContext, csv: strin
   const receipt = z.object({ inserted: z.number().int(), skipped: z.number().int(), errors: z.array(z.object({ row: z.number().int(), status: z.literal('error'), errors: z.array(z.object({ code: z.string(), field: z.string().optional() })) })) });
   if (stored && stored.createdAt > cutoff) {
     if (stored.hash !== replay.requestHash) throw new ApiError(409, 'idempotency_key_reused', 'Idempotency-Key was already used for a different request');
-    if (stored.status !== 200) throw new ApiError(409, 'conflict', 'A previous request already used this key');
-    return receipt.parse(stored.body);
+    if (stored.status === 200) return receipt.parse(stored.body);
+    // A matching 102 is this request's middleware reservation, not a completed receipt.
+    if (stored.status !== 102) throw new ApiError(409, 'conflict', 'A previous request already used this key');
   }
   const preview = await previewExerciseImport(tx, auth, csv, mapping);
   if (preview.missingRequiredMappings.length) throw validationError(preview.missingRequiredMappings, 'missing_required_mappings');
@@ -228,7 +229,7 @@ export async function commitExerciseImport(tx: Tx, auth: AuthContext, csv: strin
   });
   for (let offset = 0; offset < values.length; offset += 100) await tx.insert(exercises).values(values.slice(offset, offset + 100));
   const result = receipt.parse({ inserted: values.length, skipped: onDuplicate === 'skip' ? preview.counts.duplicate : 0, errors: preview.rows.filter((row) => row.status === 'error') });
-  await tx.delete(idempotencyKeys).where(and(replayScope, lte(idempotencyKeys.createdAt, cutoff)));
+  await tx.delete(idempotencyKeys).where(replayScope);
   await tx.insert(idempotencyKeys).values({ tenantId: auth.tenantId, userId: auth.userId, key: replay.key, requestHash: replay.requestHash, statusCode: 200, responseBody: result });
   return result;
 }

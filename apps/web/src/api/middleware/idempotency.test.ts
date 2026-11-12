@@ -14,7 +14,13 @@ const auth: AuthContext = {
   clientId: 'client-a', permissions: null,
 };
 
-function fixture() {
+function deferred() {
+  let resolve!: () => void;
+  const promise = new Promise<void>((done) => { resolve = done; });
+  return { promise, resolve };
+}
+
+function fixture(beforeResponse: () => Promise<void> = async () => {}) {
   const records = new Map<string, StoredReplay & { createdAt: Date }>();
   const identity = (caller: AuthContext, key: string) => JSON.stringify([caller.tenantId, caller.userId, key]);
   let reads = 0;
@@ -25,11 +31,26 @@ function fixture() {
       const row = records.get(identity(caller, key));
       return row && row.createdAt > newerThan ? row : undefined;
     },
-    async save(caller, key, record, newerThan) {
+    async reserve(caller, key, requestHash, newerThan) {
+      const id = identity(caller, key);
+      const row = records.get(id);
+      if (row && row.createdAt > newerThan) return undefined;
+      const createdAt = new Date();
+      records.set(id, { requestHash, status: 102, body: null, createdAt });
+      return createdAt;
+    },
+    async release(caller, key, requestHash, reservedAt) {
+      const id = identity(caller, key);
+      const row = records.get(id);
+      if (row?.status === 102 && row.requestHash === requestHash && row.createdAt.getTime() === reservedAt.getTime()) records.delete(id);
+    },
+    async save(caller, key, record, reservedAt) {
       writes++;
       const id = identity(caller, key);
       const row = records.get(id);
-      if (!row || row.createdAt <= newerThan) records.set(id, { ...record, createdAt: new Date() });
+      if (row?.status === 102 && row.requestHash === record.requestHash && row.createdAt.getTime() === reservedAt.getTime()) {
+        records.set(id, { ...record, createdAt: new Date() });
+      }
     },
   };
   const app = new Hono<ApiEnv>();
@@ -40,7 +61,12 @@ function fixture() {
   app.use('*', async (c, next) => { c.set('auth', caller); await next(); });
   app.use('*', createIdempotentReplay(store));
   app.onError((error, c) => error instanceof ApiError ? c.json(error.toBody(), error.status) : c.json({ error: 'unexpected' }, 500));
-  app.post('/items', async (c) => { calls++; return c.json({ input: await c.req.json(), calls }, status); });
+  app.post('/items', async (c) => {
+    calls++;
+    const input: unknown = await c.req.json();
+    await beforeResponse();
+    return c.json({ input, calls }, status);
+  });
   app.delete('/items', (c) => { calls++; return c.body(null, 204); });
   app.get('/items', (c) => { calls++; return c.json({ calls }); });
   const request = (body = '{"value":1}', key?: string) => app.request('/items', {
@@ -91,6 +117,137 @@ describe('idempotent replay with an injected store', () => {
     expect(replay.headers.get('Idempotent-Replayed')).toBe('true');
     expect(f.calls()).toBe(1);
     expect(f.writes()).toBe(1);
+  });
+
+  it('reserves a concurrent key before the handler and replays the unchanged final response', async () => {
+    const entered = deferred(); const finish = deferred();
+    let handlerCalls = 0;
+    const f = fixture(async () => {
+      if (++handlerCalls === 1) { entered.resolve(); await finish.promise; }
+    });
+    const first = f.request(undefined, 'key');
+    try {
+      await entered.promise;
+      const second = await f.request(undefined, 'key');
+      expect(second.status).toBe(409);
+      expect(await second.json()).toMatchObject({ error: { code: 'idempotency_in_progress' } });
+      expect(second.headers.get('Retry-After')).toBe('1');
+      expect(second.headers.get('Idempotent-Replayed')).toBeNull();
+      expect(f.calls()).toBe(1);
+    } finally { finish.resolve(); }
+    const original = await first;
+    const replay = await f.request(undefined, 'key');
+    expect(replay.status).toBe(original.status);
+    expect(await replay.json()).toEqual(await original.json());
+    expect(replay.headers.get('Idempotent-Replayed')).toBe('true');
+    expect(f.calls()).toBe(1);
+  });
+
+  it.each([
+    { name: 'unexpected exception', error: new Error('handler failed'), status: 500 },
+    { name: 'handled API exception', error: new ApiError(403, 'forbidden', 'Denied'), status: 403 },
+  ])('releases the key after a $name', async ({ error, status }) => {
+    let fail = true;
+    const f = fixture(async () => { if (fail) throw error; });
+    expect((await f.request(undefined, 'key')).status).toBe(status);
+    expect(f.records.size).toBe(0);
+    expect(f.writes()).toBe(0);
+    fail = false;
+    expect((await f.request(undefined, 'key')).status).toBe(201);
+    expect(f.calls()).toBe(2);
+  });
+
+  it('releases the key after a non-JSON response', async () => {
+    const f = fixture(); let calls = 0;
+    f.app.post('/text', (c) => { calls++; return c.text('plain response', 201); });
+    const request = () => f.app.request('/text', { method: 'POST', headers: { 'Idempotency-Key': 'text' } });
+    expect(await (await request()).text()).toBe('plain response');
+    expect(f.records.size).toBe(0);
+    expect(await (await request()).text()).toBe('plain response');
+    expect(calls).toBe(2);
+    expect(f.writes()).toBe(0);
+  });
+
+  it('takes over a placeholder older than 120 seconds and saves a replayable final response', async () => {
+    const f = fixture();
+    await f.request(undefined, 'key');
+    const id = f.identity(auth, 'key');
+    const previous = f.records.get(id)!;
+    f.records.set(id, { ...previous, status: 102, body: null, createdAt: new Date(Date.now() - 121_000) });
+    const fresh = await f.request(undefined, 'key');
+    expect(fresh.status).toBe(201);
+    expect(fresh.headers.get('Idempotent-Replayed')).toBeNull();
+    const replay = await f.request(undefined, 'key');
+    expect(await replay.json()).toEqual(await fresh.json());
+    expect(replay.headers.get('Idempotent-Replayed')).toBe('true');
+    expect(f.calls()).toBe(2);
+  });
+
+  it('does not let a late handler replace the response of a newer reservation', async () => {
+    const entered = deferred(); const finish = deferred();
+    let handlerCalls = 0;
+    const f = fixture(async () => {
+      if (++handlerCalls === 1) { entered.resolve(); await finish.promise; }
+    });
+    const first = f.request(undefined, 'key');
+    try {
+      await entered.promise;
+      const id = f.identity(auth, 'key');
+      f.records.set(id, { ...f.records.get(id)!, createdAt: new Date(Date.now() - 121_000) });
+      f.setStatus(409);
+      const replacement = await f.request(undefined, 'key');
+      expect(replacement.status).toBe(409);
+      const body = await replacement.json();
+      f.setStatus(201);
+      finish.resolve();
+      expect((await first).status).toBe(201);
+      const replay = await f.request(undefined, 'key');
+      expect(replay.status).toBe(409);
+      expect(await replay.json()).toEqual(body);
+      expect(replay.headers.get('Idempotent-Replayed')).toBe('true');
+      expect(f.calls()).toBe(2);
+    } finally { finish.resolve(); }
+  });
+
+  it('rejects replay after a staff module grant is removed', async () => {
+    const f = fixture();
+    const staff: AuthContext = { ...auth, role: 'staff', permissions: { client_scope: 'assigned', modules: { forms: ['create', 'edit'] } } };
+    f.setCaller(staff);
+    expect((await f.request(undefined, 'key')).status).toBe(201);
+    f.setCaller({ ...staff, permissions: { client_scope: 'assigned', modules: { forms: ['edit'] } } });
+    const replay = await f.request(undefined, 'key');
+    expect(replay.status).toBe(409);
+    expect(await replay.json()).toMatchObject({ error: { code: 'idempotency_key_reused' } });
+    expect(replay.headers.get('Idempotent-Replayed')).toBeNull();
+    expect(f.calls()).toBe(1);
+    expect((await f.request(undefined, 'new-key')).status).toBe(201);
+    expect(f.calls()).toBe(2);
+  });
+
+  it('uses stable JSON for permission keys at every level', async () => {
+    const f = fixture();
+    f.setCaller({ ...auth, role: 'staff', permissions: { client_scope: 'all', modules: { forms: ['create'], billing: ['view'] }, preset: 'custom' } });
+    const first = await f.request(undefined, 'key');
+    f.setCaller({ ...auth, role: 'staff', permissions: { preset: 'custom', modules: { billing: ['view'], forms: ['create'] }, client_scope: 'all' } });
+    const replay = await f.request(undefined, 'key');
+    expect(replay.status).toBe(201);
+    expect(await replay.json()).toEqual(await first.json());
+    expect(replay.headers.get('Idempotent-Replayed')).toBe('true');
+    expect(f.calls()).toBe(1);
+  });
+
+  it.each([
+    { field: 'role', caller: { ...auth, role: 'owner' as const } },
+    { field: 'membership', caller: { ...auth, membershipId: 'membership-b' } },
+    { field: 'client', caller: { ...auth, clientId: 'client-b' } },
+  ])('rejects replay after the $field changes', async ({ caller }) => {
+    const f = fixture();
+    await f.request(undefined, 'key');
+    f.setCaller(caller);
+    const replay = await f.request(undefined, 'key');
+    expect(replay.status).toBe(409);
+    expect(await replay.json()).toMatchObject({ error: { code: 'idempotency_key_reused' } });
+    expect(f.calls()).toBe(1);
   });
 
   it('rejects a reused key with a different body', async () => {

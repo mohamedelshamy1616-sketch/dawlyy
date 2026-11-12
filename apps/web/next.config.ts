@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
   pageExtensions: process.env.NODE_ENV === 'production'
     ? ['tsx', 'ts', 'jsx', 'js']
     : ['tsx', 'ts', 'jsx', 'js', 'dev.tsx', 'dev.ts'],
+  // Next.js output tracing uses route globs as keys and project-relative file globs as values.
+  ...(process.env.NODE_ENV === 'production' ? {
+    outputFileTracingExcludes: {
+      '/*': ['**/dev-login*', '**/route.dev.ts'],
+    },
+  } : {}),
   cacheComponents: true,
   // The floating dev badge covers the bottom navigation on phones (preview screenshots, Mohamed's own testing).
   devIndicators: false,

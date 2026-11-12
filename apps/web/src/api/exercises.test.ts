@@ -127,6 +127,25 @@ describe.runIf(Boolean(process.env.DATABASE_URL && process.env.DATABASE_URL_SERV
     expect(await call(app, 'POST', '/api/v1/exercises/import/commit', options)).toEqual(first);
     expect(await countTenantRows()).toBe(before + 2);
   });
+  // Import receipt contract: replay never repeats inserts, and changed payloads cannot reuse the key.
+  it('replays the stored import receipt and rejects a different body with the same key', async () => {
+    const before = await countTenantRows();
+    const options = { ...asOwner(), headers: { 'Idempotency-Key': randomUUID() }, body: { csv: csv([`receipt-${randomUUID()}`]), mapping: { name_en: 0, category: 1, difficulty: 2 }, onDuplicate: 'import_anyway' } };
+    const first = await call(app, 'POST', '/api/v1/exercises/import/commit', options);
+    expect(first.status).toBe(200);
+    expect(first.json).toEqual({ inserted: 1, skipped: 0, errors: [] });
+    expect(await countTenantRows()).toBe(before + 1);
+
+    const replay = await call(app, 'POST', '/api/v1/exercises/import/commit', options);
+    expect(replay).toEqual(first);
+    expect(await countTenantRows()).toBe(before + 1);
+
+    const conflict = await call(app, 'POST', '/api/v1/exercises/import/commit', { ...options, body: { ...options.body, csv: csv([`changed-${randomUUID()}`]) } });
+    expect(conflict.status).toBe(409);
+    expect(conflict.json).toMatchObject({ error: { code: 'idempotency_key_reused' } });
+    expect(await countTenantRows()).toBe(before + 1);
+    expect(await call(app, 'POST', '/api/v1/exercises/import/commit', options)).toEqual(first);
+  });
   it('skips duplicates or imports another copy only when explicitly requested', async () => {
     const name = `duplicate-${randomUUID()}`;
     const body = { csv: csv([name, name]), mapping: { name_en: 0, category: 1, difficulty: 2 }, onDuplicate: 'skip' };
