@@ -1,5 +1,6 @@
 'use client';
 import { VStack } from '@astryxdesign/core/VStack';
+import { HStack } from '@astryxdesign/core/HStack';
 import { Text } from '@astryxdesign/core/Text';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -96,10 +97,18 @@ export function UnsyncedBadge({ db, syncing, error, sync }: { db: OutboxDatabase
   const snapshot = useLiveQuery(async () => ({ owner: db?.owner, rows: db ? [...await db.sessions.toArray(), ...await db.setLogs.toArray(), ...await db.metrics.toArray()].filter(r => r.syncState !== 'synced') : [] }), [db]);
   const rows = db && snapshot?.owner === db.owner ? snapshot.rows : [];
   const rejected = rows.filter(r => r.syncState === 'rejected');
-  return <VStack as="aside" className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2 rounded-xl border bg-card p-3" aria-live="polite">
-    <Text data-testid="unsynced-count">{t('unsynced', { count: rows.length })}</Text>
-    <Button className="min-h-11" variant="secondary" isDisabled={!db || syncing} onClick={() => void sync()} data-testid="sync-now" label={t(syncing ? 'syncing' : 'syncNow')} />
-    {error ? <Text as="p" className="w-full text-sm">{t('offlineSaved')}</Text> : null}
-    {rejected.length ? <Text as="p" className="w-full break-words text-sm text-destructive">{t('rejected', { count: rejected.length })} {rejected.map(r => t(`reasons.${r.reason && ['illegal_transition', 'session_conflict', 'not_found', 'forbidden', 'substitution_not_allowed', 'validation_error'].includes(r.reason) ? r.reason : 'unknown'}`)).join(' · ')}</Text> : null}
+  const pending = rows.length > 0;
+  const label = pending ? t('unsynced', { count: rows.length }) : t('allSynced');
+  return <VStack as="aside" className="mb-4 min-w-0" gap={2} aria-live="polite">
+    <HStack align="center" gap={2} className="justify-end">
+      <VStack as="span" aria-hidden="true" className={`size-2.5 shrink-0 rounded-full ${pending || error ? 'bg-warning' : 'bg-success'}`} />
+      <Text data-testid="unsynced-count" type="supporting" className="sr-only">{label}</Text>
+    </HStack>
+    {pending ? <VStack className="flex min-w-0 flex-wrap items-center justify-between gap-2 rounded-xl border bg-card p-3">
+      <Text>{label}</Text>
+      <Button className="min-h-11" variant="secondary" isDisabled={!db || syncing} onClick={() => void sync()} data-testid="sync-now" label={t(syncing ? 'syncing' : 'syncNow')} />
+      {error ? <Text as="p" className="w-full text-sm">{t('offlineSaved')}</Text> : null}
+      {rejected.length ? <Text as="p" className="w-full break-words text-sm text-destructive">{t('rejected', { count: rejected.length })} {rejected.map(r => t(`reasons.${r.reason && ['illegal_transition', 'session_conflict', 'not_found', 'forbidden', 'substitution_not_allowed', 'validation_error'].includes(r.reason) ? r.reason : 'unknown'}`)).join(' · ')}</Text> : null}
+    </VStack> : null}
   </VStack>;
 }

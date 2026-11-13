@@ -12,10 +12,11 @@ import { Button } from '@astryxdesign/core/Button';
 import { foodMap, type NutritionFood } from '@/src/server/nutrition/helpers';
 import { BilingualField, Field, foodText, MacroBar, NutritionNumberInput } from './shared';
 import { MeasureSelector } from './measure-selector';
+import { formatNumber, numberLocale } from '@/src/lib/numbers';
 
 /** Task 6: meal/option edits use stable document ids; ordering has accessible move buttons. */
 export function MealEditor({ meal, foods, disabled, onChange, onAddFood, onSwap }: { meal: Meal; foods: NutritionFood[]; disabled: boolean; onChange: (meal: Meal) => void; onAddFood: (optionId: string) => void; onSwap: (item: MealItem) => void }) {
-  const t = useTranslations('nutrition'); const locale = useLocale(); const n = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }); const map = foodMap(foods);
+  const t = useTranslations('nutrition'); const locale = useLocale(); const n = { format: (value: number) => formatNumber(value, { locale: numberLocale(locale) }) }; const map = foodMap(foods);
   function edit(fn: (copy: Meal) => void) { const copy = structuredClone(meal); fn(copy); onChange(copy); }
   return <Card padding={4}><VStack as="section" gap={4} className="min-w-0"><BilingualField label={t('builder.mealName')} value={meal.name} disabled={disabled} onChange={name => onChange({ ...meal, name })} /><BilingualField label={t('builder.time')} value={meal.timeHint} disabled={disabled} onChange={timeHint => onChange({ ...meal, timeHint })} />
     {meal.options.map((option, oi) => <VStack gap={3} key={option.id} className="min-w-0 rounded-xl bg-muted/40 p-3"><BilingualField label={t('builder.optionName')} value={option.name} disabled={disabled} onChange={name => edit(copy => { copy.options[oi]!.name = name; })} /><HStack gap={2} wrap="wrap"><Button className="min-h-11" variant="secondary" isDisabled={disabled || oi === 0} onClick={() => edit(copy => { [copy.options[oi - 1], copy.options[oi]] = [copy.options[oi]!, copy.options[oi - 1]!]; })} label={t('common.up')} /><Button className="min-h-11" variant="secondary" isDisabled={disabled || oi === meal.options.length - 1} onClick={() => edit(copy => { [copy.options[oi + 1], copy.options[oi]] = [copy.options[oi]!, copy.options[oi + 1]!]; })} label={t('common.down')} /><Button className="min-h-11" variant="secondary" isDisabled={disabled || meal.options.length === 1} onClick={() => edit(copy => { copy.options.splice(oi, 1); })} label={t('common.remove')} /></HStack>

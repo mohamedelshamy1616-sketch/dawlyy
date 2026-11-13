@@ -11,6 +11,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { TextInput, type TextInputProps } from '@astryxdesign/core/TextInput';
 import { VStack } from '@astryxdesign/core/VStack';
 import { useId, type InputHTMLAttributes, type ReactNode } from 'react';
+import { formatNutrient, numberLocale } from '@/src/lib/numbers';
 
 /** Task 6: logical, full-width native selector shared by nutrition editors. */
 export const selectClass = 'min-h-11 min-w-0 max-w-full rounded-md border bg-background px-3 text-start';
@@ -37,8 +38,8 @@ export function NutritionNumberInput({ label, id: inputId, className = '', disab
 export function NutritionEmpty({ action }: { action?: ReactNode }) { const t = useTranslations('nutrition'); return <EmptyState Icon={Utensils} title={t('common.empty')} description={t('common.emptyHint')} action={action} />; }
 /** Task 6 / G5: macro display takes only core-computed totals and deltas. */
 export function MacroBar({ macros, targets }: { macros: Macros; targets?: Macros }) {
-  const t = useTranslations('nutrition'); const locale = useLocale(); const n = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }); const delta = targets ? targetsDelta(targets, macros) : null;
-  return <Card variant="muted" padding={3}><Grid columns={2} gap={2} className="sm:grid-cols-4!" aria-live="polite">{(['kcal', 'proteinG', 'carbsG', 'fatG'] as const).map(key => <VStack key={key} gap={0} className="min-w-0"><Text type="supporting">{t(`macros.${key}`)}</Text><Text><strong className="tabular-nums">{n.format(macros[key])}</strong>{targets && <Text className="ms-1" type="supporting">{t('macros.of', { value: n.format(targets[key]) })}</Text>}</Text>{delta && <Text type="supporting">{t('macros.delta', { value: n.format(delta[key]) })}</Text>}</VStack>)}</Grid></Card>;
+  const t = useTranslations('nutrition'); const locale = useLocale(); const o = { locale: numberLocale(locale) }; const delta = targets ? targetsDelta(targets, macros) : null;
+  return <Card variant="muted" padding={3}><Grid columns={2} gap={2} className="sm:grid-cols-4!" aria-live="polite">{(['kcal', 'proteinG', 'carbsG', 'fatG'] as const).map(key => <VStack key={key} gap={0} className="min-w-0"><Text type="supporting">{t(`macros.${key}`)}</Text><Text><strong className="tabular-nums">{formatNutrient(key, macros[key], o)}</strong>{targets && <Text className="ms-1" type="supporting">{t('macros.of', { value: formatNutrient(key, targets[key], o) })}</Text>}</Text>{delta && <Text type="supporting">{t('macros.delta', { value: formatNutrient(key, delta[key], o) })}</Text>}</VStack>)}</Grid></Card>;
 }
 /** Task 6: bilingual text editing preserves the other locale. */
 export function BilingualField({ label, value, onChange, disabled }: { label: string; value?: LocalizedText; onChange: (v: LocalizedText) => void; disabled?: boolean }) {

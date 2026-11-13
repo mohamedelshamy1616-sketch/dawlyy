@@ -16,6 +16,7 @@ import { TabList, Tab } from '@astryxdesign/core/TabList';
 
 import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { muscleLabels } from '@/src/lib/muscles';
 import Image from 'next/image';
 import { Dumbbell } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
@@ -28,7 +29,7 @@ type Result = { items: ExerciseListItem[]; nextCursor: string | null };
 
 /** Task 4: responsive library with category tabs, filter Sheet and keyset load-more. */
 export function ExerciseLibrary({ initial, categories: initialCategories, canCreate, owner }: { initial: Result; categories: string[]; canCreate: boolean; owner: boolean }) {
-  const t = useTranslations('exercises');
+  const t = useTranslations('exercises'); const muscleT = useTranslations('workout');
   const locale = useLocale();
   const [result, setResult] = useState(initial);
   const [resultParameters, setResultParameters] = useState<string | null>(null);
@@ -99,7 +100,7 @@ export function ExerciseLibrary({ initial, categories: initialCategories, canCre
       {result.items.map((exercise) => <Card key={exercise.id} className="min-w-0 overflow-hidden"><VStack gap={3}>
         {exercise.thumbnailUrl ? <VStack className="aspect-video overflow-hidden rounded-lg bg-muted"><Image src={exercise.thumbnailUrl} unoptimized width={640} height={360} alt="" className="size-full object-cover" /></VStack> : <Grid className="aspect-video place-items-center rounded-lg bg-brand-soft"><Dumbbell aria-hidden className="size-9 text-brand" /></Grid>}
         <Link className="block min-h-11 break-words text-lg font-semibold" href={`/coach/exercises/${exercise.id}`}>{locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar}</Link>
-        <Text as="p" className="break-words text-sm text-muted-foreground">{exercise.primaryMuscles.join(' · ')}</Text>
+        {muscleLabels(exercise.primaryMuscles, muscleT).length ? <Text as="p" className="break-words text-sm text-muted-foreground">{muscleLabels(exercise.primaryMuscles, muscleT).join(' · ')}</Text> : null}
         <HStack gap={2} wrap="wrap"><Text type="label" className="rounded-full bg-muted ps-2 pe-2 py-1">{exercise.source === 'system' ? t('system') : t('mine')}</Text>{exercise.hidden ? <Text type="label" className="rounded-full border ps-2 pe-2 py-1">{t('hidden')}</Text> : null}</HStack>
       </VStack></Card>)}
     </Grid>

@@ -88,6 +88,7 @@
                          "names":  {
                                        "waist":  "Waist",
                                        "hip":  "Hip",
+                                       "hips":  "Hips",
                                        "chest":  "Chest",
                                        "arm":  "Arm",
                                        "thigh":  "Thigh",
@@ -110,6 +111,7 @@
                    "timeline":  "Photo timeline",
                    "empty":  "No progress photos yet.",
                    "alt":  "{pose} progress photo from {date}",
+                   "unavailable":  "This photo is not available.",
                    "poses":  {
                                  "front":  "Front",
                                  "left":  "Left side",

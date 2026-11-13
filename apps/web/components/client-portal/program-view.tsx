@@ -1,4 +1,5 @@
 'use client';
+import { muscleLabels } from '@/src/lib/muscles';
 import { VStack } from '@astryxdesign/core/VStack';
 import { HStack } from '@astryxdesign/core/HStack';
 import { Text } from '@astryxdesign/core/Text';
@@ -36,10 +37,10 @@ export function ProgramView({ program, exercises }: { program: PortalProgram; ex
 
 /** Task 5: exercise video and cues use the client library projection. */
 export function ExerciseInfo({ exercise }: { exercise?: PortalExercise }) {
-  const locale = useLocale(); const t = useTranslations('workout');
+  const locale = useLocale(); const t = useTranslations('workout'); const muscles = muscleLabels(exercise?.primaryMuscles ?? [], t);
   return <VStack className="my-2 min-w-0 space-y-2 text-sm">
     {exercise?.videoUrl && /^https?:\/\//i.test(exercise.videoUrl) ? <Button className="min-h-11" href={exercise.videoUrl} target="_blank" rel="noreferrer" label={t('video')} /> : null}
     <ul className="space-y-1">{exercise?.cues.map((cue, index) => <li key={index} className="break-words">{localized(cue, locale)}</li>)}</ul>
-    {exercise?.primaryMuscles.length ? <Text as="p">{t('muscles')}: {exercise.primaryMuscles.map(m => t.has(`muscleNames.${m}`) ? t(`muscleNames.${m}`) : t('targetMuscles')).join(' · ')}</Text> : null}
+    {muscles.length ? <Text as="p">{t('muscles')}: {muscles.join(' · ')}</Text> : null}
   </VStack>;
 }

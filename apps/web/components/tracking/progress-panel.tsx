@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import { PosePhoto } from './pose-photo';
 import { useLocale, useTranslations } from 'next-intl';
 import { VStack } from '@astryxdesign/core/VStack';
 import { HStack } from '@astryxdesign/core/HStack';
@@ -76,9 +76,9 @@ export function ProgressPanel({ clientId, date, measurements, photos, cadence, o
         <Selector label={t('photos.after')} value={toId} options={photos.map(photo => ({ value: photo.id, label: day(photo.localDate) }))} onChange={setToId} controlClassName="min-h-11" />
         <Button label={t('photos.compare')} className="min-h-11" isDisabled={!fromId || !toId} clickAction={async () => { setError(''); try { setComparison(await trackingRequest(`photos/compare?clientId=${clientId}&fromId=${fromId}&toId=${toId}`)); } catch (cause) { fail(cause); } }} />
       </HStack>
-      {comparison ? <HStack gap={4} className="!grid grid-cols-1 md:grid-cols-2 min-w-0 max-w-full">{[comparison.before, comparison.after].map((set, index) => <VStack key={`${set.id}:${index}`} gap={3} className="min-w-0 max-w-full"><Heading level={3}>{day(set.localDate)}</Heading>{set.poses.map(pose => <VStack key={pose.mediaId} gap={2}><Text>{t(`photos.poses.${pose.pose}`)}</Text><Image unoptimized src={pose.url} alt={t('photos.alt', { date: day(set.localDate), pose: t(`photos.poses.${pose.pose}`) })} width={640} height={800} className="h-auto w-full max-w-full rounded-lg object-contain" /></VStack>)}</VStack>)}</HStack> : null}
+      {comparison ? <HStack gap={4} className="!grid grid-cols-1 md:grid-cols-2 min-w-0 max-w-full">{[comparison.before, comparison.after].map((set, index) => <VStack key={`${set.id}:${index}`} gap={3} className="min-w-0 max-w-full"><Heading level={3}>{day(set.localDate)}</Heading>{set.poses.map(pose => <VStack key={pose.mediaId} gap={2}><Text>{t(`photos.poses.${pose.pose}`)}</Text><PosePhoto url={pose.url} alt={t('photos.alt', { date: day(set.localDate), pose: t(`photos.poses.${pose.pose}`) })} width={640} height={800} className="h-auto w-full max-w-full rounded-lg object-contain" /></VStack>)}</VStack>)}</HStack> : null}
       <Heading level={3}>{t('photos.timeline')}</Heading>
-      {photos.map(set => <VStack key={set.id} gap={3} className="min-w-0 max-w-full border-b border-border pb-4"><Heading level={3}>{day(set.localDate)}</Heading><HStack gap={3} wrap="wrap">{set.poses.map(pose => <VStack key={pose.mediaId} gap={2} className="w-32 min-w-0 max-w-full"><Image unoptimized src={pose.url} alt={t('photos.alt', { date: day(set.localDate), pose: t(`photos.poses.${pose.pose}`) })} width={160} height={200} className="h-auto w-full max-w-full rounded-lg" /><Text>{t(`photos.poses.${pose.pose}`)}</Text></VStack>)}</HStack><Button label={t('actions.deletePhotos')} className="min-h-11" variant="secondary" clickAction={async () => { setError(''); try { await trackingRequest(`photos/${set.id}`, 'DELETE'); setComparison(null); onSaved(); } catch (cause) { fail(cause); } }} /></VStack>)}
+      {photos.map(set => <VStack key={set.id} gap={3} className="min-w-0 max-w-full border-b border-border pb-4"><Heading level={3}>{day(set.localDate)}</Heading><HStack gap={3} wrap="wrap">{set.poses.map(pose => <VStack key={pose.mediaId} gap={2} className="w-32 min-w-0 max-w-full"><PosePhoto url={pose.url} alt={t('photos.alt', { date: day(set.localDate), pose: t(`photos.poses.${pose.pose}`) })} width={160} height={200} className="h-auto w-full max-w-full rounded-lg" /><Text>{t(`photos.poses.${pose.pose}`)}</Text></VStack>)}</HStack><Button label={t('actions.deletePhotos')} className="min-h-11" variant="secondary" clickAction={async () => { setError(''); try { await trackingRequest(`photos/${set.id}`, 'DELETE'); setComparison(null); onSaved(); } catch (cause) { fail(cause); } }} /></VStack>)}
     </> : <Text>{t('photos.empty')}</Text>}
     {error ? <Text role="alert">{t(`errors.${error}`)}</Text> : null}
   </VStack>;

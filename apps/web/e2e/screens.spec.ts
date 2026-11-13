@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 // Fixed user IDs duplicated from packages/db/seed/demo.ts: importing that executable would run the seed.
 const actors = [
@@ -8,7 +8,8 @@ const actors = [
   { role: 'client', userId: 'd0250000-0000-4000-8000-000000000103' },
 ] as const;
 const locales = ['ar', 'en'] as const;
-const viewports = [{ width: 390, height: 844 }, { width: 1366, height: 900 }] as const;
+// Three phone widths (small, common, large) and one desktop width.
+const viewports = [{ width: 360, height: 800 }, { width: 390, height: 844 }, { width: 430, height: 932 }, { width: 1366, height: 900 }] as const;
 
 // One entry per static app/[locale]/**/page.tsx plus detail pages for the demo records; route groups do not appear in URLs.
 // Each [...rest]/page.tsx gets an unknown URL in its own area. `area` decides which demo role visits the route.
@@ -63,6 +64,34 @@ let screensDirectory: string | undefined;
 const only = (process.env.SCREENS_ONLY ?? '').split(',').map(part => part.trim()).filter(Boolean);
 const wanted = (image: string) => only.length === 0 || only.some(part => image.includes(part));
 const wantedRoute = (role: string, slug: string) => only.length === 0 || only.some(part => part.includes(`${role}-${slug}-`));
+
+const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * The URL a settled page must have. /app/workout/start is a transient redirect: the first visit creates the demo
+ * client's session and every visit then lands on /app/workout/<id>, so wait for that live workout screen.
+ */
+function expectedUrl(role: Screen['role'], path: string, baseURL: string, locale: string): string | RegExp {
+  if (role === 'client' && path === '/app/workout/start') return new RegExp(`^${escapeRegExp(baseURL)}/${locale}/app/workout/${UUID}$`);
+  return `${baseURL}/${locale}${destination(role, path)}`;
+}
+
+/**
+ * A page that is still a skeleton must never count as a PASS. Waits for every busy marker (PageSkeleton and the
+ * client runtime use aria-busy) to go away, then fails with the URL and the HTML of what is still busy.
+ */
+async function assertSettled(page: Page): Promise<void> {
+  const busy = page.locator('[aria-busy="true"]');
+  try {
+    await expect(busy).toHaveCount(0);
+    await expect(page.getByRole('heading').first()).toBeVisible();
+  } catch (error: unknown) {
+    const html = await busy.evaluateAll(nodes => nodes.map(node => node.outerHTML.slice(0, 240))).catch(() => []);
+    const cause = error instanceof Error ? (error.message.split('\n')[0] ?? '') : String(error);
+    throw new Error(`page is still a skeleton or has no heading\n  url: ${page.url()}\n  busy: ${JSON.stringify(html)}\n  cause: ${cause}`);
+  }
+}
 
 function destination(role: Screen['role'], path: string): string {
   if (path === '') return role === 'owner' ? '/coach' : '/app/today';
@@ -160,9 +189,8 @@ test('capture every route for both demo roles, locales and viewport widths', asy
               try {
                 await page.goto(requestedRoute, { waitUntil: 'load' });
                 // The first visit of a run waits for a cold `next dev` compile of the redirect target (more than 45 s seen).
-                await expect(page).toHaveURL(`${baseURL}/${locale}${destination(actor.role, route.path)}`, { timeout: 150_000 });
-                await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
-                await expect(page.getByRole('heading').first()).toBeVisible();
+                await expect(page).toHaveURL(expectedUrl(actor.role, route.path, baseURL, locale), { timeout: 150_000 });
+                await assertSettled(page);
                 await expect(page.locator('html')).toHaveAttribute('lang', locale);
                 await expect(page.locator('html')).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
                 await page.evaluate(async () => { await document.fonts.ready; });

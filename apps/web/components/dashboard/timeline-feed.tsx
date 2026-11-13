@@ -9,6 +9,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 import { Link } from '@/i18n/navigation';
 import type { TimelineKind } from '@/src/server/dashboard/logic';
+import { formatKcal, formatNumber, numberLocale } from '@/src/lib/numbers';
 import { formatDate, sendJson } from './format';
 import type { TimelineItem, TimelinePage } from './types';
 
@@ -24,8 +25,10 @@ const pick = <T extends string>(list: readonly T[], value: unknown, fallback: T)
 
 /** Task 10: one-line, translated summary of a timeline entry. */
 function useDescribe() {
-  const t = useTranslations('dashboard.timeline'); const locale = useLocale();
-  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+  const t = useTranslations('dashboard.timeline'); const units = useTranslations('tracking'); const locale = useLocale();
+  const o = { locale: numberLocale(locale) };
+  const number = { format: (value: number) => formatNumber(value, { ...o, maximumFractionDigits: 2 }) };
+  const unitLabel = (unit: string) => unit && units.has(`units.${unit}`) ? units(`units.${unit}`) : unit;
   return (item: TimelineItem): string => {
     const s = item.summary;
     switch (item.kind) {
@@ -44,7 +47,7 @@ function useDescribe() {
       }
       case 'metric': {
         const metric = pick(METRICS, s.metric, 'custom');
-        return t('metric.line', { metric: metric === 'custom' && text(s.metricKey) ? text(s.metricKey) : t(`metric.${metric}`), value: typeof s.value === 'number' ? number.format(s.value) : text(s.value), unit: text(s.unit) });
+        return t('metric.line', { metric: metric === 'custom' && text(s.metricKey) ? text(s.metricKey) : t(`metric.${metric}`), value: typeof s.value === 'number' ? (metric === 'calories_in' ? formatKcal(s.value, o) : number.format(s.value)) : text(s.value), unit: unitLabel(text(s.unit)) });
       }
       case 'message': {
         const base = t(text(s.senderRole) === 'client' ? 'message.fromClient' : 'message.fromTeam', { preview: text(s.preview) });

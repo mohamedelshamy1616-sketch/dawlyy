@@ -20,6 +20,7 @@ import { useWriteQueue } from './retry-queue';
 import { foodText } from './shared';
 import type { ClientNutrition, DailyLogs } from './types';
 import { WaterCounter } from './water-counter';
+import { formatKcal, formatMacro, formatNumber, numberLocale } from '@/src/lib/numbers';
 
 type Notice = 'sent' | 'queued' | 'error' | null;
 
@@ -31,7 +32,7 @@ export function ClientNutritionScreen({ plan, logs }: { plan: ClientNutrition; l
 }
 
 function TodayMeals({ plan, document, logs }: { plan: ClientNutrition; document: NutritionDocument; logs: DailyLogs }) {
-  const t = useTranslations('nutrition'); const locale = useLocale(); const n = new Intl.NumberFormat(locale);
+  const t = useTranslations('nutrition'); const locale = useLocale(); const o = { locale: numberLocale(locale) }; const n = { format: (value: number) => formatNumber(value, o) };
   const queue = useWriteQueue(); const targets = plan.targets ?? document.targets;
   const [entries, setEntries] = useState<Record<string, { clientUuid: string; status: MealStatus }>>(() => {
     const result: Record<string, { clientUuid: string; status: MealStatus }> = {};
@@ -84,7 +85,7 @@ function TodayMeals({ plan, document, logs }: { plan: ClientNutrition; document:
     <Card padding={4}><VStack gap={3} width="100%">
       <Heading level={3} type="display-3">{t('client.totals')}</Heading>
       <MacroProgress macros={eaten} targets={targets} />
-      {planned ? <Text type="supporting" color="secondary">{t('client.plannedTotal', { kcal: n.format(planned.total.kcal), protein: n.format(planned.total.proteinG), carbs: n.format(planned.total.carbsG), fat: n.format(planned.total.fatG) })}</Text> : null}
+      {planned ? <Text type="supporting" color="secondary">{t('client.plannedTotal', { kcal: formatKcal(planned.total.kcal, o), protein: formatMacro(planned.total.proteinG, o), carbs: formatMacro(planned.total.carbsG, o), fat: formatMacro(planned.total.fatG, o) })}</Text> : null}
     </VStack></Card>
     <VStack gap={3} width="100%">{document.meals.map(meal => {
       const first = meal.options[0]?.id ?? ''; const optionId = chosen(meal.id, first); const entry = entries[meal.id];

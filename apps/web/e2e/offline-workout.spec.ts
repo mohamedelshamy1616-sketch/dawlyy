@@ -75,12 +75,13 @@ test('offline reload, three durable sets, previous values, rest controls and dup
       return (await result.json() as SessionDetail).sets;
     }
     await expect.poll(async () => (await serverSets()).length).toBe(3);
-    await page.getByTestId('sync-now').click(); await page.getByTestId('sync-now').click();
+    // Reinvent plan R0b item 3: the sync card (and its sync-now button) shows only while pending is above 0.
+    await expect(page.getByTestId('sync-now')).toHaveCount(0);
     expect(await serverSets()).toHaveLength(3);
     expect(new Set((await serverSets()).map(s => s.clientUuid)).size).toBe(3);
     expect((await serverSets()).map(s => s.reps)).toEqual([8, 9, 10]);
     await page.getByTestId('finish-workout').click(); await expect(page.getByTestId('finish-summary')).toBeVisible();
-    await expect(page.getByTestId('unsynced-count')).toHaveText('Unsynced: 0');
+    await expect(page.getByTestId('unsynced-count')).toHaveText('Everything is synced');
     await page.getByRole('button', { name: 'Exercise history', exact: true }).first().click();
     await expect(page.getByRole('dialog')).toContainText('Your last five sessions');
     await page.getByRole('button', { name: 'Close', exact: true }).last().click();

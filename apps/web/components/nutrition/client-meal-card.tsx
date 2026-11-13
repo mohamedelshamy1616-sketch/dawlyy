@@ -12,6 +12,7 @@ import { itemMacros } from '@dawlyy/core/nutrition';
 import type { Macros, Meal } from '@dawlyy/core/types';
 import { foodMap, type NutritionFood } from '@/src/server/nutrition/helpers';
 import { foodText } from './shared';
+import { formatKcal, formatMacro, formatNumber, numberLocale } from '@/src/lib/numbers';
 
 /** Task 6: the three statuses a client can log for a planned meal. */
 export const MEAL_STATUSES = ['eaten', 'partial', 'skipped'] as const;
@@ -23,7 +24,7 @@ export function ClientMealCard({ meal, foods, chosenOptionId, status, optionMacr
   meal: Meal; foods: NutritionFood[]; chosenOptionId: string; status: MealStatus | undefined; optionMacros: Macros | undefined;
   disabled?: boolean; onChoose: (optionId: string) => void; onStatus: (status: MealStatus) => void;
 }) {
-  const t = useTranslations('nutrition'); const locale = useLocale(); const n = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }); const map = foodMap(foods);
+  const t = useTranslations('nutrition'); const locale = useLocale(); const o = { locale: numberLocale(locale) }; const n = { format: (value: number) => formatNumber(value, o) }; const map = foodMap(foods);
   const option = meal.options.find(o => o.id === chosenOptionId) ?? meal.options[0];
   const measureLabel = (item: NonNullable<typeof option>['items'][number]) => item.measure.kind === 'custom' ? foodText(item.measure.label, locale) : t(`measures.${item.measure.kind}`);
   return <Card padding={4}><VStack gap={3} width="100%" className="min-w-0">
@@ -45,7 +46,7 @@ export function ClientMealCard({ meal, foods, chosenOptionId, status, optionMacr
         </HStack>
       </VStack></li>;
     })}</VStack>
-    {optionMacros ? <Text type="supporting" color="secondary">{t('client.optionMacros', { kcal: n.format(optionMacros.kcal), protein: n.format(optionMacros.proteinG), carbs: n.format(optionMacros.carbsG), fat: n.format(optionMacros.fatG) })}</Text> : null}
+    {optionMacros ? <Text type="supporting" color="secondary">{t('client.optionMacros', { kcal: formatKcal(optionMacros.kcal, o), protein: formatMacro(optionMacros.proteinG, o), carbs: formatMacro(optionMacros.carbsG, o), fat: formatMacro(optionMacros.fatG, o) })}</Text> : null}
     <HStack gap={2} wrap="wrap">{MEAL_STATUSES.map(s => <Button key={s} size="lg" variant={status === s ? 'primary' : 'secondary'} isDisabled={disabled} label={t(`client.status.${s}`)} onClick={() => onStatus(s)} />)}</HStack>
   </VStack></Card>;
 }
