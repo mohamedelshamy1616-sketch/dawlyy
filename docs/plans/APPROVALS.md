@@ -109,3 +109,27 @@ Prices are estimates; check each before paying.
 | Approved free beta tiers (12 Nov) | $0 | domain and legal review need separate approval |
 | **Total for a paid beta** | **about $45/month** | **about $10-15/year + legal** |
 | Launch in Egypt (see BUDGET.md) | about $65-85 + usage; Paymob 2.75% + EGP 3 per card payment | domain, lawyer quote, PDPC licence |
+
+## 8. Standing approval for the reinvention program (yes 13 Nov 2026)
+
+Mohamed, 13 Nov 2026: "موافق، وعايز أديك كل الصلاحيات ما عدا أي حاجة فيها فلوس". He accepted the four proposed
+items and asked for every permission except anything that involves money.
+
+Covered without asking again:
+1. Migrations and seeds on the Supabase **staging** project `dawlyy-staging` only, through
+   `~/.claude/skills/dawlyy-staging/staging.mjs`. Back up first when a migration can lose data.
+2. Starting and stopping the local freellmapi router.
+3. Running Codex builds and Sonnet agents inside an approved plan, with no per-run question.
+4. Raising the subagent concurrency cap from 3 to 6. Claude Code's auto-mode classifier refused Claude's edit of
+   `~/.claude/settings.json` as self-modification, so Mohamed makes that one-line change himself.
+5. Builds, tests, restarts, local commits, pausing and resuming the autopilot, research, docs and live reads.
+
+Still needs his specific yes, because the global rule in ~/.claude/CLAUDE.md scopes blanket approval:
+- Anything that spends money: paid plans, paid APIs, paid inference, purchases or a domain.
+- Irreversible outward actions: a manual `git push` outside the hourly watchdog, history rewrites, deploy
+  configuration on Vercel, live production data, and messages or invitations to real people.
+- Permanently deleting or moving his data.
+
+Never done by Claude at all, whatever the approval:
+- Creating accounts.
+- Typing passwords, or creating or pasting API keys.

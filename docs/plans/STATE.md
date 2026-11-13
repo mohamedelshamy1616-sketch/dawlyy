@@ -4,9 +4,39 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-09 21:40 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5, P4 wave 3 launched).
+Last update: 2026-11-13 18:40 (Africa/Cairo), by the attended session (Claude Opus 5.5): reinvention build P8 starts.
 
 ## Autopilot worker log (newest first)
+
+### 13 Nov 18:40, the reinvention build starts: P8 wave R0 (written by the attended session)
+
+**What happened.** The private beta reached DONE on 12 Nov. Mohamed then judged the app ordinary. On 13 Nov the
+attended session ran seven research tracks:
+- the report: `docs/research/reports/DAWLYY product reinvention research.md`;
+- the notes: `docs/research/research_notes/DAWLYY product reinvention research/`;
+- Codex's critique: `docs/plans/REINVENT_CODEX_PROMPT.md`.
+
+Mohamed approved the build and delegated the direction, so the direction is A+B (decision 23).
+
+**The new contract.** It is `docs/plans/2026-11-13-reinvent-build-plan.md`, and the playbook now has P8 to P10.
+Its hard limits:
+- no paid AI and no LLM network calls;
+- no meal photo;
+- no payment void;
+- corrections preserve history;
+- new RLS coverage;
+- one token file.
+
+The decisions taken for this build are 20 to 23 in OPEN_DECISIONS.md.
+
+**The DONE gate.** `.autopilot/config.json` now also requires `docs/qa/REINVENT_REVIEW.md` ending in
+`Reinvent build: complete`, with no open critical or high row. `done_check.py` fails on HEAD as intended.
+
+**Next action.**
+1. Start wave R0. Launch R0a (the 0008 migration, schema and `security.reinvent.test.ts`) as the one Codex xhigh
+   job.
+2. In parallel, start R0b (the shared UI fixes) on a Sonnet builder.
+3. Then run R1a (the attention module) on Codex after R0a returns.
 
 ### 11 Nov 14:05, T12b and T12c in; screens job needs a smaller scope
 

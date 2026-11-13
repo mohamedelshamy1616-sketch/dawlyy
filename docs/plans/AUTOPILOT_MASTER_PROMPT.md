@@ -4,7 +4,28 @@ Version 1, 8 Nov 2026. Written by Claude (Opus 5.5) for Mohamed, the owner of th
 full at the start of every run; the start or resume message carries its sha256. It overrides your defaults, the
 skills' defaults and the global CLAUDE.md wherever they conflict with unattended work.
 
-## Objective
+## Current objective (13 Nov 2026): the reinvention build, P8 to P10
+
+P1 to P7 are done; the private beta passed `done_check.py` on 12 Nov. Mohamed then judged the app ordinary. On
+13 Nov he approved the reinvention build in these words: "جمّع كل حاجة انت عايزها وابدأ الـ build مرة واحدة، وبعد كده
+الـ test على كل حاجة، وبعد كده الـ publish على طول، وخليك حريص أوي ومركّز".
+
+Your work now:
+- The contract is `docs/plans/2026-11-13-reinvent-build-plan.md`. Read it in full. Its hard limits bind you:
+  - no paid AI and no network calls to an LLM;
+  - no meal photo;
+  - no payment void;
+  - corrections preserve history;
+  - new RLS coverage in `test-db`;
+  - every design value in one token file.
+- Run P8 (waves R0 to R5) and P9 below.
+- The evidence behind the plan is `docs/research/reports/DAWLYY product reinvention research.md`.
+- DONE now also needs `docs/qa/REINVENT_REVIEW.md` ending in `Reinvent build: complete`.
+- P10 (staging migrate and deploy) belongs to the attended session. You never touch Supabase or Vercel.
+
+The original objective below stays as history.
+
+## Objective (P1 to P7, done 12 Nov)
 
 Finish the DAWLYY private beta to the point Mohamed asked for on 8 Nov 2026: the app is complete, every check is
 green, and it is ready to publish or ready for him to test on this PC. Then he checks bugs and security himself.
@@ -354,6 +375,33 @@ Disk gate first: at least 1.5 GB free before any install, 3 GB before any browse
 4. Commit. Run `python AP/run_checks.py --project .` until all checks are green on the final HEAD. Run
    `python AP/done_check.py --project .`; when it exits 0, set state.json `DONE`, send one PushNotification (see
    Reporting), and end the turn.
+
+### P8: reinvention build (sonnet high; Codex builds, one high-effort Codex job at a time)
+
+Waves R0 to R5 of `docs/plans/2026-11-13-reinvent-build-plan.md`, in order. Inside a wave, tasks have disjoint file
+sets and build in parallel: one Codex job plus up to 2 Sonnet builders.
+- Gate each task with typecheck and lint, then commit. R0a's gate also needs the migration applied on a fresh
+  scratch database and `test-db` green.
+- Re-run the screens job after each wave.
+- UI work follows "Astryx in DAWLYY" in `apps/web/AGENTS.md`.
+- Every new client-facing read goes through `clientColumns` (C15).
+- The phase ends with HANDOFF to sonnet high, fresh, for P9.
+
+### P9: test everything and review (sonnet high, then opus high for the review)
+
+Do P9 of the plan:
+1. Add the new e2e flows to `e2e-ar` and `e2e-en`.
+2. Run `run_checks.py` until all 8 checks exit 0 on a clean tree.
+3. Hand off to opus high for the review: up to 3 adversarial verifiers plus a Codex second opinion.
+4. Write `docs/qa/REINVENT_REVIEW.md` and fix every critical and high finding.
+5. Re-run the checks.
+6. When `done_check.py` exits 0, set DONE with one PushNotification. Its text: "التحديث الجديد خلص واتختبر. افتح
+   docs/qa/HOW_TO_TEST.md، والنشر على staging هيتعمل من الجلسة اللي معاك."
+
+### P10: publish to staging (not yours)
+
+The attended session runs P10 of the plan after your DONE. You never run `staging.mjs`, Supabase or Vercel
+commands.
 
 ## Local testing without his accounts
 
