@@ -4,9 +4,30 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-13 18:40 (Africa/Cairo), by the attended session (Claude Opus 5.5): reinvention build P8 starts.
+Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5): P8 wave R0/R1.
 
 ## Autopilot worker log (newest first)
+
+### 13 Nov 23:20, R1a and R4c committed; R0a in its full test-db; R4a and R0c on Codex
+
+- **R1a and R4c committed** (`8422cd4`): the attention ranking and the red-flag lexicon, with the `./attention`
+  and `./safety` exports. Evidence: core typecheck exit 0, core vitest 17 files, 803 tests passed.
+- **R0a reviewed.** The migration matches the brief; the permission modules it uses (`clients`, `programs`,
+  `nutrition`, `forms`, `packages`, `exercises`, `tracking`, `checkins review`) all exist in `MODULES`.
+  `security.reinvent.test.ts` alone: 225 tests passed on a fresh scratch database (job `20261113-230255-r0a-db`).
+  The full `test-db` is running (job `20261113-230658-r0a-testdb`). Codex said three legacy suites need additive
+  inventory updates: `security.catalog.test.ts` (C06, C07, C08, C10, C24), `security.guard.test.ts` (G22 counts 40
+  guards, now 42; new-table setup) and `security.matrix.test.ts` (the exhaustive edit map). Those are inventory
+  pins, not behaviour: update them to the real new objects, never loosen an assertion.
+- Review note for P9: the `ai_drafts` staff insert policy has no permission check (any in-scope staff can create a
+  draft; approval still needs `checkins review`). Low severity; record it in REINVENT_REVIEW.
+- **Running on Codex:** R4a (`r4a-week-review.md`, high, job `20261113-231409-r4a`, writes only
+  `packages/core/src/review/**`) and R0c (`r0c-app-controls.md`, high, `--common none`, job
+  `20261113-231910-r0c`, writes `apps/web/src/server/**`, `apps/web/src/api/**`, one type line in `tenants.ts`).
+  R0c also carries the server half of R2a (the `module_disabled` gate) and of R4c (raising red flags on write), so
+  R2a and R4c's integration are UI-only later.
+- **Next.** Finish R0a (the three suite updates, full test-db green, commit). Then review R4a and R0c. R1b to R1d
+  are UI builders and wait for R0c, because R1b's inbox API lives in `apps/web/src/api`.
 
 ### 13 Nov 18:58, the attended session launched R1a and R4c on Codex (do not relaunch them)
 
