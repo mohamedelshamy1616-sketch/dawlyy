@@ -177,3 +177,22 @@ As each running researcher finishes, launch the next queued track. Add Codex's c
 brief: Astryx is the incumbent design system; the 11,030 px program editor; the 11 equal nav items; the History
 "coming soon" tab; the workout-start screenshot marked PASS that shows a skeleton. When all 7 tracks have landed,
 run the report writer, then master-prompt phases 0-3, then put the direction choice to Mohamed.
+
+## 13 Nov 18:30: build approved and started
+
+Mohamed said "gather everything you want, start the build at once, then test everything, then publish right
+away, be very careful and focused". He delegated the direction, and A+B was taken (OPEN_DECISIONS 23).
+
+- Report: saved after a spot check. The cost table matches the recomputation. The report is more conservative
+  than the notes; for example, the NIH figure appears only as secondary reporting.
+- Plan: `docs/plans/2026-11-13-reinvent-build-plan.md`.
+- Playbook: P8 to P10 added.
+- DONE gate: now needs `docs/qa/REINVENT_REVIEW.md`.
+- Commit 96ada68.
+- Autopilot: handed off to P8 on opus high. A worker is alive at 18:27.
+- My job now:
+  - Watch the worker.
+  - Run P10 after its DONE: back up staging, run `staging.mjs migrate` for 0008, check RLS, deploy, smoke test.
+  - Find out how Vercel deploys (Git integration or manual) before P10.
+- Earlier times in this file read 15:5x and 16:17. The Bash TZ clock was 2 hours off; the real time was 17:55 to
+  18:20.
