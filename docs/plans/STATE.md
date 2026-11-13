@@ -8,6 +8,48 @@ Last update: 2026-11-13 18:40 (Africa/Cairo), by the attended session (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 13 Nov 18:50, wave R0 running: R0a on Codex xhigh, R0b on a Sonnet builder
+
+**Running.**
+- R0a: Codex xhigh job `20261113-183606-r0a`. Brief: `tools/codex_briefs/r0a-reinvent-control.md`, run with
+  `--common none` because `_common_db.md` forbids editing migrations.
+- R0b: a Sonnet medium builder. Brief: `tools/codex_briefs/r0b-ui-fixes.md`. It may not touch `packages/`,
+  `src/api` or `src/server`.
+
+**R0a covers only the database layer.** It writes migration 0008, the Drizzle schema, the core `ClientModules`
+type and `security.reinvent.test.ts`. The plan's R0a also implies app-layer work that R2b and R3a need:
+- default lists exclude archived rows;
+- archived listings for every entity;
+- package unarchive;
+- the void and correction endpoints, with voided rows left out of totals and charts;
+- the `client_modules` settings read and write;
+- storing the per-user numeral choice (`UserPreferences.numerals`) and its settings toggle.
+
+These become task **R0c** (files: `apps/web/src/server/**`, `apps/web/src/api/**`, their tests). It starts after
+R0a is committed and after R0b, so the file sets stay disjoint.
+
+**Design decisions in the R0a brief.** Each one takes the reading that is safer for isolation.
+- Archive and restore need `<module> edit`. That is the permission the clients and packages archive paths already
+  use. A new trigger, `app.guard_archive`, enforces it and stamps `archived_by`; `guard_row` is not edited.
+- Voids go only through `app.void_entry` (security definer). The 7-day window counts from `created_at`, the server
+  clock. A voided row refuses every runtime update and delete.
+- Corrections with an automatic void apply to `meal_logs` and `measurement_sets` (new `replaces_id`).
+- `metric_entries` keeps its existing append-only `correction_of` behaviour. Tests K04 and K20 in
+  `security.tracking.test.ts` pin that a correction leaves the original unchanged. It only gains void.
+- `ai_drafts` reach `approved` or `stale` only through `app.approve_ai_draft` (security definer, with its own
+  tenant, access and `checkins review` checks). A direct UPDATE to `approved` is refused (advisor finding).
+- `red_flags` are inserted only through `app.raise_red_flag`, which checks that the source row is the caller's or
+  visible to them.
+
+**Note for P10.** The plan's rollback premise ("0008 only adds columns and tables") no longer fully holds. 0008
+also adds triggers that refuse writes the old build never makes: direct `archived_by`, void columns, updates of
+voided rows. So the old build should still run on the new schema. The P10 session must confirm this with a smoke
+test after a rollback, not assume it.
+
+**Next.** Review R0a: answer file, diff, apply on a scratch database, full `test-db`, then a filtered `test-web`
+on the clients, packages, programs, tracking and calendar suites. Then review and commit R0b. Then start R1a
+(Codex high) and R0c.
+
 ### 13 Nov 18:40, the reinvention build starts: P8 wave R0 (written by the attended session)
 
 **What happened.** The private beta reached DONE on 12 Nov. Mohamed then judged the app ordinary. On 13 Nov the
