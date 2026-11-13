@@ -8,6 +8,21 @@ Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 13 Nov 23:55, R4a and R1d committed; R0a-2 and R0c on Codex
+
+- **R4a committed** (`d3d333c`): `packages/core/src/review/`. Core gate: 18 files, 935 tests passed.
+- **R1d committed** (`f772963`): the compact program editor (collapsed exercise rows, a 3-field set row, "More"
+  per set, collapsed block settings). Not measured yet: the screens job at the end of the wave gives the 390 px
+  height (target under 3,000 px).
+- **P9 follow-up from R1d.** `apps/web/e2e/beta/beta-gate.spec.ts` lines 255-263 must open the new exercise row
+  and each set's "More" before Remove set. The set label is now built with Western digits (R0b numeral policy), so
+  the spec's `new Intl.NumberFormat(locale)` for the set number must become the app formatter. These follow plan
+  R1d and R0b item 2.
+- **R0a full test-db:** 10,284 passed, 342 failed, all in inventory suites (catalog C06, C07, C08, C10, C24;
+  integrity N01 to N03; matrix compile; guard G20 to G22). No behaviour suite regressed. Codex R0a-2
+  (`r0a2-suite-inventories.md`, xhigh, job `20261113-232957-r0a2`) updates the four suites without loosening.
+- **Running:** Codex R0a-2 and R0c (`20261113-231910-r0c`).
+
 ### 13 Nov 23:20, R1a and R4c committed; R0a in its full test-db; R4a and R0c on Codex
 
 - **R1a and R4c committed** (`8422cd4`): the attention ranking and the red-flag lexicon, with the `./attention`
