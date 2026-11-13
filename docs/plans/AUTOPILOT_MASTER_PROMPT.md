@@ -322,6 +322,9 @@ T10 and T11. Same pattern as P3.
   screens to Astryx one route group per task, each proved at /ar and /en, 375 and 1440 px, no console error.
 - Codex usage: never run three high-effort Codex jobs at once (the ChatGPT plan limit ran out in about 14 minutes
   on 10 Nov). One Codex job at a time; the other tasks of a wave go to Sonnet builders.
+- Override (Mohamed, 13 Nov 2026 19:00: use Codex's full power): from P8 on, run up to 3 Codex jobs at once on
+  disjoint files, with at most 2 of them high or xhigh. When Codex reports its plan limit, note the reset time in state.json and
+  continue with what is left. While the 5-hour Claude window is at 80% or more, Codex is the only builder.
 
 Gate: typecheck and lint. Commit per task.
 
@@ -379,7 +382,7 @@ Disk gate first: at least 1.5 GB free before any install, 3 GB before any browse
 ### P8: reinvention build (sonnet high; Codex builds, one high-effort Codex job at a time)
 
 Waves R0 to R5 of `docs/plans/2026-11-13-reinvent-build-plan.md`, in order. Inside a wave, tasks have disjoint file
-sets and build in parallel: one Codex job plus up to 2 Sonnet builders.
+sets and build in parallel: up to 3 Codex jobs (see the 13 Nov override under P4) plus up to 2 Sonnet builders.
 - Gate each task with typecheck and lint, then commit. R0a's gate also needs the migration applied on a fresh
   scratch database and `test-db` green.
 - Re-run the screens job after each wave.

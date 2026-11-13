@@ -8,6 +8,19 @@ Last update: 2026-11-13 18:40 (Africa/Cairo), by the attended session (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 13 Nov 18:58, the attended session launched R1a and R4c on Codex (do not relaunch them)
+
+- Mohamed asked for Codex's full power, so the playbook now allows up to 3 Codex jobs at once on disjoint files.
+- The attended session started two jobs beside R0a:
+  - `20261113-185800-r1a`: `r1a-attention.md`, effort high. It writes only `packages/core/src/attention/**` and
+    `packages/core/test/attention.test.ts`.
+  - `20261113-185800-r4c`: `r4c-safety-lexicon.md`, effort medium. It writes only `packages/core/src/safety/**` and
+    `packages/core/test/safety.test.ts`.
+- Their file sets are disjoint from R0a and from each other.
+- Review, gate and commit them like your own jobs. Add the `./attention` and `./safety` exports yourself, as the
+  briefs say.
+- Next free Codex slot: write and launch the R4a (`review/`) brief, then the R4d (`server/ai/`) brief after R0c.
+
 ### 13 Nov 18:50, wave R0 running: R0a on Codex xhigh, R0b on a Sonnet builder
 
 **Running.**
