@@ -17,6 +17,7 @@
  *  - csv          parseCsv(), suggestMapping(), mapExerciseRows(), toCsv()
  *  - attention    rankAttention(): the coach inbox ranking with reason codes
  *  - safety       detectRedFlags(): the Arabic and English red-flag lexicon
+ *  - review       weekReview(): the weekly review summary, template draft and plan proposal
  */
 export * from './types';
 export * from './schedule';
@@ -33,3 +34,4 @@ export * from './text';
 export * from './csv';
 export * from './attention';
 export * from './safety';
+export * from './review';

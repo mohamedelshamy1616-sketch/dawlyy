@@ -22,7 +22,8 @@
     "./text": "./src/text/index.ts",
     "./csv": "./src/csv/index.ts",
     "./attention": "./src/attention/index.ts",
-    "./safety": "./src/safety/index.ts"
+    "./safety": "./src/safety/index.ts",
+    "./review": "./src/review/index.ts"
   },
   "scripts": {
     "test": "vitest run",
