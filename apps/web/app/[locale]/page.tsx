@@ -1,15 +1,15 @@
 import { Suspense } from "react";
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
-import { getAuthContext } from "@/src/server/auth";
+import { requirePage } from "@/src/server/auth";
 import { LandingState } from "@/src/components/shell/landing-state";
 
 async function RoleRedirect() {
   const locale = await getLocale();
-  const auth = await getAuthContext();
-  if (!auth) redirect({ href: "/login", locale });
-  else if (auth.role === "client") redirect({ href: "/app/today", locale });
-  else redirect({ href: "/coach", locale });
+  // requirePage sends signed-out visitors to /login and signed-in users without a membership to /onboarding.
+  // getAuthContext alone returned null for the second group too, so a fresh account looped back to /login.
+  const auth = await requirePage();
+  redirect({ href: auth.role === "client" ? "/app/today" : "/coach", locale });
   return null;
 }
 
