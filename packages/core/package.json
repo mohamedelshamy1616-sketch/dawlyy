@@ -20,7 +20,9 @@
     "./program-edit": "./src/program-edit/index.ts",
     "./subscription": "./src/subscription/index.ts",
     "./text": "./src/text/index.ts",
-    "./csv": "./src/csv/index.ts"
+    "./csv": "./src/csv/index.ts",
+    "./attention": "./src/attention/index.ts",
+    "./safety": "./src/safety/index.ts"
   },
   "scripts": {
     "test": "vitest run",

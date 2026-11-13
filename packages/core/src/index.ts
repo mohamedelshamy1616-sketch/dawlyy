@@ -15,6 +15,8 @@
  *  - subscription endsOnFor(), buildSubscriptionSchedule(), reconcileSchedule(), accessStatus()
  *  - text         Arabic folding, searchKey(), matchesQuery(), normalizePhone(), parseClientCode()
  *  - csv          parseCsv(), suggestMapping(), mapExerciseRows(), toCsv()
+ *  - attention    rankAttention(): the coach inbox ranking with reason codes
+ *  - safety       detectRedFlags(): the Arabic and English red-flag lexicon
  */
 export * from './types';
 export * from './schedule';
@@ -29,3 +31,5 @@ export * from './program-edit';
 export * from './subscription';
 export * from './text';
 export * from './csv';
+export * from './attention';
+export * from './safety';

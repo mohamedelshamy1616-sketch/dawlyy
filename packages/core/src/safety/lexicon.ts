@@ -1,0 +1,46 @@
+export type RedFlagCategory = 'pain_injury' | 'eating_disorder' | 'pregnancy' | 'medication';
+
+/** Literal search forms only. Body parts alone are deliberately absent. */
+export const RED_FLAG_LEXICON: Record<RedFlagCategory, readonly string[]> = {
+  pain_injury: [
+    'الم', 'وجع', 'اوجاع', 'بتوجعني', 'بيوجعني', 'توجعني', 'واجعني', 'يعورني',
+    'اصابه', 'مصاب', 'التواء', 'تمزق', 'شد عضلي', 'تورم', 'وارمه', 'تنميل', 'خدر',
+    'غضروف', 'انزلاق', 'مش قادر اتحرك', 'ركبه بتوجعني', 'ركبت بتوجعني',
+    'ضهر واجعني', 'ظهر يعورني', 'بطن بتوجعني', 'تالمت',
+    'wag3', 'waga3', 'wag3any', 'betwga3ny', 'bywga3ny', 'ragly betwga3ny',
+    'pain', 'ache', 'aches', 'hurts', 'hurt', 'injury', 'injured', 'sprain', 'sprained',
+    'torn', 'swelling', 'numbness', 'numb', 'can t move', 'cannot move', 'muscle pain',
+    'ouch',
+  ],
+  eating_disorder: [
+    'برجع بعد الاكل', 'برجع الاكل', 'بستفرغ بعد الاكل', 'ارجع بعد الاكل',
+    'اتقيا بعد الاكل', 'استفرغ بعد الاكل', 'مش باكل خالص', 'مش باكل لايام',
+    'ما اكل ايام', 'ما اكل شي', 'بجوع نفسي', 'بكره جسمي', 'اكره جسمي',
+    'خايف من الاكل', 'خايفه من الاكل', 'خوف من الاكل', 'ملينات', 'مسهل للتنحيف',
+    'نهم بالاكل', 'نوبات نهم', 'شره مرضي', 'بوليميا', 'انوركسيا',
+    'baraga3 ba3d el akl', 'bagra3 ba3d el akl', 'msh bakol khales', 'bagawa3 nafsy',
+    'binge', 'binge eating', 'purge', 'purging', 'vomiting after eating',
+    'making myself throw up', 'make myself throw up', 'laxatives for weight',
+    'laxatives', 'not eating for days', 'not eaten for days', 'starving myself',
+    'i hate my body', 'fear of eating', 'afraid to eat', 'bulimia', 'anorexia',
+  ],
+  pregnancy: [
+    'حامل', 'حمل', 'بارضع', 'برضع', 'ارضع', 'رضاعه', 'مرضع', 'مرضعه',
+    'الدوره اتاخرت', 'دوره متاخره', 'الدوره متاخره', 'تاخر الدوره',
+    'الدوره منقطعه', 'اختبار حمل', 'تحليل حمل', 'بعد الولاده', 'نفاس',
+    '7amel', '7amil', '7aml', 'hamel', 'bardaa', 'barda3', 'rada3a',
+    'pregnant', 'pregnancy', 'expecting a baby', 'expecting', 'missed period',
+    'missed my period', 'late period', 'breastfeeding', 'breast feeding',
+    'nursing a baby', 'postpartum', 'lactating',
+  ],
+  medication: [
+    'دوا', 'دواء', 'ادويه', 'باخد دوا', 'باخد دواء', 'باخذ دوا', 'اخذ دواء',
+    'حبوب', 'انسولين', 'انسلين', 'كورتيزون', 'كرتيزون', 'منشطات',
+    'علاج الغده', 'دواء الغده', 'علاج الضغط', 'دواء الضغط', 'ادويه الاكتياب',
+    'مضاد اكتياب', 'حبوب السكر', 'bakhod dawa', 'ba5od dawa',
+    'dawa', 'insulin', 'cortisone', 'medication', 'medications', 'medicine',
+    'pills', 'steroids', 'thyroid medicine', 'antidepressants', 'antidepressant',
+    'blood pressure medicine', 'blood pressure medication', 'metformin',
+    'levothyroxine',
+  ],
+};
