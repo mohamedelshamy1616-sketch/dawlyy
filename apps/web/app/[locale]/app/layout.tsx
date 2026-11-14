@@ -4,6 +4,25 @@ import { AuthGate } from "@/components/app/auth-gate";
 import { ClientShell } from "@/src/components/shell/client-shell";
 import { PageSkeleton } from "@/src/components/shell/page-skeleton";
 import { ClientRuntimeMount } from "@/components/client-portal/runtime-mount";
+import { ClientModuleProvider, ClientModuleSeed } from "@/components/client-today/client-module-provider";
+import { requirePage } from "@/src/server/auth";
+import { loadClientBootstrap } from "@/src/server/client-today/page-data";
+
+/**
+ * R2a: hands the resolved client modules to the provider above the shell. If the read fails the provider stays
+ * in its translated loading/retry state rather than guessing all-on.
+ */
+async function ClientModuleBootstrap() {
+  const auth = await requirePage();
+  if (auth.role !== "client") return null;
+  try {
+    const { userId, ...bootstrap } = await loadClientBootstrap(auth);
+    return <ClientModuleSeed userId={userId} {...bootstrap} />;
+  } catch (error) {
+    console.error("client module bootstrap failed", error instanceof Error ? error.name : "unknown");
+    return null;
+  }
+}
 
 export default async function ClientAppLayout({
   children,
@@ -15,14 +34,17 @@ export default async function ClientAppLayout({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  // The shell holds no data, so it is sent first. Only the session check and the page wait inside Suspense.
+  // The shell holds no data, so it is sent first. The module settings, the session check and the page wait inside Suspense.
   return (
-    <ClientShell>
-      <Suspense fallback={<PageSkeleton />}>
-        <AuthGate roles={["client"]} fallback="/coach">
-          <ClientRuntimeMount>{children}</ClientRuntimeMount>
-        </AuthGate>
-      </Suspense>
-    </ClientShell>
+    <ClientModuleProvider>
+      <ClientShell>
+        <Suspense fallback={<PageSkeleton />}>
+          <AuthGate roles={["client"]} fallback="/coach">
+            <ClientModuleBootstrap />
+            <ClientRuntimeMount>{children}</ClientRuntimeMount>
+          </AuthGate>
+        </Suspense>
+      </ClientShell>
+    </ClientModuleProvider>
   );
 }

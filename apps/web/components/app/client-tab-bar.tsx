@@ -1,41 +1,63 @@
 "use client";
 
-import { Activity, ClipboardCheck, Dumbbell, House, MessageCircle, User, Utensils } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "@astryxdesign/core/Button";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Text } from "@astryxdesign/core/Text";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { activeClientTab, getClientDestinations } from "@/components/client-today/client-destinations";
+import { useClientModules } from "@/components/client-today/client-module-provider";
 
-const TABS = [
-  { key: "today", href: "/app/today", Icon: House },
-  { key: "program", href: "/app/program", Icon: Dumbbell },
-  { key: "nutrition", href: "/app/nutrition", Icon: Utensils },
-  { key: "tracking", href: "/app/tracking", Icon: Activity },
-  { key: "checkins", href: "/app/checkins", Icon: ClipboardCheck },
-  { key: "messages", href: "/app/messages", Icon: MessageCircle },
-  { key: "profile", href: "/app/profile", Icon: User },
-] as const;
+type Props = {
+  /** `tabs`: the phone bottom bar. `top`: the horizontal links in the wide-screen header. */
+  layout: "tabs" | "top";
+  className?: string;
+};
 
-export function ClientTabBar() {
-  const t = useTranslations("nav.client");
+/**
+ * R2a: the one client navigation. Today, Plan, Coach and Me, filtered by the client's resolved modules.
+ * Without validated settings only Today and Me show, with a translated loading or retry state.
+ */
+export function ClientTabBar({ layout, className }: Props) {
+  const t = useTranslations("clientToday");
+  const common = useTranslations("common");
   const pathname = usePathname();
+  const { modules, status, refresh } = useClientModules();
+  const tabs = getClientDestinations(modules);
+  const current = activeClientTab(pathname, tabs);
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 border-t bg-background pb-[env(safe-area-inset-bottom)]">
-      <ul className="mx-auto flex max-w-xl">
-        {TABS.map(({ key, href, Icon }) => {
-          const active = pathname.startsWith(href);
+    <nav aria-label={common("mainNavigation")} aria-busy={status === "loading"} className={className}>
+      {status === "error" ? (
+        <HStack role="alert" align="center" justify="between" gap={2} className="min-h-11 px-3">
+          <Text className="min-w-0 break-words text-xs">{t("bootstrap.error")}</Text>
+          <Button size="sm" variant="secondary" label={t("bootstrap.retry")} className="min-h-11 shrink-0" onClick={() => { void refresh(); }} />
+        </HStack>
+      ) : null}
+      {status === "loading" ? <span className="sr-only" role="status">{t("bootstrap.loading")}</span> : null}
+      <ul className={cn(layout === "top" && "flex items-center gap-1", layout === "tabs" && "grid grid-flow-col auto-cols-fr")}>
+        {tabs.map(({ key, href, Icon }) => {
+          const active = current === key;
           return (
-            <li key={key} className="min-w-0 flex-1">
+            <li key={key} className="min-w-0">
               <Link
                 href={href}
+                prefetch={false}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-0.5 px-1 py-2 text-[11px] font-medium",
-                  active ? "text-primary" : "text-muted-foreground",
+                  "focus-ring relative flex items-center text-sm font-medium transition-colors",
+                  layout === "top" && "min-h-11 gap-2 rounded-lg px-3",
+                  layout === "tabs" && "min-h-16 flex-col justify-center gap-1 px-1 text-xs",
+                  active ? "bg-brand-soft text-brand-soft-foreground" : "text-foreground/75 hover:bg-muted hover:text-foreground",
+                  layout === "tabs" && active && "bg-transparent",
                 )}
               >
-                <Icon className="size-5" aria-hidden />
-                <span className="w-full truncate text-center">{t(key)}</span>
+                {layout === "tabs" && active ? <span aria-hidden className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-brand" /> : null}
+                <span aria-hidden className={cn("grid shrink-0 place-items-center", layout === "tabs" && "h-7 w-12 rounded-full transition-colors", layout === "tabs" && active && "bg-brand-soft")}>
+                  <Icon className={cn("size-5", active && "text-brand")} strokeWidth={active ? 2.4 : 2} />
+                </span>
+                <span className="min-w-0 break-words text-center">{t(`tabs.${key}`)}</span>
               </Link>
             </li>
           );

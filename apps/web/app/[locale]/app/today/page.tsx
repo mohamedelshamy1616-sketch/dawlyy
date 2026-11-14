@@ -1,13 +1,28 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { connection } from 'next/server';
+import { setRequestLocale } from 'next-intl/server';
 import { requirePage } from '@/src/server/auth';
-import { withAuthTx } from '@/src/server/db';
-import { getToday } from '@/src/server/workout/portal';
-import { TodayCards } from '@/components/client-portal/today-cards';
-import { PortalFrame } from '@/components/client-portal/portal-frame';
+import { loadTodayPageData, type TodayPageData } from '@/src/server/client-today/page-data';
+import { ClientModuleSeed } from '@/components/client-today/client-module-provider';
+import { HubError } from '@/components/client-today/client-hubs';
+import { TodayActions } from '@/components/client-today/today-actions';
 
-/** Task 5: own-client Today cards through the authenticated RLS boundary. */
+/** R2a: Today. One lead card, meals as rows, then the check-in when due, honouring the client's modules. */
 export default async function TodayPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params; setRequestLocale(locale); const auth = await requirePage();
-  const data = await withAuthTx(auth, tx => getToday(tx, auth)); const t = await getTranslations('nav.client');
-  return <PortalFrame title={t('today')}><TodayCards data={data} /></PortalFrame>;
+  await connection();
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const auth = await requirePage();
+  let data: TodayPageData;
+  try {
+    data = await loadTodayPageData(auth);
+  } catch (error) {
+    console.error('client today failed', error instanceof Error ? error.name : 'unknown');
+    return <HubError />;
+  }
+  return (
+    <>
+      <ClientModuleSeed userId={data.userId} {...data.bootstrap} />
+      <TodayActions today={data.today} nutrition={data.nutrition} logs={data.logs} locale={locale === 'ar' ? 'ar' : 'en'} bootstrap={data.bootstrap} />
+    </>
+  );
 }
