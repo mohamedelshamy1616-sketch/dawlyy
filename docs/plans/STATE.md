@@ -8,6 +8,14 @@ Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 14 Nov 14:55, WAITING for the 5-hour reset (84%); R0-fix1 not done
+
+- The Sonnet builder for `r0-fix1.md` was stopped twice by worker session restarts. It left 7 added lines in
+  `packages/db/src/client-columns.ts` (keep them); nothing else of the fix is done.
+- The 5-hour Claude window is at 84% (resets 17:20), above the 80% brake; Codex is at its plan limit until 18:41.
+- **Next run:** finish `r0-fix1.md` (Codex after 18:41, a Sonnet high builder before it), then the full gate and
+  the R0a, R0a-2 and R0c commits.
+
 ### 14 Nov 14:40, R1c committed; R0a-2 and R0c done; one fix round left; Codex at its plan limit until 18:41
 
 - The two Codex jobs of 13 Nov were killed at 23:45 when the machine stopped. Relaunched with resume briefs
