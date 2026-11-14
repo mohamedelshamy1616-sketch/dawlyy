@@ -10,6 +10,8 @@ export const TABLE_GRANTS = {
   tenants: 'SU', memberships: 'SIU', staff_client_assignments: 'SID', invitations: 'SIUD',
   business_settings: 'SIU', user_preferences: 'SIUD', consents: 'SIU', clients: 'SIU',
   client_notes: 'SIUD', client_flags: 'SIU', tasks: 'SIUD', ai_requests: 'SIU',
+  // reinvent R0a: private drafts and source-derived red flags.
+  ai_drafts: 'SIU', red_flags: 'SU',
   packages: 'SIUD', subscriptions: 'SIU', subscription_events: 'SI', client_entitlement_overrides: 'SIU',
   payments: 'SIU', exercises: 'SIU', foods: 'SIU', tenant_hidden_items: 'SID',
   programs: 'SIUD', program_versions: 'SIUD', nutrition_plans: 'SIUD', nutrition_plan_versions: 'SIUD',
@@ -84,6 +86,9 @@ allow('clients', 'clients_client', 'select update', `${T} AND ${own('id')}`);
 allow('client_notes', 'client_notes_staff', 'select insert', scoped);
 allow('client_notes', 'client_notes_author', 'update delete', `${scoped} AND (${me('author_user_id')} OR ${owner})`);
 allow('client_flags', 'client_flags_staff', 'select insert update', scoped);
+// reinvent R0a: no client, delete, or direct flag insert policy.
+allow('ai_drafts', 'ai_drafts_staff', 'select insert update', scoped);
+allow('red_flags', 'red_flags_staff', 'select update', scoped);
 for (const table of ['tasks', 'ai_requests'] as const) allow(table, `${table}_staff`, table === 'tasks' ? 'select insert update delete' : 'select insert update', `${T} AND ${staff} AND (client_id IS NULL OR ${access('client_id')})`);
 allow('packages', 'packages_staff', 'select insert update delete', `${T} AND ${staff}`);
 allow('packages', 'packages_client', 'select', `${T} AND ${client} AND is_public AND archived_at IS NULL`);
@@ -183,6 +188,9 @@ export async function makeRow(table: MatrixTable, f: Fixture, actor: AuthContext
     case 'client_flags': return { ...bound, kind: 'manual' };
     case 'tasks': return { ...bound, title: 'Matrix task', source: 'manual', state: 'open' };
     case 'ai_requests': return { ...bound, kind: 'matrix', input: {}, created_by: actor.userId, state: 'draft' };
+    // reinvent R0a: valid independent service recipes for the new table inventory.
+    case 'ai_drafts': return { ...bound, kind: 'week_review', input_hash: 'a'.repeat(64), input_version: 'matrix-v1', body: {}, status: 'draft' };
+    case 'red_flags': return { ...bound, source: 'message', source_id: randomUUID(), category: 'other', matched: 'matrix', status: 'open' };
     case 'packages': return { ...base, name: { en: 'Matrix package' }, duration_days: 30, schedule_rules: { checkins: [], workouts: [] }, is_public: true };
     case 'subscriptions': {
       const packageId=tenant_id===f.t2?f.packageT2:f.packageT1;
@@ -258,6 +266,8 @@ export function allowsSelect(table: MatrixTable, row: Record<string, unknown>, a
     case 'consents': return row.user_id === a.userId || isOwner || isStaff && (data.get('memberships') ?? []).some((m) => m.tenant_id === a.tenantId && m.user_id === row.user_id && (m.role === 'owner' || m.role === 'staff' || accessible(m.client_id)));
     case 'clients': return row.id === a.clientId || accessible(row.id);
     case 'client_notes': case 'client_flags': return accessible(row.client_id);
+    // reinvent R0a: even the owning client cannot read either review table.
+    case 'ai_drafts': case 'red_flags': return accessible(row.client_id);
     case 'tasks': case 'ai_requests': return isStaff && (row.client_id === null || accessible(row.client_id));
     case 'packages': return isStaff || row.is_public === true && row.archived_at === null;
     case 'programs': case 'nutrition_plans': case 'forms': return ownClient || isStaff && (row.client_id === null || accessible(row.client_id)) || table === 'forms' && a.role === 'client' && row.client_id === null;
@@ -274,6 +284,9 @@ export function allowsSelect(table: MatrixTable, row: Record<string, unknown>, a
 
 const ownerOnly = new Set<MatrixTable>(['tenants', 'memberships', 'staff_client_assignments', 'business_settings']);
 const staffOnly = new Set<MatrixTable>(['client_notes', 'client_flags', 'tasks', 'ai_requests', 'packages', 'subscriptions', 'subscription_events', 'client_entitlement_overrides', 'exercises', 'foods', 'tenant_hidden_items', 'programs', 'nutrition_plans', 'forms', 'program_versions', 'nutrition_plan_versions', 'form_versions']);
+// reinvent R0a: table grants still separately deny direct INSERT into red_flags.
+staffOnly.add('ai_drafts');
+staffOnly.add('red_flags');
 /** doc §13.4 S03: normal write outcome before table-specific self-edit/delete rules. */
 export function writeOutcome(table: MatrixTable, actor: MatrixActor, command: Exclude<MatrixCommand, 'select'>): 'allow' | 'privilege' | 'rls' | 'noeffect' {
   const letter = { insert: 'I', update: 'U', delete: 'D' }[command];

@@ -44,6 +44,8 @@ export const exercises = pgTable(
     thumbnailMediaId: uuid('thumbnail_media_id'),
     source: text('source').notNull().default('coach'),
     hidden: boolean('hidden').notNull().default(false),
+    archivedAt: timestamp('archived_at', { withTimezone: true }),
+    archivedBy: uuid('archived_by'),
     createdBy: uuid('created_by'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }),
@@ -95,6 +97,7 @@ export const programs = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }),
     archivedAt: timestamp('archived_at', { withTimezone: true }),
+    archivedBy: uuid('archived_by'),
   },
   (t) => [
     index('programs_tenant_kind_idx').on(t.tenantId, t.kind),

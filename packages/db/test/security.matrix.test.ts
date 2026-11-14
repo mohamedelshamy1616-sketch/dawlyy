@@ -46,7 +46,8 @@ beforeAll(async () => {
     }
   }
   for (const actorName of ['ua', 'ub', 'uc'] as const) {
-    for (const table of ['client_flags', 'client_notes', 'tasks', 'ai_requests', 'client_entitlement_overrides', 'subscription_events',
+    // 0008: D/E non-empty private-table baselines cover both tenants and assigned/unassigned clients via service inserts.
+    for (const table of ['client_flags', 'client_notes', 'tasks', 'ai_requests', 'ai_drafts', 'red_flags', 'client_entitlement_overrides', 'subscription_events',
       'measurement_sets', 'progress_photo_sets', 'inbody_records', 'workout_sessions', 'set_logs', 'meal_logs', 'supplement_logs', 'form_submissions', 'messages', 'message_revisions'] as const) {
       const row = await makeRow(table, fx, fx[actorName]);
       await svc((tx) => insertRow(tx, table, row));
@@ -89,6 +90,8 @@ function edit(table: MatrixTable, actor: AuthContext): Record<string, unknown> {
     invitations: { status: 'revoked' }, business_settings: { settings: { units: { weight: 'lb', length: 'cm' },exerciseCategories:[],measurementTemplate:[],weekStartsOn:6,checkinReviewTurnaroundHours:24,numerals:'western' } },
     user_preferences: { preferences: { locale: 'en' } }, consents: { withdrawn_at: '2099-01-01T00:00:00Z' },
     clients: { phone: '01000000001' }, client_notes: { body: 'Edited note' }, client_flags: { resolved_at: '2099-01-01T00:00:00Z' },
+    // 0008: D/E permitted runtime edits: draft body and open -> handled (stamps checked by G21).
+    ai_drafts: { body: { edited: true } }, red_flags: { status: 'handled' },
     tasks: { title: 'Edited task' }, ai_requests: { output: { edited: true } }, packages: { is_public: false }, subscriptions: { notes: 'Edited subscription' },
     subscription_events: { reason: 'Edited ledger' }, client_entitlement_overrides: { revoked_at: '2099-01-01T00:00:00Z' }, payments: { reference: 'Edited reference' },
     exercises: { hidden: true }, foods: { hidden: true }, tenant_hidden_items: { hidden_by: actor.userId },
@@ -256,6 +259,7 @@ describe('complete policy matrix', () => {
       expect(source).not.toMatch(/\bpgPolicy\s*\(/);
       expect(source).not.toMatch(/DRIZZLE_NO_POLICIES/);
     }
-    expect(tables).toHaveLength(47);
+    // 0008: D/E add two tables to the original 47-table inventory.
+    expect(tables).toHaveLength(49);
   });
 });

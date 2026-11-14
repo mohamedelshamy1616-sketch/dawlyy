@@ -57,6 +57,13 @@
       "when": 1794477600000,
       "tag": "0007_push_tenant_scope",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794600000000,
+      "tag": "0008_reinvent_control",
+      "breakpoints": true
     }
   ]
 }

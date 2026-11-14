@@ -58,9 +58,18 @@ fk('notification_deliveries','notification_deliveries_notification_fk','tenant_i
 fk('tasks','tasks_assignee_fk','tenant_id,assignee_membership_id','memberships','tenant_id,id','a');
 const tenantTables: MatrixTable[] = ['memberships','staff_client_assignments','invitations','business_settings','user_preferences','consents','clients','client_notes','client_flags','tasks','ai_requests','packages','subscriptions','subscription_events','client_entitlement_overrides','payments','exercises','foods','tenant_hidden_items','programs','program_versions','nutrition_plans','nutrition_plan_versions','forms','form_versions','form_submissions','calendar_events','metric_entries','measurement_sets','progress_photo_sets','inbody_records','workout_sessions','set_logs','meal_logs','supplement_logs','conversations','messages','message_revisions','notifications','notification_deliveries','push_subscriptions','media'];
 for (const table of tenantTables) fk(table,table === 'tenant_hidden_items' ? 'tenant_hidden_items_tenant_fk' : table === 'message_revisions' ? 'message_revisions_tenant_fk' : `${table}_tenant_id_tenants_id_fk`,'tenant_id','tenants','id');
+// 0008: B correction pointers retain tenant/client scope and ON DELETE NO ACTION.
+for (const table of ['meal_logs','measurement_sets'] as const) fk(table,`${table}_replaces_fk`,'tenant_id,client_id,replaces_id',table,'tenant_id,client_id,id','a');
+// 0008: D/E both new tables cascade only with their tenant or scoped client.
+for (const table of ['ai_drafts','red_flags'] as const) {
+  fk(table,`${table}_client_fk`,'tenant_id,client_id','clients','tenant_id,id');
+  fk(table,`${table}_tenant_id_tenants_id_fk`,'tenant_id','tenants','id');
+}
+
 type Unique = { table: MatrixTable; name: string; columns: string[]; predicate: string | null };
 const uniques: Unique[] = [];
 function unique(table: MatrixTable, name: string, columns: string, predicate: string | null = null): void { uniques.push({ table,name,columns:columns.split(','),predicate }); }
+// 0008: D/E ai_drafts_pkey and red_flags_pkey join this exhaustive PK inventory.
 for (const table of Object.keys(TABLE_GRANTS) as MatrixTable[]) {
   if (['staff_client_assignments','user_preferences','tenant_hidden_items','idempotency_keys'].includes(table)) continue;
   unique(table,`${table}_pkey`,table === 'business_settings' ? 'tenant_id' : 'id');
@@ -77,7 +86,30 @@ for (const table of ['metric_entries','measurement_sets','progress_photo_sets','
 for (const [table,name,columns] of [
   ['tenants','tenants_slug_uq','slug'],['memberships','memberships_tenant_user_uq','tenant_id,user_id'],['staff_client_assignments','staff_client_assignments_uq','membership_id,client_id'],['invitations','invitations_token_hash_uq','token_hash'],['clients','clients_tenant_code_uq','tenant_id,code'],['exercises','exercises_tenant_slug_uq','tenant_id,slug'],['foods','foods_tenant_slug_uq','tenant_id,slug'],['conversations','conversations_tenant_client_uq','tenant_id,client_id'],['notifications','notifications_user_dedupe_uq','tenant_id,user_id,dedupe_key'],['tasks','tasks_tenant_dedupe_uq','tenant_id,dedupe_key'],['media','media_bucket_path_uq','bucket,path'],['user_preferences','user_preferences_uq','tenant_id,user_id'],['idempotency_keys','idempotency_keys_uq','tenant_id,user_id,key'],['calendar_events','calendar_events_sub_rule_uq','subscription_id,rule_key'],['payments','payments_tenant_receipt_uq','tenant_id,receipt_no'],['push_subscriptions','push_subscriptions_tenant_endpoint_uq','tenant_id,endpoint'],
 ] as const) unique(table,name,columns);
+// 0008: B composite correction FK targets and partial one-replacement indexes.
+for (const table of ['meal_logs','measurement_sets'] as const) {
+  unique(table,`${table}_tenant_client_id_uq`,'tenant_id,client_id,id');
+  unique(table,`${table}_replaces_uq`,'tenant_id,client_id,replaces_id','replaces_id IS NOT NULL');
+}
+// 0008: E one flag per scoped source/category.
+unique('red_flags','red_flags_source_category_uq','tenant_id,source,source_id,category');
 const checks: { table: string; name: string; expression: string }[] = [
+  // 0008: B bounds all four void reasons.
+  ...['meal_logs','metric_entries','measurement_sets','workout_sessions'].map(table=>({table,name:`${table}_void_reason_ck`,expression:'length(void_reason) <= 500'})),
+  // 0008: C client module object permits only known boolean entries (jsonpath's canonical spelling).
+  {table:'business_settings',name:'business_settings_client_modules_ck',expression:`jsonb_typeof(client_modules) = 'object' AND client_modules - ARRAY['workouts','nutrition','checkins','progress_photos','measurements','messages','payments']::text[] = '{}'::jsonb AND NOT jsonb_path_exists(client_modules, '$.*?(@.type() != "boolean")'::jsonpath)`},
+  // 0008: D ai_drafts CHECKs, including BETWEEN's deparsed conjunction.
+  {table:'ai_drafts',name:'ai_drafts_kind_ck',expression:"kind = 'week_review'"},
+  {table:'ai_drafts',name:'ai_drafts_input_hash_ck',expression:"input_hash ~ '^[0-9a-f]{64}$'"},
+  {table:'ai_drafts',name:'ai_drafts_input_version_ck',expression:'length(input_version) >= 1 AND length(input_version) <= 200'},
+  {table:'ai_drafts',name:'ai_drafts_body_ck',expression:"jsonb_typeof(body) = 'object'"},
+  {table:'ai_drafts',name:'ai_drafts_provider_ck',expression:"provider IN ('none','anthropic','openrouter')"},
+  {table:'ai_drafts',name:'ai_drafts_status_ck',expression:"status IN ('draft','approved','rejected','stale')"},
+  // 0008: E red_flags CHECKs.
+  {table:'red_flags',name:'red_flags_source_ck',expression:"source IN ('message','checkin','meal_note')"},
+  {table:'red_flags',name:'red_flags_category_ck',expression:"category IN ('pain_injury','eating_disorder','pregnancy','medication','other')"},
+  {table:'red_flags',name:'red_flags_matched_ck',expression:'length(matched) >= 1 AND length(matched) <= 200'},
+  {table:'red_flags',name:'red_flags_status_ck',expression:"status IN ('open','handled')"},
   {table:'tenant_hidden_items',name:'tenant_hidden_items_kind_ck',expression:"kind IN ('exercise','food')"},
   ...['programs','nutrition_plans','forms'].map((table)=>({table,name:`${table}_kind_client_ck`,expression:"(kind = 'template') = (client_id IS NULL)"})),
   {table:'conversations',name:'conversations_kind_client_ck',expression:"(kind = 'internal') = (client_id IS NULL)"},
@@ -193,6 +225,8 @@ describe('native integrity',()=>{
     else if(edge.parent==='form_versions'){good=f.templateFormPub;bad=randomUUID();}
     else if(edge.parent==='workout_sessions'){const a=await seeded('workout_sessions',f);const b=await seeded('workout_sessions',f,f.ub);good=a.id;bad=b.id;}
     else if(edge.parent==='calendar_events'){good=f.eventA;bad=f.eventB;}
+    // 0008: B each correction gets an unvoided original with the same tenant/client.
+    else if(edge.name.endsWith('_replaces_fk')){good=(await seeded(edge.table,f)).id;bad=(await seeded(edge.table,f,f.uc)).id;}
     else if(edge.parent==='metric_entries'){good=f.metricA;bad=f.metricB;}
     else if(edge.parent==='conversations'){good=f.convA;bad=f.convC;}
     else if(edge.parent==='messages'){const a=await seeded('messages',f);const b=await seeded('messages',f,edge.table==='message_revisions'?f.uc:f.ub);good=a.id;bad=b.id;}
@@ -207,6 +241,8 @@ describe('native integrity',()=>{
       else if(edge.parent==='program_versions')bad=parentClass==='other-client'?f.copyPubB:(await mkVersion(f.t2,{clientId:f.clientC,status:'published'})).versionId;
       else if(edge.parent==='nutrition_plan_versions')bad=parentClass==='other-client'?f.planPubB:(await mkVersion(f.t2,{family:'nutrition',clientId:f.clientC,status:'published'})).versionId;
       else if(edge.parent==='calendar_events')bad=parentClass==='other-client'?f.eventB:(await seeded('calendar_events',f,f.uc)).id;
+      // 0008: B cover both foreign-tenant and same-tenant other-client originals.
+      else if(edge.name.endsWith('_replaces_fk'))bad=(await seeded(edge.table,f,other)).id;
       else if(edge.parent==='metric_entries')bad=parentClass==='other-client'?f.metricB:(await seeded('metric_entries',f,f.uc)).id;
       else if(edge.parent==='workout_sessions')bad=(await seeded('workout_sessions',f,other)).id;
     }
@@ -294,15 +330,22 @@ describe('native integrity',()=>{
     if(uniqueRule.table==='notifications'||uniqueRule.table==='tasks')row.dedupe_key=randomUUID();
     if(uniqueRule.table==='calendar_events'){row.subscription_id=f.subA;row.rule_key=randomUUID();}
     if(uniqueRule.table==='payments'){row.state='verified';}
+    // 0008: B partial replacement uniqueness needs a non-null original.
+    if(uniqueRule.name.endsWith('_replaces_uq'))row.replaces_id=(await seeded(uniqueRule.table,f)).id;
     row=(await svc((tx)=>insertRow(tx,uniqueRule.table,row)))[0]!;
     // Copy only input columns; the new physical id distinguishes the duplicate logical key.
     const duplicate:Record<string,unknown>={...row,id:randomUUID()};
     if(!('id'in row))delete duplicate.id;
+    // 0008: B isolate replacement uniqueness from the existing offline UUID constraint.
+    if(uniqueRule.name.endsWith('_replaces_uq'))duplicate.client_uuid=randomUUID();
     if(uniqueRule.table==='payments'){duplicate.receipt_no=row.receipt_no;duplicate.state='pending';duplicate.verified_at=null;duplicate.verified_by=null;}
     if(uniqueRule.table==='conversations')duplicate.last_message_at=null;
     const before=await state();const error=await expectCode(()=>svc((tx)=>insertRow(tx,uniqueRule.table,duplicate)),'23505');expect(error.constraint_name).toBe(uniqueRule.name);expect(await state()).toEqual(before);
     const changed=uniqueRule.columns[uniqueRule.columns.length-1]!;
-    if(changed==='client_id')duplicate[changed]=await mkClient(f.t1);
+    // 0008: B/E the positive variants must satisfy the correction FK and flag category CHECK.
+    if(changed==='replaces_id')duplicate[changed]=(await seeded(uniqueRule.table,f)).id;
+    else if(uniqueRule.name==='red_flags_source_category_uq')duplicate[changed]='pain_injury';
+    else if(changed==='client_id')duplicate[changed]=await mkClient(f.t1);
     else if(changed==='membership_id')duplicate[changed]=(await mkMembership(f.s2)).membershipId;
     else if(changed==='user_id')duplicate[changed]=randomUUID();
     else if(changed==='version_no')duplicate[changed]=Number(row[changed])+1;

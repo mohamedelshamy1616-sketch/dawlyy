@@ -77,6 +77,7 @@ export const nutritionPlans = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }),
     archivedAt: timestamp('archived_at', { withTimezone: true }),
+    archivedBy: uuid('archived_by'),
   },
   (t) => [
     index('nutrition_plans_tenant_kind_idx').on(t.tenantId, t.kind),
@@ -171,9 +172,15 @@ export const mealLogs = pgTable(
     clientUpdatedAt: timestamp('client_updated_at', { withTimezone: true }),
     recordedAt: timestamp('recorded_at', { withTimezone: true }).notNull().defaultNow(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    voidedAt: timestamp('voided_at', { withTimezone: true }),
+    voidedBy: uuid('voided_by'),
+    voidReason: text('void_reason'),
+    replacesId: uuid('replaces_id'),
   },
   (t) => [
     uniqueIndex('meal_logs_client_uuid_uq').on(t.tenantId, t.clientId, t.clientUuid),
+    uniqueIndex('meal_logs_tenant_client_id_uq').on(t.tenantId, t.clientId, t.id),
+    uniqueIndex('meal_logs_replaces_uq').on(t.tenantId, t.clientId, t.replacesId).where(sql`${t.replacesId} is not null`),
     index('meal_logs_client_date_idx').on(t.tenantId, t.clientId, t.localDate),
     foreignKey({
       name: 'meal_logs_client_fk',
@@ -185,6 +192,12 @@ export const mealLogs = pgTable(
       columns: [t.tenantId, t.clientId, t.planVersionId],
       foreignColumns: [nutritionPlanVersions.tenantId, nutritionPlanVersions.clientId, nutritionPlanVersions.id],
     }).onDelete('no action'),
+    foreignKey({
+      name: 'meal_logs_replaces_fk',
+      columns: [t.tenantId, t.clientId, t.replacesId],
+      foreignColumns: [t.tenantId as AnyPgColumn, t.clientId as AnyPgColumn, t.id as AnyPgColumn],
+    }).onDelete('no action'),
+    check('meal_logs_void_reason_ck', sql`length(${t.voidReason}) <= 500`),
     ...tenantGuard('meal_logs', T(t.tenantId)),
     ...allow('meal_logs_staff', ['select', 'insert', 'update'], sql`${T(t.tenantId)} and ${STAFF} and ${ACCESS(t.clientId)}`),
     ...allow('meal_logs_client', ['select', 'insert', 'update'], sql`${T(t.tenantId)} and ${OWN(t.clientId)}`),

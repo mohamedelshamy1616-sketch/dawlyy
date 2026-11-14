@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { IsoDate, LocalizedText, MediaKind } from './common';
+import { ClientModules } from './client-modules';
 
 /** Spec §8 (packages and entitlements), §9 (client-level overrides). */
 
@@ -55,6 +56,8 @@ export const EntitlementOverride = Entitlement.partial().extend({
   reason: z.string().optional(),
   /** Override stops applying after this date. */
   expiresOn: IsoDate.optional(),
+  // reinvent R0a: only the seven client module keys may be overridden.
+  modules: ClientModules.partial().optional(),
 });
 export type EntitlementOverride = z.infer<typeof EntitlementOverride>;
 

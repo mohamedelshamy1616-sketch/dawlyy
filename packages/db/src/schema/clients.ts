@@ -55,6 +55,7 @@ export const clients = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }),
     archivedAt: timestamp('archived_at', { withTimezone: true }),
+    archivedBy: uuid('archived_by'),
   },
   (t) => [
     uniqueIndex('clients_tenant_code_uq').on(t.tenantId, t.code),

@@ -2,7 +2,7 @@ import { sql } from 'drizzle-orm';
 import { boolean, check, foreignKey, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 import { ACCESS, ME, OWNER, STAFF, T, allow, tenantGuard } from './_rls';
 import { clients } from './clients';
-import type { ClientScope } from '@dawlyy/core/types';
+import { DEFAULT_CLIENT_MODULES, type ClientModules, type ClientScope } from '@dawlyy/core/types';
 import { clientScope, consentKind, invitationStatus, membershipRole, membershipStatus } from './enums';
 
 // 0004 hand edit H2: place referenced unique indexes before foreign keys, doc §11.2.
@@ -184,10 +184,14 @@ export const businessSettings = pgTable(
       .primaryKey()
       .references(() => tenants.id, { onDelete: 'cascade' }),
     settings: jsonb('settings').$type<BusinessSettings>().notNull(),
+    clientModules: jsonb('client_modules').$type<ClientModules>().notNull().default(DEFAULT_CLIENT_MODULES),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     updatedBy: uuid('updated_by'),
   },
   (t) => [
+    check('business_settings_client_modules_ck', sql`jsonb_typeof(${t.clientModules}) = 'object'
+      and ${t.clientModules} - array['workouts','nutrition','checkins','progress_photos','measurements','messages','payments']::text[] = '{}'::jsonb
+      and not jsonb_path_exists(${t.clientModules}, '$.* ? (@.type() != "boolean")')`),
     ...tenantGuard('business_settings', T(t.tenantId)),
     ...allow('business_settings_member', ['select'], sql`${T(t.tenantId)}`),
     ...allow('business_settings_owner', ['insert', 'update'], sql`${T(t.tenantId)} and ${OWNER}`),
@@ -195,6 +199,7 @@ export const businessSettings = pgTable(
 ).enableRLS();
 
 export type UserPreferences = {
+  numerals?: 'latn' | 'arab';
   locale?: 'ar' | 'en';
   timezone?: string;
   units?: { weight: 'kg' | 'lb'; length: 'cm' | 'in' };

@@ -6,6 +6,7 @@ import { buildFixture, truncateAll, type Fixture } from './fixtures';
 import { buildPrivateFixture, mkMembership, mkVersion, mkSession, mkPackage, mkSubscription } from './factories';
 import { as, svc, q, one, serviceRow, expectGuard, expectCode, expectPrivilege, expectNoEffect, withProbe, setProbeGuard, dropProbe } from './helpers';
 import { GUARDS, GUARD_COLUMNS, INSERT_ACTORS, MATRIX_STATES, SPECIAL_PRECEDENCE, NO_ALTERNATE, type GuardConfig } from './guard-matrix';
+import { makeRow, insertRow, type MatrixTable } from './matrix';
 
 let fx: Fixture;
 beforeAll(async () => {
@@ -293,6 +294,11 @@ const noUpdateGrant = ['staff_client_assignments', 'subscription_events', 'tenan
 const clientInvisible = ['invitations', 'business_settings', 'client_notes', 'client_flags', 'tasks', 'ai_requests', 'packages', 'subscriptions', 'client_entitlement_overrides', 'exercises', 'foods', 'programs', 'nutrition_plans', 'forms', 'program_versions', 'nutrition_plan_versions', 'form_versions'];
 const heads = ['programs', 'nutrition_plans', 'forms'];
 const versions = ['program_versions', 'nutrition_plan_versions', 'form_versions'];
+// 0008: A/B separate triggers surround guard_row; keep their rules outside its JSON golden.
+const archiveModules: Readonly<Record<string, string>> = { clients: 'clients', programs: 'programs', nutrition_plans: 'nutrition', forms: 'forms', packages: 'packages', exercises: 'exercises' };
+const voidTables = ['meal_logs', 'metric_entries', 'measurement_sets', 'workout_sessions'];
+// 0008: D/E private rows have no client UPDATE/SELECT policy.
+clientInvisible.push('ai_drafts', 'red_flags');
 const baseState = (table: string): string | null => MATRIX_STATES[table] ? MATRIX_STATES[table]![0]! : 'base';
 function valueSql(value: unknown, type = 's'): SQL {
   if (value === null) {
@@ -358,6 +364,11 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
     await svc(tx => tx.execute(sql`update tasks set state=${state},completed_at=${state === 'done' ? sql`now()` : sql`null`},completed_by=${state === 'done' ? ctx.userId : null} where id=${id}`));
     break;
     case 'ai_requests': await create({ ...base, kind: sql`'program'`, input: sql`'{}'::jsonb`, created_by: sql`${ctx.userId}`, state: sql`${state}`, approved_at: state === 'approved' ? sql`now()` : sql`null`, approved_by: state === 'approved' ? sql`${ctx.userId}` : sql`null` });
+    break;
+    // 0008: D/E trusted service inserts every OLD status, including otherwise unreachable approved/stale/handled.
+    case 'ai_drafts': await create({ ...base, kind: sql`'week_review'`, input_hash: sql`${'a'.repeat(64)}`, input_version: sql`'guard-v1'`, body: sql`'{}'::jsonb`, provider: sql`'none'`, status: sql`${state}`, created_by: sql`${ctx.userId}`, approved_by: state === 'approved' ? sql`${ctx.userId}` : sql`null`, approved_at: state === 'approved' ? sql`now()` : sql`null` });
+    break;
+    case 'red_flags': await create({ ...base, source: sql`'meal_note'`, source_id: sql`${randomUUID()}`, category: sql`'other'`, matched: sql`'guard'`, status: sql`${state}`, handled_by: state === 'handled' ? sql`${ctx.userId}` : sql`null`, handled_at: state === 'handled' ? sql`now()` : sql`null` });
     break;
     case 'packages': id = await mkPackage(f.t1);
     break;
@@ -429,6 +440,13 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
   if (!['staff_client_assignments', 'business_settings', 'user_preferences', 'tenant_hidden_items'].includes(table)) {
     where = sql`id=${id}`;
   }
+  // 0008: A/B service establishes archived/voided OLD rows without runtime attribution or transition guards.
+  if (state === 'archived' && archiveModules[table]) {
+    await svc(tx => tx.execute(sql`update ${sql.identifier(table)} set archived_at='2026-01-01T00:00:00Z',archived_by=${ctx.userId} where ${where}`));
+  }
+  if (state === 'voided' && voidTables.includes(table)) {
+    await svc(tx => tx.execute(sql`update ${sql.identifier(table)} set voided_at='2026-01-01T00:00:00Z',voided_by=${ctx.userId},void_reason='service OLD state' where ${where}`));
+  }
   const m: MatrixRow = { f, ctx, table, where, row: {}, versionId, asset };
   m.row = await readMatrix(m);
   return m;
@@ -437,6 +455,20 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
 async function alternate(m: MatrixRow, column: string, type: string): Promise<unknown> {
   const old = m.row[column];
   const f = m.f;
+  // 0008: C/D/E alternates remain inside each new CHECK's domain.
+  if (m.table === 'business_settings' && column === 'client_modules') {
+    return { workouts: true, nutrition: true, checkins: true, progress_photos: true, measurements: true, messages: false, payments: true };
+  }
+  if (m.table === 'ai_drafts' && column === 'input_hash') return 'b'.repeat(64);
+  if (m.table === 'ai_drafts' && column === 'provider') return old === 'none' ? 'anthropic' : 'none';
+  if (m.table === 'red_flags' && column === 'source') return old === 'meal_note' ? 'message' : 'meal_note';
+  if (m.table === 'red_flags' && column === 'category') return old === 'other' ? 'pain_injury' : 'other';
+  // 0008: B a replacement alternate is a real same-client row, even though runtime UPDATE must refuse it.
+  if (column === 'replaces_id') {
+    const original = await makeRow(m.table as MatrixTable, f, f.ua);
+    await svc(tx => insertRow(tx, m.table as MatrixTable, original));
+    return original.id;
+  }
   if (column === 'tenant_id') {
     return f.t2;
   }
@@ -598,6 +630,10 @@ function firstRule(m: MatrixRow, column: string, alternateValue: unknown): strin
   const before = m.row;
   const old = before[column];
   const role = m.ctx.role;
+  // 0008: B _45_void precedes _50_guard and blocks every update after voiding.
+  if (voidTables.includes(m.table) && (before.voided_at !== null || ['voided_at', 'voided_by', 'void_reason', 'replaces_id'].includes(column))) {
+    return 'void';
+  }
   if (heads.includes(m.table) && column === 'published_version_id') {
     return SPECIAL_PRECEDENCE.heads.published_version_id;
   }
@@ -646,13 +682,43 @@ function firstRule(m: MatrixRow, column: string, alternateValue: unknown): strin
       return key;
     }
   }
+  // 0008: A _55_archive follows all guard_row checks, including client allowlists.
+  if (archiveModules[m.table] && (column === 'archived_by' || column === 'archived_at' && (!canArchive(m) || old !== null && alternateValue !== null))) {
+    return 'archive';
+  }
   return undefined;
+}
+
+// 0008: A archive requires module edit (or manage); arrange deliberately preserves the existing staff grants.
+function canArchive(m: MatrixRow): boolean {
+  const actions = m.ctx.permissions?.modules?.[archiveModules[m.table]!];
+  return m.ctx.role === 'owner' || m.ctx.role === 'staff' && !!actions?.some(action => action === 'edit' || action === 'manage');
+}
+
+// 0008: A/B these independent triggers use guard:archive/guard:void, outside helpers' guard_row key vocabulary.
+async function matrixRefusal(m: MatrixRow, statement: SQL, rule: string, column: string): Promise<void> {
+  if (rule === 'archive' || rule === 'void') {
+    const frozen = rule === 'void' && m.row.voided_at !== null;
+    const code = frozen || rule === 'archive' && column === 'archived_at' && canArchive(m) && m.row.archived_at !== null ? 'P0001' : '42501';
+    const error = await expectCode(as(m.ctx, tx => tx.execute(statement)), code);
+    expect(error.detail).toBe('guard:' + rule);
+    expect(error.column_name).toBe(frozen ? 'voided_at' : column);
+    expect(error.table_name).toBe(m.table);
+    return;
+  }
+  const error = await expectGuard(as(m.ctx, tx => tx.execute(statement)), rule, column);
+  expect(error.table_name).toBe(m.table);
+  if (rule.startsWith('rule:')) expect(error.code).toBe(rule === 'rule:app.head_rules' ? '42501' : 'P0001');
 }
 
 async function control(m: MatrixRow): Promise<void> {
   const query = sql`select to_jsonb(t) as row from ${sql.identifier(m.table)} t where ${m.where}`;
-  const visible = m.ctx.role !== 'client' || !['invitations', 'client_notes', 'client_flags', 'tasks', 'ai_requests', 'staff_client_assignments'].includes(m.table) && (!versions.includes(m.table) || ['published', 'superseded'].includes(String(m.row.status)));
-  const expected = visible ? await svc(tx => q(tx, query)) : [];
+  // 0008: D/E both private tables remain invisible to clients in refusal controls too.
+  const visible = m.ctx.role !== 'client' || !['invitations', 'client_notes', 'client_flags', 'tasks', 'ai_requests', 'staff_client_assignments', 'ai_drafts', 'red_flags'].includes(m.table) && (!versions.includes(m.table) || ['published', 'superseded'].includes(String(m.row.status)));
+  // 0005 packages_client_select shows a client only `is_public and archived_at is null`: an archived package is invisible to a
+  // client actor, so UPDATE through RLS matches zero rows and the unchanged-row control must expect none for them.
+  const archivedHidden = m.ctx.role === 'client' && m.table === 'packages' && m.row.archived_at != null;
+  const expected = visible && !archivedHidden ? await svc(tx => q(tx, query)) : [];
   expect(await as(m.ctx, tx => q(tx, query))).toEqual(expected);
   expect(await as(m.ctx, tx => q(tx, sql`select id from clients where id=${m.f.clientA}`))).toEqual([{ id: m.f.clientA }]);
 }
@@ -661,6 +727,10 @@ async function exactWrite(m: MatrixRow, assignments: SQL, column: string, expect
     const { clock } = await one<{ clock: string }>(tx, sql`select now()::text as clock`);
     const { row } = await one<{ row: Row }>(tx, sql`update ${sql.identifier(m.table)} t set ${assignments} where ${m.where} returning to_jsonb(t) as row`);
     const expected = { ...m.row, [column]: expectedValue };
+    // 0008: A archive guard stamps attribution on set and clears it on restore, preserving the supplied time.
+    if (archiveModules[m.table] && column === 'archived_at' && m.row.archived_at !== expectedValue) {
+      expected.archived_by = expectedValue === null ? null : m.ctx.userId;
+    }
     const cfg = GUARDS[m.table]!;
     const stamps: Record<string, string> = { ...cfg.stamp_update };
     if (cfg.on_transition && cfg.on_transition.column === column && m.row[column] !== expectedValue) {
@@ -748,6 +818,8 @@ async function insertion(m: MatrixRow, patch: Record<string, unknown> = {}): Pro
   if (m.table === 'tenant_hidden_items') {
     row.item_id = m.f.exerciseT1;
   }
+  // 0008: E a new flag INSERT probe uses its own source/category key.
+  if (m.table === 'red_flags') row.source_id = randomUUID();
   if (['business_settings', 'user_preferences', 'conversations'].includes(m.table)) {
     await svc(tx => tx.execute(sql`delete from ${sql.identifier(m.table)} where ${m.where}`));
   }
@@ -815,6 +887,12 @@ async function exactInsert(m: MatrixRow, statement: SQL, where: SQL, input: Row)
   return stored;
 }
 async function pinCoupledConstraint(m: MatrixRow, column: string): Promise<void> {
+  // 0008: D kind has one legal label; its immutable refusal is covered by security.reinvent and its CHECK by N03.
+  if (m.table === 'ai_drafts' && column === 'kind') {
+    const actual = await svc(tx => one<{ definition: string }>(tx, sql`select pg_get_expr(conbin,conrelid) as definition from pg_constraint where conrelid='ai_drafts'::regclass and conname='ai_drafts_kind_ck' and contype='c' and convalidated`));
+    expect(actual.definition.replace(/::text|[\s()]/g, '')).toBe("kind='week_review'");
+    return;
+  }
   const name = m.table === 'payments' ? (column === 'rejected_reason' ? 'payments_rejected_reason_ck' : 'payments_refund_state_ck') : m.table === 'memberships' ? 'memberships_role_client_ck' : m.table === 'invitations' ? 'invitations_role_client_ck' : m.table === 'conversations' ? 'conversations_kind_client_ck' : m.table+'_kind_client_ck';
   const expression = m.table === 'payments' ? (column === 'rejected_reason' ? "rejected_reason is null or state = 'rejected'" : "(state = 'refunded') = (refund_amount is not null and refund_amount = amount) and (refund_amount is null or state in ('verified', 'refunded'))") : m.table === 'memberships' || m.table === 'invitations' ? "(role = 'client') = (client_id is not null)" : m.table === 'conversations' ? "(kind = 'internal') = (client_id is null)" : "(kind = 'template') = (client_id is null)";
   const actual = await svc(tx => one<{ definition: string }>(tx, sql`select pg_get_expr(conbin,conrelid) as definition from pg_constraint where conrelid=${'public.'+m.table}::regclass and contype='c' and conname=${name} and convalidated`));
@@ -863,6 +941,56 @@ function contractTuples(configs:Readonly<Record<string,GuardConfig>>):string[] {
 }
 
 describe('per-table guard matrix', () => {
+  // 0008: A explicit restore/set attribution covers both owner and staff with the named module edit grant.
+  for (const [table, module] of Object.entries(archiveModules)) for (const who of ['o1', 's1'] as const) {
+    for (const state of ['base', 'archived']) it(`G21 ${table} ${who} UPDATE archived_at OLD ${state} archive attribution`, async () => {
+      const m = await arrange(table, who, state);
+      if (who === 's1') {
+        const permissions = m.ctx.permissions!;
+        m.ctx = await mkMembership(m.ctx, { permissions: { ...permissions, modules: { ...permissions.modules, [module]: [...(permissions.modules[module] ?? []), 'edit'] } } });
+      }
+      const next = state === 'archived' ? null : '2031-01-01T00:00:00Z';
+      await exactWrite(m, sql`archived_at=${next}`, 'archived_at', next);
+      await control(m);
+    });
+    for (const column of ['archived_at', 'archived_by']) it(`G21 ${table} ${who} INSERT ${column} must start null`, async () => {
+      const m = await arrange(table, who);
+      const bad = await insertion(m, { [column]: column === 'archived_at' ? '2031-01-01T00:00:00Z' : m.f.ub.userId });
+      const before = await matrixImage(m);
+      await matrixRefusal(m, bad.statement, 'archive', column);
+      expect(await matrixImage(m)).toEqual(before);
+      expect(await insertedRow(m, bad.where)).toBeUndefined();
+      const good = await insertion(m);
+      await exactInsert(m, good.statement, good.where, good.row);
+      await control(m);
+    });
+  }
+  // 0008: B runtime INSERT cannot prepopulate void attribution; the positive row still starts unvoided.
+  for (const table of voidTables) for (const who of ['o1', 's1', 'ua'] as const) {
+    for (const column of ['voided_at', 'voided_by', 'void_reason']) it(`G21 ${table} ${who} INSERT ${column} must start null`, async () => {
+      const m = await arrange(table, who);
+      const bad = await insertion(m, { [column]: column === 'voided_at' ? '2031-01-01T00:00:00Z' : column === 'voided_by' ? m.f.ub.userId : 'forged' });
+      const before = await matrixImage(m);
+      await matrixRefusal(m, bad.statement, 'void', column);
+      expect(await matrixImage(m)).toEqual(before);
+      expect(await insertedRow(m, bad.where)).toBeUndefined();
+      const good = await insertion(m);
+      await exactInsert(m, good.statement, good.where, good.row);
+      await control(m);
+    });
+  }
+  // 0008: E/F red_flags has no runtime INSERT, even for the owner; OLD rows are always service-created.
+  for (const who of ['o1', 's1', 'ua'] as const) it(`G21 red_flags ${who} INSERT lacks table privilege`, async () => {
+    const m = await arrange('red_flags', who, 'open');
+    const input = await insertion(m);
+    // Give the attempted row an independent source key so a duplicate cannot explain the refusal.
+    const before = await matrixImage(m);
+    const error = await expectPrivilege(as(m.ctx, tx => tx.execute(input.statement)));
+    expect(error.message).toContain('table red_flags');
+    expect(await insertedRow(m, input.where)).toBeUndefined();
+    expect(await matrixImage(m)).toEqual(before);
+    await control(m);
+  });
   for (const [table, columns] of Object.entries(GUARD_COLUMNS)) {
     for (const who of ['o1', 's1', 'ua'] as const) {
       for (const state of MATRIX_STATES[table] ?? ['base']) {
@@ -898,11 +1026,7 @@ describe('per-table guard matrix', () => {
               const rule = firstRule(m, column, next);
               if (rule) {
                 const before = await matrixImage(m);
-                const e = await expectGuard(as(m.ctx, tx => tx.execute(statement)), rule, column);
-                expect(e.table_name).toBe(table);
-                if (rule.startsWith('rule:')) {
-                  expect(e.code).toBe(rule === 'rule:app.head_rules' ? '42501' : 'P0001');
-                }
+                await matrixRefusal(m, statement, rule, column);
                 expect(await matrixImage(m)).toEqual(before);
               }
               else await exactWrite(m, sql`${sql.identifier(column)}=${valueSql(next, type)}`, column, next);
@@ -921,7 +1045,8 @@ describe('per-table guard matrix', () => {
             continue;
           }
           it(`G21 ${table} ${who} INSERT ${column} ${key} initial`, async () => {
-            const state = table === 'invitations' ? 'pending' : table === 'subscriptions' ? 'pending' : table === 'payments' ? 'pending' : table === 'tasks' ? 'open' : table === 'ai_requests' ? 'draft' : table === 'form_submissions' ? 'due' : table === 'calendar_events' ? 'due' : table === 'media' ? null : versions.includes(table) ? 'draft' : 'base';
+            // 0008: D new draft INSERT contracts start from a valid service-written draft.
+            const state = table === 'invitations' ? 'pending' : table === 'subscriptions' ? 'pending' : table === 'payments' ? 'pending' : table === 'tasks' ? 'open' : table === 'ai_requests' || table === 'ai_drafts' ? 'draft' : table === 'form_submissions' ? 'due' : table === 'calendar_events' ? 'due' : table === 'media' ? null : versions.includes(table) ? 'draft' : 'base';
             const m = await arrange(table, who, state);
             const type = GUARD_COLUMNS[table]!.split(' ').find(s => s.startsWith(column+':'))!.split(':')[1]!;
             let forged: unknown = type === 'u' ? m.f.ub.userId : type === 't' ? '2001-01-01T00:00:00Z' : type === 'n' ? 99 : type === 'j' ? { forged: true } : column === 'state' ? 'verified' : column === 'status' ? 'accepted' : column === 'source' ? 'automation' : column === 'kind' ? 'internal' : 'forged';
@@ -934,6 +1059,8 @@ describe('per-table guard matrix', () => {
             if (column === 'published_version_id') {
               forged = m.versionId;
             }
+            // 0008: D rejected satisfies the status CHECK but must still fail insert_eq/status.
+            if (table === 'ai_drafts' && column === 'status') forged = 'rejected';
             const bad = await insertion(m, { [column]: forged });
             const before = await matrixImage(m);
             const expected = column === 'published_version_id' ? 'rule:app.head_rules' : key;
@@ -1058,7 +1185,8 @@ describe('per-table guard matrix', () => {
   it('G22 guards service SELECT complete table/key/column/operation/actor/OLD-state contract', async () => {
     const rows = await svc(tx => q<{ table: string;args: string }>(tx, sql`select c.relname as table,encode(t.tgargs,'hex') as args from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace join pg_proc p on p.oid=t.tgfoid join pg_namespace pn on pn.oid=p.pronamespace where not t.tgisinternal and n.nspname='public' and pn.nspname='app' and p.proname='guard_row' order by c.relname`));
     expect(rows.map(r => r.table)).toEqual(Object.keys(GUARDS).sort());
-    expect(rows).toHaveLength(40);
+    // 0008: D/E add ai_drafts_50_guard and red_flags_50_guard.
+    expect(rows).toHaveLength(42);
     expect(Object.keys(GUARD_COLUMNS).sort()).toEqual(Object.keys(GUARDS).sort());
     const actual: Record<string, GuardConfig> = {};
     for (const row of rows) {

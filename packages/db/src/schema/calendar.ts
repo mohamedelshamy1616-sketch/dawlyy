@@ -38,6 +38,7 @@ export const calendarEvents = pgTable(
     completedAt: timestamp('completed_at', { withTimezone: true }),
     skippedAt: timestamp('skipped_at', { withTimezone: true }),
     cancelledAt: timestamp('cancelled_at', { withTimezone: true }),
+    cancelledBy: uuid('cancelled_by'),
     /** When the due/overdue processor last touched this row. */
     lastProcessedAt: timestamp('last_processed_at', { withTimezone: true }),
     remindersSent: integer('reminders_sent').notNull().default(0),

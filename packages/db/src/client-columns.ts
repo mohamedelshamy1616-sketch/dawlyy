@@ -65,6 +65,7 @@ export const clientColumns = {
     settings: schema.businessSettings.settings,
     updatedAt: schema.businessSettings.updatedAt,
     updatedBy: schema.businessSettings.updatedBy,
+    clientModules: schema.businessSettings.clientModules, // 0008
   },
   userPreferences: {
     tenantId: schema.userPreferences.tenantId,
@@ -393,6 +394,7 @@ export const clientColumns = {
     correctionOf: schema.metricEntries.correctionOf,
     note: schema.metricEntries.note,
     createdAt: schema.metricEntries.createdAt,
+    voidedAt: schema.metricEntries.voidedAt, // 0008
   },
   measurementSets: {
     id: schema.measurementSets.id,
@@ -404,6 +406,8 @@ export const clientColumns = {
     clientUuid: schema.measurementSets.clientUuid,
     clientUpdatedAt: schema.measurementSets.clientUpdatedAt,
     note: schema.measurementSets.note,
+    voidedAt: schema.measurementSets.voidedAt, // 0008
+    replacesId: schema.measurementSets.replacesId, // 0008
     createdAt: schema.measurementSets.createdAt,
   },
   progressPhotoSets: {
@@ -454,6 +458,7 @@ export const clientColumns = {
     summary: schema.workoutSessions.summary,
     clientUuid: schema.workoutSessions.clientUuid,
     clientUpdatedAt: schema.workoutSessions.clientUpdatedAt,
+    voidedAt: schema.workoutSessions.voidedAt, // 0008
     createdAt: schema.workoutSessions.createdAt,
     updatedAt: schema.workoutSessions.updatedAt,
   },
@@ -499,6 +504,8 @@ export const clientColumns = {
     clientUuid: schema.mealLogs.clientUuid,
     clientUpdatedAt: schema.mealLogs.clientUpdatedAt,
     recordedAt: schema.mealLogs.recordedAt,
+    voidedAt: schema.mealLogs.voidedAt, // 0008
+    replacesId: schema.mealLogs.replacesId, // 0008
     createdAt: schema.mealLogs.createdAt,
   },
   supplementLogs: {

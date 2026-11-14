@@ -36,6 +36,7 @@ export const forms = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }),
     archivedAt: timestamp('archived_at', { withTimezone: true }),
+    archivedBy: uuid('archived_by'),
   },
   (t) => [
     index('forms_tenant_kind_idx').on(t.tenantId, t.formKind, t.kind),
