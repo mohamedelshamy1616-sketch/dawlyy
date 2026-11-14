@@ -8,6 +8,20 @@ Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 14 Nov 18:35, batch 1 done: R1b merged (3a29992), main green; batch 2 starting
+
+- R1b built by Codex (xhigh, multi-agent) in worktree wt/r1b; reviewed by Claude; inbox loader patch applied at
+  merge. Worktree gates: web tsc 0, lint 0 errors, unit 6/6, `inbox.test.ts` 5/5, catalog (C15) 113/113. Commit
+  41ff78e, merged as 3a29992. Main gate after the merge: typecheck 0, lint 0 errors, test-web 86 files 728/728
+  (job `20261114-182629-main-gate-r1b`).
+- Briefs committed 28ec248. A read-only Sonnet audit of every endpoint the briefs consume found 8 mismatches with
+  main (verified, then appended as errata to r2a, r2b, r3a, r4b, r4d; `/me/app` fixed in r2a, r2b, r2c, r5).
+  R3a also owns the archived=true forwarding on the Exercises, Foods, Nutrition and Packages pages.
+- Worktree runs need `packages/db/.env` (gitignored) copied in for the DB runner. `git worktree remove` left
+  `../dawlyy-wt-r1b` on disk (Windows long paths in node_modules); it is deregistered and holds only build output.
+- **Next:** batch 2 per `turbo-file-map.md`: R2a, R3a, R3b now (worktrees made, setup running), R4d in the next
+  free slot; run briefs `tools/codex_briefs/<task>-run.md`. Merge order R2a, R3a, R3b, R4d.
+
 ### 14 Nov 17:57, R0 committed: R0a e8f1a08 and R0c 0c9e34d; next R1b in a worktree when Codex is back
 
 - r0-fix1 finished (Sonnet builder, resumed): C15 fixed through the clientColumns maps and the `requireStaffRole`
