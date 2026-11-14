@@ -8,6 +8,21 @@ Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 14 Nov 17:57, R0 committed: R0a e8f1a08 and R0c 0c9e34d; next R1b in a worktree when Codex is back
+
+- r0-fix1 finished (Sonnet builder, resumed): C15 fixed through the clientColumns maps and the `requireStaffRole`
+  marker; G20 engine models that a client cannot see an archived package. Full test-db 13,179/13,179
+  (`20261114-173212-r0-testdb3`), committed with 0008 as e8f1a08.
+- R0c gates first gave 4 test-web failures and 2 lint errors. Root cause: R0c had extended `GET /me`, whose
+  minimal response `access.test.ts` and `api-harness.test.ts` pin. `/me` is restored unchanged; preferences,
+  numerals and client modules moved to the new `GET /api/v1/me/app` (R2a's client app reads it). The history
+  test helper now converts text timestamps (LESSONS 12 Nov); two `module` variables renamed. No existing test
+  changed. Then test-web 715/715, web tsc 0, lint 0 errors. Committed 0c9e34d.
+- A Codex job from the attended session (`20261114-175041-turbo-briefs-rest`) is writing r3b, r5 and
+  turbo-file-map; leave those brief files alone until it ends.
+- **Next:** after the Codex limit (18:41): R1b (`r1b-inbox-nav.md`) in `../dawlyy-wt-r1b` per turbo mode; review
+  the attended briefs; then the R2/R3/R4b/R4d/R5 batches.
+
 ### 14 Nov 14:55, WAITING for the 5-hour reset (84%); R0-fix1 not done
 
 - The Sonnet builder for `r0-fix1.md` was stopped twice by worker session restarts. It left 7 added lines in
