@@ -8,6 +8,25 @@ Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Op
 
 ## Autopilot worker log (newest first)
 
+### 14 Nov 14:40, R1c committed; R0a-2 and R0c done; one fix round left; Codex at its plan limit until 18:41
+
+- The two Codex jobs of 13 Nov were killed at 23:45 when the machine stopped. Relaunched with resume briefs
+  (`*-resume.md`); both finished (`20261114-134045-r0a2b`, `-r0cb`).
+- **R1c committed** (`de681b5`): the client hub (Week, Plan, Money, Notes; assign a program in 3 taps).
+- **Gates.** Web `tsc --noEmit`: exit 0 with R0c in the tree. Full `test-db`: 13,161 passed, 18 failed
+  (job `20261114-141007-r0a-testdb2`):
+  - C15: 19 R0c projections spread `clientColumns` plus extra columns, and the staff-only red-flags router lacks
+    the `requireStaffRole` marker. Fix: add `voidedAt`, `replacesId`, `clientModules` to the maps in
+    `packages/db/src/client-columns.ts`, drop the staff id `cancelledBy` from the client calendar read, mark the
+    router. C15 and its scanner stay unchanged.
+  - 17 cells `G20 packages ua UPDATE * OLD archived`: RLS correctly hides archived packages from clients
+    (`packages_client_select ... archived_at is null`); the R0a-2 engine expected a row. Fix the engine's model.
+- **Codex hit its ChatGPT plan limit** at about 14:25 (reset "6:41 PM"). The attended session's `turbo-briefs`
+  job wrote six briefs (`r2a`, `r2b`, `r2c`, `r3a`, `r4b`, `r4d`) and stopped before `r3b`, `r5` and
+  `turbo-file-map.md`. The fix brief `tools/codex_briefs/r0-fix1.md` went to a Sonnet high builder instead.
+- **Next.** When the builder returns: full `test-db`, web tsc, lint, `test-web`, then commit R0a with R0a-2 and
+  R0c. Then R1b in a worktree on Codex after 18:41, and the missing briefs (`r3b`, `r5`, file map).
+
 ### 13 Nov 23:55, R4a and R1d committed; R0a-2 and R0c on Codex
 
 - **R4a committed** (`d3d333c`): `packages/core/src/review/`. Core gate: 18 files, 935 tests passed.
