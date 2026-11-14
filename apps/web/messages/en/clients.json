@@ -55,10 +55,10 @@
     "archived": "Archived"
   },
   "tabs": {
-    "profile": "Profile",
-    "package": "Package and overrides",
-    "subscription": "Subscription",
-    "history": "History"
+    "week": "Week",
+    "plan": "Plan",
+    "money": "Money",
+    "notes": "Notes"
   },
   "history": {
     "open": "Open the full timeline"
@@ -84,5 +84,59 @@
     "duplicate_client": "A client with this phone or email already exists.",
     "forbidden": "You do not have permission for this action.",
     "not_found": "This record is no longer available."
+  },
+  "week": {
+    "noAccess": "Your access does not include this client's activity.",
+    "emptyTitle": "Nothing logged yet",
+    "emptyBody": "Check-ins, sessions, payments and messages will show here as they happen."
+  },
+  "plan": {
+    "programHeading": "Training program",
+    "nutritionHeading": "Nutrition plan",
+    "noProgram": "No program assigned yet.",
+    "noNutrition": "No nutrition plan assigned yet.",
+    "openProgram": "Open program",
+    "openNutrition": "Open plan",
+    "noAccess": "Your access does not include programs or nutrition plans."
+  },
+  "money": {
+    "payments": "Payments"
+  },
+  "hub": {
+    "assign": {
+      "program": {
+        "button": "Assign program",
+        "title": "Assign a program",
+        "subtitle": "Pick a published program. The client gets their own copy.",
+        "choose": "Published programs",
+        "none": "No published programs found.",
+        "replaceWarning": "This client already has a program. Assigning replaces it.",
+        "successHint": "The client's own copy is ready to open."
+      },
+      "nutrition": {
+        "button": "Assign nutrition plan",
+        "title": "Assign a nutrition plan",
+        "subtitle": "Pick a published plan. The client gets their own copy.",
+        "choose": "Published nutrition plans",
+        "none": "No published nutrition plans found.",
+        "replaceWarning": "This client already has a nutrition plan. Assigning replaces it.",
+        "successHint": "The client's own copy is ready to open."
+      },
+      "search": "Search the library",
+      "loading": "Loading…",
+      "loadMore": "Load more",
+      "startDate": "Start date",
+      "confirm": "Assign {name}",
+      "confirmReplace": "Replace and assign {name}",
+      "success": "Assigned.",
+      "openCopy": "Open the client's copy",
+      "close": "Done",
+      "errors": {
+        "hasCurrent": "This client already has one. Press the button again to replace it.",
+        "notPublished": "This one is not published yet, so it cannot be assigned.",
+        "forbidden": "You do not have permission for this action.",
+        "failed": "Could not finish. Check your connection and try again."
+      }
+    }
   }
 }
