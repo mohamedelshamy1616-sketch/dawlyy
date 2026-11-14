@@ -10,7 +10,31 @@
     "messages": "Messages",
     "packages": "Packages",
     "billing": "Billing",
-    "settings": "Settings"
+    "settings": "Settings",
+    "inbox": "Inbox",
+    "library": "Library",
+    "money": "Money",
+    "team": "Team",
+    "notifications": "Notifications",
+    "tasks": "Tasks",
+    "assessments": "Assessments",
+    "intake": "Intake",
+    "newClient": "New client",
+    "business": "Business settings",
+    "branding": "Branding",
+    "language": "Language and numbers",
+    "legal": "Legal documents",
+    "foods": "Foods",
+    "forms": "Forms",
+    "payments": "Payments",
+    "renewals": "Renewals",
+    "sell": "Sell a package",
+    "newProgram": "New program",
+    "newExercise": "New exercise",
+    "importExercises": "Import exercises",
+    "newFood": "New food",
+    "newPackage": "New package",
+    "newNutrition": "New nutrition plan"
   },
   "client": {
     "today": "Today",
@@ -21,5 +45,28 @@
     "checkins": "Check-ins",
     "messages": "Messages",
     "profile": "Profile"
+  },
+  "profile": "Your profile",
+  "archived": "Archived",
+  "archivedFor": "Archived {name}",
+  "libraryTools": "Create and import",
+  "librarySubtitle": "Your coaching resources, with archives close by.",
+  "moneySubtitle": "Payments and subscriptions that need a follow-up.",
+  "renewalsEmpty": "No subscriptions end in the next 14 days.",
+  "renewalsAccess": "Renewal lists need dashboard access.",
+  "moneyHints": {
+    "payments": "Review pending payments and payment history.",
+    "renewals": "Subscriptions ending in the next 14 days.",
+    "sell": "Start a subscription for a client."
+  },
+  "command": {
+    "open": "Search · Ctrl / ⌘ K",
+    "title": "Go to a client or tool",
+    "search": "Search clients and actions",
+    "placeholder": "Client name, code or action…",
+    "searching": "Searching clients…",
+    "error": "Client search failed. Close and reopen to try again.",
+    "hint": "Use ↑ ↓ to choose, Enter to open, Esc to close.",
+    "empty": "No matching clients or actions."
   }
 }
