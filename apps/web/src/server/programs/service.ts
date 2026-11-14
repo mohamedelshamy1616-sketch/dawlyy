@@ -90,9 +90,9 @@ export async function createProgram(tx: Tx, auth: AuthContext, body: z.infer<typ
 /** Task 4: head edits never accept generated ids, tenant stamps or version pointers. */
 export async function patchProgram(tx: Tx, auth: AuthContext, id: string, body: z.infer<typeof patchProgramSchema>) {
   requireProgramPermission(auth, 'edit');
-  await lockProgram(tx, auth, id, 'edit');
+  const head = await lockProgram(tx, auth, id, 'edit');
   await tx.update(programs).set({ ...(body.name === undefined ? {} : { name: body.name }), ...(body.tags === undefined ? {} : { tags: body.tags }),
-    ...(body.archived === undefined ? {} : { archivedAt: body.archived ? new Date() : null }) }).where(eq(programs.id, id));
+    ...(body.archived === undefined ? {} : { archivedAt: body.archived ? head.archivedAt ?? new Date() : null }) }).where(eq(programs.id, id));
   return getProgram(tx, auth, id, 'edit');
 }
 

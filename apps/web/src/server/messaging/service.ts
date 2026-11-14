@@ -1,4 +1,6 @@
 import 'server-only';
+import { raiseRedFlags } from '../red-flags';
+import { requireClientModule } from '../client-modules';
 import { and, desc, eq, inArray, isNull, ne, sql } from 'drizzle-orm';
 import { isAllowed } from '@dawlyy/core/authz';
 import { clientColumns } from '@dawlyy/db';
@@ -69,6 +71,7 @@ export async function getConversationHeader(tx: Tx, auth: AuthContext, id: strin
 
 /** Task 9: open the 1:1 conversation with a client, or return the existing one. Clients can only open their own. */
 export async function openConversation(tx: Tx, auth: AuthContext, requestedClientId: string | undefined) {
+  await requireClientModule(tx, auth, 'messages');
   requirePermission(auth, 'messages', 'create');
   let clientId = requestedClientId;
   if (auth.role === 'client') {
@@ -134,6 +137,7 @@ async function attachmentsFor(tx: Tx, auth: AuthContext, clientId: string | null
  * Emits the `message.sent` event (doc section 9.2) once. Notifications are queued by `notifyMessage` after this commits.
  */
 export async function sendMessage(tx: Tx, auth: AuthContext, conversationId: string, input: SendMessageInput) {
+  await requireClientModule(tx, auth, 'messages');
   requirePermission(auth, 'messages', 'create');
   const conversation = await requireConversation(tx, auth, conversationId);
   const body = input.body?.trim() || null;
@@ -155,12 +159,14 @@ export async function sendMessage(tx: Tx, auth: AuthContext, conversationId: str
     if (!raced) throw notFound();
     return { conversation, message: raced, created: false };
   }
+  if (auth.role === 'client') await raiseRedFlags(tx, 'message', inserted.id, inserted.body);
   await tx.execute(sql`select app.emit_event('message.sent', 'messages', ${inserted.id})`);
   return { conversation, message: inserted, created: true };
 }
 
 /** Task 9: edit the sender's own message within 15 minutes; the database keeps the old text in `message_revisions`. */
 export async function editMessage(tx: Tx, auth: AuthContext, conversationId: string, messageId: string, bodyInput: string, now = new Date()) {
+  await requireClientModule(tx, auth, 'messages');
   requirePermission(auth, 'messages', 'create');
   await requireConversation(tx, auth, conversationId);
   const [current] = await tx.select(messageFields).from(messages)
@@ -174,6 +180,7 @@ export async function editMessage(tx: Tx, auth: AuthContext, conversationId: str
   if (body === current.body) return { ...current, mine: true };
   const [updated] = await tx.update(messages).set({ body }).where(and(eq(messages.tenantId, auth.tenantId), eq(messages.id, messageId))).returning(messageFields);
   if (!updated) throw notFound();
+  if (auth.role === 'client') await raiseRedFlags(tx, 'message', updated.id, updated.body);
   return { ...updated, mine: true };
 }
 

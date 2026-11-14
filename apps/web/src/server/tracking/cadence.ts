@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, inArray, lte, or, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { calendarEvents, clients, metricEntries, subscriptions } from '@dawlyy/db/schema';
 import { generateSchedule } from '@dawlyy/core/schedule';
@@ -34,7 +34,7 @@ export async function putCadence(tx: Tx, auth: AuthContext, clientId: string, in
       // Preserve completed/skipped occurrences rather than creating a second reminder after a settings save.
       const [done] = await tx.select({ id: calendarEvents.id }).from(calendarEvents).where(and(scope, eq(calendarEvents.localDate, event.localDate), inArray(calendarEvents.state, ['completed', 'skipped']), sql`${calendarEvents.payload}->>'metric' = ${metric.metric} and coalesce(${calendarEvents.payload}->>'metricKey','') = ${metric.metricKey ?? ''}`)).limit(1);
       if (done) continue;
-      const [logged] = await tx.select({ id: clientColumns.metricEntries.id }).from(metricEntries).where(and(eq(metricEntries.tenantId, auth.tenantId), eq(metricEntries.clientId, clientId), eq(metricEntries.localDate, event.localDate), eq(metricEntries.metric, metric.metric), sql`coalesce(${metricEntries.metricKey}, '') = ${metric.metricKey ?? ''}`)).limit(1);
+      const [logged] = await tx.select({ id: clientColumns.metricEntries.id }).from(metricEntries).where(and(eq(metricEntries.tenantId, auth.tenantId), eq(metricEntries.clientId, clientId), eq(metricEntries.localDate, event.localDate), isNull(metricEntries.voidedAt), eq(metricEntries.metric, metric.metric), sql`coalesce(${metricEntries.metricKey}, '') = ${metric.metricKey ?? ''}`)).limit(1);
       if (logged) continue;
       await tx.insert(calendarEvents).values({ tenantId: auth.tenantId, clientId, subscriptionId: subscription?.id, source: 'manual', type: metric.metric === 'weight' ? 'weigh_in' : 'custom', title: { ar: metric.metricKey ?? ar.metrics[metric.metric], en: metric.metricKey ?? en.metrics[metric.metric] }, dueAt: new Date(event.dueAt), localDate: event.localDate, timezone: event.timezone, windowDays: 0, payload: { kind: 'tracking_entry_v1', metric: metric.metric, metricKey: metric.metricKey ?? null } });
     }

@@ -38,8 +38,8 @@ export async function createNutrition(tx: Tx, auth: AuthContext, body: z.infer<t
 }
 /** Task 6: metadata edits accept neither version pointers nor stamps. */
 export async function patchNutrition(tx: Tx, auth: AuthContext, id: string, body: z.infer<typeof patchPlanSchema>) {
-  nutritionPermission(auth, 'edit'); await lock(tx, id); await nutritionHead(tx, auth, id, 'edit');
-  await tx.update(nutritionPlans).set({ ...(body.name === undefined ? {} : { name: body.name }), ...(body.tags === undefined ? {} : { tags: body.tags }), ...(body.archived === undefined ? {} : { archivedAt: body.archived ? new Date() : null }) }).where(eq(nutritionPlans.id, id));
+  nutritionPermission(auth, 'edit'); await lock(tx, id); const head = await nutritionHead(tx, auth, id, 'edit');
+  await tx.update(nutritionPlans).set({ ...(body.name === undefined ? {} : { name: body.name }), ...(body.tags === undefined ? {} : { tags: body.tags }), ...(body.archived === undefined ? {} : { archivedAt: body.archived ? head.archivedAt ?? new Date() : null }) }).where(eq(nutritionPlans.id, id));
   return getNutrition(tx, auth, id, 'edit');
 }
 /** Task 6: published edits append N+1; same-version edits require fresh preconditions. */

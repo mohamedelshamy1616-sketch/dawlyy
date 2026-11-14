@@ -1,6 +1,6 @@
 import { z } from '@hono/zod-openapi';
 import { entitlementId } from '@dawlyy/core/entitlements';
-import { Entitlement, LocalizedText, PackageEntitlements, ScheduleRules } from '@dawlyy/core/types';
+import { ClientModules, Entitlement, LocalizedText, PackageEntitlements, ScheduleRules } from '@dawlyy/core/types';
 
 /** Task 3: validate core entitlement rows and identities missing from core's structural schema. */
 export const packageEntitlementsSchema = PackageEntitlements.superRefine((rows, ctx) => {
@@ -37,7 +37,7 @@ export const createPackageSchema = packageFields.extend({
 export const updatePackageSchema = packageFields.partial().refine(value => Object.keys(value).length > 0);
 
 /** Task 3: PUT replaces explicit override fields; key and custom identity come from the URL. */
-export const overrideBodySchema = Entitlement.omit({ key: true, customKey: true }).strict();
+export const overrideBodySchema = Entitlement.omit({ key: true, customKey: true }).extend({ modules: ClientModules.partial().optional() }).strict();
 
 /** Task 3: accepted package list query before the shared pagination parser. */
-export const packageListSchema = z.object({ archived: z.enum(['0', '1']).optional(), limit: z.string().optional(), cursor: z.string().optional() });
+export const packageListSchema = z.object({ archived: z.enum(['0', '1', 'true', 'false']).optional(), limit: z.string().optional(), cursor: z.string().optional() });

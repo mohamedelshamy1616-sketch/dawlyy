@@ -1,3 +1,4 @@
+import { setLibraryArchived } from '../server/archive';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
@@ -50,4 +51,10 @@ router.openapi(createRoute({ method: 'post', path: '/{id}/archive', tags: ['Pack
 router.openapi(createRoute({ method: 'post', path: '/{id}/duplicate', tags: ['Packages'], request: { params }, responses: { 201: jsonResponse, ...errors } }), async c => {
   const auth = c.get('auth');
   return c.json(await withAuthTx(auth, tx => duplicatePackage(tx, auth, c.req.valid('param').id)), 201);
+});
+
+// R0c: 0008 owns attribution and audit; archive and restore return the head row.
+router.openapi(createRoute({ method: 'post', path: '/{id}/unarchive', request: { params: params }, responses: { 200: jsonResponse, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'packages', c.req.valid('param').id, false)), 200);
 });

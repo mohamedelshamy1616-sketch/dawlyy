@@ -1,3 +1,4 @@
+import { requireClientModule } from '../client-modules';
 import { clientColumns } from '@dawlyy/db';
 import { payments, subscriptions, subscriptionEvents, media } from '@dawlyy/db/schema';
 import { transition } from '@dawlyy/core/state';
@@ -32,6 +33,7 @@ export async function getPayment(tx: Tx, auth: AuthContext, id: string) {
 
 /** T3b: record a pending manual payment; receipt allocation is exclusively the verification trigger. */
 export async function createPayment(tx: Tx, auth: AuthContext, subscriptionId: string, input: Input) {
+  await requireClientModule(tx, auth, 'payments');
   requireBillingPermission(auth, 'create');
   const [sub] = await tx.select({ id: subscriptions.id, clientId: subscriptions.clientId, currency: subscriptions.currency })
     .from(subscriptions).where(and(eq(subscriptions.tenantId, auth.tenantId), eq(subscriptions.id, subscriptionId))).limit(1);

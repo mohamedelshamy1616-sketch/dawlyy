@@ -19,11 +19,11 @@ async function alreadyRecorded(tx: Tx, tenantId: string, event: typeof calendarE
   const metric = event.type === 'weigh_in' ? 'weight' : event.payload?.kind === 'tracking_entry_v1' ? metricKinds.find(kind => kind === event.payload?.metric) : undefined;
   if (metric) {
     const key = typeof event.payload?.metricKey === 'string' ? event.payload.metricKey : null;
-    const [entry] = await tx.select({ id: metricEntries.id }).from(metricEntries).where(and(eq(metricEntries.tenantId, tenantId), eq(metricEntries.clientId, event.clientId), eq(metricEntries.localDate, event.localDate), eq(metricEntries.metric, metric), key ? eq(metricEntries.metricKey, key) : isNull(metricEntries.metricKey))).limit(1);
+    const [entry] = await tx.select({ id: metricEntries.id }).from(metricEntries).where(and(eq(metricEntries.tenantId, tenantId), eq(metricEntries.clientId, event.clientId), isNull(metricEntries.voidedAt), eq(metricEntries.localDate, event.localDate), eq(metricEntries.metric, metric), key ? eq(metricEntries.metricKey, key) : isNull(metricEntries.metricKey))).limit(1);
     return !!entry;
   }
   if (event.type === 'measurements') {
-    const [entry] = await tx.select({ id: measurementSets.id }).from(measurementSets).where(and(eq(measurementSets.tenantId, tenantId), eq(measurementSets.clientId, event.clientId), eq(measurementSets.localDate, event.localDate))).limit(1);
+    const [entry] = await tx.select({ id: measurementSets.id }).from(measurementSets).where(and(eq(measurementSets.tenantId, tenantId), eq(measurementSets.clientId, event.clientId), isNull(measurementSets.voidedAt), eq(measurementSets.localDate, event.localDate))).limit(1);
     return !!entry;
   }
   if (event.type === 'progress_photos') {

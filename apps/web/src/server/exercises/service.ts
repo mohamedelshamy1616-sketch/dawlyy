@@ -21,7 +21,7 @@ export type ExerciseListItem = {
 /** Task 4: raw, validated list parameters shared with the Server Component. */
 export type ExerciseQuery = {
   q?: string; category?: string; muscle?: string; equipment?: string; pattern?: string; difficulty?: string;
-  source?: 'system' | 'coach'; includeHidden?: boolean; limit?: string; cursor?: string;
+  source?: 'system' | 'coach'; archived?: 'true' | 'false'; includeHidden?: boolean; limit?: string; cursor?: string;
 };
 
 const columns = {
@@ -32,7 +32,7 @@ const columns = {
   cues: exercises.cues, commonMistakes: exercises.commonMistakes, contraindications: exercises.contraindications,
   progressions: exercises.progressions, regressions: exercises.regressions, alternatives: exercises.alternatives,
   tags: exercises.tags, videoUrl: exercises.videoUrl, thumbnailMediaId: exercises.thumbnailMediaId,
-  source: exercises.source, hidden: exercises.hidden,
+  source: exercises.source, hidden: exercises.hidden, archivedAt: exercises.archivedAt, archivedBy: exercises.archivedBy,
 };
 const scope = (auth: AuthContext) => or(isNull(exercises.tenantId), eq(exercises.tenantId, auth.tenantId));
 const hiddenScope = (auth: AuthContext, id?: string) => and(eq(tenantHiddenItems.tenantId, auth.tenantId), eq(tenantHiddenItems.kind, 'exercise'), id ? eq(tenantHiddenItems.itemId, id) : undefined);
@@ -42,7 +42,7 @@ async function library(tx: Tx, auth: AuthContext) {
     id: exercises.id, tenantId: exercises.tenantId, name: exercises.name, aliases: exercises.aliases,
     category: exercises.category, primaryMuscles: exercises.primaryMuscles, secondaryMuscles: exercises.secondaryMuscles,
     movementPattern: exercises.movementPattern, equipment: exercises.equipment, difficulty: exercises.difficulty,
-    thumbnailMediaId: exercises.thumbnailMediaId, source: exercises.source, hidden: exercises.hidden,
+    thumbnailMediaId: exercises.thumbnailMediaId, source: exercises.source, hidden: exercises.hidden, archivedAt: exercises.archivedAt, archivedBy: exercises.archivedBy,
   }).from(exercises).where(scope(auth));
   const hidden = new Set((await tx.select({ id: tenantHiddenItems.itemId }).from(tenantHiddenItems).where(hiddenScope(auth))).map((row) => row.id));
   return rows.map((row) => ({ ...row, hidden: row.hidden || hidden.has(row.id), editable: row.tenantId === auth.tenantId && row.source === 'coach' }));
@@ -67,7 +67,8 @@ export async function listExercises(tx: Tx, auth: AuthContext, query: ExerciseQu
   if (cursor && (typeof cursor.k !== 'string' || !/^[0-9a-f-]{36}$/i.test(cursor.id))) throw validationError(undefined, 'Invalid exercise cursor');
   // No normalized-name column exists in the frozen schema. Use core searchKey for both sorting and cursors.
   const rows = (await library(tx, auth)).map((row) => ({ ...row, nameKey: searchKey(row.name.en?.trim() || row.name.ar || '') }))
-    .filter((row) => (query.includeHidden || !row.hidden)
+    .filter((row) => (query.archived === 'true' ? row.archivedAt !== null : row.archivedAt === null)
+      && (query.includeHidden || !row.hidden)
       && (!query.q || !searchKey(query.q) || matchScore([row.name.ar, row.name.en, ...row.aliases, ...row.primaryMuscles, ...row.secondaryMuscles], query.q) > 0)
       && (!query.category || row.category === query.category) && (!query.muscle || [...row.primaryMuscles, ...row.secondaryMuscles].some((value) => searchKey(value) === searchKey(query.muscle ?? '')))
       && (!query.equipment || row.equipment.some((value) => searchKey(value) === searchKey(query.equipment ?? '')))

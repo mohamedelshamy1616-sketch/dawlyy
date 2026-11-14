@@ -57,7 +57,7 @@ export async function patchForm(tx: Tx, auth: AuthContext, id: string, input: z.
   const head = await lock(tx, auth, id, 'edit');
   if (input.is_default && (head.kind !== 'template' || input.archived || head.archivedAt && input.archived !== false)) throw unprocessable('template_required');
   if (input.is_default) await tx.update(forms).set({ isDefault: 0 }).where(and(eq(forms.tenantId, auth.tenantId), eq(forms.formKind, head.formKind), ne(forms.id, id), eq(forms.isDefault, 1)));
-  await tx.update(forms).set({ ...(input.name === undefined ? {} : { name: input.name }), ...(input.archived === undefined ? {} : { archivedAt: input.archived ? new Date() : null }),
+  await tx.update(forms).set({ ...(input.name === undefined ? {} : { name: input.name }), ...(input.archived === undefined ? {} : { archivedAt: input.archived ? head.archivedAt ?? new Date() : null }),
     ...(input.archived ? { isDefault: 0 } : input.is_default === undefined ? {} : { isDefault: input.is_default ? 1 : 0 }) }).where(and(eq(forms.tenantId, auth.tenantId), eq(forms.id, id)));
   return getForm(tx, auth, id, 'edit');
 }

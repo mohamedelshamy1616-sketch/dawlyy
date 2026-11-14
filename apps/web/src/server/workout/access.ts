@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, isNull, inArray } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { subscriptions, tenants, workoutSessions } from '@dawlyy/db/schema';
 import { ApiError } from '../../api/errors';
@@ -27,7 +27,7 @@ export async function assertWorkoutSyncAccess(tx: Tx, auth: AuthContext, body: {
   if (!uuids.length) throw denied();
   const sessions = await tx.select({ clientUuid: clientColumns.workoutSessions.clientUuid, startedAt: clientColumns.workoutSessions.startedAt,
     createdAt: clientColumns.workoutSessions.createdAt })
-    .from(workoutSessions).where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), inArray(workoutSessions.clientUuid, uuids)));
+    .from(workoutSessions).where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), inArray(workoutSessions.clientUuid, uuids), isNull(workoutSessions.voidedAt)));
   const [tenant] = await tx.select({ timezone: clientColumns.tenants.timezone }).from(tenants).where(eq(tenants.id, auth.tenantId)).limit(1);
   if (!tenant) throw denied();
   const windows = await tx.select({ state: clientColumns.subscriptions.state, startsOn: clientColumns.subscriptions.startsOn,

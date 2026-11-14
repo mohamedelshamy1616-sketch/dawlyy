@@ -1,3 +1,4 @@
+import { setLibraryArchived } from '../server/archive';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware, requireStaffRole } from './middleware/auth';
@@ -69,4 +70,14 @@ router.openapi(createRoute({ method: 'get', path: '/{id}/versions/{a}/diff/{b}',
 });
 router.openapi(createRoute({ method: 'put', path: '/{id}/versions/{versionNo}', request: { params: versionParams, body: body(z.object({ document: draftDocumentSchema }).strict()) }, responses: errors }), async c => {
   const auth = c.get('auth'); return transaction(auth, tx => refuseNutritionVersionWrite(tx, auth, c.req.valid('param').id, c.req.valid('param').versionNo));
+});
+
+// R0c: 0008 owns attribution and audit; archive and restore return the head row.
+router.openapi(createRoute({ method: 'post', path: '/{id}/archive', request: { params: params }, responses: { 200: json, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'nutrition', c.req.valid('param').id, true)), 200);
+});
+router.openapi(createRoute({ method: 'post', path: '/{id}/unarchive', request: { params: params }, responses: { 200: json, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'nutrition', c.req.valid('param').id, false)), 200);
 });

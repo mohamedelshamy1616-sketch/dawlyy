@@ -53,7 +53,7 @@ export async function publishedProgram(tx: Tx, auth: AuthContext) {
 /** Task 5: completed day ids drive undated plans without shifting calendar-anchored plans. */
 export async function completedDays(tx: Tx, auth: AuthContext, programId: string): Promise<string[]> {
   const rows = await tx.select({ dayId: clientColumns.workoutSessions.dayId }).from(workoutSessions)
-    .where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, requireClient(auth)), eq(workoutSessions.programId, programId), inArray(workoutSessions.state, ['completed', 'partially_completed'])));
+    .where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, requireClient(auth)), eq(workoutSessions.programId, programId), isNull(workoutSessions.voidedAt), inArray(workoutSessions.state, ['completed', 'partially_completed'])));
   return rows.flatMap(row => row.dayId ? [row.dayId] : []);
 }
 
@@ -76,7 +76,7 @@ export async function getToday(tx: Tx, auth: AuthContext, requestedDate?: string
   const selected = program ? resolveProgramDay(program.document, program.document.startDate, date, await completedDays(tx, auth, program.programId)) : null;
   
   const [session] = await tx.select({ id: clientColumns.workoutSessions.id, state: clientColumns.workoutSessions.state, plannedWorkout: clientColumns.workoutSessions.plannedWorkout }).from(workoutSessions)
-    .where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), eq(workoutSessions.localDate, date)))
+    .where(and(eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), eq(workoutSessions.localDate, date), isNull(workoutSessions.voidedAt)))
     .orderBy(desc(workoutSessions.createdAt), desc(workoutSessions.id)).limit(1);
   
   const [nutrition] = await tx.select({ name: clientColumns.nutritionPlans.name, document: clientColumns.nutritionPlanVersions.document }).from(nutritionPlans)

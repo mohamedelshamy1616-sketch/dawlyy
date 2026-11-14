@@ -1,3 +1,5 @@
+import { clientModuleWriteGate } from '../server/client-module-gate';
+import { mountVoidRoute } from './history-controls';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { createMiddleware } from 'hono/factory';
 import type { ApiEnv } from './env';
@@ -16,8 +18,9 @@ import { finishSession, patchSession, refreshSummaries, startSession, syncWorkou
 /** doc §12.1 / build-plan API: module router mounted by the shared API entry point. */
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!result.success) throw validationError(result.error.issues); } });
 router.use('*', requireAuthMiddleware);
+router.use('*', clientModuleWriteGate('workouts'));
 router.use('*', async (c, next) => {
-  if (['POST', 'PATCH'].includes(c.req.method)) requireClient(c.get('auth'), true);
+  if (['POST', 'PATCH'].includes(c.req.method) && !/\/void\/?$/.test(c.req.path)) requireClient(c.get('auth'), true);
   await next();
 });
 const json = { description: 'Workout data', content: { 'application/json': { schema: z.unknown() } } };
@@ -62,3 +65,5 @@ router.openapi(createRoute({ middleware: [idempotentReplay] as const, method: 'p
   await transaction(auth, tx => finishSession(tx, auth, id, c.req.valid('json'))); await refreshSummaries(auth, [id]);
   return c.json((await transaction(auth, tx => getSession(tx, auth, id))).session.summary, 200);
 });
+
+mountVoidRoute(router, 'workout_sessions');

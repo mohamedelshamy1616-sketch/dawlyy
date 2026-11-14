@@ -36,5 +36,5 @@ export const updateClientSchema = clientFields.omit({ packageId: true }).partial
 export const clientListSchema = z.object({
   q: z.string().trim().max(300).optional(), status: z.enum(clientStatus.enumValues).optional(),
   packageId: z.string().uuid().optional(), tag: z.string().trim().min(1).max(80).optional(),
-  limit: z.string().optional(), cursor: z.string().optional(),
+  archived: z.enum(['true', 'false']).optional(), limit: z.string().optional(), cursor: z.string().optional(),
 });

@@ -42,6 +42,7 @@ export type BusinessUpdate = z.infer<typeof businessUpdateSchema>;
 
 /** Task 11: PUT /settings/preferences body; matches `UserPreferences` in the tenants schema. */
 export const preferencesUpdateSchema = z.object({
+  numerals: z.enum(['latn', 'arab']).optional(),
   locale: z.enum(['ar', 'en']).optional(),
   timezone: timeZone.optional(),
   units: units.optional(),

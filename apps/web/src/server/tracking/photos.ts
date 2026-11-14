@@ -1,3 +1,4 @@
+import { requireClientModule } from '../client-modules';
 import { and, desc, eq, gte, inArray, isNull, lt, lte, or, sql } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { media, progressPhotoSets } from '@dawlyy/db/schema';
@@ -36,6 +37,7 @@ export async function listPhotos(tx: Tx, auth: AuthContext, input: EntryQuery) {
 }
 /** Task 8: enforce active photos consent, same-client image ownership and monotonic photo sync. */
 export async function savePhotos(tx: Tx, auth: AuthContext, input: z.infer<typeof photoInput>) {
+  await requireClientModule(tx, auth, 'progress_photos');
   const clientId = trackingClient(auth, input.clientId, 'create'); await visibleClient(tx, auth, clientId, true); await requirePhotoConsent(tx, auth);
   if (auth.role === 'client') {
     const config = await getCadence(tx, auth, clientId);
@@ -72,6 +74,7 @@ export async function comparePhotos(tx: Tx, auth: AuthContext, clientIdInput: st
 }
 /** Task 8: soft-delete linked progress media without erasing set history or storage objects. */
 export async function deletePhotos(tx: Tx, auth: AuthContext, id: string) {
+  await requireClientModule(tx, auth, 'progress_photos');
   requirePermission(auth, 'tracking', auth.role === 'client' ? 'edit' : 'delete');
   const scope = and(eq(progressPhotoSets.tenantId, auth.tenantId), eq(progressPhotoSets.id, id));
   const [row] = await tx.select(clientColumns.progressPhotoSets).from(progressPhotoSets).where(scope);

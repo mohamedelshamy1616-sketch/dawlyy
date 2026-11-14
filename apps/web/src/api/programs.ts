@@ -1,3 +1,4 @@
+import { setLibraryArchived } from '../server/archive';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { ProgramDocument } from '@dawlyy/core/types';
 import type { ApiEnv } from './env';
@@ -103,4 +104,14 @@ router.openapi(createRoute({ method: 'post', path: '/{id}/duplicate', tags, requ
 router.openapi(createRoute({ method: 'post', path: '/{id}/assign', tags, request: { params, body: body(assignSchema) }, responses: { 201: json, ...errors } }), async c => {
   const auth = c.get('auth');
   return c.json(await transaction(auth, tx => assignProgram(tx, auth, c.req.valid('param').id, c.req.valid('json'))), 201);
+});
+
+// R0c: 0008 owns attribution and audit; archive and restore return the head row.
+router.openapi(createRoute({ method: 'post', path: '/{id}/archive', request: { params: params }, responses: { 200: json, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'programs', c.req.valid('param').id, true)), 200);
+});
+router.openapi(createRoute({ method: 'post', path: '/{id}/unarchive', request: { params: params }, responses: { 200: json, ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'programs', c.req.valid('param').id, false)), 200);
 });

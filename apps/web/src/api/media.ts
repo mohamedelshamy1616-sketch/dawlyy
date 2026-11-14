@@ -1,4 +1,6 @@
+import { requireClientModule } from '../server/client-modules';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
+import { createMiddleware } from 'hono/factory';
 import { randomUUID } from 'node:crypto';
 import { media, clients } from '@dawlyy/db/schema';
 import { clientColumns } from '@dawlyy/db';
@@ -20,7 +22,6 @@ import { errors, jsonResult, idParams } from '../server/subscriptions/contracts'
 export const router = new OpenAPIHono<ApiEnv>({ defaultHook: (result) => { if (!result.success) throw validationError(result.error.issues); } });
 router.onError(billingErrorHandler);
 router.use('*', requireAuthMiddleware);
-router.use('*', idempotentReplay);
 
 function mediaPermission(auth: AuthContext, purpose: string, action: 'view' | 'create') {
   if (purpose === 'payment_proof') {
@@ -34,15 +35,48 @@ const uploadInput = z.object({ clientId: z.uuid(), purpose: z.enum(['payment_pro
   contentType: z.enum(['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'text/plain', 'video/mp4', 'video/webm', 'video/quicktime']),
   sizeBytes: z.number().int().min(1).max(MAX_PROOF_BYTES), filename: z.string().trim().min(1).max(255) }).strict();
 
-router.openapi(createRoute({ method: 'post', path: '/uploads', request: { body: { required: true, content: { 'application/json': { schema: uploadInput } } } }, responses: { 201: jsonResult, ...errors } }), async (c) => {
+function uploadModule(purpose: string) {
+  return purpose === 'progress_photo' ? 'progress_photos' : purpose === 'payment_proof' ? 'payments' : 'checkins';
+}
+// R0c: current switches must be checked before issuing or replaying a signed upload capability.
+const requireUploadModule = createMiddleware<ApiEnv>(async (c, next) => {
+  const auth = c.get('auth');
+  if (auth.role === 'client') {
+    let input: unknown;
+    try { input = await c.req.json(); } catch { throw validationError(); }
+    const parsed = uploadInput.safeParse(input);
+    if (!parsed.success) throw validationError(parsed.error.issues);
+    await withAuthTx(auth, tx => requireClientModule(tx, auth, uploadModule(parsed.data.purpose)));
+  }
+  await next();
+});
+const requireLocalUploadModule = createMiddleware<ApiEnv>(async (c, next) => {
+  const auth = c.get('auth');
+  if (auth.role === 'client') {
+    if (process.env.NODE_ENV === 'production') throw notFound();
+    const storage = getStorage();
+    if (!(storage instanceof LocalFsStorage)) throw notFound();
+    const signed = storage.decode(c.req.param('token') ?? '', 'upload', auth.tenantId);
+    await withAuthTx(auth, async tx => {
+      const [row] = await tx.select({ purpose: clientColumns.media.purpose }).from(media)
+        .where(and(eq(media.tenantId, auth.tenantId), eq(media.path, signed.path), isNull(media.deletedAt))).limit(1);
+      if (!row) throw notFound();
+      await requireClientModule(tx, auth, uploadModule(row.purpose));
+    });
+  }
+  await next();
+});
+
+router.openapi(createRoute({ middleware: [requireUploadModule, idempotentReplay] as const, method: 'post', path: '/uploads', request: { body: { required: true, content: { 'application/json': { schema: uploadInput } } } }, responses: { 201: jsonResult, ...errors } }), async (c) => {
   const auth = c.get('auth');
   const input = c.req.valid('json');
-  mediaPermission(auth, input.purpose, 'create');
   if (auth.role === 'client' && auth.clientId !== input.clientId) throw forbidden();
   const extension = validateMediaUpload(input.purpose, input.contentType, input.sizeBytes);
   const folder = input.purpose === 'payment_proof' ? 'payments' : input.purpose;
   const value = `${auth.tenantId}/clients/${input.clientId}/${folder}/${randomUUID()}.${extension}`;
   const { row, storage } = await withAuthTx(auth, async (tx) => {
+    await requireClientModule(tx, auth, uploadModule(input.purpose));
+    mediaPermission(auth, input.purpose, 'create');
     if (input.purpose === 'progress_photo') await requirePhotoConsent(tx, auth);
     const storage = getStorage();
     const [client] = await tx.select({ id: clientColumns.clients.id }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, input.clientId))).limit(1);
@@ -73,7 +107,7 @@ router.openapi(createRoute({ method: 'get', path: '/{id}/url', request: { params
 // Local development transport. Both signed capabilities and the current caller's RLS visibility are checked.
 const tokenParams = z.object({ token: z.string().min(1).max(4096) });
 const binaryProof = { schema: z.string().openapi({ format: 'binary' }) };
-router.openapi(createRoute({ method: 'put', path: '/local-upload/{token}', request: { params: tokenParams, body: { required: true, content: {
+router.openapi(createRoute({ middleware: [requireLocalUploadModule, idempotentReplay] as const, method: 'put', path: '/local-upload/{token}', request: { params: tokenParams, body: { required: true, content: {
   'image/jpeg': binaryProof, 'image/png': binaryProof, 'image/webp': binaryProof, 'application/pdf': binaryProof,
   'text/plain': binaryProof, 'video/mp4': binaryProof, 'video/webm': binaryProof, 'video/quicktime': binaryProof,
 } } }, responses: { 200: jsonResult, ...errors } }), async (c) => {
@@ -87,6 +121,7 @@ router.openapi(createRoute({ method: 'put', path: '/local-upload/{token}', reque
     const [found] = await tx.select({ id: clientColumns.media.id, mimeType: clientColumns.media.mimeType, purpose: clientColumns.media.purpose }).from(media)
       .where(and(eq(media.tenantId, auth.tenantId), eq(media.path, signed.path), isNull(media.deletedAt))).limit(1);
     if (!found) throw notFound();
+    await requireClientModule(tx, auth, uploadModule(found.purpose));
     mediaPermission(auth, found.purpose, 'create');
     if (found.purpose === 'progress_photo') await requirePhotoConsent(tx, auth);
     return found;
@@ -107,6 +142,7 @@ router.openapi(createRoute({ method: 'put', path: '/local-upload/{token}', reque
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
   await storage.receive(token, auth.tenantId, contentType, bytes);
   await withAuthTx(auth, async (tx) => {
+    await requireClientModule(tx, auth, uploadModule(row.purpose));
     const [updated] = await tx.update(media).set({ bytes: length, uploadedAt: new Date() })
       .where(and(eq(media.tenantId, auth.tenantId), eq(media.id, row.id), isNull(media.deletedAt))).returning({ id: media.id });
     if (!updated) throw notFound();

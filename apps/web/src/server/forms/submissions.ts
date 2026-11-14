@@ -1,3 +1,5 @@
+import { requireClientModule } from '../client-modules';
+import { raiseRedFlags } from '../red-flags';
 import 'server-only';
 import { createHash } from 'node:crypto';
 import { and, eq, inArray, isNull, lt, or, sql } from 'drizzle-orm';
@@ -31,6 +33,14 @@ async function documentFor(tx: Tx, auth: AuthContext, id: string) {
   if (!row) throw notFound(); return row.document;
 }
 
+async function flagAnswers(tx: Tx, auth: AuthContext, row: { id: string; formKind: string; answers: Answers }, document: FormDocument) {
+  if (auth.role !== 'client' || row.formKind !== 'checkin') return;
+  const text = document.sections.flatMap(section => section.questions)
+    .filter(question => question.type === 'text' || question.type === 'long_text')
+    .map(question => row.answers[question.id]).filter((value): value is string => typeof value === 'string').join('\n');
+  await raiseRedFlags(tx, 'checkin', row.id, text);
+}
+
 /** Task 7 / §12.1.3: attachments resolve through the caller's RLS scope and must belong to this client. */
 export async function validateFormMedia(tx: Tx, auth: AuthContext, clientId: string, document: FormDocument, answers: Answers) {
   const visible = evaluateVisibility(document, answers).visible;
@@ -55,11 +65,13 @@ async function updateAnswers(tx: Tx, auth: AuthContext, row: NonNullable<Awaited
   // §12.1.12: null-safe strictly-newer timestamp; exactly the client_update columns.
   await tx.update(formSubmissions).set({ answers: input.answers, missingRequired, clientUpdatedAt: new Date(input.clientUpdatedAt) })
     .where(and(eq(formSubmissions.tenantId, auth.tenantId), eq(formSubmissions.clientId, row.clientId), eq(formSubmissions.id, row.id), or(isNull(formSubmissions.clientUpdatedAt), lt(formSubmissions.clientUpdatedAt, new Date(input.clientUpdatedAt)))));
-  const saved = await ownSubmission(tx, auth, row.id); if (!saved) throw notFound(); return publicSubmission(saved);
+  const saved = await ownSubmission(tx, auth, row.id); if (!saved) throw notFound();
+  await flagAnswers(tx, auth, saved, document); return publicSubmission(saved);
 }
 
 /** Task 7 / §12.1.12: own-client sync uses SELECT + guarded UPDATE, never conflict-update. */
 export async function saveAnswers(tx: Tx, auth: AuthContext, handle: string, input: z.infer<typeof answersSchema>) {
+  await requireClientModule(tx, auth, 'checkins');
   const clientId = ownClient(auth);
   await lockKey(tx, `forms-answer:${auth.tenantId}:${clientId}:${input.clientUuid}`);
   const direct = await ownSubmission(tx, auth, handle);
@@ -92,7 +104,8 @@ export async function saveAnswers(tx: Tx, auth: AuthContext, handle: string, inp
       const [row] = await savepoint.insert(formSubmissions).values({ tenantId: auth.tenantId, clientId, formId: bundle.head.id, formKind: bundle.head.formKind, formVersionId: versionId,
         calendarEventId: eventId, subscriptionId: bundle.event?.subscriptionId ?? null, state: 'due', answers: input.answers,
         missingRequired: evaluateVisibility(bundle.version.document, input.answers).missingRequired, clientUuid: input.clientUuid, clientUpdatedAt: new Date(input.clientUpdatedAt) }).returning(clientColumns.formSubmissions);
-      if (!row) throw notFound(); return publicSubmission(row);
+      if (!row) throw notFound();
+      await flagAnswers(savepoint, auth, row, bundle.version.document); return publicSubmission(row);
     });
   } catch (error) {
     if (postgresCode(error) !== '23505') throw error;
@@ -117,6 +130,7 @@ export async function recordFormMetrics(tx: Tx, auth: AuthContext, submission: {
 
 /** Task 7 / §12.1.10: due advancement, validation, completion, metrics and semantic event are one transaction. */
 export async function submitAnswers(tx: Tx, auth: AuthContext, id: string) {
+  await requireClientModule(tx, auth, 'checkins');
   const original = await ownSubmission(tx, auth, id, true); if (!original) throw notFound(); editable(original.state);
   await tx.execute(sql`select app.advance_due(${id}::uuid)`);
   const row = await ownSubmission(tx, auth, id, true); if (!row) throw notFound();
@@ -134,6 +148,7 @@ export async function submitAnswers(tx: Tx, auth: AuthContext, id: string) {
   const edge = transition('checkin', row.state, 'submit'); if (!edge.ok) throw unprocessable('transition_refused');
   const [submitted] = await tx.update(formSubmissions).set({ state: edge.to as CheckinState, missingRequired: [] }).where(and(eq(formSubmissions.tenantId, auth.tenantId), eq(formSubmissions.clientId, row.clientId), eq(formSubmissions.id, id))).returning(clientColumns.formSubmissions);
   if (!submitted) throw notFound();
+  await flagAnswers(tx, auth, submitted, document);
   // Frozen §6.3 client_transitions forbids submitted→waiting_for_coach. Keep submitted and include it
   // in the review queue; never switch identity or use service credentials to bypass this refusal.
   if (event) await tx.update(calendarEvents).set({ state: 'completed' }).where(and(eq(calendarEvents.tenantId, auth.tenantId), eq(calendarEvents.clientId, row.clientId), eq(calendarEvents.id, event.id)));

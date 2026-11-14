@@ -4,6 +4,9 @@ import { requireAuthMiddleware } from './middleware/auth';
 import { requireActiveAccess } from './middleware/access';
 import { validationError } from './errors';
 import { withAuthTx } from '../server/db';
+import { getClientModules } from '../server/client-modules';
+import { getPreferences } from '../server/settings/client-read';
+import { ClientModules } from '@dawlyy/core/types';
 import { getPortalProgram, getToday, requireClient } from '../server/workout/portal';
 
 // Task 5: client portal; preserve the foundation's authenticated caller endpoint.
@@ -50,8 +53,21 @@ router.openapi(meRoute, (c) => {
 // Keep the foundation identity endpoint above unchanged. Hono's '/' middleware does not cover these paths.
 router.use('/today', requireAuthMiddleware);
 router.use('/program', requireAuthMiddleware);
+router.use('/app', requireAuthMiddleware);
 const portalResponse = { description: 'Own client portal data', content: { 'application/json': { schema: z.unknown() } } };
 const portalError = { description: 'Standard API error', content: { 'application/json': { schema: z.object({ error: z.object({ code: z.string(), message: z.string() }) }) } } };
+// R0c/R2a: the caller's own app settings (numeral choice, resolved client modules) beside the unchanged /me.
+const appResponse = { description: 'Own app settings', content: { 'application/json': { schema: z.object({
+  preferences: z.unknown(), numerals: z.enum(['latn', 'arab']), clientModules: ClientModules.optional() }) } } };
+router.openapi(createRoute({ method: 'get', path: '/app', responses: { 200: appResponse, 401: portalError } }), async c => {
+  const auth = c.get('auth');
+  const extra = await withAuthTx(auth, async tx => ({
+    preferences: await getPreferences(tx, auth),
+    ...(auth.role === 'client' && auth.clientId ? { clientModules: await getClientModules(tx, auth, auth.clientId) } : {}),
+  }));
+  c.header('Cache-Control', 'private, no-store');
+  return c.json({ ...extra, numerals: extra.preferences.numerals ?? 'latn' }, 200);
+});
 router.openapi(createRoute({ method: 'get', path: '/today', request: { query: z.object({ date: z.iso.date().optional() }) },
   responses: { 200: portalResponse, 400: portalError, 401: portalError, 403: portalError, 404: portalError } }), async c => {
   const auth = c.get('auth'); requireClient(auth);

@@ -38,8 +38,10 @@ export async function getPreferences(tx: Tx, auth: AuthContext): Promise<UserPre
 
 /** Task 11: PUT /settings/preferences. Shallow merge; `channels` merges per channel; null clears quiet hours. */
 export async function updatePreferences(tx: Tx, auth: AuthContext, patch: PreferencesUpdate): Promise<UserPreferences> {
+  await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${`preferences:${auth.tenantId}:${auth.userId}`}, 0))`);
   const current = await getPreferences(tx, auth);
   const next: UserPreferences = { ...current };
+  if (patch.numerals) next.numerals = patch.numerals;
   if (patch.locale) next.locale = patch.locale;
   if (patch.timezone) next.timezone = patch.timezone;
   if (patch.units) next.units = patch.units;

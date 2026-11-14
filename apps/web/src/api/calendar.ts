@@ -29,7 +29,7 @@ router.openapi(createRoute({ method: 'post', path: '/', request: { body: { requi
 router.openapi(createRoute({ method: 'patch', path: '/{id}', request: { params: idParams, body: { required: true, content: { 'application/json': { schema: editInput } } } }, responses: { 200: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => editCalendarEvent(tx, auth, c.req.valid('param').id, c.req.valid('json'))), 200);
 });
-for (const action of ['skip', 'cancel', 'complete'] as const) {
+for (const action of ['skip', 'cancel', 'complete', 'restore'] as const) {
   router.openapi(createRoute({ method: 'post', path: `/{id}/${action}`, request: { params: idParams }, responses: { 200: resultResponse, ...errors } }), async c => {
     const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => actOnCalendarEvent(tx, auth, c.req.valid('param').id, action)), 200);
   });

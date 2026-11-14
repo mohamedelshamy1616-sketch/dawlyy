@@ -1,3 +1,4 @@
+import { clientModuleWriteGate } from '../server/client-module-gate';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { requireAuthMiddleware } from './middleware/auth';
@@ -19,6 +20,7 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => {
 } });
 
 router.use('*', requireAuthMiddleware);
+router.use('*', clientModuleWriteGate('messages'));
 router.use('*', idempotentReplay);
 
 const json = { description: 'Messaging data', content: { 'application/json': { schema: z.unknown() } } };

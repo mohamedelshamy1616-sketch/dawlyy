@@ -34,7 +34,7 @@ export function queueParts(tenantId: string): Record<Part, SQL> {
       from public.clients c
       where c.tenant_id = ${T} and c.status = 'active'
         and not exists (select 1 from public.metric_entries m
-          where m.tenant_id = c.tenant_id and m.client_id = c.id and m.metric = 'weight' and m.recorded_at >= now() - interval '14 days')`,
+          where m.tenant_id = c.tenant_id and m.client_id = c.id and m.voided_at is null and m.metric = 'weight' and m.recorded_at >= now() - interval '14 days')`,
     expiring_subscriptions: sql`select s.client_id, s.id::text as ref_id, (s.ends_on::timestamp at time zone 'UTC') as sort_at, s.ends_on::text as label
       from public.subscriptions s
       where s.tenant_id = ${T} and s.state in ('active', 'grace')
@@ -52,7 +52,7 @@ export function queueParts(tenantId: string): Record<Part, SQL> {
           count(*) filter (where ws.local_date between t.d - 6 and t.d)::int as ct,
           count(*) filter (where ws.local_date between t.d - 6 and t.d and ws.state = 'completed')::int as cc
         from public.workout_sessions ws
-        where ws.tenant_id = c.tenant_id and ws.client_id = c.id
+        where ws.tenant_id = c.tenant_id and ws.client_id = c.id and ws.voided_at is null
           and ws.state in ('completed', 'partially_completed', 'abandoned', 'skipped')
           and ws.local_date between t.d - 13 and t.d
       ) a

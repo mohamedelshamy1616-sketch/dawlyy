@@ -1,3 +1,4 @@
+import { requireClientModule } from '../client-modules';
 import { clientColumns } from '@dawlyy/db';
 import { clients, packages, subscriptions, subscriptionEvents, tenants, calendarEvents, clientEntitlementOverrides } from '@dawlyy/db/schema';
 import { accessStatus, endsOnFor, graceEndsOnFor, SubscriptionError } from '@dawlyy/core/subscription';
@@ -59,6 +60,7 @@ export async function getSubscription(tx: Tx, auth: AuthContext, id: string) {
 
 /** T3b / G1: sale, optional pending payment, separate verification UPDATE and activation are atomic. */
 export async function sellPackage(tx: Tx, auth: AuthContext, input: z.infer<typeof saleInput>) {
+  await requireClientModule(tx, auth, 'payments');
   requireBillingPermission(auth, 'create');
   if (input.payment?.markVerified) { requireBillingPermission(auth, 'verify'); requireBillingPermission(auth, 'edit'); }
   const [client] = await tx.select({ id: clients.id }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, input.clientId))).limit(1);

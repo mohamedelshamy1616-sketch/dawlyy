@@ -1,3 +1,4 @@
+import { setLibraryArchived } from '../server/archive';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { exerciseImportTemplate } from '@dawlyy/core/csv';
 import { ExerciseSeed } from '@dawlyy/core/types';
@@ -19,7 +20,7 @@ const item = z.object({ id: z.uuid(), name: z.object({ ar: z.string().optional()
 const query = z.object({
   q: z.string().max(200).optional(), category: z.string().max(200).optional(), muscle: z.string().max(200).optional(),
   equipment: z.string().max(200).optional(), pattern: z.string().max(200).optional(), difficulty: z.string().max(200).optional(),
-  source: z.enum(['system', 'coach']).optional(), includeHidden: z.enum(['true', 'false']).optional(),
+  archived: z.enum(['true', 'false']).optional(), source: z.enum(['system', 'coach']).optional(), includeHidden: z.enum(['true', 'false']).optional(),
   limit: z.string().optional(), cursor: z.string().max(2048).optional(),
 });
 const categoriesInput = z.object({ categories: z.array(z.string().trim().min(1).max(200)).max(100) }).strict();
@@ -88,3 +89,13 @@ for (const operation of ['hide', 'unhide'] as const) {
   router.openapi(createRoute({ method: 'post', path: `/{id}/${operation}`, request: { params: idParams }, responses: { 200: json(z.object({ id: z.uuid(), hidden: z.boolean() })), ...errors } }), async (c) =>
     c.json(await withAuthTx(c.get('auth'), (tx) => setExerciseHidden(tx, c.get('auth'), c.req.valid('param').id, operation === 'hide')), 200));
 }
+
+// R0c: 0008 owns attribution and audit; archive and restore return the head row.
+router.openapi(createRoute({ method: 'post', path: '/{id}/archive', request: { params: idParams }, responses: { 200: json(z.unknown()), ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'exercises', c.req.valid('param').id, true)), 200);
+});
+router.openapi(createRoute({ method: 'post', path: '/{id}/unarchive', request: { params: idParams }, responses: { 200: json(z.unknown()), ...errors } }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => setLibraryArchived(tx, auth, 'exercises', c.req.valid('param').id, false)), 200);
+});

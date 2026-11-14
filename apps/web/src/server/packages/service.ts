@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, asc, desc, eq, isNull, lt, or, sql, type SQL } from 'drizzle-orm';
+import { and, asc, desc, eq, isNotNull, isNull, lt, or, sql, type SQL } from 'drizzle-orm';
 import { z } from 'zod';
 import { packages } from '@dawlyy/db/schema';
 import type { AuthContext, Tx } from '../db';
@@ -42,7 +42,7 @@ export async function listPackages(tx: Tx, auth: AuthContext, input: z.input<typ
     )));
   }
   const rows = await tx.select({ row: packages, cursorStamp: stamp }).from(packages).where(and(
-    query.archived === '1' ? undefined : isNull(packages.archivedAt), position,
+    query.archived === '1' ? undefined : query.archived === 'true' ? isNotNull(packages.archivedAt) : isNull(packages.archivedAt), position,
   )).orderBy(asc(rank), desc(packages.createdAt), desc(packages.id)).limit(limit + 1);
   const result = page(rows.map(item => ({ ...item.row, cursorStamp: item.cursorStamp })), limit,
     row => `${row.archivedAt === null ? 0 : 1}|${row.cursorStamp}`);
@@ -72,7 +72,8 @@ export async function updatePackage(tx: Tx, auth: AuthContext, id: string, input
 /** Task 3 / spec §30: archive instead of deleting any package or subscription history. */
 export async function archivePackage(tx: Tx, auth: AuthContext, id: string) {
   requirePermission(auth, 'packages', 'edit');
-  const row = await readPackage(tx, id);
+  const [row] = await tx.select().from(packages).where(eq(packages.id, id)).for('update');
+  if (!row) throw notFound();
   if (row.archivedAt !== null) return row;
   const [updated] = await tx.update(packages).set({ archivedAt: new Date() }).where(eq(packages.id, id)).returning();
   if (!updated) throw notFound('Package not found');

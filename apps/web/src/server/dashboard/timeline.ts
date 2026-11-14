@@ -38,10 +38,10 @@ function sections(tenantId: string, clientId: string, kinds: readonly TimelineKi
       jsonb_build_object('versionNo', v.version_no, 'status', v.status::text), false
       from public.program_versions v where v.tenant_id = ${T} and v.client_id = ${C} and v.status in ('published', 'superseded')`],
     session: [sql`select 'session'::text, 'session:' || w.id::text, w.id::text, null::text, coalesce(w.ended_at, w.started_at, w.created_at),
-      jsonb_build_object('state', w.state::text, 'localDate', w.local_date::text, 'name', w.planned_workout -> 'name', 'activeSeconds', w.active_seconds), false
+      jsonb_build_object('state', w.state::text, 'localDate', w.local_date::text, 'name', w.planned_workout -> 'name', 'activeSeconds', w.active_seconds, 'voidedAt', w.voided_at), false
       from public.workout_sessions w where w.tenant_id = ${T} and w.client_id = ${C} and w.state in ('completed', 'partially_completed', 'abandoned', 'skipped')`],
     metric: [sql`select 'metric'::text, 'metric:' || m.id::text, m.id::text, null::text, m.recorded_at,
-      jsonb_build_object('metric', m.metric::text, 'metricKey', m.metric_key, 'value', m.value, 'unit', m.unit), false
+      jsonb_build_object('metric', m.metric::text, 'metricKey', m.metric_key, 'value', m.value, 'unit', m.unit, 'voidedAt', m.voided_at), false
       from public.metric_entries m where m.tenant_id = ${T} and m.client_id = ${C}`],
     message: [sql`select 'message'::text, 'message:' || g.id::text, g.id::text, null::text, g.created_at,
       jsonb_build_object('senderRole', g.sender_role, 'preview', left(coalesce(g.body, ''), 160), 'attachments', jsonb_array_length(g.attachments)), false

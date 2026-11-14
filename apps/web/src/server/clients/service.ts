@@ -1,6 +1,6 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import { and, arrayContains, desc, eq, exists, inArray, isNull, lt, ne, or, sql } from 'drizzle-orm';
+import { and, arrayContains, desc, eq, exists, inArray, isNotNull, isNull, lt, ne, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { entitlementId } from '@dawlyy/core/entitlements';
 import { ENTITLEMENT_KEYS } from '@dawlyy/core/types';
@@ -55,6 +55,7 @@ export async function listClients(tx: Tx, auth: AuthContext, input: z.input<type
       sql`replace(lower(${clients.code}), '-', ' ') like ${`%${folded}%`}`,
       normalizedPhone ? sql`${clients.searchKey} like ${`%${searchKey(normalizedPhone)}%`}` : undefined) : undefined,
     query.status ? eq(clients.status, query.status) : undefined,
+    query.archived === 'true' ? isNotNull(clients.archivedAt) : isNull(clients.archivedAt),
     query.tag ? arrayContains(clients.tags, [query.tag]) : undefined,
     query.packageId ? exists(tx.select({ id: subscriptions.id }).from(subscriptions).where(and(
       eq(subscriptions.clientId, clients.id), eq(subscriptions.packageId, query.packageId), inArray(subscriptions.state, ['active', 'grace', 'paused', 'suspended']),
@@ -141,8 +142,8 @@ export async function setClientArchived(tx: Tx, auth: AuthContext, id: string, a
   requirePermission(auth, 'clients', 'edit');
   await lockClientWrites(tx, auth.tenantId);
   const previous = await readClient(tx, id);
-  if (archived && previous.status !== 'archived') {
-    await tx.update(clients).set({ status: 'archived', archivedAt: new Date() }).where(eq(clients.id, id));
+  if (archived && (previous.status !== 'archived' || previous.archivedAt === null)) {
+    await tx.update(clients).set({ status: 'archived', archivedAt: previous.archivedAt ?? new Date() }).where(eq(clients.id, id));
   } else if (!archived && (previous.status === 'archived' || previous.archivedAt !== null)) {
     await tx.update(clients).set({ status: 'inactive', archivedAt: null }).where(eq(clients.id, id));
   }

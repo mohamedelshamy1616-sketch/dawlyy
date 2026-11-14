@@ -1,4 +1,6 @@
 import 'server-only';
+import { requireClientModule } from '../client-modules';
+
 import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { exercises, programVersions, programs, setLogs, workoutSessions } from '@dawlyy/db/schema';
@@ -46,6 +48,7 @@ async function ownSession(tx: Tx, auth: AuthContext, uuid: string) {
 
 /** Task 5: create-or-resume by own UUID; prescriptions are copied from a published own-client version. */
 export async function startSession(tx: Tx, auth: AuthContext, body: z.infer<typeof startSessionSchema>) {
+  await requireClientModule(tx, auth, 'workouts');
   const clientId = requireClient(auth, true); await assertActiveAccess(tx, auth); await lockClient(tx, auth);
   const existing = await ownSession(tx, auth, body.clientUuid);
   if (existing) {
@@ -138,6 +141,7 @@ async function syncSet(tx: Tx, auth: AuthContext, body: SetWrite) {
 
 /** Task 5 / §12.1(12): atomic batch, sessions first, row savepoints, stale LWW writes acknowledged. */
 export async function syncWorkout(tx: Tx, auth: AuthContext, body: { sessions: SessionWrite[]; sets: SetWrite[] }) {
+  await requireClientModule(tx, auth, 'workouts');
   requireClient(auth, true); await lockClient(tx, auth);
   const eligible = await assertWorkoutSyncAccess(tx, auth, body);
   const accepted: string[] = []; const rejected: Array<{ clientUuid: string; reason: string }> = []; const sessionIds = new Set<string>();
@@ -158,6 +162,7 @@ export async function syncWorkout(tx: Tx, auth: AuthContext, body: { sessions: S
 
 /** Task 5: online pause/resume or personal notes; terminal sessions cannot return to active. */
 export async function patchSession(tx: Tx, auth: AuthContext, id: string, body: z.infer<typeof patchSessionSchema>) {
+  await requireClientModule(tx, auth, 'workouts');
   requireClient(auth, true); await lockClient(tx, auth);
   const detail = await getSession(tx, auth, id); const session = detail.session;
   let state = session.state;
@@ -174,6 +179,7 @@ export async function patchSession(tx: Tx, auth: AuthContext, id: string, body: 
 
 /** Task 5: finish persists an allowed state; its summary is computed after commit under §12.1(15). */
 export async function finishSession(tx: Tx, auth: AuthContext, id: string, body: z.infer<typeof finishSchema>) {
+  await requireClientModule(tx, auth, 'workouts');
   requireClient(auth, true); await lockClient(tx, auth);
   const { session } = await getSession(tx, auth, id);
   if (session.state !== body.outcome) stateTo(session.state, body.outcome);
@@ -190,7 +196,7 @@ export async function refreshSummaries(auth: AuthContext, ids: string[]) {
     await lockClient(tx, auth);
     const rows = await tx.select(clientColumns.workoutSessions).from(workoutSessions).where(and(
       eq(workoutSessions.tenantId, auth.tenantId), eq(workoutSessions.clientId, clientId), inArray(workoutSessions.id, ids),
-      inArray(workoutSessions.state, ['completed', 'partially_completed', 'abandoned']))).for('update');
+      isNull(workoutSessions.voidedAt), inArray(workoutSessions.state, ['completed', 'partially_completed', 'abandoned']))).for('update');
     for (const row of rows) {
       const session = sessionProjection(row); const sets = await readSets(tx, auth, clientId, [session]);
       const { previous, previousPlan } = await comparisonHistory(tx, auth, clientId, session);

@@ -1,3 +1,4 @@
+import { clientModuleWriteGate } from '../server/client-module-gate';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { ApiEnv } from './env';
 import { validationError } from './errors';
@@ -13,6 +14,7 @@ export const router = new OpenAPIHono<ApiEnv>({ defaultHook: result => { if (!re
 router.onError(trackingErrorHandler);
 router.use('*', async (c, next) => { c.header('Cache-Control', 'private, no-store'); await next(); });
 router.use('*', requireAuthMiddleware);
+router.use('*', clientModuleWriteGate('progress_photos'));
 router.use('*', idempotentReplay);
 for (const path of ['/', '/timeline'] as const) router.openapi(createRoute({ method: 'get', path, request: { query: rangeQuery }, responses: { 200: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => listPhotos(tx, auth, c.req.valid('query'))), 200);
