@@ -1,4 +1,4 @@
 import { PageSkeleton } from "@/src/components/shell/page-skeleton";
 
-/** Task 5: streamed client portal loading state. */
+/** R2a: streamed Today placeholder. A settled page always holds content, an empty state or an error. */
 export default function Loading() { return <PageSkeleton />; }

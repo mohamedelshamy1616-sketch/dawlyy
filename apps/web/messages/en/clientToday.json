@@ -1,0 +1,152 @@
+{
+  "tabs": {
+    "today": "Today",
+    "plan": "Plan",
+    "coach": "Coach",
+    "me": "Me"
+  },
+  "bootstrap": {
+    "loading": "Loading your app",
+    "error": "Could not load your app settings.",
+    "retry": "Retry"
+  },
+  "today": {
+    "title": "Today",
+    "emptyTitle": "Nothing planned today",
+    "emptyBody": "When your coach adds something for today, it will show up here."
+  },
+  "preview": {
+    "title": "Preview",
+    "body": "This is a preview of the client Today screen. Buttons do nothing here."
+  },
+  "subscription": {
+    "title": "Your subscription needs attention",
+    "daysLeft": "{n, plural, one {{shown} day left on your subscription.} other {{shown} days left on your subscription.}}",
+    "stateText": "{state, select, expired {Your subscription has expired.} suspended {Your subscription is suspended.} cancelled {Your subscription was cancelled.} grace {Your subscription is in its grace period.} other {Check your subscription details.}}",
+    "open": "View subscription"
+  },
+  "workout": {
+    "eyebrow": "Today's session",
+    "noneTitle": "No session planned",
+    "noneBody": "Your coach has not assigned a session for today yet.",
+    "restTitle": "Rest day",
+    "restBody": "No session today. Recover well.",
+    "untitled": "Today's session",
+    "exercises": "{n, plural, one {{shown} exercise} other {{shown} exercises}}",
+    "done": "Session completed. Well done.",
+    "review": "See session summary",
+    "continue": "Continue",
+    "start": "Start"
+  },
+  "meals": {
+    "title": "Meals",
+    "empty": "No meal plan has been published for you yet.",
+    "status": {
+      "eaten": "Eaten",
+      "partial": "Partly eaten",
+      "skipped": "Skipped"
+    },
+    "error": "Could not save. Nothing changed.",
+    "ate": "Ate it",
+    "retry": "Retry",
+    "change": "Change"
+  },
+  "checkins": {
+    "title": "Check-in",
+    "untitled": "Check-in",
+    "overdue": "Overdue",
+    "due": "Due"
+  },
+  "intake": {
+    "row": "Finish your intake form"
+  },
+  "actions": {
+    "moduleDisabled": "This part of the app was just switched off by your coach. Your menu is updating.",
+    "dismiss": "Dismiss"
+  },
+  "states": {
+    "errorTitle": "Could not load this page",
+    "errorBody": "Check your connection and try again.",
+    "retry": "Retry",
+    "unavailableTitle": "Not available",
+    "unavailableBody": "Your coach has not turned this part of the app on for you.",
+    "backToToday": "Back to Today"
+  },
+  "plan": {
+    "title": "Plan",
+    "subtitle": "Your program and meal plan.",
+    "links": {
+      "program": {
+        "title": "Training program",
+        "hint": "Your weeks, days and exercises."
+      },
+      "nutrition": {
+        "title": "Meal plan",
+        "hint": "Your meals, options and targets."
+      },
+      "quickMeal": {
+        "title": "Log a meal",
+        "hint": "Add a meal that is not on your plan."
+      }
+    }
+  },
+  "me": {
+    "title": "Me",
+    "subtitle": "Your progress, history and account.",
+    "links": {
+      "progress": {
+        "title": "Progress",
+        "hint": "Measurements and photos over time."
+      },
+      "tracking": {
+        "title": "Daily tracking",
+        "hint": "Metrics you log every day."
+      },
+      "workoutHistory": {
+        "title": "Workout history",
+        "hint": "Sessions you have completed."
+      },
+      "nutritionHistory": {
+        "title": "Meal history",
+        "hint": "What you logged, day by day."
+      },
+      "checkins": {
+        "title": "Check-ins",
+        "hint": "Answer and review your check-ins."
+      },
+      "assessments": {
+        "title": "Assessments",
+        "hint": "Forms your coach asked you to fill in."
+      },
+      "intake": {
+        "title": "Intake form",
+        "hint": "Your starting information."
+      },
+      "subscription": {
+        "title": "Subscription",
+        "hint": "Your plan and how many days are left."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "hint": "Alerts and how you receive them."
+      },
+      "consent": {
+        "title": "Privacy and consent",
+        "hint": "What you agreed to."
+      }
+    }
+  },
+  "coach": {
+    "title": "Your coach",
+    "unnamed": "Your coach",
+    "team": "The {business} team",
+    "at": "At {business}",
+    "avatarNamed": "Coach {name}",
+    "avatarGeneric": "Coach",
+    "chatLabel": "Replies to your messages",
+    "chatPromise": "{n, plural, one {Within {shown} hour} other {Within {shown} hours}}",
+    "chatPromiseUnset": "Reply time not set",
+    "reviewLabel": "Check-in reviews",
+    "reviewPromise": "{n, plural, one {Reviewed within {shown} hour} other {Reviewed within {shown} hours}}"
+  }
+}
