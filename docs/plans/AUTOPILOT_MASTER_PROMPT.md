@@ -399,6 +399,37 @@ sets and build in parallel: up to 3 Codex jobs (see the 13 Nov override under P4
 - Every new client-facing read goes through `clientColumns` (C15).
 - The phase ends with HANDOFF to sonnet high, fresh, for P9.
 
+### P8 turbo mode (Mohamed, 14 Nov 2026: "much faster")
+
+The slow part was serial: one shared file (`api/index.ts`) forced tasks to wait for each other, and every wave
+re-ran the screens job. From 14 Nov:
+
+1. **Briefs.** Codex job `20261114-140240-turbo-briefs` (started by the attended session) writes the briefs for
+   R2a, R2b, R2c, R3a, R3b, R4b, R4d and R5, plus `tools/codex_briefs/turbo-file-map.md`. The map gives up to 3
+   batches with disjoint files and a merge order.
+   - Hot-spot files never go to a builder. They are `api/index.ts`, the message files, `nav-items.ts`, the core
+     barrel and `package.json`.
+   - Builders write exact patches to `tools/codex_briefs/integration/<task>.md` instead, and you apply them at
+     merge.
+   - Review the map before use. Do not rewrite briefs that are fine.
+2. **Worktrees.** Each build task gets its own git worktree and branch:
+   `git worktree add ../dawlyy-wt-<task> -b wt/<task> main`, then `pnpm install --frozen-lockfile` in it. Disk had
+   212 GB free on 14 Nov. Launch Codex with `--cwd ../dawlyy-wt-<task>` and the full-power flags.
+   - Run up to 3 Codex jobs at once.
+   - Each job may run its own typecheck and its own new vitest files, as its brief says.
+   - Codex never commits. You commit inside the worktree after review, then merge the branch into `main` in
+     map order and apply its integration patch.
+   - Run the gate on `main` after each merge: typecheck and lint, plus `test-db` when the task touched SQL.
+   - Remove the worktree after the merge.
+3. **Tasks waiting on R0c.** A task that needs R0c's endpoints branches after R0c is merged. A task that does not
+   need them starts now.
+4. **Screens.** Do not re-run the screens job after each wave in P8. Run it once at the end of P8, at 360, 390,
+   430 and 1366 px.
+5. **Reviews.** Review each Codex diff the moment it lands. Up to 2 Sonnet reviewers (medium) may read diffs in
+   parallel while you integrate. Their findings go back to Codex as a one-line fix brief, not into your own
+   context.
+6. **Nothing is weakened.** No test is skipped and nothing that was green stops being checked.
+
 ### P9: test everything and review (sonnet high, then opus high for the review)
 
 Do P9 of the plan:
