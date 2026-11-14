@@ -39,7 +39,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("brief", type=Path, help="markdown brief for this batch")
     ap.add_argument("--timeout", type=int, default=5400, help="seconds before the Codex process is killed")
-    ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh"], help="model_reasoning_effort")
+    ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max", "ultra"],
+                    help="model_reasoning_effort (max and ultra exist on gpt-6.1-sol and gpt-6-astra)")
+    ap.add_argument("--model", default="gpt-6.1-sol", help="Codex model slug (models_cache.json); default the newest workhorse")
+    ap.add_argument("--fast", action="store_true", help="service_tier priority: about 2x speed, uses the ChatGPT plan limit faster")
+    ap.add_argument("--multi-agent", action="store_true",
+                    help="enable multi_agent_v2 so Codex can spawn its own sub-agents (spawn_agent, wait_agent)")
     ap.add_argument("--cwd", type=Path, default=REPO, help="repository root Codex works in")
     ap.add_argument("--common", default=str(COMMON), help="shared rules file prepended to the brief, or 'none'")
     args = ap.parse_args()
@@ -64,8 +69,12 @@ def main() -> int:
         "workspace-write",
         "-c",
         'windows.sandbox="unelevated"',
+        "-m",
+        args.model,
         "-c",
         f'model_reasoning_effort="{args.effort}"',
+        *(["-c", 'service_tier="priority"'] if args.fast else []),
+        *(["--enable", "multi_agent_v2"] if args.multi_agent else []),
         "-C",
         str(args.cwd),
         "-o",

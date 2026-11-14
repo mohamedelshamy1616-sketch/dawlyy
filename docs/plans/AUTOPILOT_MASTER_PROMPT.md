@@ -325,6 +325,15 @@ T10 and T11. Same pattern as P3.
 - Override (Mohamed, 13 Nov 2026 19:00: use Codex's full power): from P8 on, run up to 3 Codex jobs at once on
   disjoint files, with at most 2 of them high or xhigh. When Codex reports its plan limit, note the reset time in state.json and
   continue with what is left. While the 5-hour Claude window is at 80% or more, Codex is the only builder.
+- Codex full power (Mohamed, 14 Nov 2026; probed and working on codex-cli 0.166.0 that day):
+  - every Codex job passes `--model gpt-6.1-sol --fast`;
+  - database or security work and briefs over about 10 files use `--effort max`; other builds use `--effort xhigh`;
+    `ultra` is only for a job that already failed once at `max`;
+  - a brief with 3 or more independent file groups also passes `--multi-agent` and says in its body: "Use
+    collaboration.spawn_agent to give each file group to its own sub-agent, then integrate, run every acceptance
+    check yourself, and report per group". Sub-agents stay inside the brief's file list;
+  - `--fast` uses the ChatGPT plan limit about twice as fast. When Codex reports its limit, note the reset in
+    state.json and continue with the rest; Mohamed has one manual reset he may use.
 
 Gate: typecheck and lint. Commit per task.
 
