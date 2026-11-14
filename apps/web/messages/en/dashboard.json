@@ -6,16 +6,37 @@
   "countsHeading": "Needs attention",
   "viewQueue": "Open the list",
   "counts": {
-    "attention": { "label": "Clients needing attention", "hint": "Active clients with at least one open item below" },
-    "overdue_checkins": { "label": "Overdue check-ins", "hint": "Check-ins past their due date" },
-    "waiting_review": { "label": "Check-ins to review", "hint": "Submitted and waiting for you" },
-    "missing_data": { "label": "No weight for 14 days", "hint": "Active clients with no recent weigh-in" },
-    "expiring_subscriptions": { "label": "Expiring within 14 days", "hint": "Subscriptions ending soon" },
-    "pending_payments": { "label": "Pending payments", "hint": "Waiting to be verified" },
-    "adherence_decline": { "label": "Adherence dropping", "hint": "Completed workouts fell 30 points or more vs last week" }
+    "attention": {
+      "label": "Clients needing attention",
+      "hint": "Active clients with at least one open item below"
+    },
+    "overdue_checkins": {
+      "label": "Overdue check-ins",
+      "hint": "Check-ins past their due date"
+    },
+    "waiting_review": {
+      "label": "Check-ins to review",
+      "hint": "Submitted and waiting for you"
+    },
+    "missing_data": {
+      "label": "No weight for 14 days",
+      "hint": "Active clients with no recent weigh-in"
+    },
+    "expiring_subscriptions": {
+      "label": "Expiring within 14 days",
+      "hint": "Subscriptions ending soon"
+    },
+    "pending_payments": {
+      "label": "Pending payments",
+      "hint": "Waiting to be verified"
+    },
+    "adherence_decline": {
+      "label": "Adherence dropping",
+      "hint": "Completed workouts fell 30 points or more vs last week"
+    }
   },
   "queue": {
-    "back": "Back to the dashboard",
+    "back": "Back to the inbox",
     "emptyTitle": "Nothing here",
     "emptyBody": "No client matches this list right now.",
     "loadMore": "Show more",

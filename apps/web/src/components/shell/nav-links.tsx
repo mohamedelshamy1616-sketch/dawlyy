@@ -12,7 +12,7 @@ type Props = {
    * `top`: horizontal links (client desktop header).
    * `tabs`: bottom tab bar (client on mobile).
    */
-  layout: "sidebar" | "top" | "tabs";
+  layout: "sidebar" | "top" | "tabs" | "rail";
   /** Called after a link is chosen, so the mobile menu can close. */
   onNavigate?: () => void;
   className?: string;
@@ -28,9 +28,9 @@ export function NavLinks({ area, layout, onNavigate, className }: Props) {
     <nav aria-label={common("mainNavigation")} className={className}>
       <ul
         className={cn(
-          layout === "sidebar" && "flex flex-col gap-1",
+          (layout === "sidebar" || layout === "rail") && "flex flex-col gap-1",
           layout === "top" && "flex items-center gap-1",
-          layout === "tabs" && "grid grid-cols-5",
+          layout === "tabs" && (area === "coach" ? "grid grid-cols-4" : "grid grid-cols-5"),
         )}
       >
         {items.map((item) => {
@@ -47,6 +47,7 @@ export function NavLinks({ area, layout, onNavigate, className }: Props) {
                   layout === "sidebar" &&
                     "min-h-11 gap-3 rounded-lg px-3 text-start",
                   layout === "top" && "min-h-11 gap-2 rounded-lg px-3",
+                  layout === "rail" && "min-h-16 flex-col justify-center gap-2 rounded-lg px-1 py-3 text-xs",
                   layout === "tabs" &&
                     "min-h-16 flex-col justify-center gap-1 px-1 text-xs",
                   active
@@ -75,7 +76,7 @@ export function NavLinks({ area, layout, onNavigate, className }: Props) {
                     strokeWidth={active ? 2.4 : 2}
                   />
                 </span>
-                <span className="min-w-0 truncate">{t(item.key)}</span>
+                <span className="min-w-0 break-words text-center">{t(item.key)}</span>
               </Link>
             </li>
           );

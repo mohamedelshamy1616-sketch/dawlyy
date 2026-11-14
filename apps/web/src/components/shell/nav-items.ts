@@ -1,56 +1,48 @@
 import {
-  CalendarDays,
-  ClipboardCheck,
-  CreditCard,
-  Package,
-  Dumbbell,
-  House,
-  ListChecks,
-  LayoutDashboard,
-  MessageCircle,
-  Settings,
-  TrendingUp,
-  Users,
-  Utensils,
+  Bell, BookOpen, CalendarDays, ClipboardCheck, CreditCard, Dumbbell, House,
+  Inbox, ListChecks, MessageCircle, Settings, TrendingUp, UserPlus, Users, Utensils,
   type LucideIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
-export type NavArea = "coach" | "client";
+export type NavArea = 'coach' | 'client';
+export type NavItem = { key: string; href: string; Icon: LucideIcon; exact?: boolean; activePaths?: readonly string[] };
 
-export type NavItem = {
-  /** Key under `nav.coach` or `nav.client` in the message files. */
-  key: string;
-  /** Path without the locale prefix; the locale-aware Link adds it. */
-  href: string;
-  Icon: LucideIcon;
-  /** Active only on this exact path (the dashboard), not on every path below it. */
-  exact?: boolean;
-};
-
-/** Some of these routes do not exist yet; they land on the branded "not ready yet" page. */
+/** R1b: the same four destinations drive the coach rail and phone bottom bar. */
 export const COACH_NAV: readonly NavItem[] = [
-  { key: "dashboard", href: "/coach", Icon: LayoutDashboard, exact: true },
-  { key: "clients", href: "/coach/clients", Icon: Users },
-  { key: "programs", href: "/coach/programs", Icon: Dumbbell },
-  { key: "exercises", href: "/coach/exercises", Icon: ListChecks },
-  { key: "packages", href: "/coach/packages", Icon: Package },
-  { key: "nutrition", href: "/coach/nutrition", Icon: Utensils },
-  { key: "checkins", href: "/coach/checkins", Icon: ClipboardCheck },
-  { key: "calendar", href: "/coach/calendar", Icon: CalendarDays },
-  { key: "messages", href: "/coach/messages", Icon: MessageCircle },
-  { key: "billing", href: "/coach/billing", Icon: CreditCard },
-  { key: "settings", href: "/coach/settings", Icon: Settings },
+  { key: 'inbox', href: '/coach', Icon: Inbox, exact: true },
+  { key: 'clients', href: '/coach/clients', Icon: Users },
+  { key: 'library', href: '/coach/library', Icon: BookOpen, activePaths: ['/coach/programs', '/coach/exercises', '/coach/foods', '/coach/nutrition', '/coach/packages'] },
+  { key: 'money', href: '/coach/money', Icon: CreditCard, activePaths: ['/coach/billing'] },
+];
+
+/** R1b: secondary tools and every static settings page remain reachable in the profile menu. */
+export const COACH_PROFILE_NAV: readonly NavItem[] = [
+  { key: 'settings', href: '/coach/settings', Icon: Settings, exact: true },
+  { key: 'calendar', href: '/coach/calendar', Icon: CalendarDays },
+  { key: 'team', href: '/coach/settings/team', Icon: Users },
+  { key: 'notifications', href: '/coach/notifications', Icon: Bell },
+  { key: 'tasks', href: '/coach/tasks', Icon: ListChecks },
+  { key: 'assessments', href: '/coach/assessments', Icon: ClipboardCheck },
+  { key: 'intake', href: '/coach/intake', Icon: ClipboardCheck },
+  { key: 'checkins', href: '/coach/checkins', Icon: ClipboardCheck },
+  { key: 'messages', href: '/coach/messages', Icon: MessageCircle },
+  { key: 'newClient', href: '/coach/clients/new', Icon: UserPlus },
+  { key: 'business', href: '/coach/settings/business', Icon: Settings },
+  { key: 'branding', href: '/coach/settings/branding', Icon: Settings },
+  { key: 'language', href: '/coach/settings/language', Icon: Settings },
+  { key: 'legal', href: '/coach/settings/legal', Icon: Settings },
 ];
 
 export const CLIENT_NAV: readonly NavItem[] = [
-  { key: "today", href: "/app/today", Icon: House },
-  { key: "program", href: "/app/program", Icon: Dumbbell },
-  { key: "nutrition", href: "/app/nutrition", Icon: Utensils },
-  { key: "progress", href: "/app/progress", Icon: TrendingUp },
-  { key: "messages", href: "/app/messages", Icon: MessageCircle },
+  { key: 'today', href: '/app/today', Icon: House },
+  { key: 'program', href: '/app/program', Icon: Dumbbell },
+  { key: 'nutrition', href: '/app/nutrition', Icon: Utensils },
+  { key: 'progress', href: '/app/progress', Icon: TrendingUp },
+  { key: 'messages', href: '/app/messages', Icon: MessageCircle },
 ];
 
+/** R1b: a hub stays active while its tools are open, with exact matching for Inbox. */
 export function isActive(pathname: string, item: NavItem): boolean {
   if (item.exact) return pathname === item.href;
-  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+  return [item.href, ...(item.activePaths ?? [])].some(path => pathname === path || pathname.startsWith(`${path}/`));
 }

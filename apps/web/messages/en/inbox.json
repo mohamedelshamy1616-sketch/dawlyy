@@ -1,0 +1,43 @@
+{
+  "title": "Inbox",
+  "subtitle": "Who needs you this week, and why.",
+  "emptyTitle": "You’re up to date",
+  "emptyBody": "No active client needs attention right now. New check-ins, messages and follow-ups will appear here.",
+  "noAccessTitle": "The inbox is not open to you",
+  "noAccessBody": "Ask the account owner for permission to view clients.",
+  "allQueues": "All queues",
+  "queueAccess": "Ask the account owner for dashboard access to open this queue.",
+  "actionError": "Could not open the conversation. Try again.",
+  "noContactYet": "No coach message yet",
+  "needsAttention": "{count, plural, one {# client needs you} other {# clients need you}}",
+  "actions": {
+    "review": "Review check-in",
+    "reply": "Reply",
+    "confirm_payment": "Confirm payment",
+    "renew": "Renew subscription",
+    "handle_flag": "Review flag",
+    "nudge": "Send a nudge"
+  },
+  "categories": {
+    "pain_injury": "Pain or injury",
+    "eating_disorder": "Eating concerns",
+    "pregnancy": "Pregnancy",
+    "medication": "Medication",
+    "other": "Other concern"
+  },
+  "reasons": {
+    "red_flag": "Needs your review: {category}",
+    "checkin_waiting": "Check-in waiting {days, plural, =0 {since today} one {for # day} other {for # days}}",
+    "unread_messages": "{count, plural, one {# unread message} other {# unread messages}}",
+    "payment_pending": "Payment waiting for confirmation",
+    "subscription_ends": "Subscription ends {days, plural, =0 {today} one {in # day} other {in # days}}",
+    "checkin_overdue": "Check-in {days, plural, one {# day overdue} other {# days overdue}}",
+    "adherence_drop": "Workout adherence fell from {from, number}% to {to, number}%",
+    "weight_wrong_way": "Weight is moving against the goal: {kgPerWeek, number} kg/week",
+    "weight_flat": "Weight has been steady for {days, plural, one {# day} other {# days}}",
+    "low_adherence": "Workout adherence is {percent, number}%",
+    "meals_missing": "No meal log on {days, plural, one {# day} other {# days}} this week",
+    "subscription_ended": "Subscription ended {days, plural, one {# day ago} other {# days ago}}",
+    "no_contact": "No coach message for {days, plural, one {# day} other {# days}}"
+  }
+}
