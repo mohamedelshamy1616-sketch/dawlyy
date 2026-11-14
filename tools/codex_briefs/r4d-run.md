@@ -1,5 +1,7 @@
 # R4D in turbo mode: run notes for `r4d-ai-provider.md`
 
+Use collaboration.spawn_agent to give each file group to its own sub-agent, then integrate, run every acceptance check yourself, and report per group. Sub-agents stay inside the brief's file list.
+
 You work in the git worktree `C:/Users/compuline/Desktop/dawlyy-wt-r4d` (branch `wt/r4d`, from `main` after R0, R1a,
 R1c, R1d, R4a, R4c and R1b were merged). It is your whole repository for this job. Do not write anywhere else, and
 do not commit.
