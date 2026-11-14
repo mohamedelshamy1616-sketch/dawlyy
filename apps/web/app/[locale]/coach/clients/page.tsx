@@ -16,9 +16,12 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
   const t = await getTranslations('clients');
   const auth = await requirePage();
   const raw = await searchParams;
-  const query = clientListSchema.parse(Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])));
+  const parsed = clientListSchema.parse(Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])));
+  // An old ?status=archived link means the archived-only listing; archived clients are filtered by archivedAt, not by status.
+  const query = parsed.status === 'archived' ? { ...parsed, status: undefined, archived: 'true' as const } : parsed;
   const data = await withAuthTx(auth, async tx => ({ initial: await listClients(tx, auth, query), options: await clientFormOptions(tx, auth) }));
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={t('title')} subtitle={t('subtitle')} />
-    <ClientList key={JSON.stringify([query, data.initial])} initial={data.initial} filters={query} packages={data.options.packages} tags={data.options.tags} canCreate={isAllowed(auth, 'clients', 'create')} />
+    <ClientList key={JSON.stringify(query)} initial={data.initial} filters={query} packages={data.options.packages} tags={data.options.tags} canCreate={isAllowed(auth, 'clients', 'create')}
+      canArchive={isAllowed(auth, 'clients', 'edit')} programGrants={{ edit: isAllowed(auth, 'programs', 'edit'), publish: isAllowed(auth, 'programs', 'publish') }} />
   </div>;
 }

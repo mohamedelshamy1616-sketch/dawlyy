@@ -1,0 +1,11 @@
+{
+  "executing": "Working…",
+  "undoing": "Undoing…",
+  "committing": "Saving…",
+  "failed": "Could not undo: {label}. The change is still in place.",
+  "region": "Last change",
+  "retry": "Retry undo",
+  "undo": "Undo",
+  "keep": "Done",
+  "close": "Close"
+}

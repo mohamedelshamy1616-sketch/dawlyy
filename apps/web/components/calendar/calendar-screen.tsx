@@ -19,6 +19,7 @@ import { addDays, localDateOf, zonedDueAt } from '@dawlyy/core/schedule';
 import { PageHeader } from '@/src/components/shell/page-header';
 import { EmptyState } from '@/src/components/shell/empty-state';
 import { dateValue, dateTimeValue, trackingRequest, type ListPage } from '../tracking/contracts';
+import { CancelEventControl, useReloadOnUndoSettle } from '@/components/control/archive-controls';
 
 /** Task 8: safe, serialized calendar event fields rendered by the coach calendar. */
 export type CalendarRow = { id: string; clientId: string; type: string; state: string; dueAt: string; localDate: string; timezone: string; windowDays: number; title: { ar?: string; en?: string } | null };
@@ -31,7 +32,8 @@ function dateRange(date: string, view: View) {
   return { from, to: addDays(next.toISOString().slice(0, 10), -1) };
 }
 /** Task 8: mobile agenda and desktop day/week/month calendar with scoped filters and occurrence actions. */
-export function CalendarScreen({ initial, today, timezone, clients }: { initial: ListPage<CalendarRow>; today: string; timezone: string; clients: { id: string; name: string }[] }) {
+/** canEdit is the caller's calendar edit grant (cancel and restore need it; the server enforces it again). It defaults to true so the screen behaves as before until the page passes the exact grant. */
+export function CalendarScreen({ initial, today, timezone, clients, canEdit = true }: { initial: ListPage<CalendarRow>; today: string; timezone: string; clients: { id: string; name: string }[]; canEdit?: boolean }) {
   const t = useTranslations('calendar'); const status = useTranslations('status'); const locale = useLocale();
   const [events, setEvents] = useState(initial); const [view, setView] = useState<View>('month'); const [date, setDate] = useState(today);
   const [clientId, setClientId] = useState('all'); const [type, setType] = useState('all'); const [state, setState] = useState('all');
@@ -63,6 +65,7 @@ export function CalendarScreen({ initial, today, timezone, clients }: { initial:
     setError('');
     try { await trackingRequest(`calendar/${event.id}/${action}`, 'POST', action === 'reschedule' ? { dueAt: zonedDueAt(eventAt.slice(0, 10), eventAt.slice(11, 16), zone), timezone: zone } : undefined); await load(); } catch (cause) { setError(cause instanceof Error && cause.message === 'illegal_transition' ? 'illegal_transition' : 'request_failed'); }
   }
+  useReloadOnUndoSettle(() => void load());
   const range = dateRange(date, view); const first = `${date.slice(0, 7)}-01`;
   const gridStart = addDays(first, -new Date(`${first}T12:00:00Z`).getUTCDay());
   const days = Array.from({ length: view === 'month' ? 42 : view === 'week' ? 7 : 1 }, (_, index) => addDays(view === 'month' ? gridStart : range.from, index));
@@ -87,7 +90,9 @@ export function CalendarScreen({ initial, today, timezone, clients }: { initial:
     {events.items.map(event => <VStack key={event.id} gap={3} className="min-w-0 max-w-full border-b border-border pb-4">
       <Heading level={3} className="break-words">{label(event)}</Heading>
       <Text className="break-words">{clients.find(client => client.id === event.clientId)?.name ?? t('client')} · {new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short', timeZone: timezone }).format(new Date(event.dueAt))} · {stateLabel(event.state)}</Text>
-      {['scheduled', 'due', 'overdue'].includes(event.state) ? <HStack gap={2} wrap="wrap">{['complete', 'skip', 'cancel', 'reschedule'].map(action => <Button key={action} label={t(`actions.${action}`)} className="min-h-11" variant="secondary" clickAction={() => { if (action === 'reschedule') openReschedule(event); else return act(event, action); }} />)}<Button label={t('actions.edit')} className="min-h-11" variant="secondary" onClick={() => { setRescheduling(null); setEditing(event); setEventClient(event.clientId); setEventType(event.type); setTitle(event.title?.[locale === 'ar' ? 'ar' : 'en'] ?? ''); setWindowDays(event.windowDays); document.getElementById('calendar-event-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} /></HStack> : null}
+      {['scheduled', 'due', 'overdue'].includes(event.state) ? <HStack gap={2} wrap="wrap">{['complete', 'skip', 'reschedule'].map(action => <Button key={action} label={t(`actions.${action}`)} className="min-h-11" variant="secondary" clickAction={() => { if (action === 'reschedule') openReschedule(event); else return act(event, action); }} />)}<Button label={t('actions.edit')} className="min-h-11" variant="secondary" onClick={() => { setRescheduling(null); setEditing(event); setEventClient(event.clientId); setEventType(event.type); setTitle(event.title?.[locale === 'ar' ? 'ar' : 'en'] ?? ''); setWindowDays(event.windowDays); document.getElementById('calendar-event-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} />
+        <CancelEventControl id={event.id} cancelled={false} canEdit={canEdit} itemLabel={label(event)} onChanged={() => void load()} /></HStack> : null}
+      {event.state === 'cancelled' ? <HStack gap={2} wrap="wrap"><CancelEventControl id={event.id} cancelled canEdit={canEdit} itemLabel={label(event)} onChanged={() => void load()} /></HStack> : null}
     </VStack>)}
     {events.nextCursor ? <Button label={t('actions.more')} className="min-h-11" clickAction={() => load(view, events.nextCursor ?? undefined)} /> : null}
     <Heading id="calendar-event-editor" level={2}>{rescheduling ? t('actions.reschedule') : editing ? t('editTitle') : t('addTitle')}</Heading>
