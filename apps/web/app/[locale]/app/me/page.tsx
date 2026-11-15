@@ -10,11 +10,14 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
   const { locale } = await params;
   setRequestLocale(locale);
   const auth = await requirePage();
+  // Load inside try/catch, render outside it (react-hooks/error-boundaries).
+  let loaded: Awaited<ReturnType<typeof loadClientBootstrap>> | null = null;
   try {
-    const { userId, ...bootstrap } = await loadClientBootstrap(auth);
-    return <MeHub userId={userId} bootstrap={bootstrap} />;
+    loaded = await loadClientBootstrap(auth);
   } catch (error) {
     console.error('client me failed', error instanceof Error ? error.name : 'unknown');
-    return <HubError />;
   }
+  if (!loaded) return <HubError />;
+  const { userId, ...bootstrap } = loaded;
+  return <MeHub userId={userId} bootstrap={bootstrap} />;
 }

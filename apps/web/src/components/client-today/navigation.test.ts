@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createElement } from 'react';
+import { createElement, type ComponentProps, type ComponentType } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { NextIntlClientProvider } from 'next-intl';
 import { describe, expect, it, vi } from 'vitest';
@@ -13,6 +13,10 @@ import {
 } from '@/components/client-today/client-destinations';
 import { ClientModuleProvider } from '@/components/client-today/client-module-provider';
 import { ClientTabBar } from '@/components/app/client-tab-bar';
+
+// next-intl types `children` as a required prop; this view of it takes children as createElement's third argument
+// (react/no-children-prop forbids passing them in the props object).
+const IntlProvider = NextIntlClientProvider as ComponentType<Omit<ComponentProps<typeof NextIntlClientProvider>, 'children'>>;
 
 const nav = vi.hoisted(() => ({ pathname: '/app/today' }));
 vi.mock('@/i18n/navigation', () => ({
@@ -29,8 +33,8 @@ function renderBar(modules: ClientModules | null, layout: 'tabs' | 'top' = 'tabs
   nav.pathname = pathname;
   const messages = { clientToday: locale === 'ar' ? ar : en, common: { mainNavigation: 'Main navigation' } };
   const bar = createElement(ClientTabBar, { layout });
-  const provider = createElement(ClientModuleProvider, { initial: modules ? { userId: 'u1', modules, numerals: 'latn' } : null, children: bar });
-  return renderToStaticMarkup(createElement(NextIntlClientProvider, { locale, messages, children: provider }));
+  const provider = createElement(ClientModuleProvider, { initial: modules ? { userId: 'u1', modules, numerals: 'latn' } : null } as ComponentProps<typeof ClientModuleProvider>, bar);
+  return renderToStaticMarkup(createElement(IntlProvider, { locale, messages }, provider));
 }
 const hrefs = (html: string) => [...html.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
 

@@ -15,13 +15,16 @@ import { loadClientBootstrap } from "@/src/server/client-today/page-data";
 async function ClientModuleBootstrap() {
   const auth = await requirePage();
   if (auth.role !== "client") return null;
+  // Load inside try/catch, render outside it (react-hooks/error-boundaries).
+  let loaded: Awaited<ReturnType<typeof loadClientBootstrap>> | null = null;
   try {
-    const { userId, ...bootstrap } = await loadClientBootstrap(auth);
-    return <ClientModuleSeed userId={userId} {...bootstrap} />;
+    loaded = await loadClientBootstrap(auth);
   } catch (error) {
     console.error("client module bootstrap failed", error instanceof Error ? error.name : "unknown");
-    return null;
   }
+  if (!loaded) return null;
+  const { userId, ...bootstrap } = loaded;
+  return <ClientModuleSeed userId={userId} {...bootstrap} />;
 }
 
 export default async function ClientAppLayout({

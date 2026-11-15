@@ -301,3 +301,10 @@ registry decisions; version destinations and existing revert payloads; exact int
 coverage and actual allowed-check results; P9 evidence still owed; every unsupported audit producer or missing
 token/contract issue. Do not claim business-wide staff visibility, executed browser proof or policy coverage
 from mocks.
+
+## Resume note (15 Nov 2026)
+
+An earlier run of this brief stopped at the ChatGPT plan limit after writing two files in the worktree:
+`apps/web/src/server/activity/presentation.test.ts` and `tools/codex_briefs/integration/r3b.md`. Keep both. Read
+them first, check them against this brief and the code they test, fix what is wrong in them, and then build
+everything else the brief asks for. Report which parts of those two files you changed.

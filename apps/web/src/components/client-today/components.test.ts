@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, type ComponentProps, type ComponentType } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { NextIntlClientProvider } from 'next-intl';
 import { describe, expect, it, vi } from 'vitest';
@@ -8,6 +8,10 @@ import en from '../../../messages/en/clientToday.json';
 import { ClientTodayView } from '@/components/client-today/today-view';
 import { CoachAvatar, CoachHub, HubError, HubUnavailable, MeHub, PlanHub } from '@/components/client-today/client-hubs';
 import type { ClientTodayModel } from '@/components/client-today/types';
+
+// next-intl types `children` as a required prop; this view of it takes children as createElement's third argument
+// (react/no-children-prop forbids passing them in the props object).
+const IntlProvider = NextIntlClientProvider as ComponentType<Omit<ComponentProps<typeof NextIntlClientProvider>, 'children'>>;
 
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children, ...rest }: { href: string; children?: unknown; [key: string]: unknown }) => createElement('a', { href, ...rest }, children as never),
@@ -32,7 +36,7 @@ const model = (patch: Partial<ClientTodayModel> = {}): ClientTodayModel => ({
 
 function render(node: React.ReactNode, locale: 'en' | 'ar' = 'en') {
   const messages = { clientToday: locale === 'ar' ? ar : en };
-  return renderToStaticMarkup(createElement(NextIntlClientProvider, { locale, messages, children: node }));
+  return renderToStaticMarkup(createElement(IntlProvider, { locale, messages }, node));
 }
 const view = (patch: Partial<ClientTodayModel> = {}, props: Partial<Parameters<typeof ClientTodayView>[0]> = {}, locale: 'en' | 'ar' = 'en') =>
   render(createElement(ClientTodayView, { model: model({ locale, ...patch }), ...props }), locale);

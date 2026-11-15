@@ -1,5 +1,5 @@
+import { ClientTabBar } from "@/components/app/client-tab-bar";
 import { LocaleSwitch } from "./locale-switch";
-import { NavLinks } from "./nav-links";
 import { SignOutButton } from "./sign-out-button";
 import { SkipLink } from "./skip-link";
 import { Wordmark } from "./wordmark";
@@ -7,6 +7,7 @@ import { Wordmark } from "./wordmark";
 /**
  * The client portal frame (the PWA): header with wordmark, links and locale switch on wide screens,
  * a bottom tab bar on phones. It holds no data, so it renders at once while the content streams in.
+ * R2a: the links are the single ClientTabBar (Today, Plan, Coach, Me), filtered by the client's modules.
  */
 export function ClientShell({ children }: { children: React.ReactNode }) {
   return (
@@ -15,11 +16,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-3 py-1.5 md:px-6">
           <Wordmark className="min-w-0" />
-          <NavLinks
-            area="client"
-            layout="top"
-            className="ms-4 hidden md:block"
-          />
+          <ClientTabBar layout="top" className="ms-4 hidden md:block" />
           <div className="ms-auto flex items-center gap-1">
             <LocaleSwitch />
             <SignOutButton />
@@ -34,7 +31,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background pb-[env(safe-area-inset-bottom)] md:hidden">
-        <NavLinks area="client" layout="tabs" className="mx-auto max-w-xl" />
+        <ClientTabBar layout="tabs" className="mx-auto max-w-xl" />
       </div>
     </div>
   );
