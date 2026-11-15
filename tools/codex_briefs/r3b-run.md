@@ -302,9 +302,26 @@ coverage and actual allowed-check results; P9 evidence still owed; every unsuppo
 token/contract issue. Do not claim business-wide staff visibility, executed browser proof or policy coverage
 from mocks.
 
-## Resume note (15 Nov 2026)
+## Resume note (15 Nov 2026, 15:55)
 
-An earlier run of this brief stopped at the ChatGPT plan limit after writing two files in the worktree:
-`apps/web/src/server/activity/presentation.test.ts` and `tools/codex_briefs/integration/r3b.md`. Keep both. Read
-them first, check them against this brief and the code they test, fix what is wrong in them, and then build
-everything else the brief asks for. Report which parts of those two files you changed.
+Two earlier runs of this brief stopped at the ChatGPT plan limit. They left these files in the worktree, all
+unreviewed and untested:
+
+- `apps/web/src/server/activity/types.ts`, `schemas.ts`, `read.ts`, `links.ts`, `presentation.ts`
+- `apps/web/src/server/activity/read.test.ts`, `links.test.ts`, `presentation.test.ts`, `components.test.ts`
+- `apps/web/src/api/activity.ts`, `apps/web/src/api/activity.test.ts`
+- `apps/web/messages/ar/activity.json`, `apps/web/messages/en/activity.json`
+- `tools/codex_briefs/integration/r3b.md`
+
+Keep them. Read each one against this brief and the code it uses, finish or fix it, and do not rewrite a file
+that is already right. These are still missing; build them:
+
+- `apps/web/src/api/activity.db.test.ts`
+- `apps/web/components/activity/activity-log.tsx`, `apps/web/components/activity/version-detail.tsx`
+- `apps/web/app/[locale]/coach/settings/activity/page.tsx` and `loading.tsx`
+- `apps/web/app/[locale]/coach/settings/activity/version/[kind]/[headId]/[versionNo]/page.tsx` and `loading.tsx`
+- `apps/web/e2e/beta/r3b-activity-log.spec.ts`
+- `packages/db/test/security.activity-api.test.ts`
+
+The permission helpers live in `packages/core/src/authz/index.ts` (there is no `authz/types.ts`). Start with the
+missing files, so a third limit leaves the most work done. Report which existing files you changed and why.
