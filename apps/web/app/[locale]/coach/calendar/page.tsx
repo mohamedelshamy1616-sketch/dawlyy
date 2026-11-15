@@ -2,6 +2,7 @@ import { and, asc, eq, isNull } from 'drizzle-orm';
 import { clientColumns } from '@dawlyy/db';
 import { clients, tenants } from '@dawlyy/db/schema';
 import { localDateOf, zonedDueAt } from '@dawlyy/core/schedule';
+import { isAllowed } from '@dawlyy/core/authz';
 import { requirePage } from '@/src/server/auth';
 import { withAuthTx } from '@/src/server/db';
 import { requirePermission } from '@/src/server/require-permission';
@@ -22,5 +23,5 @@ export default async function CalendarPage() {
     const rows = await tx.select({ id: clients.id, firstName: clients.firstName, lastName: clients.lastName, displayName: clients.displayName }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), isNull(clients.archivedAt))).orderBy(asc(clients.firstName), asc(clients.id));
     return { today, timezone, clients: rows.map(row => ({ id: row.id, name: row.displayName ?? [row.firstName, row.lastName].filter(Boolean).join(' ') })), initial: { ...events, items: events.items.map(({ id, clientId, type, state, dueAt, localDate, timezone: eventZone, windowDays, title }) => ({ id, clientId, type, state, dueAt: dueAt.toISOString(), localDate, timezone: eventZone, windowDays, title })) } };
   });
-  return <CalendarScreen {...data} />;
+  return <CalendarScreen {...data} canEdit={isAllowed(auth, 'calendar', 'edit')} />;
 }

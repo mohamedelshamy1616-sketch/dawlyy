@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AstryxProvider } from "@/components/astryx-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { UndoToast } from "@/components/control/undo-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { isLocale, locales } from "@/i18n/routing";
 
@@ -60,6 +61,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <AstryxProvider locale={locale}>
               <TooltipProvider>{children}</TooltipProvider>
               <Toaster />
+              <UndoToast />
             </AstryxProvider>
           </NextIntlClientProvider>
         </Suspense>

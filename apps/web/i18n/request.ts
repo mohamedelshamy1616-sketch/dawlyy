@@ -30,6 +30,8 @@ const loaders = {
     inbox: () => import('../messages/ar/inbox.json'),
     settings: () => import('../messages/ar/settings.json'),
     legal: () => import('../messages/ar/legal.json'),
+    archiveControls: () => import('../messages/ar/archiveControls.json'),
+    controlUndo: () => import('../messages/ar/controlUndo.json'),
   },
   en: {
     common: () => import('../messages/en/common.json'),
@@ -58,6 +60,8 @@ const loaders = {
     inbox: () => import('../messages/en/inbox.json'),
     settings: () => import('../messages/en/settings.json'),
     legal: () => import('../messages/en/legal.json'),
+    archiveControls: () => import('../messages/en/archiveControls.json'),
+    controlUndo: () => import('../messages/en/controlUndo.json'),
   },
 } satisfies Record<(typeof routing.locales)[number], Record<string, () => Promise<{ default: AbstractIntlMessages }>>>;
 

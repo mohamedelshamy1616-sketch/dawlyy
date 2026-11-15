@@ -14,7 +14,6 @@ import { Heading } from '@astryxdesign/core/Heading';
 import { HStack } from '@astryxdesign/core/HStack';
 import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl';
 import { StackItem } from '@astryxdesign/core/Stack';
-import { Switch } from '@astryxdesign/core/Switch';
 import { Text } from '@astryxdesign/core/Text';
 import { TextInput } from '@astryxdesign/core/TextInput';
 import { VStack } from '@astryxdesign/core/VStack';
@@ -23,12 +22,18 @@ import { FormActionDialog } from './action-dialog';
 import { coachFormPath, formPageSchema, type FormGrants, type FormKind, type FormPage } from './contracts';
 import { BilingualField } from './question-editor';
 import { FormStatus } from './status';
+import { ArchivedEmpty, ArchivedFilter, ArchiveRowControl, useReloadOnUndoSettle } from '@/components/control/archive-controls';
+import { BulkBar, BulkRowCheckbox, BulkSelectAll, useBulkSelection } from '@/components/control/bulk-actions';
+import { listUrl } from '@/src/lib/control/archive-transport';
+import type { BulkItem } from '@/src/lib/control/bulk-actions';
 
 type Filters = { kind: 'template' | 'client'; archived: boolean; q: string };
 type Item = FormPage['items'][number];
 
 /** Task 7: templates and per-client copies for one form kind, with create, duplicate, default, archive, send and customise. */
-export function TemplateList({ initial, formKind, grants, filters }: { initial: FormPage; formKind: FormKind; grants: FormGrants; filters: Filters }) {
+export function TemplateList({ initial, formKind, grants, filters, archiveCanEdit }: { initial: FormPage; formKind: FormKind; grants: FormGrants; filters: Filters; archiveCanEdit?: boolean }) {
+  // Archive and restore of every form kind need forms edit, not the kind's own module; the hub page passes that grant.
+  const canArchive = archiveCanEdit ?? grants.edit;
   const t = useTranslations('forms');
   const locale = useLocale() === 'ar' ? 'ar' : 'en';
   const router = useRouter();
@@ -45,6 +50,8 @@ export function TemplateList({ initial, formKind, grants, filters }: { initial: 
     const merged = { ...filters, q, ...next };
     return `${base}?${new URLSearchParams({ tab: 'templates', kind: merged.kind, archived: String(merged.archived), ...(merged.q ? { q: merged.q } : {}) })}`;
   };
+  const bulkItems: BulkItem[] = data.items.map(item => ({ id: item.id, name: localize(item.name, locale), archived: !!item.archivedAt, canEdit: canArchive }));
+  const selection = useBulkSelection(bulkItems, JSON.stringify([filters.kind, filters.archived, filters.q]));
   const fail = (error: unknown) => setErrorKey(error instanceof FormRequestError && t.has(`errors.${error.code}`) ? error.code : 'request_failed');
 
   async function more() {
@@ -63,14 +70,23 @@ export function TemplateList({ initial, formKind, grants, filters }: { initial: 
       setCreateOpen(false); router.push(`${base}/${created.head.id}`);
     } catch (error) { fail(error); } finally { setBusy(false); }
   }
-  async function mutate(item: Item, kind: 'duplicate' | 'archive' | 'default') {
+  /* After an archive, restore or undo: refetch page one of this view; the server page also refreshes so Send drops an archived template. */
+  async function reload() {
+    try {
+      setData(formPageSchema.parse(await formRequest(listUrl('forms', { formKind, kind: filters.kind, ...(filters.q ? { q: filters.q } : {}) }, filters.archived).replace('/api/v1', ''))));
+      setErrorKey('');
+    } catch (error) { fail(error); }
+    router.refresh();
+  }
+  useReloadOnUndoSettle(() => void reload());
+  async function mutate(item: Item, kind: 'duplicate' | 'default') {
     setBusy(true); setErrorKey('');
     try {
       if (kind === 'duplicate') {
         const copy = z.object({ head: z.object({ id: z.string() }) }).parse(await formRequest(`/forms/${item.id}/duplicate`, 'POST', undefined, crypto.randomUUID()));
         router.push(`${base}/${copy.head.id}`);
       } else {
-        await formRequest(`/forms/${item.id}`, 'PATCH', kind === 'archive' ? { archived: !item.archivedAt } : { is_default: true }, crypto.randomUUID());
+        await formRequest(`/forms/${item.id}`, 'PATCH', { is_default: true }, crypto.randomUUID());
         router.refresh();
       }
     } catch (error) { fail(error); } finally { setBusy(false); }
@@ -90,16 +106,20 @@ export function TemplateList({ initial, formKind, grants, filters }: { initial: 
       <StackItem size="fill"><TextInput label={t('templates.search')} type="search" size="lg" value={q} onChange={setQ} onEnter={() => router.push(href({}))} /></StackItem>
       <Button label={t('templates.searchAction')} size="lg" onClick={() => router.push(href({}))} />
     </HStack>
-    <Switch label={t('templates.showArchived')} value={filters.archived} onChange={archived => router.push(href({ archived }))} />
+    <ArchivedFilter archived={filters.archived} onSelect={archived => router.push(href({ archived }))} />
+    {canArchive && data.items.length ? <BulkSelectAll items={bulkItems} selected={selection.selected} onChange={all => (all ? selection.selectAll() : selection.clear())} /> : null}
+    <BulkBar entity="forms" items={bulkItems} selected={selection.selected} archivedView={filters.archived} onSelectionChange={selection.set} onChanged={() => void reload()} />
     {errorKey ? <Banner status="error" title={t(`errors.${errorKey}`)} collapsible={false} /> : null}
 
-    {!data.items.length
+    {!data.items.length && filters.archived ? <ArchivedEmpty /> : null}
+    {!data.items.length && !filters.archived
       ? <EmptyState title={t('templates.emptyTitle')} description={t('templates.emptyDescription')}
         actions={grants.create && filters.kind === 'template' ? <Button label={t('templates.create')} variant="primary" size="lg" onClick={() => setCreateOpen(true)} /> : undefined} />
       : null}
     {data.items.map(item => <Card key={item.id}>
       <VStack gap={3}>
         <HStack gap={2} wrap="wrap" vAlign="center">
+          {canArchive ? <BulkRowCheckbox item={bulkItems.find(row => row.id === item.id)!} selected={selection.selected.has(item.id)} onToggle={() => selection.toggle(item.id)} /> : null}
           <StackItem size="fill"><Heading level={3} wordBreak="break-word">{localize(item.name, locale)}</Heading></StackItem>
           <FormStatus status={item.status ?? 'draft'} />
           {item.isDefault ? <Badge label={t('templates.default')} variant="info" /> : null}
@@ -111,7 +131,7 @@ export function TemplateList({ initial, formKind, grants, filters }: { initial: 
           {grants.edit && item.kind === 'template' && item.publishedVersionNo !== null && !item.isDefault && !item.archivedAt ? <Button label={t('templates.makeDefault')} isDisabled={busy} onClick={() => void mutate(item, 'default')} /> : null}
           {grants.create && item.publishedVersionNo !== null && !item.archivedAt ? <Button label={t('templates.send')} isDisabled={busy} onClick={() => setAction({ mode: 'send', item })} /> : null}
           {grants.create && item.kind === 'template' && item.publishedVersionNo !== null && !item.archivedAt ? <Button label={t('templates.customize')} isDisabled={busy} onClick={() => setAction({ mode: 'customize', item })} /> : null}
-          {grants.edit ? <Button label={item.archivedAt ? t('templates.unarchive') : t('templates.archive')} variant="ghost" isDisabled={busy} onClick={() => void mutate(item, 'archive')} /> : null}
+          <ArchiveRowControl entity="forms" id={item.id} archived={!!item.archivedAt} canEdit={canArchive} itemLabel={localize(item.name, locale)} onChanged={() => void reload()} />
         </HStack>
       </VStack>
     </Card>)}

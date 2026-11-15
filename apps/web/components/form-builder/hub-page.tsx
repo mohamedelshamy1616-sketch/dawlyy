@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { isAllowed } from '@dawlyy/core/authz';
 import { requirePage } from '@/src/server/auth';
 import { withAuthTx } from '@/src/server/db';
 import { listForms, listSubmissions } from '@/src/server/forms/read';
@@ -15,7 +16,7 @@ export async function FormHubPage({ formKind, search }: { formKind: FormKind; se
   const auth = await requirePage();
   const t = await getTranslations('forms');
   const grants = formPageGrants(auth, formKind);
-  const tab = firstParam(search.tab) === 'templates' ? 'templates' : 'review';
+  const tab = firstParam(search.tab) === 'templates' || firstParam(search.archived) === 'true' ? 'templates' : 'review';
   const kind = firstParam(search.kind) === 'client' ? 'client' : 'template';
   const archived = firstParam(search.archived) === 'true';
   const q = firstParam(search.q)?.slice(0, 200) ?? '';
@@ -32,7 +33,7 @@ export async function FormHubPage({ formKind, search }: { formKind: FormKind; se
     <div className="flex flex-wrap gap-2">{grants.create ? <SendFormButton formKind={formKind} templates={toJson(data.sendable)} label={t(`hub.send.${formKind}`)} /> : null}</div>
     <HubTabs formKind={formKind} active={tab} />
     {tab === 'templates' && data.page
-      ? <TemplateList key={JSON.stringify([kind, archived, q])} initial={toJson<FormPage>(data.page)} formKind={formKind} grants={grants} filters={{ kind, archived, q }} />
+      ? <TemplateList key={JSON.stringify([kind, archived, q])} initial={toJson<FormPage>(data.page)} formKind={formKind} grants={grants} archiveCanEdit={isAllowed(auth, 'forms', 'edit')} filters={{ kind, archived, q }} />
       : data.queue ? <ReviewQueue initial={toJson<Queue>(data.queue)} formKind={formKind} /> : null}
   </div>;
 }

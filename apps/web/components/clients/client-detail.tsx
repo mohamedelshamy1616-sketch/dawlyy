@@ -17,8 +17,7 @@ import { EmptyState } from '@/src/components/shell/empty-state';
 import { AssignPlanButton } from './assign-plan-dialog';
 import { ClientForm } from './client-form';
 import { ClientStatus } from './client-list';
-import { useMutation } from './use-mutation';
-import { useRouter } from '@/i18n/navigation';
+import { ArchiveRowControl } from '@/components/control/archive-controls';
 
 export const HUB_TABS = ['week', 'plan', 'money', 'notes'] as const;
 export type HubTab = (typeof HUB_TABS)[number];
@@ -57,17 +56,11 @@ type ClientDetailProps = {
 export function ClientDetail({ client, access, initialTab = 'week', timeline, program, nutrition, reviewCard, activityLog }: ClientDetailProps) {
   const t = useTranslations('clients');
   const locale = useLocale() === 'ar' ? 'ar' : 'en';
-  const router = useRouter();
-  const mutation = useMutation();
   const id = useId();
   const tabs = HUB_TABS.filter(value => value !== 'money' || access.viewMoney);
   const [tab, setTab] = useState<HubTab>(tabs.includes(initialTab) ? initialTab : 'week');
   const canAssignProgram = access.assignProgram && client.status !== 'archived';
   const canAssignNutrition = access.assignNutrition && client.status !== 'archived';
-  async function archive() {
-    const result = await mutation.send(`/api/v1/clients/${client.id}/${client.status === 'archived' ? 'unarchive' : 'archive'}`, 'POST');
-    if (result !== undefined) router.refresh();
-  }
   const programAction = <AssignPlanButton kind="program" clientId={client.id} hasCurrent={program !== null} canPublish={access.publishProgram} variant="primary" />;
   const nutritionAction = <AssignPlanButton kind="nutrition" clientId={client.id} hasCurrent={nutrition !== null} canPublish={access.publishNutrition} />;
   const panel = (value: HubTab, children: React.ReactNode) => tab === value
@@ -78,9 +71,9 @@ export function ClientDetail({ client, access, initialTab = 'week', timeline, pr
       <ClientStatus value={client.status} />
       {canAssignProgram && !(tab === 'plan' && access.viewProgram) ? programAction : null}
       {canAssignNutrition && !(tab === 'plan' && access.viewNutrition) ? nutritionAction : null}
-      {access.edit ? <Button variant="secondary" className="min-h-11" isDisabled={mutation.pending} onClick={archive} label={t(client.status === 'archived' ? 'unarchive' : 'archive')} /> : null}
+      <ArchiveRowControl entity="clients" id={client.id} archived={client.status === 'archived'} canEdit={access.edit}
+        itemLabel={client.displayName || [client.firstName, client.lastName].filter(Boolean).join(' ')} />
     </HStack>
-    {mutation.error ? <Text type="supporting" as="p" display="block" role="alert" className="!text-destructive">{t(`errors.${mutation.error}`)}</Text> : null}
     <VStack gap={4} className="min-w-0">
       <TabList role="tablist" value={tab} onChange={value => setTab(value as HubTab)} className="min-w-0 max-w-full" hasDivider>
         {tabs.map(value => <Tab key={value} id={`${id}-${value}-tab`} value={value} panelId={`${id}-${value}-panel`} className="min-h-11 whitespace-normal" onFocus={() => setTab(value)} label={t(`tabs.${value}`)} />)}

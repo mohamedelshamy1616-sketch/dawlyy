@@ -15,11 +15,15 @@ import { Users } from 'lucide-react';
 import { z } from 'zod';
 import { Link, useRouter } from '@/i18n/navigation';
 import { EmptyState } from '@/src/components/shell/empty-state';
+import { ArchivedEmpty, ArchivedFilter, ArchiveRowControl, useReloadOnUndoSettle } from '@/components/control/archive-controls';
+import { AssignTemplateToSelected, BulkBar, BulkRowCheckbox, BulkSelectAll, useBulkSelection } from '@/components/control/bulk-actions';
+import { listUrl } from '@/src/lib/control/archive-transport';
+import type { BulkItem } from '@/src/lib/control/bulk-actions';
 
 const itemSchema = z.object({ id: z.string(), firstName: z.string(), lastName: z.string().nullable(), displayName: z.string().nullable(), code: z.string(),
   status: z.enum(['lead', 'active', 'inactive', 'archived']), activePackage: z.object({ id: z.string(), name: z.object({ ar: z.string().optional(), en: z.string().optional() }) }).nullable(), daysLeft: z.number().nullable() });
 type Item = z.infer<typeof itemSchema>;
-type Filters = { q?: string; status?: string; packageId?: string; tag?: string; limit?: string };
+type Filters = { q?: string; status?: string; packageId?: string; tag?: string; limit?: string; archived?: string };
 
 /** Task 3: reuse shared status words where available and translate the client-only states locally. */
 export function ClientStatus({ value }: { value: Item['status'] }) {
@@ -29,10 +33,11 @@ export function ClientStatus({ value }: { value: Item['status'] }) {
 }
 
 /** Task 3 / G6: URL-backed filters, a phone card layout, desktop table and additive keyset pagination. */
-export function ClientList({ initial, filters, packages, tags, canCreate }: { initial: { items: Item[]; nextCursor: string | null }; filters: Filters;
-  packages: { id: string; name: { ar?: string; en?: string } }[]; tags: string[]; canCreate: boolean }) {
+export function ClientList({ initial, filters, packages, tags, canCreate, canArchive = false, programGrants = { edit: false, publish: false } }: { initial: { items: Item[]; nextCursor: string | null }; filters: Filters;
+  packages: { id: string; name: { ar?: string; en?: string } }[]; tags: string[]; canCreate: boolean; canArchive?: boolean; programGrants?: { edit: boolean; publish: boolean } }) {
   const t = useTranslations('clients');
   const status = useTranslations('status');
+  const archive = useTranslations('archiveControls');
   const locale = useLocale() === 'ar' ? 'ar' : 'en';
   const router = useRouter();
   const id = useId();
@@ -42,6 +47,7 @@ export function ClientList({ initial, filters, packages, tags, canCreate }: { in
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [pending, startTransition] = useTransition();
+  const archivedView = filters.archived === 'true';
   function href(patch: Partial<Filters>) {
     const params = new URLSearchParams();
     Object.entries({ ...filters, ...patch }).forEach(([key, value]) => { if (value) params.set(key, value); });
@@ -70,14 +76,29 @@ export function ClientList({ initial, filters, packages, tags, canCreate }: { in
     } catch { setError(true); } finally { setLoading(false); }
   }
   function clientName(item: Item) { return item.displayName || [item.firstName, item.lastName].filter(Boolean).join(' '); }
+  const bulkItems: BulkItem[] = items.map(item => ({ id: item.id, name: clientName(item), archived: archivedView, canEdit: canArchive }));
+  const selection = useBulkSelection(bulkItems, JSON.stringify(filters));
+  const selectedClients = bulkItems.filter(item => selection.selected.has(item.id)).map(({ id, name }) => ({ id, name }));
+  /* Revalidate page one of the current view after any archive, restore or undo; the cursor restarts. */
+  async function reload() {
+    try {
+      const response = await fetch(listUrl('clients', filters, archivedView));
+      if (!response.ok) throw new Error('Request failed');
+      const result = z.object({ items: z.array(itemSchema), nextCursor: z.string().nullable() }).parse(await response.json());
+      setItems(result.items); setCursor(result.nextCursor); setError(false);
+    } catch { setError(true); }
+    router.refresh();
+  }
+  useReloadOnUndoSettle(() => void reload());
   const add = canCreate ? <Button className="min-h-11" href="/coach/clients/new" variant="primary" label={t('add')} /> : undefined;
   return <VStack gap={5} className="min-w-0 max-w-full" aria-busy={pending || loading}>
     <HStack wrap="wrap" align="end" gap={3} className="min-w-0">
       <TextInput label={t('search')} containerClassName="min-w-0 flex-1" controlClassName="min-h-11" type="search" value={query} onChange={setQuery} placeholder={t('searchHint')} {...{ maxLength: 300 }} />{add}
     </HStack>
     <HStack wrap="wrap" gap={2} aria-label={t('filterStatus')}>
-      {(['', 'lead', 'active', 'inactive', 'archived'] as const).map(value => <Button key={value} variant={(filters.status ?? '') === value ? 'primary' : 'secondary'} className="min-h-11" aria-current={(filters.status ?? '') === value ? 'page' : undefined} href={href({ status: value })} label={value === '' ? t('allStatuses') : value === 'active' ? status('active') : t(`statuses.${value}`)} />)}
+      {(['', 'lead', 'active', 'inactive'] as const).map(value => <Button key={value} variant={!archivedView && (filters.status ?? '') === value ? 'primary' : 'secondary'} className="min-h-11" aria-current={!archivedView && (filters.status ?? '') === value ? 'page' : undefined} href={href({ status: value, archived: '' })} label={value === '' ? t('allStatuses') : value === 'active' ? status('active') : t(`statuses.${value}`)} />)}
     </HStack>
+    <ArchivedFilter archived={archivedView} hrefFor={archived => href({ archived: archived ? 'true' : '', status: '' })} />
     <VStack gap={3} className="!grid min-w-0 sm:grid-cols-2">
       <Field label={t('fields.package')} inputID={`${id}-package`} className="min-w-0"><select id={`${id}-package`} className="min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3 text-start" value={filters.packageId ?? ''} onChange={event => startTransition(() => router.replace(href({ packageId: event.target.value })))}><option value="">{t('allPackages')}</option>{packages.map(pkg => <option key={pkg.id} value={pkg.id}>{localize(pkg.name, locale)}</option>)}</select></Field>
       <Field label={t('fields.tags')} inputID={`${id}-tag`} className="min-w-0"><select id={`${id}-tag`} className="min-h-11 w-full min-w-0 rounded-lg border bg-background ps-3 pe-3 text-start" value={filters.tag ?? ''} onChange={event => startTransition(() => router.replace(href({ tag: event.target.value })))}><option value="">{t('allTags')}</option>{tags.map(tag => <option key={tag}>{tag}</option>)}</select></Field>
@@ -86,13 +107,19 @@ export function ClientList({ initial, filters, packages, tags, canCreate }: { in
       {filters.packageId ? <Button variant="secondary" className="min-h-11 max-w-full !h-auto !whitespace-normal" href={href({ packageId: '' })} label={t('clearPackage')} /> : null}
       {filters.tag ? <Button variant="secondary" className="min-h-11 max-w-full !h-auto !whitespace-normal" href={href({ tag: '' })} label={t('clearTag', { tag: filters.tag })} /> : null}
     </HStack> : null}
-    {!items.length ? <EmptyState Icon={Users} title={t('empty.title')} description={t('empty.body')} action={add} /> : <>
+    {canArchive && items.length ? <BulkSelectAll items={bulkItems} selected={selection.selected} onChange={all => (all ? selection.selectAll() : selection.clear())} /> : null}
+    <BulkBar entity="clients" items={bulkItems} selected={selection.selected} archivedView={archivedView} onSelectionChange={selection.set} onChanged={() => void reload()}
+      extra={!archivedView ? <AssignTemplateToSelected clients={selectedClients} grants={programGrants} /> : undefined} />
+    {!items.length ? (archivedView ? <ArchivedEmpty /> : <EmptyState Icon={Users} title={t('empty.title')} description={t('empty.body')} action={add} />) : <>
       <VStack gap={3} className="min-w-0 md:!hidden">{items.map(item => <Card role="article" key={item.id} className="!grid min-w-0 gap-3">
-        <HStack wrap="wrap" align="start" justify="between" gap={2} className="min-w-0"><Link href={`/coach/clients/${item.id}`} className="inline-flex min-h-11 min-w-0 max-w-full items-center break-words font-semibold underline-offset-4 hover:underline">{clientName(item)}</Link><ClientStatus value={item.status} /></HStack>
+        <HStack wrap="wrap" align="start" justify="between" gap={2} className="min-w-0">{canArchive ? <BulkRowCheckbox item={bulkItems.find(row => row.id === item.id)!} selected={selection.selected.has(item.id)} onToggle={() => selection.toggle(item.id)} /> : null}<Link href={`/coach/clients/${item.id}`} className="inline-flex min-h-11 min-w-0 max-w-full items-center break-words font-semibold underline-offset-4 hover:underline">{clientName(item)}</Link><ClientStatus value={item.status} /></HStack>
         <dl className="grid min-w-0 grid-cols-2 gap-2 text-sm"><dt className="text-muted-foreground">{t('fields.code')}</dt><dd className="break-words" dir="ltr">{item.code}</dd><dt className="text-muted-foreground">{t('fields.package')}</dt><dd className="min-w-0 break-words">{item.activePackage ? localize(item.activePackage.name, locale) : t('noPackage')}</dd><dt className="text-muted-foreground">{t('daysLeft')}</dt><dd>{item.daysLeft === null ? '' : new Intl.NumberFormat(locale).format(item.daysLeft)}</dd></dl>
+        <ArchiveRowControl entity="clients" id={item.id} archived={archivedView} canEdit={canArchive} itemLabel={clientName(item)} onChanged={() => void reload()} />
       </Card>)}</VStack>
-      <VStack className="!hidden min-w-0 max-w-full md:!block"><Table className="w-full table-fixed"><TableHeader><TableRow isHeaderRow>{['name', 'code', 'status', 'package', 'daysLeft'].map(key => <TableHeaderCell key={key} className="whitespace-normal text-start">{t(key === 'daysLeft' ? key : `fields.${key}`)}</TableHeaderCell>)}</TableRow></TableHeader><TableBody>{items.map(item => <TableRow key={item.id}>
+      <VStack className="!hidden min-w-0 max-w-full md:!block"><Table className="w-full table-fixed"><TableHeader><TableRow isHeaderRow>{canArchive ? <TableHeaderCell className="w-14 whitespace-normal text-start"><Text className="sr-only">{archive('bulk.selectColumn')}</Text></TableHeaderCell> : null}{['name', 'code', 'status', 'package', 'daysLeft'].map(key => <TableHeaderCell key={key} className="whitespace-normal text-start">{t(key === 'daysLeft' ? key : `fields.${key}`)}</TableHeaderCell>)}{canArchive ? <TableHeaderCell className="whitespace-normal text-start"><Text className="sr-only">{archive('actionsColumn')}</Text></TableHeaderCell> : null}</TableRow></TableHeader><TableBody>{items.map(item => <TableRow key={item.id}>
+        {canArchive ? <TableCell className="whitespace-normal"><BulkRowCheckbox item={bulkItems.find(row => row.id === item.id)!} selected={selection.selected.has(item.id)} onToggle={() => selection.toggle(item.id)} /></TableCell> : null}
         <TableCell className="whitespace-normal break-words"><Link className="inline-flex min-h-11 items-center font-medium hover:underline" href={`/coach/clients/${item.id}`}>{clientName(item)}</Link></TableCell><TableCell className="whitespace-normal break-words"><bdi>{item.code}</bdi></TableCell><TableCell className="whitespace-normal"><ClientStatus value={item.status} /></TableCell><TableCell className="whitespace-normal break-words">{item.activePackage ? localize(item.activePackage.name, locale) : t('noPackage')}</TableCell><TableCell>{item.daysLeft === null ? '' : new Intl.NumberFormat(locale).format(item.daysLeft)}</TableCell>
+        {canArchive ? <TableCell className="whitespace-normal"><ArchiveRowControl entity="clients" id={item.id} archived={archivedView} canEdit={canArchive} itemLabel={clientName(item)} onChanged={() => void reload()} /></TableCell> : null}
       </TableRow>)}</TableBody></Table></VStack>
     </>}
     {error ? <Text type="supporting" as="p" display="block" role="alert" className="!text-destructive">{t('errors.failed')}</Text> : null}

@@ -16,9 +16,12 @@ export default async function PackagesPage({ params, searchParams }: { params: P
   const auth = await requirePage();
   const t = await getTranslations('packages');
   const raw = await searchParams;
-  const query = packageListSchema.parse(Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])));
+  const parsed = packageListSchema.parse(Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])));
+  // R0c contract: archived=true is archived only. The Library hub sends true; an old link may still send 1, which meant "include".
+  const archivedView = parsed.archived === 'true' || parsed.archived === '1';
+  const query = { ...parsed, archived: archivedView ? 'true' as const : 'false' as const };
   const data = await withAuthTx(auth, tx => listPackages(tx, auth, query));
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={t('title')} subtitle={t('subtitle')} />
-    <PackageList key={JSON.stringify([query, data])} initial={data} archived={query.archived === '1'} canEdit={isAllowed(auth, 'packages', 'edit')} canCreate={isAllowed(auth, 'packages', 'create')} />
+    <PackageList key={JSON.stringify(query)} initial={data} archived={archivedView} canEdit={isAllowed(auth, 'packages', 'edit')} canCreate={isAllowed(auth, 'packages', 'create')} />
   </div>;
 }

@@ -24,19 +24,26 @@ import { EmptyState } from '@/src/components/shell/empty-state';
 import { DIFFICULTIES, MOVEMENT_PATTERNS } from '@dawlyy/core/types';
 import type { ExerciseListItem } from '@/src/server/exercises/service';
 import { exerciseRequest } from './http';
+import { ArchivedEmpty, ArchivedFilter, ArchiveRowControl, HideRowControl, useReloadOnUndoSettle } from '@/components/control/archive-controls';
+import { BulkBar, BulkRowCheckbox, BulkSelectAll, useBulkSelection } from '@/components/control/bulk-actions';
+import type { BulkItem } from '@/src/lib/control/bulk-actions';
 
 type Result = { items: ExerciseListItem[]; nextCursor: string | null };
 
 /** Task 4: responsive library with category tabs, filter Sheet and keyset load-more. */
-export function ExerciseLibrary({ initial, categories: initialCategories, canCreate, owner }: { initial: Result; categories: string[]; canCreate: boolean; owner: boolean }) {
+/** R3a: filter values the page forwards from its URL, so a link such as the Library hub's ?archived=true survives the first client refetch. */
+export type ExerciseInitialParams = Partial<Record<'q' | 'category' | 'muscle' | 'equipment' | 'pattern' | 'difficulty' | 'source' | 'includeHidden' | 'archived', string>>;
+
+export function ExerciseLibrary({ initial, categories: initialCategories, canCreate, owner, canEdit = false, initialParams = {} }: { initial: Result; categories: string[]; canCreate: boolean; owner: boolean; canEdit?: boolean; initialParams?: ExerciseInitialParams }) {
   const t = useTranslations('exercises'); const muscleT = useTranslations('workout');
   const locale = useLocale();
   const [result, setResult] = useState(initial);
   const [resultParameters, setResultParameters] = useState<string | null>(null);
   const [categories, setCategories] = useState(initialCategories);
-  const [q, setQ] = useState('');
-  const [category, setCategory] = useState('');
-  const [filters, setFilters] = useState({ muscle: '', equipment: '', pattern: '', difficulty: '', source: '', includeHidden: false });
+  const [q, setQ] = useState(initialParams.q ?? '');
+  const [category, setCategory] = useState(initialParams.category ?? '');
+  const [archived, setArchived] = useState(initialParams.archived === 'true');
+  const [filters, setFilters] = useState({ muscle: initialParams.muscle ?? '', equipment: initialParams.equipment ?? '', pattern: initialParams.pattern ?? '', difficulty: initialParams.difficulty ?? '', source: initialParams.source ?? '', includeHidden: initialParams.includeHidden === 'true' });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
   const [retry, setRetry] = useState(0);
@@ -45,12 +52,16 @@ export function ExerciseLibrary({ initial, categories: initialCategories, canCre
   const [categoryText, setCategoryText] = useState(initialCategories.join('\n'));
   const generation = useRef(0);
   function parameters(cursor?: string) {
-    const params = new URLSearchParams({ q, category, muscle: filters.muscle, equipment: filters.equipment, pattern: filters.pattern, difficulty: filters.difficulty, limit: '20', includeHidden: String(filters.includeHidden) });
+    const params = new URLSearchParams({ q, category, muscle: filters.muscle, equipment: filters.equipment, pattern: filters.pattern, difficulty: filters.difficulty, limit: '20', includeHidden: String(filters.includeHidden), archived: String(archived) });
     if (filters.source) params.set('source', filters.source);
     if (cursor) params.set('cursor', cursor);
     return params;
   }
   const params = parameters().toString();
+  // Only tenant-owned exercises archive; shared (system) ones keep the per-tenant Hide, so they are never bulk-selectable.
+  const bulkItems: BulkItem[] = result.items.map(exercise => ({ id: exercise.id, name: (locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar) ?? '', archived, canEdit: canEdit && exercise.editable }));
+  const selection = useBulkSelection(bulkItems, params);
+  useReloadOnUndoSettle(() => setRetry(value => value + 1));
   useEffect(() => {
     const controller = new AbortController();
     generation.current += 1;
@@ -95,13 +106,21 @@ export function ExerciseLibrary({ initial, categories: initialCategories, canCre
     </TabList>
     <VStack aria-live="polite" role="status">{busy ? t('loading') : null}</VStack>
     {error ? <VStack role="alert">{t('errors.request')}<Button onClick={() => setRetry((value) => value + 1)} className="min-h-11 min-w-11" label={t('retry')} /></VStack> : null}
-    {!busy && !error && result.items.length === 0 ? <EmptyState Icon={Dumbbell} title={q || category || Object.values(filters).some(Boolean) ? t('noResults') : t('empty')} description={t('noResultsBody')} /> : null}
+    <ArchivedFilter archived={archived} onSelect={setArchived} />
+    {canEdit && result.items.length ? <BulkSelectAll items={bulkItems} selected={selection.selected} onChange={all => (all ? selection.selectAll() : selection.clear())} /> : null}
+    <BulkBar entity="exercises" items={bulkItems} selected={selection.selected} archivedView={archived} onSelectionChange={selection.set} onChanged={() => setRetry(value => value + 1)} />
+    {!busy && !error && result.items.length === 0 && archived ? <ArchivedEmpty /> : null}
+    {!busy && !error && result.items.length === 0 && !archived ? <EmptyState Icon={Dumbbell} title={q || category || Object.values(filters).some(Boolean) ? t('noResults') : t('empty')} description={t('noResultsBody')} /> : null}
     <Grid gap={4} id="exercise-category-results" role="tabpanel" aria-label={category || t('all')} className="min-w-0 sm:grid-cols-2 xl:grid-cols-3" aria-busy={busy}>
       {result.items.map((exercise) => <Card key={exercise.id} className="min-w-0 overflow-hidden"><VStack gap={3}>
         {exercise.thumbnailUrl ? <VStack className="aspect-video overflow-hidden rounded-lg bg-muted"><Image src={exercise.thumbnailUrl} unoptimized width={640} height={360} alt="" className="size-full object-cover" /></VStack> : <Grid className="aspect-video place-items-center rounded-lg bg-brand-soft"><Dumbbell aria-hidden className="size-9 text-brand" /></Grid>}
-        <Link className="block min-h-11 break-words text-lg font-semibold" href={`/coach/exercises/${exercise.id}`}>{locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar}</Link>
+        <HStack gap={2} wrap="wrap" align="center" className="min-w-0">{bulkItems.find(row => row.id === exercise.id)?.canEdit ? <BulkRowCheckbox item={bulkItems.find(row => row.id === exercise.id)!} selected={selection.selected.has(exercise.id)} onToggle={() => selection.toggle(exercise.id)} /> : null}
+          <Link className="block min-h-11 min-w-0 flex-1 break-words text-lg font-semibold" href={`/coach/exercises/${exercise.id}`}>{locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar}</Link></HStack>
         {muscleLabels(exercise.primaryMuscles, muscleT).length ? <Text as="p" className="break-words text-sm text-muted-foreground">{muscleLabels(exercise.primaryMuscles, muscleT).join(' · ')}</Text> : null}
         <HStack gap={2} wrap="wrap"><Text type="label" className="rounded-full bg-muted ps-2 pe-2 py-1">{exercise.source === 'system' ? t('system') : t('mine')}</Text>{exercise.hidden ? <Text type="label" className="rounded-full border ps-2 pe-2 py-1">{t('hidden')}</Text> : null}</HStack>
+        {exercise.editable
+          ? <ArchiveRowControl entity="exercises" id={exercise.id} archived={archived} canEdit={canEdit} itemLabel={(locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar) ?? ''} onChanged={() => setRetry(value => value + 1)} />
+          : <HideRowControl kind="exercises" id={exercise.id} hidden={exercise.hidden} canEdit={canEdit} itemLabel={(locale === 'ar' ? exercise.name.ar || exercise.name.en : exercise.name.en || exercise.name.ar) ?? ''} onChanged={() => setRetry(value => value + 1)} />}
       </VStack></Card>)}
     </Grid>
     {result.nextCursor && resultParameters === params ? <Button variant="secondary" className="min-h-11 min-w-11" isDisabled={busy} onClick={more} label={t('loadMore')} /> : null}
