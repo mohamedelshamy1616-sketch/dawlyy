@@ -32,6 +32,7 @@ const loaders = {
     legal: () => import('../messages/ar/legal.json'),
     archiveControls: () => import('../messages/ar/archiveControls.json'),
     controlUndo: () => import('../messages/ar/controlUndo.json'),
+    activity: () => import('../messages/ar/activity.json'),
   },
   en: {
     common: () => import('../messages/en/common.json'),
@@ -62,6 +63,7 @@ const loaders = {
     legal: () => import('../messages/en/legal.json'),
     archiveControls: () => import('../messages/en/archiveControls.json'),
     controlUndo: () => import('../messages/en/controlUndo.json'),
+    activity: () => import('../messages/en/activity.json'),
   },
 } satisfies Record<(typeof routing.locales)[number], Record<string, () => Promise<{ default: AbstractIntlMessages }>>>;
 

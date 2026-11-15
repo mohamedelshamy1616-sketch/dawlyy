@@ -12,6 +12,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
   const auth = await requirePage();
   const t = await getTranslations('settings.hub');
+  const activity = await getTranslations('activity');
   const item = (key: 'business' | 'team' | 'branding' | 'language' | 'legal' | 'legalPages', href: string) => ({ href, title: t(`${key}.title`), body: t(`${key}.body`) });
   const items = [
     item('business', '/coach/settings/business'),
@@ -19,6 +20,8 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
     item('branding', '/coach/settings/branding'),
     item('language', '/coach/settings/language'),
     ...(auth.role === 'owner' ? [item('legal', '/coach/settings/legal')] : []),
+    ...((auth.role === 'owner' || auth.role === 'staff') && isAllowed(auth, 'clients', 'view')
+      ? [{ href: '/coach/settings/activity', title: activity('title'), body: activity('subtitle') }] : []),
     item('legalPages', '/terms'),
   ];
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={t('title')} subtitle={t('subtitle')} /><SettingsHub items={items} /></div>;

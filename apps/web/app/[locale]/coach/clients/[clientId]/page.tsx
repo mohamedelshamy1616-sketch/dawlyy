@@ -14,6 +14,7 @@ import { listPrograms } from '@/src/server/programs/read';
 import { PageHeader } from '@/src/components/shell/page-header';
 import { ClientDetail, HUB_TABS, type HubAccess, type PlanSummary } from '@/components/clients/client-detail';
 import type { TimelinePage } from '@/components/dashboard/types';
+import { ActivityLog } from '@/components/activity/activity-log';
 
 /** R1c: RLS-scoped client hub; the plan and timeline reads run only for callers who hold the matching module grant. */
 export default async function ClientPage({ params, searchParams }: { params: Promise<{ locale: string; clientId: string }>; searchParams: Promise<{ tab?: string | string[] }> }) {
@@ -51,6 +52,6 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const { client } = data;
   const requested = HUB_TABS.find(value => value === (Array.isArray(tab) ? tab[0] : tab));
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={client.displayName || [client.firstName, client.lastName].filter(Boolean).join(' ')} subtitle={client.code} />
-    <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link><ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} />
+    <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link><ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog clientId={client.id} />} />
   </div>;
 }

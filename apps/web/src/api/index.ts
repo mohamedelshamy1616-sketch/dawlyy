@@ -47,6 +47,7 @@ import { router as mediaRouter } from './media';
 import { router as clientModulesRouter } from './client-modules';
 import { router as redFlagsRouter } from './red-flags';
 import { router as inboxRouter } from './inbox';
+import { router as activityRouter } from './activity';
 
 /** doc §12.1 / build-plan API: preserve the shared environment type's original import location. */
 export type { ApiEnv } from './env';
@@ -120,6 +121,7 @@ app.route('/team', teamRouter);
 app.route('/media', mediaRouter);
 app.route('/red-flags', redFlagsRouter);
 app.route('/inbox', inboxRouter);
+app.route('/activity', activityRouter);
 
 app.doc('/openapi.json', { openapi: '3.1.0', info: { title: 'DAWLYY API', version: '1' } });
 app.get('/docs', swaggerUI({ url: '/api/v1/openapi.json' }));
