@@ -4,9 +4,29 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-13 23:20 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5): P8 wave R0/R1.
+Last update: 2026-11-15 15:50 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5): P8 batch 2.
 
 ## Autopilot worker log (newest first)
+
+### 15 Nov 15:50, R2a and R3a merged, main green; R3b paused at the Codex limit (back 20:13)
+
+- New worker session after a reboot (15:07). Weekly Claude usage 86%, so this session only reviews, gates,
+  commits and runs Codex (playbook 85% rule): no Sonnet builders, no own code beyond integration fixes.
+- R2a: the merge (6f8be56) had left its integration fixes uncommitted with 3 tsc errors in two tests. Fixed with a
+  typed provider view (LESSONS 15 Nov) and committed fb0eed6: web tsc 0, lint 0 errors, client-today 109/109.
+- R3a: merged with its six integration patches and its 3 lint errors fixed (setState moved from two fetch effects
+  into the handlers that drive them; the test children prop). Committed 1325a96. Gates on main: web tsc 0, lint
+  0 errors (25 warnings), test-web on a fresh database 94/94 files, 908/908 tests (job
+  `20261115-154334-main-testweb-r3a-2`). The first run timed out two untouched DB suites in setup under boot load;
+  they passed alone, then the full rerun passed.
+- Worktrees r2a and r3a deregistered; their folders stay on disk with build output only (long paths).
+- R3b: Codex job `20261115-151025-r3b-3` (resume note added to `r3b-run.md`) hit the ChatGPT plan limit after 21
+  minutes, "try again at 8:13 PM". Its files stay in `../dawlyy-wt-r3b`: the activity route and its test, the
+  activity messages, `src/server/activity/`, and `integration/r3b.md`. Nothing is reviewed yet.
+- **Next (from 20:15):** relaunch `r3b-run.md` with the same flags (one Codex job at a time, OPEN_DECISIONS 24);
+  its resume note already tells it to keep and re-verify what is in the worktree. When it ends, review, gate and
+  commit in the worktree, merge into main with `integration/r3b.md`, gate main (tsc, lint, test-web). Then R4d
+  (`r4d-run.md`, worktree `../dawlyy-wt-r4d` is ready), then the remaining batch per `turbo-file-map.md`.
 
 ### 14 Nov 22:58, batch 2 relaunched on Codex (R2a, R3a, R3b); R4d worktree prepared
 
