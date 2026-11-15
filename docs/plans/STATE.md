@@ -4,9 +4,27 @@ This is the single hand-off file. Any model or session that continues the build 
 then `docs/plans/2026-11-07-dawlyy-build-plan.md` (the contract), and does **not** re-plan.
 Update this file at every meaningful transition: a wave finished, a decision taken, a failure found.
 
-Last update: 2026-11-15 15:50 (Africa/Cairo), by the autopilot worker (Claude Opus 5.5): P8 batch 2.
+Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude Sonnet 5.5): P8 batch 2.
 
 ## Autopilot worker log (newest first)
+
+### 15 Nov 21:10, R3b merged (48b0b5d), main green; Codex at its limit until 01:22
+
+- Resume at 20:20 on Sonnet (weekly Claude 90%): Codex, reviews, gates, commits only. Codex job
+  `20261115-202152-r3b-4` ran 17 minutes, wrote the 9 missing files, then hit the plan limit ("try again at 1:22 AM").
+- Review fixes in the worktree (shell only, OPEN_DECISIONS 25): a literal type in `components.test.ts`; the revert
+  tests reused one `Response` across two calls (body already read) and expected `datetime` where React emits
+  `dateTime` (test-harness defects, assertions keep their meaning); both new pages built JSX inside try/catch and a
+  local variable was named `module` (lint). Read `read.ts` and the route: metadata only, tenant-scoped, staff limited
+  to client-linked rows, per-entity permission predicate, read-only route behind `requireStaffRole`.
+- Worktree gates: web tsc 0, eslint 0 errors, 5 unit files 101/101. Committed a8c0ea0, merged 48b0b5d with the seven
+  integration patches; the `request.ts` loader patch no longer applied (R2a/R3a changed the file) so the two
+  `activity` loaders were added by hand.
+- Main gates: tsc 0, lint 0 errors (27 warnings), test-web 100 files 1021/1021 (job
+  `20261115-205412-main-testweb-r3b`), `security.activity-api` 17/17 on a fresh database.
+- **Next (from 01:25, Codex back):** R4d on Codex (`r4d-run.md`, worktree `../dawlyy-wt-r4d` ready, flags as for
+  R3b, one job at a time), then the rest of the batches in `turbo-file-map.md` (R2b, R2c, R4b, R5). Weekly Claude
+  usage resets Tue 06:00; before then, no Sonnet builders.
 
 ### 15 Nov 15:50, R2a and R3a merged, main green; R3b paused at the Codex limit (back 20:13)
 
