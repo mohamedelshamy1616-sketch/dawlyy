@@ -24,6 +24,7 @@ const actions: { key: string; href: string; archived?: boolean }[] = [...new Map
 /** R1b: desktop client/action search with abortable requests, arrow keys, Enter and native dialog focus handling. */
 export function CommandPalette() {
   const t = useTranslations('nav'); const common = useTranslations('common'); const activity = useTranslations('activity'); const router = useRouter(); const id = useId();
+  const aiProvider = useTranslations('aiProvider');
   const [open, setOpen] = useState(false); const [query, setQuery] = useState(''); const [active, setActive] = useState(0);
   const [clients, setClients] = useState<{ label: string; href: string }[]>([]);
   const [loading, setLoading] = useState(false); const [failed, setFailed] = useState(false);
@@ -54,7 +55,7 @@ export function CommandPalette() {
     return () => { controller.abort(); clearTimeout(timeout); };
   }, [query, open]);
   const folded = searchKey(query);
-  const results = [...(query.trim() ? clients : []), ...actions.map(item => ({ label: item.key === 'activity' ? activity('title') : item.archived ? t('archivedFor', { name: t(`coach.${item.key}`) }) : t(`coach.${item.key}`), href: item.href })).filter(item => !folded || searchKey(item.label).includes(folded))];
+  const results = [...(query.trim() ? clients : []), ...actions.map(item => ({ label: item.key === 'activity' ? activity('title') : item.key === 'aiProvider' ? aiProvider('hub.title') : item.archived ? t('archivedFor', { name: t(`coach.${item.key}`) }) : t(`coach.${item.key}`), href: item.href })).filter(item => !folded || searchKey(item.label).includes(folded))];
   const selected = Math.min(active, Math.max(0, results.length - 1));
   useEffect(() => {
     if (open) document.getElementById(`${id}-result-${selected}`)?.scrollIntoView({ block: 'nearest' });

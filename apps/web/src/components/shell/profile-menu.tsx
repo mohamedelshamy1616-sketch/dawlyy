@@ -16,6 +16,7 @@ import { SignOutButton } from './sign-out-button';
 /** R1b: profile tools share one accessible drawer on phone and desktop. */
 export function ProfileMenu() {
   const t = useTranslations('nav'); const common = useTranslations('common'); const activity = useTranslations('activity');
+  const aiProvider = useTranslations('aiProvider');
   const pathname = usePathname(); const [open, setOpen] = useState(false); const id = useId();
   return <>
     <Button label={t('profile')} variant="ghost" icon={<UserRound className="size-5" aria-hidden />}
@@ -32,7 +33,7 @@ export function ProfileMenu() {
             {COACH_PROFILE_NAV.map(item => <li key={item.href}>
               <Link href={item.href} prefetch={false} onClick={() => setOpen(false)} aria-current={isActive(pathname, item) ? 'page' : undefined}
                 className="focus-ring flex min-h-11 items-center gap-3 rounded-lg px-3 hover:bg-muted aria-[current=page]:bg-brand-soft">
-                <item.Icon className="size-4 shrink-0" aria-hidden /><Text>{item.key === 'activity' ? activity('title') : t(`coach.${item.key}`)}</Text>
+                <item.Icon className="size-4 shrink-0" aria-hidden /><Text>{item.key === 'activity' ? activity('title') : item.key === 'aiProvider' ? aiProvider('hub.title') : t(`coach.${item.key}`)}</Text>
               </Link>
             </li>)}
           </ul>

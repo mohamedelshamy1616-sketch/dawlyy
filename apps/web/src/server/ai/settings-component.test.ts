@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, type ComponentProps, type ComponentType } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { NextIntlClientProvider } from 'next-intl';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -16,11 +16,11 @@ vi.mock('@/i18n/navigation', async () => {
 
 const off: AiProviderStatus = { provider: 'none', state: 'off', reason: 'default_none' };
 const catalogs = { ar, en };
+const Provider = NextIntlClientProvider as ComponentType<Omit<ComponentProps<typeof NextIntlClientProvider>, 'children'>>;
 function render(locale: 'ar' | 'en', props: Partial<Parameters<typeof ProviderStatus>[0]> = {}) {
-  return renderToStaticMarkup(createElement(NextIntlClientProvider, {
+  return renderToStaticMarkup(createElement(Provider, {
     locale, timeZone: 'UTC', messages: { aiProvider: catalogs[locale] },
-    children: createElement(ProviderStatus, { status: off, locale, ...props }),
-  }));
+  }, createElement(ProviderStatus, { status: off, locale, ...props })));
 }
 
 beforeEach(() => { vi.stubGlobal('fetch', vi.fn(() => { throw new Error('Network is forbidden in this test'); })); });
@@ -46,7 +46,7 @@ describe('read-only AI settings', () => {
     expect(html).toContain(locale === 'ar' ? 'قبل إعادة المحاولات والضرايب ورسوم التمويل والبنية التحتية' : 'before retries, tax, funding fees and infrastructure');
     expect(html.match(/data-ai-cost-row=/g)).toHaveLength(9);
     expect(html).toContain('Claude Haiku 5.5');
-    expect(html).toContain('Cloudflare Gemma 4 26B-A4B');
+    expect(html).toContain(locale === 'ar' ? 'كلاودفلير Gemma 4 26B-A4B' : 'Cloudflare Gemma 4 26B-A4B');
     expect(html).toContain(locale === 'ar' ? 'القوالب شغالة' : 'Template reviews already work');
     expect(html).toContain(locale === 'ar' ? '151/2020' : '151/2020');
     expect(html).toContain('href="/coach/settings"');
@@ -102,10 +102,9 @@ describe('read-only AI settings', () => {
   });
 
   it('identifies the route loading state as transient', () => {
-    const html = renderToStaticMarkup(createElement(NextIntlClientProvider, {
+    const html = renderToStaticMarkup(createElement(Provider, {
       locale: 'en', timeZone: 'UTC', messages: { aiProvider: en },
-      children: createElement(AiSettingsLoading),
-    }));
+    }, createElement(AiSettingsLoading)));
     expect(html).toContain('Loading AI settings');
     expect(html).toContain('role="status"');
     expect(html).toContain('aria-busy="true"');

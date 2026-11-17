@@ -22,8 +22,8 @@
   },
   "providers": {
     "none": "مراجعات القوالب",
-    "anthropic": "Anthropic",
-    "openrouter": "OpenRouter"
+    "anthropic": "أنثروبيك",
+    "openrouter": "أوبن راوتر"
   },
   "templateExplanation": "مراجعات القوالب شغالة من غير ذكاء اصطناعي خارجي. كل رد بيتولد بيفضل مسودة خاصة بالكوتش للمراجعة والتعديل.",
   "legalNote": "الخطة لسه سايبة المراجعة القانونية كقرار مفتوح: إرسال بيانات صحية برّه مصر وفق قانون 151/2020 محتاج مراجعة قانونية قبل التفعيل. وجود مفتاح مش إثبات على الموافقة أو اعتماد معالجة البيانات.",
@@ -49,7 +49,7 @@
       "flashLite": "Gemini 3.5 Flash-Lite، قياسي مدفوع",
       "flashDecember": "Gemini 3.8 Flash، لحد ديسمبر 2026",
       "flashJanuary": "Gemini 3.8 Flash، من يناير 2027",
-      "cloudflare": "Cloudflare Gemma 4 26B-A4B"
+      "cloudflare": "كلاودفلير Gemma 4 26B-A4B"
     }
   }
 }
