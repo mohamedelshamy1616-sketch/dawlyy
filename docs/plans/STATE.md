@@ -8,6 +8,22 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 17 Nov 14:50, R4d merged and main green (aa63c95); R2b building on Codex
+
+- Codex job `20261117-131628-r4d-1` (max) wrote the 19 R4d files; I reviewed the provider code (default `none`, fixed
+  URLs, injected fetch only). Worktree gates: tsc 0, 93 tests 4/4 files; eslint found two `no-children-prop` errors.
+  The guard refuses Edit and Write in a sibling worktree for every session, so the fix was made on main after the
+  merge (0f603cd, integration patches and fixes in aa63c95).
+- The parity test then failed on three third-party names left in Latin letters in the ar catalog; they now have
+  Arabic forms (no allowlist change). Main gates: tsc 0, eslint 0, test-web 104 files 1116/1116
+  (job `20261117-144211-main-testweb-r4d`).
+- Sonnet builders for R2b and R2c were blocked by the same guard (nothing written, LESSONS 17 Nov); their read-only
+  findings became errata in `r2b-run.md` and `r2c-run.md`. Worktree builds are Codex only, one job at a time.
+- Codex job `20261117-143253-r2b-1` (high) is building R2b in `../dawlyy-wt-r2b`.
+- **Next:** when r2b-1 ends: review, gate in the worktree (tsc, eslint on new files, own vitest with
+  `--configLoader native --pool threads` if Vite hits EPERM), commit in `wt/r2b`, merge into main, apply
+  `integration/r2b.md`, fix findings on main, gate main. Then R2c (`r2c-run.md`, `../dawlyy-wt-r2c` ready), R4b, R5.
+
 ### 17 Nov 13:35, fresh weekly bar (4%), R4d launched on Codex; R2b and R2c worktrees prepared
 
 - Start message said weekly 100%, but `.autopilot/usage.json` (13:15, after the Tue 06:00 reset) shows weekly 4% and
