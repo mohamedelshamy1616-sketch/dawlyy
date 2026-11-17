@@ -329,3 +329,12 @@ anything wrong in this brief. Do not claim unrun browser/database proof or paste
 
 - A missing or foreign correction original returns 403 `void_not_allowed` (`server/nutrition/logs.ts` `correctMeal`, `server/tracking/entries.ts` `correctMeasurements`), not 404 `not_found`. Test and handle 403.
 - There is no `workoutHistoryColumns`. The workout list selects `clientColumns.workoutSessions` (`server/workout/read.ts`), which already has `createdAt`.
+
+## Errata 2 (Claude, 17 Nov, from a read-only audit of the merged code; overrides the text above)
+
+- The R3a undo store is `apps/web/src/lib/control/undo-store.ts` and the hook `apps/web/src/hooks/use-undoable-action.ts`. `run()` resolves only when the action settles, up to 6 s later; `createUndoStore()` gives tests an isolated store. The `renderToStaticMarkup` test pattern is in `apps/web/src/lib/control/control-components.test.ts`.
+- `apps/web/src/server/tracking/page-data.ts` filters out voided rows and drops `createdAt` and measurement `values` from the tracking and progress pages, which the corrections UI needs. Do not edit it: put an exact patch for it in `integration/r2b.md`, and let your components accept the fields as optional so they typecheck before the patch.
+- `PortalSession` has no `createdAt` until the integration patch lands; read it through a locally widened type.
+- The 7-day correction window in migration 0008 is inclusive (`created_at >= now() - interval '7 days'`); `eligibility.ts` must match it.
+- `messages-parity.test.ts` fails any ar value identical to its en value with two or more Latin letters: give `kcal`, `cm` and similar units Arabic forms in the ar catalog.
+- Typecheck with `pnpm --filter @dawlyy/web exec tsc --noEmit -p tsconfig.json` run from your worktree, and run eslint on your new files only (this overrides the brief's lint ban for that purpose).
