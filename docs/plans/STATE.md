@@ -8,6 +8,19 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 17 Nov 15:20, R2c merged and main green (14ab19c); R2b waits for Codex (18:17)
+
+- Codex job `20261117-143253-r2b-1` hit the plan limit after 4 minutes ("try again at 6:17 PM") and wrote no files.
+- R2c was built by a Sonnet builder in the main tree (the guard allows writes there only), resumed once after a
+  session restart. Review: transport and client page read; fixed paths, key kept only across an indeterminate
+  outcome, permission checks on the page. Six integration patches applied cleanly. Main gates: tsc 0, eslint 0,
+  test-web 107 files 1166/1166 (job `20261117-151051-main-testweb-r2c`). Known gap: the preview adds a second `h1`
+  in the DOM (wrapped in `role="img"`); an optional `headingLevel` prop on `ClientTodayView` is noted in r2c.md for R5.
+- 5-hour Claude bar is 71% (resets 18:10), so no more builders until then. `wt/r2b` is fast-forwarded to 14ab19c.
+- **Next (18:20):** Codex R2b: `job.py start --name r2b-2 -- python tools/codex_build.py tools/codex_briefs/r2b-run.md
+  --cwd C:/Users/compuline/Desktop/dawlyy-wt-r2b --model gpt-6.1-sol --fast --effort high --multi-agent --common none
+  --timeout 5400`. Then R4b (needs R4d, merged), R5 last. Worktree files are committed, merged, then fixed on main.
+
 ### 17 Nov 14:50, R4d merged and main green (aa63c95); R2b building on Codex
 
 - Codex job `20261117-131628-r4d-1` (max) wrote the 19 R4d files; I reviewed the provider code (default `none`, fixed
