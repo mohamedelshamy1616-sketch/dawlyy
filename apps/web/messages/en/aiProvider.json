@@ -1,0 +1,55 @@
+{
+  "hub": {
+    "title": "AI provider",
+    "body": "Provider status and historical summary costs. External AI stays off by default."
+  },
+  "title": "AI provider",
+  "description": "Read-only provider status and the research report’s weekly-summary costs.",
+  "backSettings": "Back to settings",
+  "loading": "Loading AI settings",
+  "status": {
+    "title": "Provider status",
+    "off": "off: needs a key and legal review",
+    "misconfigured": "off: selected provider needs configuration",
+    "configured": "External provider configuration present",
+    "default_none": "External AI is off by default.",
+    "explicit_none": "Template reviews are selected.",
+    "needs_key": "The selected provider needs its own key.",
+    "needs_model": "The selected provider needs an explicit model selection.",
+    "unknown_provider": "The selected provider is not supported. External requests are blocked.",
+    "external_configuration": "Configuration does not confirm legal approval.",
+    "error": "Provider status is unavailable right now. External AI has not been activated by this page."
+  },
+  "providers": {
+    "none": "Template reviews",
+    "anthropic": "Anthropic",
+    "openrouter": "OpenRouter"
+  },
+  "templateExplanation": "Template reviews already work without external AI. Every generated reply stays a coach-owned draft to review and edit.",
+  "legalNote": "The plan leaves legal review unresolved: sending health data abroad under Egypt Law 151/2020 requires legal review before activation. A key does not establish consent or approved data processing.",
+  "paidApproval": "All paid use still needs Mohamed’s explicit approval.",
+  "costs": {
+    "title": "Historical weekly-summary costs",
+    "sourceDate": "Historical report: 13 Nov 2026",
+    "assumptions": "Assumption: {inputTokens} input and {outputTokens} output tokens per summary; USD per {summaries} summaries, before retries, tax, funding fees and infrastructure.",
+    "labelsNote": "The report labels are evidence, not validated API model identifiers or a live price quote. Only Anthropic and OpenRouter adapters are implemented.",
+    "model": "Report model/endpoint label",
+    "tokenPrice": "Input / output per million tokens (USD)",
+    "summaryPrice": "USD per {summaries} summaries",
+    "pricePair": "{input} / {output}",
+    "neuronBased": "Neuron-based",
+    "empty": "No historical cost rows are available.",
+    "error": "The report costs are unavailable right now.",
+    "models": {
+      "haiku": "Claude Haiku 5.5, prompts ≤100k",
+      "luna": "GPT-6 Luna, standard short context",
+      "gemma26": "Gemma 4 26B-A4B, OpenRouter paid",
+      "gemma31": "Gemma 4 31B, OpenRouter paid",
+      "mistral": "Mistral Small 2603, OpenRouter paid",
+      "flashLite": "Gemini 3.5 Flash-Lite, paid standard",
+      "flashDecember": "Gemini 3.8 Flash, through Dec 2026",
+      "flashJanuary": "Gemini 3.8 Flash, from Jan 2027",
+      "cloudflare": "Cloudflare Gemma 4 26B-A4B"
+    }
+  }
+}
