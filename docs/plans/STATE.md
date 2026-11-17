@@ -8,6 +8,22 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 17 Nov 21:10, R2b unfinished in the main tree; brake at 80% until 00:30, Codex back 00:39
+
+- Codex job `20261117-193757-r2b-2` (high) wrote 28 R2b files in `../dawlyy-wt-r2b`, then hit the plan limit after 13
+  minutes ("try again at Nov 18th 12:39 AM"). Nothing of it is reviewed or verified.
+- Because the guard blocks writes in worktrees, I copied that output into the MAIN tree (`git diff` of the worktree
+  applied, untracked files copied): 9 modified existing files, about 19 new files and `integration/r2b.md`, all
+  UNCOMMITTED and unverified. A Sonnet builder (agent `aac569c270abcefb7`) was finishing it when the session restarted
+  and stopped it; it left no report. The 5-hour Claude bar reached 80% (resets 00:30), so no builder is started.
+- Do not discard the dirty main tree: it is R2b. `wt/r2b` still holds the same partial copy.
+- **Next (from 00:40):** resume the builder with SendMessage (or a fresh Sonnet builder with the brief
+  `r2b-run.md`) to verify and finish R2b in the main tree: tsc, vitest on `src/lib/client-corrections`
+  (`--configLoader native --pool threads`), eslint on owned files, `git apply --check` for each diff block of
+  `integration/r2b.md`. Then review the diff, apply the patches, gate main (Postgres start, tsc, eslint,
+  `run_db_tests.py --web`), commit with explicit paths. After that R4b (`r4b-run.md`, `../dawlyy-wt-r4b` ready, Codex
+  `--effort max`) and R5 (compose `r5-run.md` like `r4b-run.md`).
+
 ### 17 Nov 15:20, R2c merged and main green (14ab19c); R2b waits for Codex (18:17)
 
 - Codex job `20261117-143253-r2b-1` hit the plan limit after 4 minutes ("try again at 6:17 PM") and wrote no files.
