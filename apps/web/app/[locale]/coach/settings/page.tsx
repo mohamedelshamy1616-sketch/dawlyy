@@ -12,6 +12,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
   const auth = await requirePage();
   const t = await getTranslations('settings.hub');
+  const clientApp = await getTranslations('clientAppComposer');
   const ai = await getTranslations('aiProvider');
   const activity = await getTranslations('activity');
   const item = (key: 'business' | 'team' | 'branding' | 'language' | 'legal' | 'legalPages', href: string) => ({ href, title: t(`${key}.title`), body: t(`${key}.body`) });
@@ -24,6 +25,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
     ...((auth.role === 'owner' || auth.role === 'staff') && isAllowed(auth, 'clients', 'view')
       ? [{ href: '/coach/settings/activity', title: activity('title'), body: activity('subtitle') }] : []),
     ...(isAllowed(auth, 'settings', 'view') ? [{ href: '/coach/settings/ai', title: ai('hub.title'), body: ai('hub.body') }] : []),
+    ...(isAllowed(auth, 'settings', 'view') ? [{ href: '/coach/settings/client-app', title: clientApp('hub.title'), body: clientApp('hub.body') }] : []),
     item('legalPages', '/terms'),
   ];
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={t('title')} subtitle={t('subtitle')} /><SettingsHub items={items} /></div>;

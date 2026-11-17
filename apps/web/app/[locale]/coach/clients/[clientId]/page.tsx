@@ -25,6 +25,7 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const auth = await requirePage();
   if (!z.string().uuid().safeParse(clientId).success) notFound();
   const t = await getTranslations('clients');
+  const clientApp = await getTranslations('clientAppComposer');
   const access: HubAccess = {
     edit: isAllowed(auth, 'clients', 'edit'),
     viewTimeline: isAllowed(auth, 'dashboard', 'view'),
@@ -52,6 +53,9 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const { client } = data;
   const requested = HUB_TABS.find(value => value === (Array.isArray(tab) ? tab[0] : tab));
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={client.displayName || [client.firstName, client.lastName].filter(Boolean).join(' ')} subtitle={client.code} />
-    <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link><ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog clientId={client.id} />} />
+    <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link>
+    {isAllowed(auth, 'settings', 'view') && isAllowed(auth, 'clients', 'view') && isAllowed(auth, 'clients', 'edit')
+      ? <Link className="inline-flex min-h-11 items-center underline" href={`/coach/clients/${client.id}/client-app`}>{clientApp('hub.clientLink')}</Link> : null}
+    <ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog clientId={client.id} />} />
   </div>;
 }

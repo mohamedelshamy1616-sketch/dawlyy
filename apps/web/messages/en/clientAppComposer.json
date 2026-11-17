@@ -1,0 +1,103 @@
+{
+  "hub": {
+    "title": "Client app",
+    "body": "Choose which parts of the app your clients see.",
+    "clientLink": "Client app for this client"
+  },
+  "title": "Client app",
+  "subtitle": {
+    "tenant": "Turn modules on or off for every client. A client override can still win.",
+    "client": "Choose which parts of the app {name} sees. This only affects this client."
+  },
+  "back": {
+    "settings": "Back to settings",
+    "client": "Back to client"
+  },
+  "loading": "Loading the client app settings",
+  "readOnly": {
+    "title": "View only",
+    "tenant": "Only the owner can change the defaults for all clients.",
+    "client": "Changing one client's app needs permission to edit clients and to edit billing."
+  },
+  "intro": {
+    "tenant": "These defaults apply to every client unless a client override wins.",
+    "client": "Inherit follows your defaults. Show or Hide changes this module for this client only."
+  },
+  "scope": "Hiding a module hides it from the client's tabs, Today and Me and blocks its writes. It does not change package access, and hiding payments never voids a payment.",
+  "modules": {
+    "title": "Modules",
+    "workouts": { "name": "Workouts", "help": "The program, the workout screen and workout history." },
+    "nutrition": { "name": "Nutrition", "help": "The meal plan, meal logging and nutrition history." },
+    "checkins": { "name": "Check-ins", "help": "Check-in forms, their reminders and the intake form." },
+    "progress_photos": { "name": "Progress photos", "help": "Taking and viewing progress photos." },
+    "measurements": { "name": "Measurements", "help": "Body measurements and tracking entries." },
+    "messages": { "name": "Messages", "help": "The chat with the coach." },
+    "payments": { "name": "Payments", "help": "The subscription, payments and renewal notices." }
+  },
+  "choice": {
+    "inherit": "Inherit",
+    "on": "Show",
+    "off": "Hide",
+    "groupLabel": "{module}: choose how it appears for this client"
+  },
+  "state": {
+    "on": "Shown",
+    "off": "Hidden",
+    "defaultIs": "Default: {state, select, on {shown} other {hidden}}",
+    "nowIs": "Now for this client: {state, select, on {shown} other {hidden}}",
+    "afterIs": "After saving: {state, select, on {shown} other {hidden}}",
+    "switchLabel": "{module}: shown to clients by default",
+    "otherOverride": "Another saved override also sets this module for this client. It is not changed here."
+  },
+  "summary": {
+    "shown": "{shown} of {total} modules are shown.",
+    "allOff": "Every module is off. The client app will have nothing on Today."
+  },
+  "actions": {
+    "save": "Save",
+    "saving": "Saving…",
+    "reset": "Reset to defaults",
+    "resetting": "Resetting…",
+    "retry": "Retry the same request",
+    "check": "Check the saved state",
+    "checking": "Checking…",
+    "discard": "Discard changes"
+  },
+  "status": {
+    "unsaved": "You have changes that are not saved yet.",
+    "clean": "No unsaved changes.",
+    "saved": "Saved. These choices now apply.",
+    "resetDone": "Reset. This client follows the defaults again.",
+    "pending": "Waiting for the server…",
+    "unknown": "We could not confirm whether this was saved. Check the saved state, or retry the same request."
+  },
+  "errors": {
+    "validation": "The server did not accept these choices. Nothing was saved.",
+    "unauthenticated": "Your session has expired. Sign in again, then save. Nothing was saved.",
+    "forbidden": "You do not have permission to change this. Nothing was saved.",
+    "not_found": "This client was not found. Nothing was saved.",
+    "unprocessable": "These choices cannot be saved right now. Nothing was saved.",
+    "conflict": "Someone else changed this at the same time. Check the saved state and try again.",
+    "in_progress": "The same request is still running. Wait a moment and check the saved state.",
+    "server": "The server had a problem. We could not confirm whether this was saved.",
+    "network": "The connection failed. We could not confirm whether this was saved.",
+    "load": "Could not load the client app settings. Try again."
+  },
+  "load": {
+    "retry": "Try again"
+  },
+  "preview": {
+    "title": "Live preview",
+    "caption": "Example of the client's Today with these choices. Buttons and links do nothing here.",
+    "frame": "Phone preview of the client's Today screen, with example data",
+    "empty": "No Today modules are enabled, so the client would see an empty Today.",
+    "sample": {
+      "workoutName": "Upper body strength",
+      "workoutDay": "Week 1, day 2",
+      "meal1": "Breakfast",
+      "meal2": "Lunch",
+      "meal3": "Dinner",
+      "checkin": "Weekly check-in"
+    }
+  }
+}
