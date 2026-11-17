@@ -8,6 +8,15 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 17 Nov 13:35, fresh weekly bar (4%), R4d launched on Codex; R2b and R2c worktrees prepared
+
+- Start message said weekly 100%, but `.autopilot/usage.json` (13:15, after the Tue 06:00 reset) shows weekly 4% and
+  5-hour 2%. Sonnet builders are allowed again. Playbook sha256 matches.
+- Codex job `20261117-131628-r4d-1` (max, fast, multi-agent) runs R4d in `../dawlyy-wt-r4d`. Worktrees `wt/r2b` and
+  `wt/r2c` made from main 418b992 with run briefs `r2b-run.md` and `r2c-run.md` (same header as the other run briefs);
+  dependency install running in each. Sonnet builders (medium) take R2b and R2c beside the Codex job.
+- **Next:** review, gate and commit each task in its worktree as it lands; merge R4d, R2b, R2c, then R4b, R5.
+
 ### 15 Nov 21:10, R3b merged (48b0b5d), main green; Codex at its limit until 01:22
 
 - Resume at 20:20 on Sonnet (weekly Claude 90%): Codex, reviews, gates, commits only. Codex job
