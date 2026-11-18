@@ -18,9 +18,8 @@ import { AssignPlanButton } from './assign-plan-dialog';
 import { ClientForm } from './client-form';
 import { ClientStatus } from './client-list';
 import { ArchiveRowControl } from '@/components/control/archive-controls';
+import { HUB_TABS, type HubTab } from './hub-tabs';
 
-export const HUB_TABS = ['week', 'plan', 'money', 'notes'] as const;
-export type HubTab = (typeof HUB_TABS)[number];
 
 /** R1c: the client's current program or nutrition plan, already reduced to what the Plan tab shows. */
 export type PlanSummary = { id: string; name: { ar?: string; en?: string }; status: string };
