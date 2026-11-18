@@ -4,6 +4,8 @@ import { isAllowed } from '@dawlyy/core/authz';
 import { requirePage } from '@/src/server/auth';
 import { withAuthTx } from '@/src/server/db';
 import { listInbox } from '@/src/server/inbox/service';
+import { numeralPolicy } from '@/src/lib/numbers';
+import { getPreferences } from '@/src/server/settings/client-read';
 import { QUEUE_KINDS } from '@/src/server/dashboard/logic';
 import { dashboardQueue, dashboardSummary } from '@/src/server/dashboard/queue';
 import { InboxPageView } from '@/components/inbox/page-view';
@@ -26,9 +28,9 @@ export default async function CoachInboxPage({ params, searchParams }: {
     if (kind && canViewQueues) {
       const summary = await dashboardSummary(tx, auth);
       const queue = JSON.parse(JSON.stringify(await dashboardQueue(tx, auth, kind, {}))) as QueuePage;
-      return { inbox: null, queue: { kind, page: queue, counts: QUEUE_KINDS.map(value => ({ kind: value, ...summary.counts[value] })) } };
+      return { inbox: null, numerals: numeralPolicy(await getPreferences(tx, auth)), queue: { kind, page: queue, counts: QUEUE_KINDS.map(value => ({ kind: value, ...summary.counts[value] })) } };
     }
-    return { inbox: await listInbox(tx, auth), queue: null };
+    return { inbox: await listInbox(tx, auth), numerals: numeralPolicy(await getPreferences(tx, auth)), queue: null };
   });
-  return <InboxPageView title={t('title')} data={data.inbox} queue={data.queue} canViewQueues={canViewQueues} queueDenied={Boolean(kind && !canViewQueues)} />;
+  return <InboxPageView title={t('title')} numerals={data.numerals} data={data.inbox} queue={data.queue} canViewQueues={canViewQueues} queueDenied={Boolean(kind && !canViewQueues)} />;
 }

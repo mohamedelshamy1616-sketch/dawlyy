@@ -9,7 +9,7 @@
   "queueAccess": "اطلب من صاحب الحساب صلاحية لوحة المتابعة عشان تفتح القائمة دي.",
   "actionError": "المحادثة مافتحتش. جرّب تاني.",
   "noContactYet": "لسه مفيش رسالة من الكوتش",
-  "needsAttention": "{count, plural, zero {مفيش عملاء محتاجينك} one {عميل واحد محتاجك} two {عميلين محتاجينك} few {# عملاء محتاجينك} many {# عميل محتاجينك} other {# عميل محتاجينك}}",
+  "needsAttention": "{count, plural, zero {مفيش عملاء محتاجينك} one {عميل واحد محتاجك} two {عميلين محتاجينك} few {{shown} عملاء محتاجينك} many {{shown} عميل محتاجينك} other {{shown} عميل محتاجينك}}",
   "actions": {
     "review": "راجع المتابعة",
     "reply": "رد",
@@ -27,17 +27,17 @@
   },
   "reasons": {
     "red_flag": "محتاج مراجعتك: {category}",
-    "checkin_waiting": "المتابعة مستنية {days, plural, =0 {من النهارده} one {من يوم} two {من يومين} few {من # أيام} many {من # يوم} other {من # يوم}}",
-    "unread_messages": "{count, plural, zero {مفيش رسايل جديدة} one {رسالة مش مقروءة} two {رسالتين مش مقروءين} few {# رسايل مش مقروءة} many {# رسالة مش مقروءة} other {# رسالة مش مقروءة}}",
+    "checkin_waiting": "المتابعة مستنية {days, plural, =0 {من النهارده} one {من يوم} two {من يومين} few {من {daysShown} أيام} many {من {daysShown} يوم} other {من {daysShown} يوم}}",
+    "unread_messages": "{count, plural, zero {مفيش رسايل جديدة} one {رسالة مش مقروءة} two {رسالتين مش مقروءين} few {{countShown} رسايل مش مقروءة} many {{countShown} رسالة مش مقروءة} other {{countShown} رسالة مش مقروءة}}",
     "payment_pending": "دفعة مستنية التأكيد",
-    "subscription_ends": "الاشتراك بينتهي {days, plural, =0 {النهارده} one {كمان يوم} two {كمان يومين} few {كمان # أيام} many {كمان # يوم} other {كمان # يوم}}",
-    "checkin_overdue": "المتابعة متأخرة {days, plural, one {يوم} two {يومين} few {# أيام} many {# يوم} other {# يوم}}",
-    "adherence_drop": "الالتزام بالتمرين نزل من {from, number}٪ لـ {to, number}٪",
-    "weight_wrong_way": "الوزن بيتحرك عكس الهدف: {kgPerWeek, number} كجم في الأسبوع",
-    "weight_flat": "الوزن ثابت بقاله {days, plural, one {يوم} two {يومين} few {# أيام} many {# يوم} other {# يوم}}",
-    "low_adherence": "الالتزام بالتمرين {percent, number}٪",
-    "meals_missing": "مفيش تسجيل أكل في {days, plural, one {يوم} two {يومين} few {# أيام} many {# يوم} other {# يوم}} الأسبوع ده",
-    "subscription_ended": "الاشتراك خلص {days, plural, one {من يوم} two {من يومين} few {من # أيام} many {من # يوم} other {من # يوم}}",
-    "no_contact": "مفيش رسالة من الكوتش بقالها {days, plural, one {يوم} two {يومين} few {# أيام} many {# يوم} other {# يوم}}"
+    "subscription_ends": "الاشتراك بينتهي {days, plural, =0 {النهارده} one {كمان يوم} two {كمان يومين} few {كمان {daysShown} أيام} many {كمان {daysShown} يوم} other {كمان {daysShown} يوم}}",
+    "checkin_overdue": "المتابعة متأخرة {days, plural, one {يوم} two {يومين} few {{daysShown} أيام} many {{daysShown} يوم} other {{daysShown} يوم}}",
+    "adherence_drop": "الالتزام بالتمرين نزل من {fromShown}٪ لـ {toShown}٪",
+    "weight_wrong_way": "الوزن بيتحرك عكس الهدف: {kgPerWeekShown} كجم في الأسبوع",
+    "weight_flat": "الوزن ثابت بقاله {days, plural, one {يوم} two {يومين} few {{daysShown} أيام} many {{daysShown} يوم} other {{daysShown} يوم}}",
+    "low_adherence": "الالتزام بالتمرين {percentShown}٪",
+    "meals_missing": "مفيش تسجيل أكل في {days, plural, one {يوم} two {يومين} few {{daysShown} أيام} many {{daysShown} يوم} other {{daysShown} يوم}} الأسبوع ده",
+    "subscription_ended": "الاشتراك خلص {days, plural, one {من يوم} two {من يومين} few {من {daysShown} أيام} many {من {daysShown} يوم} other {من {daysShown} يوم}}",
+    "no_contact": "مفيش رسالة من الكوتش بقالها {days, plural, one {يوم} two {يومين} few {{daysShown} أيام} many {{daysShown} يوم} other {{daysShown} يوم}}"
   }
 }

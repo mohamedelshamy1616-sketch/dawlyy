@@ -9,7 +9,7 @@
   "queueAccess": "Ask the account owner for dashboard access to open this queue.",
   "actionError": "Could not open the conversation. Try again.",
   "noContactYet": "No coach message yet",
-  "needsAttention": "{count, plural, one {# client needs you} other {# clients need you}}",
+  "needsAttention": "{count, plural, one {{shown} client needs you} other {{shown} clients need you}}",
   "actions": {
     "review": "Review check-in",
     "reply": "Reply",
@@ -27,17 +27,17 @@
   },
   "reasons": {
     "red_flag": "Needs your review: {category}",
-    "checkin_waiting": "Check-in waiting {days, plural, =0 {since today} one {for # day} other {for # days}}",
-    "unread_messages": "{count, plural, one {# unread message} other {# unread messages}}",
+    "checkin_waiting": "Check-in waiting {days, plural, =0 {since today} one {for {daysShown} day} other {for {daysShown} days}}",
+    "unread_messages": "{count, plural, one {{countShown} unread message} other {{countShown} unread messages}}",
     "payment_pending": "Payment waiting for confirmation",
-    "subscription_ends": "Subscription ends {days, plural, =0 {today} one {in # day} other {in # days}}",
-    "checkin_overdue": "Check-in {days, plural, one {# day overdue} other {# days overdue}}",
-    "adherence_drop": "Workout adherence fell from {from, number}% to {to, number}%",
-    "weight_wrong_way": "Weight is moving against the goal: {kgPerWeek, number} kg/week",
-    "weight_flat": "Weight has been steady for {days, plural, one {# day} other {# days}}",
-    "low_adherence": "Workout adherence is {percent, number}%",
-    "meals_missing": "No meal log on {days, plural, one {# day} other {# days}} this week",
-    "subscription_ended": "Subscription ended {days, plural, one {# day ago} other {# days ago}}",
-    "no_contact": "No coach message for {days, plural, one {# day} other {# days}}"
+    "subscription_ends": "Subscription ends {days, plural, =0 {today} one {in {daysShown} day} other {in {daysShown} days}}",
+    "checkin_overdue": "Check-in {days, plural, one {{daysShown} day overdue} other {{daysShown} days overdue}}",
+    "adherence_drop": "Workout adherence fell from {fromShown}% to {toShown}%",
+    "weight_wrong_way": "Weight is moving against the goal: {kgPerWeekShown} kg/week",
+    "weight_flat": "Weight has been steady for {days, plural, one {{daysShown} day} other {{daysShown} days}}",
+    "low_adherence": "Workout adherence is {percentShown}%",
+    "meals_missing": "No meal log on {days, plural, one {{daysShown} day} other {{daysShown} days}} this week",
+    "subscription_ended": "Subscription ended {days, plural, one {{daysShown} day ago} other {{daysShown} days ago}}",
+    "no_contact": "No coach message for {days, plural, one {{daysShown} day} other {{daysShown} days}}"
   }
 }

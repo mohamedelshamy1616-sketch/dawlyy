@@ -12,12 +12,13 @@ import { QUEUE_KINDS, type QueueKind } from '@/src/server/dashboard/logic';
 import { CountCards } from '@/components/dashboard/count-cards';
 import { QueueList } from '@/components/dashboard/queue-list';
 import type { CountItem, QueuePage } from '@/components/dashboard/types';
+import type { NumeralSystem } from '@/src/lib/numbers';
 import type { InboxData } from './types';
 import { InboxList } from './inbox-list';
 
 /** R1b: client presentation keeps all database and ranking code in the server page. */
-export function InboxPageView({ title, noAccess = false, data, queue, canViewQueues = false, queueDenied = false }: {
-  title: string; noAccess?: boolean; data?: InboxData | null;
+export function InboxPageView({ title, noAccess = false, numerals = 'latn', data, queue, canViewQueues = false, queueDenied = false }: {
+  title: string; noAccess?: boolean; numerals?: NumeralSystem; data?: InboxData | null;
   queue?: { kind: QueueKind; page: QueuePage; counts: CountItem[] } | null;
   canViewQueues?: boolean; queueDenied?: boolean;
 }) {
@@ -30,7 +31,7 @@ export function InboxPageView({ title, noAccess = false, data, queue, canViewQue
         <CountCards counts={queue.counts} />
         <Heading level={2}>{dashboard(`counts.${queue.kind}.label`)}</Heading>
         {queue.page.items.length ? <QueueList kind={queue.kind} initial={queue.page} /> : <EmptyState Icon={Inbox} title={dashboard('queue.emptyTitle')} description={dashboard('queue.emptyBody')} />}
-      </VStack> : data ? <InboxList data={data} /> : null}
+      </VStack> : data ? <InboxList data={data} numerals={numerals} /> : null}
       {queueDenied ? <Text role="status">{t('queueAccess')}</Text> : null}
       {canViewQueues ? <VStack gap={1} as="section" aria-label={t('allQueues')}>
         <Heading level={2} className="text-base">{t('allQueues')}</Heading>

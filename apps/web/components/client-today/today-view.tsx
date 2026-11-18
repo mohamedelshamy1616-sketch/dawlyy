@@ -32,13 +32,15 @@ type Props = {
   busyMealId?: string | null;
   /** The meal whose last write failed: its row shows the error and a Retry button. */
   errorMealId?: string | null;
+  /** The level of the page title. Default 1; the composer preview passes 3 so the page keeps a single h1. */
+  headingLevel?: 1 | 2 | 3;
 };
 
 /**
  * R2a: Today. One lead card for the session, then meals as rows, then the check-in when due. No tiles.
  * With `preview`, every navigation and mutation control keeps its place but is inert.
  */
-export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId = null, errorMealId = null }: Props) {
+export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId = null, errorMealId = null, headingLevel = 1 }: Props) {
   const t = useTranslations('clientToday');
   const quick = useTranslations('quickLog');
   const dates = dateParts(model);
@@ -54,7 +56,7 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
   return (
     <VStack gap={6} className="min-w-0 max-w-full break-words">
       <VStack gap={1} className="min-w-0">
-        <Heading level={1}>{t('today.title')}</Heading>
+        <Heading level={headingLevel}>{t('today.title')}</Heading>
         <Text as="p" color="secondary">{dates.day(model.date)}</Text>
       </VStack>
 

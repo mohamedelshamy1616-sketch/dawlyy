@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
+import { reinventProofRoutes } from '../src/lib/reinvent-proof/manifest';
 
 // Fixed user IDs duplicated from packages/db/seed/demo.ts: importing that executable would run the seed.
 const actors = [
@@ -8,8 +9,10 @@ const actors = [
   { role: 'client', userId: 'd0250000-0000-4000-8000-000000000103' },
 ] as const;
 const locales = ['ar', 'en'] as const;
-// Three phone widths (small, common, large) and one desktop width.
-const viewports = [{ width: 360, height: 800 }, { width: 390, height: 844 }, { width: 430, height: 932 }, { width: 1366, height: 900 }] as const;
+// Three phone widths (small, common, large) and one desktop width, plus Astryx's own proof widths 375 and 1440.
+// The widths are the same list as REINVENT_PROOF_WIDTHS in src/lib/reinvent-proof/manifest.ts.
+const viewports = [{ width: 360, height: 800 }, { width: 390, height: 844 }, { width: 430, height: 932 }, { width: 1366, height: 900 },
+  { width: 375, height: 812 }, { width: 1440, height: 900 }] as const;
 
 // One entry per static app/[locale]/**/page.tsx plus detail pages for the demo records; route groups do not appear in URLs.
 // Each [...rest]/page.tsx gets an unknown URL in its own area. `area` decides which demo role visits the route.
@@ -17,7 +20,7 @@ const FIRST_CLIENT = 'd0250000-0000-4000-8000-000000000301';
 const DEMO_PACKAGE = 'd0250000-0000-4000-8000-000000000401';
 const DEMO_PROGRAM = 'd0250000-0000-4000-8000-000000000501';
 type Area = 'public' | 'coach' | 'app';
-const routes: ReadonlyArray<{ path: string; slug: string; area: Area }> = [
+const routes: Array<{ path: string; slug: string; area: Area }> = [
   { path: '', slug: 'landing', area: 'public' },
   { path: '/login', slug: 'login', area: 'public' },
   { path: '/signup', slug: 'signup', area: 'public' },
@@ -40,6 +43,18 @@ const routes: ReadonlyArray<{ path: string; slug: string; area: Area }> = [
     'intake', 'assessment', 'messages', 'notifications', 'subscription', 'consent',
   ].map(path => ({ path: `/app/${path}`, slug: `app-${path.replaceAll('/', '-')}`, area: 'app' as const })),
 ];
+// R5: the reinvention's new stable routes from the proof inventory. Only `content` rows are captured here (empty, error and
+// unavailable rows need fixtures and belong to e2e/beta/r5-polish-proof.spec.ts); a path already listed above is not repeated.
+const listedPaths = new Set(routes.map(route => route.path));
+const inventoryRoutes: Array<{ path: string; slug: string; area: Area }> = [];
+for (const route of reinventProofRoutes(FIRST_CLIENT)) {
+  if (route.state !== 'content' || listedPaths.has(route.path)) continue;
+  listedPaths.add(route.path);
+  inventoryRoutes.push({ path: route.path, slug: route.id, area: route.area });
+}
+const slugs = [...routes, ...inventoryRoutes].map(route => route.slug);
+if (new Set(slugs).size !== slugs.length) throw new Error('screens.spec: duplicate route slug in the screen list');
+routes.push(...inventoryRoutes);
 const actorRoutes = (role: (typeof actors)[number]['role']) =>
   routes.filter(route => route.area === 'public' || route.area === (role === 'owner' ? 'coach' : 'app'));
 

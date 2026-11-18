@@ -1,0 +1,201 @@
+/*
+ * DAWLYY DESIGN TOKENS: the one owner-editable source for every DAWLYY visual decision.
+ * Imported once by app/globals.css (plain import, no layer). Nothing else declares a brand color, a font stack,
+ * a radius or a focus measurement; components read these variables and the Tailwind aliases below.
+ *
+ * Layout of this file:
+ *   1. @theme inline: the Tailwind aliases. Their names and meanings are unchanged from the shadcn era
+ *      (text-primary, border-border, rounded-lg ...). The Astryx Tailwind bridge is NOT imported on purpose.
+ *   2. :root / .dark: the app-owned neutral tokens that those aliases read (values unchanged).
+ *   3. DAWLYY palette: the brand teal is chosen here, once, as a light and a dark value. --brand* and the
+ *      Astryx theme (theme/dawlyy.theme.ts) both point at these variables.
+ *   4. Fonts, focus ring and touch target.
+ *
+ * Fonts come from next/font in app/[locale]/layout.tsx as --font-inter (Latin) and --font-plex-arabic (Arabic).
+ * Never set an Astryx --color-* variable on :root: Astryx scopes its own palette to [data-astryx-theme].
+ */
+
+/* 1. Tailwind aliases */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--dawlyy-font-latin);
+  --font-arabic: var(--dawlyy-font-arabic);
+  --font-mono: var(--dawlyy-font-mono);
+  --font-heading: var(--font-sans);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-foreground: var(--brand-soft-foreground);
+}
+
+/* 2. App-owned neutral tokens (light) */
+:root {
+  --success: oklch(0.62 0.15 150);
+  --warning: oklch(0.75 0.15 75);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* App-owned neutral tokens (dark) */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/*
+ * 3. DAWLYY palette. The brand is a deep teal: white text on it passes AA (about 7:1). The soft pair tints active
+ * nav items, empty-state badges and skeletons. Change these eight values to re-brand the shell and the Astryx theme.
+ * The light and dark values are separate variables because Astryx switches with color-scheme (light-dark()), while
+ * the shadcn-era tokens switch with the .dark class.
+ */
+:root {
+  --dawlyy-accent-light: oklch(0.45 0.09 185);
+  --dawlyy-on-accent-light: oklch(0.99 0.01 185);
+  --dawlyy-accent-soft-light: oklch(0.955 0.03 185);
+  --dawlyy-accent-soft-text-light: oklch(0.34 0.07 185);
+  --dawlyy-accent-dark: oklch(0.72 0.11 185);
+  --dawlyy-on-accent-dark: oklch(0.2 0.04 185);
+  --dawlyy-accent-soft-dark: oklch(0.3 0.05 185);
+  --dawlyy-accent-soft-text-dark: oklch(0.9 0.05 185);
+
+  /* Selected-item inset ring: the light accent at half strength (the Astryx --shadow-inset-selected token). */
+  --dawlyy-selected-inset: inset 0 0 0 2px color-mix(in oklab, var(--dawlyy-accent-light) 50%, transparent);
+
+  /* Compatibility aliases the shell already reads (bg-brand-soft, text-brand, focus-ring ...). */
+  --brand: var(--dawlyy-accent-light);
+  --brand-foreground: var(--dawlyy-on-accent-light);
+  --brand-soft: var(--dawlyy-accent-soft-light);
+  --brand-soft-foreground: var(--dawlyy-accent-soft-text-light);
+}
+
+.dark {
+  --brand: var(--dawlyy-accent-dark);
+  --brand-foreground: var(--dawlyy-on-accent-dark);
+  --brand-soft: var(--dawlyy-accent-soft-dark);
+  --brand-soft-foreground: var(--dawlyy-accent-soft-text-dark);
+}
+
+/* 4. Fonts, focus ring, touch target */
+:root {
+  --dawlyy-font-latin: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --dawlyy-font-arabic: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --dawlyy-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The keyboard focus ring (focus-ring utility in globals.css): thickness and gap. */
+  --dawlyy-focus-ring-width: 2px;
+  --dawlyy-focus-ring-offset: 2px;
+
+  /* Smallest tappable control (44 px at the default 16 px root); the same value as the min-h-11 scale step. */
+  --dawlyy-touch-target-min: 2.75rem;
+
+  /*
+   * Floating-surface tokens requested by R3a for the shared undo toast. The toast still uses the equal Tailwind
+   * scale steps (inset-x-4, bottom-20, max-w-md, z-50); these name the intent so a later change has one home.
+   */
+  --dawlyy-floating-edge: 1rem;
+  --dawlyy-bottom-bar-clearance: 5rem;
+  --dawlyy-toast-max-width: 28rem;
+  --dawlyy-layer-bottom-bar: 40;
+  --dawlyy-layer-toast: 50;
+
+  /* Width of the selection checkbox column in dense tables (R3a: clients table). */
+  --dawlyy-table-select-column: 3.5rem;
+}

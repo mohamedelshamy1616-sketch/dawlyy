@@ -23,7 +23,7 @@ export function PhonePreview({ modules, locale, numerals }: { modules: ClientMod
       <Text as="p" color="secondary">{t('preview.caption')}</Text>
       {countOn(modules) === 0 ? <Text as="p" role="status">{t('preview.empty')}</Text> : null}
       <Card padding={4} className="mx-auto w-full max-w-sm min-w-0 rounded-3xl border-2" role="img" aria-label={t('preview.frame')} data-preview="true">
-        <ClientTodayView model={model} preview />
+        <ClientTodayView model={model} preview headingLevel={3} />
       </Card>
     </VStack>
   );
