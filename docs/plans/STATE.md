@@ -8,6 +8,20 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 18 Nov 17:50, R2b merged and gated (f11aadb); R4b half-written, a Sonnet builder finishes it in the main tree
+
+- R2b: the Sonnet builder (resumed twice because each WAITING turn end restarted the session) fixed nine react-hooks
+  lint errors in Codex's code; I applied the six integration patches and gated main: tsc 0, eslint 0 errors,
+  test-web 112 files 1249/1249 (job `20261118-173221-main-testweb-r2b`). One new test fixture lacked the `createdAt`
+  the patch makes required (tsc 2); added it, tsc 0 and 79/79 (job `20261118-173917-main-tsc-r2b`). Committed f11aadb.
+  The `page-data.ts` patch now passes voided rows to the tracking UI, which filters them.
+- R4b: Codex `r4b-1` exited 0 with no files (its command runner returned nothing); `r4b-2` wrote 7 file groups, then
+  hit the plan limit ("try again at 10:08 PM"). Its output was copied into the main tree (untracked) and Sonnet agent
+  `a3a260b2e052ed08a` finishes and verifies it there. Stay RUNNING while it works.
+- **Next:** review R4b (esp. hash binding, 409 stale approval, no network, requireStaffRole), apply
+  `integration/r4b.md`, gate main (tsc, eslint, test-web, and `run_db_tests.py` for `security.review-api` since it
+  adds a DB suite), commit. Then R5 (compose `r5-run.md` like `r4b-run.md`; token file and screens), then P9.
+
 ### 17 Nov 21:10, R2b unfinished in the main tree; brake at 80% until 00:30, Codex back 00:39
 
 - Codex job `20261117-193757-r2b-2` (high) wrote 28 R2b files in `../dawlyy-wt-r2b`, then hit the plan limit after 13
