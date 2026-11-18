@@ -8,6 +8,23 @@ Last update: 2026-11-15 21:10 (Africa/Cairo), by the autopilot worker (Claude So
 
 ## Autopilot worker log (newest first)
 
+### 18 Nov 19:30, R4b merged and gated (b9b05e5); R5 is the last build task
+
+- R4b: Codex wrote half before its plan limit (back 22:08); a Sonnet builder finished it in the main tree. Applied
+  ten integration patches; the Inbox review action now opens the dedicated review route, so two exact-href
+  assertions in the inbox tests follow the brief ("the dedicated route also serves Inbox's review action").
+  The first DB-backed run of `review.db.test.ts` found a real bug: stored proposal changes come back from jsonb with
+  reordered keys, so identical proposals compared stale; the comparison is now key-order independent and still exact
+  (`stableJson` in `proposals.ts`). One fixture lacked the `exercises:view` grant the snapshot captures (correct
+  refusal; fixture fixed, no assertion changed). Gates: tsc 0, eslint 0 errors, test-web 119 files 1345/1345,
+  `security.review-api` 14/14.
+- Mount note: the C15 scanner accepts only top-level auth and staff middleware, so R4b exports two routers
+  (`/clients` before `clientsRouter`, and `/settings/review-preferences`), not one mounted at root.
+- Every reinvention task except R5 is now merged. Worktrees `wt/r2b`, `wt/r4b` hold stale partial copies (unused).
+- **Next:** R5 (`r5-run.md`, tokens, theme, proof specs, HOW_TO_TEST) by a Sonnet builder in the main tree (Codex is
+  out until 22:08); then regenerate the theme, run the screens job once at 360/390/430/1366, then P9: add the new
+  e2e flows to `e2e-ar` and `e2e-en`, run `run_checks.py` until all 8 are green, handoff to opus for the review.
+
 ### 18 Nov 17:50, R2b merged and gated (f11aadb); R4b half-written, a Sonnet builder finishes it in the main tree
 
 - R2b: the Sonnet builder (resumed twice because each WAITING turn end restarted the session) fixed nine react-hooks
