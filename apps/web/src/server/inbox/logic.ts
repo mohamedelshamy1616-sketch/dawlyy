@@ -34,7 +34,7 @@ export function plannedWorkouts(document: ProgramDocument, assignedOn: string | 
 /** R1b: resolve an inline action; null asks the UI to open/create a conversation first. */
 export function actionHref(action: AttentionAction, clientId: string, refs: { reviewId?: string | null; paymentId?: string | null; conversationId?: string | null }): string | null {
   switch (action) {
-    case 'review': return refs.reviewId ? `/coach/checkins/review/${refs.reviewId}` : `/coach/clients/${clientId}`;
+    case 'review': return `/coach/clients/${clientId}/review`;
     case 'confirm_payment': return refs.paymentId ? `/coach/billing/payments/${refs.paymentId}` : '/coach/billing';
     case 'renew': return `/coach/clients/${clientId}/subscription`;
     case 'handle_flag': return `/coach/clients/${clientId}`;

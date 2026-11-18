@@ -1,0 +1,151 @@
+{
+  "title": "Weekly review",
+  "description": "Check the week's evidence, edit your reply, then approve it to send it to the client.",
+  "backClient": "Back to the client",
+  "loading": "Loading review",
+  "working": "Working on it",
+  "build": "Build review",
+  "rebuild": "Rebuild review",
+  "refresh": "Refresh",
+  "yes": "Yes",
+  "no": "No",
+  "missing": "Not answered",
+  "stale": "Data changed. Rebuild the review.",
+  "empty": {
+    "title": "No review yet",
+    "body": "Build a review from this client's current data. Nothing is sent until you approve it."
+  },
+  "status": {
+    "draft": "Draft, not sent",
+    "approved": "Approved and sent",
+    "rejected": "Rejected",
+    "stale": "Out of date"
+  },
+  "errors": {
+    "forbidden": "You do not have permission to view this review",
+    "request": "Could not load the review",
+    "red_flags_open": "This client has open safety flags. Handle them and rebuild the review first.",
+    "nutrition_draft_exists": "A nutrition draft already exists. Finish or publish it first.",
+    "proposal_version_mismatch": "The published nutrition plan changed. Rebuild the review.",
+    "draft_not_editable": "This review can no longer be changed. Rebuild it."
+  },
+  "summary": {
+    "title": "This week's evidence",
+    "emptyWeek": "No activity recorded for this week",
+    "workouts": "Workouts",
+    "workoutValue": "{done} of {planned} done ({percent}%), previous period {previous}%",
+    "meals": "Meal logging",
+    "mealValue": "{days} of {total} days logged ({percent}%), average {kcal} kcal against a target of {target} kcal",
+    "noNutrition": "No nutrition plan is published",
+    "checkin": "Check-in",
+    "noCheckin": "No check-in this week",
+    "weight": "Weight",
+    "weightValue": "{first} kg to {last} kg, change {delta} kg, {weekly} kg per week",
+    "noWeight": "No weight entries this week",
+    "answerValue": "Now: {current}. Before: {previous}",
+    "measurement": "Measurement: {name}",
+    "measurementValue": "{first} cm to {last} cm, change {delta} cm",
+    "pr": "Personal record: {name}",
+    "prValue": "{load} kg, up from {previous} kg",
+    "stall": "Stalled: {name}",
+    "stallValue": "No progress for {sessions} sessions"
+  },
+  "attention": {
+    "red_flag": "Open safety flag",
+    "checkin_waiting": "A check-in is waiting for your review",
+    "unread_messages": "Unread messages from the client",
+    "payment_pending": "A payment is waiting for confirmation",
+    "subscription_ends": "The subscription ends soon",
+    "checkin_overdue": "The check-in is overdue",
+    "adherence_drop": "Workout adherence dropped",
+    "weight_wrong_way": "Weight is moving against the goal",
+    "weight_flat": "Weight has been steady",
+    "low_adherence": "Workout adherence is low",
+    "meals_missing": "Several days without a meal log",
+    "subscription_ended": "The subscription has ended",
+    "no_contact": "No recent message from you"
+  },
+  "unavailable": {
+    "programs": "Workout evidence unavailable",
+    "exercises": "Exercise names unavailable",
+    "nutrition": "Meal evidence unavailable",
+    "tracking": "Weight and measurement evidence unavailable",
+    "calendar": "Calendar evidence unavailable",
+    "messages": "Message evidence unavailable",
+    "billing": "Billing evidence unavailable"
+  },
+  "flags": {
+    "title": "Open safety flags",
+    "blocked": "Handle the open flags, then rebuild the review. Nothing can be sent or proposed until then.",
+    "handle": "Mark handled",
+    "rebuild": "Handle the open flags, then rebuild the review to continue.",
+    "category": {
+      "pain_injury": "Pain or injury",
+      "eating_disorder": "Eating concerns",
+      "pregnancy": "Pregnancy",
+      "medication": "Medication"
+    },
+    "source": {
+      "message": "From a message",
+      "checkin": "From a check-in",
+      "meal_note": "From a meal note"
+    }
+  },
+  "reply": {
+    "title": "Your reply",
+    "hint": "This text is sent to the client exactly as written here.",
+    "label": "Reply to the client",
+    "characters": "{count} of {max} characters",
+    "saved": "Draft saved",
+    "noSendPermission": "You do not have permission to send messages.",
+    "save": "Save draft",
+    "approve": "Approve and send",
+    "sent": "Sent to the client",
+    "sentNotNotified": "Sent, but the notification could not be delivered",
+    "openMessage": "Open the conversation"
+  },
+  "proposal": {
+    "title": "Nutrition proposal",
+    "hint": "A proposal only creates an unpublished nutrition draft. You publish it yourself.",
+    "empty": "No nutrition proposal for this week",
+    "noPermission": "You do not have permission to edit nutrition plans.",
+    "approvedImmutable": "This review was already sent. Rebuild it to propose new work.",
+    "created": "Draft version {version} created, not published",
+    "history": "History and version comparison",
+    "publish": "Open draft to publish",
+    "apply": "Create nutrition draft",
+    "targets": "Proposed targets: {kcal} kcal, protein {protein} g, carbs {carbs} g, fat {fat} g",
+    "codes": {
+      "lower_kcal_flat": "Lower calories: weight is flat despite good adherence",
+      "raise_kcal_flat": "Raise calories: weight is flat despite good adherence",
+      "slow_loss_too_fast": "Slow the loss: weight is dropping too fast"
+    }
+  },
+  "card": {
+    "title": "Weekly review",
+    "body": "Review this client's week and reply in one place.",
+    "open": "Open weekly review",
+    "workspace": "Go to the review"
+  },
+  "settings": {
+    "title": "Review preferences",
+    "description": "How your weekly review replies sound. Only you see and change these.",
+    "back": "Back to settings",
+    "loading": "Loading review preferences",
+    "dialect": "Arabic dialect",
+    "dialects": {
+      "egyptian": "Egyptian",
+      "gulf": "Gulf"
+    },
+    "phrases": "Signature phrases",
+    "phrasesHint": "One per line. Up to {max} phrases, {length} characters each.",
+    "save": "Save preferences",
+    "saving": "Saving",
+    "saved": "Preferences saved",
+    "validation": "Use at most 5 phrases of up to 200 characters each."
+  },
+  "hub": {
+    "title": "Review preferences",
+    "body": "Dialect and signature phrases for weekly review replies."
+  }
+}

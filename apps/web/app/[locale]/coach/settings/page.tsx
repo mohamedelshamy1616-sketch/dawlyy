@@ -12,6 +12,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
   const auth = await requirePage();
   const t = await getTranslations('settings.hub');
+  const review = await getTranslations('review');
   const clientApp = await getTranslations('clientAppComposer');
   const ai = await getTranslations('aiProvider');
   const activity = await getTranslations('activity');
@@ -26,6 +27,8 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
       ? [{ href: '/coach/settings/activity', title: activity('title'), body: activity('subtitle') }] : []),
     ...(isAllowed(auth, 'settings', 'view') ? [{ href: '/coach/settings/ai', title: ai('hub.title'), body: ai('hub.body') }] : []),
     ...(isAllowed(auth, 'settings', 'view') ? [{ href: '/coach/settings/client-app', title: clientApp('hub.title'), body: clientApp('hub.body') }] : []),
+    ...((auth.role === 'owner' || auth.role === 'staff') && isAllowed(auth, 'checkins', 'review')
+      ? [{ href: '/coach/settings/review', title: review('hub.title'), body: review('hub.body') }] : []),
     item('legalPages', '/terms'),
   ];
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={t('title')} subtitle={t('subtitle')} /><SettingsHub items={items} /></div>;

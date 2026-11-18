@@ -20,7 +20,7 @@ describe('R1b inbox schedule and action boundaries', () => {
   });
   it('resolves the exact review, payment and conversation instead of opening a generic list', () => {
     const refs = { reviewId: 'review', paymentId: 'payment', conversationId: 'thread' };
-    expect(actionHref('review', 'client', refs)).toBe('/coach/checkins/review/review');
+    expect(actionHref('review', 'client', refs)).toBe('/coach/clients/client/review');
     expect(actionHref('confirm_payment', 'client', refs)).toBe('/coach/billing/payments/payment');
     expect(actionHref('reply', 'client', refs)).toBe('/coach/messages/thread');
     expect(actionHref('renew', 'client', refs)).toBe('/coach/clients/client/subscription');

@@ -40,7 +40,7 @@ describe('R1b staff inbox under real RLS', () => {
   it('ranks a waiting review above only no_contact and resolves its review action', async () => {
     const result = await inbox();
     expect(result.items.map(row => row.client.id)).toEqual([f.clientId, f.otherClientId]);
-    expect(result.items[0]).toMatchObject({ primaryAction: 'review', actionHref: `/coach/checkins/review/${reviewId}` });
+    expect(result.items[0]).toMatchObject({ primaryAction: 'review', actionHref: `/coach/clients/${f.clientId}/review` });
     expect(result.items[0]!.score).toBeGreaterThan(result.items[1]!.score);
     expect(result.items[1]!.reasons.map(reason => reason.code)).toEqual(['no_contact']);
   });

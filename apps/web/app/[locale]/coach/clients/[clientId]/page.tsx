@@ -15,6 +15,7 @@ import { PageHeader } from '@/src/components/shell/page-header';
 import { ClientDetail, HUB_TABS, type HubAccess, type PlanSummary } from '@/components/clients/client-detail';
 import type { TimelinePage } from '@/components/dashboard/types';
 import { ActivityLog } from '@/components/activity/activity-log';
+import { WeeklyReviewCard } from '@/components/review/weekly-review-card';
 
 /** R1c: RLS-scoped client hub; the plan and timeline reads run only for callers who hold the matching module grant. */
 export default async function ClientPage({ params, searchParams }: { params: Promise<{ locale: string; clientId: string }>; searchParams: Promise<{ tab?: string | string[] }> }) {
@@ -56,6 +57,6 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
     <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link>
     {isAllowed(auth, 'settings', 'view') && isAllowed(auth, 'clients', 'view') && isAllowed(auth, 'clients', 'edit')
       ? <Link className="inline-flex min-h-11 items-center underline" href={`/coach/clients/${client.id}/client-app`}>{clientApp('hub.clientLink')}</Link> : null}
-    <ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog clientId={client.id} />} />
+    <ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog clientId={client.id} />} reviewCard={(auth.role === 'owner' || auth.role === 'staff') && isAllowed(auth, 'clients', 'view') && isAllowed(auth, 'checkins', 'review') ? <WeeklyReviewCard clientId={client.id} initial={null} /> : null} />
   </div>;
 }

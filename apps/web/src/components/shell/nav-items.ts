@@ -34,6 +34,7 @@ export const COACH_PROFILE_NAV: readonly NavItem[] = [
   { key: 'activity', href: '/coach/settings/activity', Icon: Settings },
   { key: 'aiProvider', href: '/coach/settings/ai', Icon: Settings },
   { key: 'clientApp', href: '/coach/settings/client-app', Icon: Settings },
+  { key: 'reviewPreferences', href: '/coach/settings/review', Icon: Settings },
 ];
 
 export const CLIENT_NAV: readonly NavItem[] = [
