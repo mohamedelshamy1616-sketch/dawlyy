@@ -1022,3 +1022,11 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - Evidence on the tree of `3f3a9e9`: `pnpm -r --workspace-concurrency=1 typecheck` exit 0; `pnpm -r lint` exit 0 (0 errors, 18 warnings); check-messages 2227 keys per locale; `run_db_tests.py --web` 76 files, 576 passed. DB suites were not rerun: no `packages/db` change since 5a8e75a (17 files, 11,793 passed).
 - `docs/qa/FINAL_REVIEW.md`: 20 fixed, 2 accepted (S2, decision 17), none open. HOW_TO_TEST line 58 now describes the access-expired pages, plus one line for decision 19.
 - Next: HANDOFF to sonnet medium, fresh. HEAD is frozen: no commit after the docs commit that follows this block. Run exactly ONE `python C:/Users/compuline/.claude/autopilot/run_checks.py --project .` as a job with nothing else running (machine idle; e2e-en once timed out under load), then `done_check.py`, then DONE and one PushNotification.
+
+## 19 Nov 2026 00:05 (Cairo): screens job found a real client hub crash; fixed
+
+- Screens job `20261118-195623-screens-p8` failed after 1 h. First error: `owner-coach-clients-client-ar-360.png`, the page rendered Next's error shell. Server log: `HUB_TABS.find is not a function` at `coach/clients/[clientId]/page.tsx:55`. Cause: `HUB_TABS` was exported from `client-detail.tsx` (`'use client'`) and the server page imported it, so it received a client reference proxy. Every later failure (browser closed, 1 h test timeout) followed from that page timing out.
+- Fix `2567657`: `components/clients/hub-tabs.ts` holds `HUB_TABS` and `HubTab`. New `src/lib/client-boundary.test.ts` scans server modules for non-component imports from `'use client'` modules; it fails on the old code and passes now. tsc 0, eslint 0 on touched files. LESSONS.md has the line.
+- Why it escaped: typecheck, lint and test-web do not render the page, and the beta e2e specs did not open the client hub for this role path. The P9 review should check that a hub open is covered.
+- Screens rerun started as job `20261118-235502-screens-p8b`. P9 step 1 needs no change: `playwright.e2e.config.ts` uses `testDir ./e2e/beta` and every spec tags `@${locale}`, so r2a to r5 are already in e2e-ar and e2e-en.
+- Next: read the screens result, then `run_checks.py` on a clean tree, then HANDOFF to opus high for the review.
