@@ -56,7 +56,7 @@ describe('Task 5 sync and summaries', () => {
     expect(summary.reasons).toContain('planned_work_differs');
   });
   it('maps tombstones, warmups, skipped sets and pounds without inflating the summary', () => {
-    const session: PortalSession = { id: 'session', clientUuid: 's', programId: null, programVersionId: null, dayId: null, workoutId: 'w',
+    const session: PortalSession = { id: 'session', clientUuid: 's', createdAt: '2026-11-11T10:00:00Z', programId: null, programVersionId: null, dayId: null, workoutId: 'w',
       plannedWorkout: { id: 'w', name: { en: 'Lift' }, blocks: [{ id: 'b', kind: 'main', items: [{ id: 'i', exerciseId: 'e', order: 0, sets: [{ setNo: 1 }] }] }] },
       state: 'completed', localDate: '2026-11-11', timezone: 'Africa/Cairo', startedAt: null, endedAt: null, activeSeconds: 10,
       clientUpdatedAt: null, rpeOverall: null, mood: null, painNote: null, clientNote: null, summary: null };

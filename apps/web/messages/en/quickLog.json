@@ -1,0 +1,11 @@
+{
+  "open": "Quick log", "title": "Quick log", "subtitle": "Choose a specific meal or portion to save it now.",
+  "planned": "Planned: {name} · {portion}", "yesterday": "Yesterday: {name} · {portion}", "recentFood": "Recent food: {name} · {portion}",
+  "loadedHint": "Shortcuts use only the loaded rows from the previous seven local dates (up to {limit} per date). More loads the next page for that date.",
+  "emptyTitle": "No shortcuts yet", "emptyBody": "You can still describe a meal below. A published plan or recent entries will add shortcuts here.",
+  "loading": "Loading recent meals…", "loadFailed": "Recent meals could not be loaded.", "retry": "Retry", "more": "More for {date}",
+  "saving": "Saving…", "saved": "Saved", "failed": "Could not save. Tap Retry to send the same entry again.",
+  "offline": "Connect to the internet to use quick log.", "disabled": "Nutrition is switched off.", "moduleLoading": "Checking nutrition access…", "moduleError": "Could not check nutrition access.",
+  "freeEntry": "Describe another meal", "recordedPortion": "as recorded", "grams": "g", "approx": "about {portion}", "unknownFood": "Food", "unknownMeal": "Meal",
+  "units": { "g": "g", "ml": "ml", "piece": "piece", "cup": "cup", "tbsp": "tbsp", "tsp": "tsp", "slice": "slice", "can": "can", "loaf": "loaf", "custom": "portion" }
+}

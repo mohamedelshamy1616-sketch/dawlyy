@@ -40,6 +40,7 @@ type Props = {
  */
 export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId = null, errorMealId = null }: Props) {
   const t = useTranslations('clientToday');
+  const quick = useTranslations('quickLog');
   const dates = dateParts(model);
   const number = { locale: model.locale, numerals: model.numerals } as const;
   const { workout, modules } = model;
@@ -150,6 +151,14 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
             </VStack>
           )}
         </VStack>
+      ) : null}
+
+      {hasMeals ? (
+        <Button
+          variant="secondary" size="lg" className="min-h-11 w-full"
+          label={quick('open')} href={preview ? undefined : '/app/nutrition/log'}
+          isDisabled={preview} data-testid="today-quick-log"
+        />
       ) : null}
 
       {hasCheckins ? (

@@ -22,7 +22,7 @@ export function historyClient(auth: AuthContext, clientId?: string): string {
 
 /** Task 5 / doc §12.1: safe session projection with portable ISO stamps. */
 export function sessionProjection(row: Omit<typeof workoutSessions.$inferSelect, 'voidedBy' | 'voidReason'>): PortalSession {
-  return { voidedAt: row.voidedAt?.toISOString() ?? null, id: row.id, clientUuid: row.clientUuid, programId: row.programId, programVersionId: row.programVersionId,
+  return { voidedAt: row.voidedAt?.toISOString() ?? null, id: row.id, clientUuid: row.clientUuid, createdAt: row.createdAt.toISOString(), programId: row.programId, programVersionId: row.programVersionId,
     dayId: row.dayId, workoutId: row.workoutId, plannedWorkout: row.plannedWorkout, state: row.state,
     localDate: row.localDate, timezone: row.timezone, startedAt: row.startedAt?.toISOString() ?? null,
     endedAt: row.endedAt?.toISOString() ?? null, activeSeconds: row.activeSeconds,

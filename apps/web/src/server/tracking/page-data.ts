@@ -15,8 +15,8 @@ export async function loadTrackingPage(auth: AuthContext, clientId: string) {
     const measurementPage = await listMeasurements(tx, auth, query);
     const photoPage = await listPhotos(tx, auth, { clientId, limit: '20' });
     return { clientId, cadence, timezone: client.timezone, today: localDateOf(new Date().toISOString(), client.timezone),
-      metrics: { ...metricPage, items: metricPage.items.filter(row => row.voidedAt === null).map(({ id, metric, metricKey, value, unit, localDate, correctionOf, voidedAt }) => ({ id, metric, metricKey, value, unit, localDate, correctionOf, voidedAt })) },
-      measurements: { ...measurementPage, items: measurementPage.items.filter(row => row.voidedAt === null).map(({ id, localDate, deltas, voidedAt, replacesId }) => ({ id, localDate, deltas, voidedAt, replacesId })) },
+      metrics: { ...metricPage, items: metricPage.items.map(({ id, metric, metricKey, value, unit, localDate, correctionOf, createdAt, voidedAt }) => ({ id, metric, metricKey, value, unit, localDate, correctionOf, createdAt: createdAt.toISOString(), voidedAt: voidedAt?.toISOString() ?? null })) },
+      measurements: { ...measurementPage, items: measurementPage.items.map(({ id, localDate, values, deltas, createdAt, voidedAt, replacesId }) => ({ id, localDate, values, deltas, createdAt: createdAt.toISOString(), voidedAt: voidedAt?.toISOString() ?? null, replacesId })) },
       photos: { ...photoPage, items: photoPage.items.map(({ id, localDate, poses }) => ({ id, localDate, poses })) } };
   });
 }
