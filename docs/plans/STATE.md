@@ -1053,3 +1053,9 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - `20261119-190321-screens-p8f` ran the complete set in 1.6 h with 13 soft failures. 12 were `client-app-workout-start-*` ("still a skeleton") and 1 was `client-app-me-ar-360` (nav busy on first load; passed in a filtered rerun, so transient).
 - Workout-start cause, proven by the dump added in this session: after the client-side redirect from `/app/workout/start` to `/app/workout/<id>`, the old loading fallback stays in the DOM at 0x0 inside `main#main`. The screenshots show the finished workout. Not a product bug. `a2a3942`: `assertSettled` counts only `:visible` busy nodes (a visible skeleton still fails) and the failure dump lists display, size and parents. A 1-minute filtered run of ar-1366 and en-390 passes.
 - `index.md` needs one complete run, so `20261119-205847-screens-p8g` runs everything again (about 1.6 h).
+
+## 19 Nov 2026 22:05 (Cairo): screens green; run_checks started
+
+- `20261119-205847-screens-p8g` passed: `index.md` says "Captured 1020 of 1020 expected screenshots", no FAIL row. Committed `215ae30` (20 older PNGs from renamed routes remain, marked old in the index).
+- P9 step 1 (new e2e flows in e2e-ar and e2e-en) needed no change: `testDir ./e2e/beta`, specs tag `@${locale}`.
+- `run_checks.py` for all 8 checks started as job `20261119-220137-checks-p9` on a clean tree. Next: read the evidence file; then HANDOFF to opus high for the review.
