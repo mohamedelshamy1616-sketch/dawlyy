@@ -98,11 +98,20 @@ function expectedUrl(role: Screen['role'], path: string, baseURL: string, locale
  */
 async function assertSettled(page: Page): Promise<void> {
   const busy = page.locator('[aria-busy="true"]');
+  // Only a skeleton a visitor can see counts. After a client-side redirect (workout/start to workout/<id>) Next keeps the
+  // previous loading fallback in the DOM at 0x0 (19 Nov 2026, proven by the failure dump), which nobody sees.
+  const visibleBusy = page.locator('[aria-busy="true"]:visible');
   try {
-    await expect(busy).toHaveCount(0);
+    await expect(visibleBusy).toHaveCount(0);
     await expect(page.getByRole('heading').first()).toBeVisible();
   } catch (error: unknown) {
-    const html = await busy.evaluateAll(nodes => nodes.map(node => node.outerHTML.slice(0, 240))).catch(() => []);
+    // Where the leftover busy node sits and whether anyone can see it: a hidden stale fallback and a visible skeleton need different fixes.
+    const html = await busy.evaluateAll(nodes => nodes.map(node => {
+      const chain: string[] = [];
+      for (let up: Element | null = node.parentElement; up && chain.length < 5; up = up.parentElement) chain.push(`${up.tagName.toLowerCase()}${up.id ? `#${up.id}` : ''}${up.hasAttribute('hidden') ? '[hidden]' : ''}`);
+      const box = node.getBoundingClientRect();
+      return `${node.outerHTML.slice(0, 160)} | display=${getComputedStyle(node).display} size=${Math.round(box.width)}x${Math.round(box.height)} in ${chain.join(' < ')}`;
+    })).catch(() => []);
     const cause = error instanceof Error ? (error.message.split('\n')[0] ?? '') : String(error);
     throw new Error(`page is still a skeleton or has no heading\n  url: ${page.url()}\n  busy: ${JSON.stringify(html)}\n  cause: ${cause}`);
   }
