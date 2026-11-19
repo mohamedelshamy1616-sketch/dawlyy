@@ -1047,3 +1047,9 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 ## 19 Nov 2026 19:08 (Cairo): screens-p8e failed on a stopped database; p8f running
 
 - `20261119-184513-screens-p8e` failed in 15 minutes: `/api/dev-login` answered 500 with ECONNREFUSED on 127.0.0.1:54329. The 18:41 reboot had stopped the local cluster. A foreground `local_pg.ps1 -Action start` died with its tool call (Ctrl-C reached the server), so I started it as `job.py` job `20261119-190303-pg-start`; `psql select 1` returns 1. Screens relaunched as `20261119-190321-screens-p8f`. LESSONS.md has the line.
+
+## 19 Nov 2026 21:05 (Cairo): screens-p8f result and fix; p8g running
+
+- `20261119-190321-screens-p8f` ran the complete set in 1.6 h with 13 soft failures. 12 were `client-app-workout-start-*` ("still a skeleton") and 1 was `client-app-me-ar-360` (nav busy on first load; passed in a filtered rerun, so transient).
+- Workout-start cause, proven by the dump added in this session: after the client-side redirect from `/app/workout/start` to `/app/workout/<id>`, the old loading fallback stays in the DOM at 0x0 inside `main#main`. The screenshots show the finished workout. Not a product bug. `a2a3942`: `assertSettled` counts only `:visible` busy nodes (a visible skeleton still fails) and the failure dump lists display, size and parents. A 1-minute filtered run of ar-1366 and en-390 passes.
+- `index.md` needs one complete run, so `20261119-205847-screens-p8g` runs everything again (about 1.6 h).
