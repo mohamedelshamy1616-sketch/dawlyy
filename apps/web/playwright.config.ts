@@ -13,7 +13,8 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: 0,
-  timeout: 3_600_000,
+  // The full screens run (every route, both locales, six widths) took over 1 h on 19 Nov 2026, so one test gets 3 h.
+  timeout: 10_800_000,
   // `next dev` compiles each route on first visit (10 to 15 s, more on a loaded PC), so the waits are generous.
   expect: { timeout: 45_000 },
   use: {
