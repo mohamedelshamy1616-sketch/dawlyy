@@ -254,6 +254,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         // Item creation defaults to three sets. Keep one set, selected by its localized legend.
         for (const setNo of [3, 2]) {
           const row = owner.getByRole('group', { name: t('programs.setNumber', { number: new Intl.NumberFormat(locale).format(setNo) }), exact: true });
+          // R1d (reinvent plan, "the rest under more"): the set row keeps reps, load and rest; removing a set sits under its "more" section.
+          await row.locator('summary').click();
           await row.getByRole('button', { name: t('programs.removeSet'), exact: true }).click();
         }
         const planned = owner.getByRole('group', { name: t('programs.setNumber', { number: new Intl.NumberFormat(locale).format(1) }), exact: true });

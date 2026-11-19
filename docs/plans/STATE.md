@@ -1059,3 +1059,8 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - `20261119-205847-screens-p8g` passed: `index.md` says "Captured 1020 of 1020 expected screenshots", no FAIL row. Committed `215ae30` (20 older PNGs from renamed routes remain, marked old in the index).
 - P9 step 1 (new e2e flows in e2e-ar and e2e-en) needed no change: `testDir ./e2e/beta`, specs tag `@${locale}`.
 - `run_checks.py` for all 8 checks started as job `20261119-220137-checks-p9` on a clean tree. Next: read the evidence file; then HANDOFF to opus high for the review.
+
+## 19 Nov 2026 23:20 (Cairo): P9 check run, 6 of 8 green, e2e red with 10 failures per locale
+
+- `run_checks` job `20261119-221033-checks-p9b` at HEAD `7cfddb5`: typecheck, lint, build-web, test-core, test-db (831 s), test-web green. e2e-ar: 10 failed, 13 did not run (serial suite stops), 13 passed. e2e-en 878 s, red too (same first failure).
+- First failures in the new specs, which had never run before: (1) beta-gate 05 clicks Remove set, now under a collapsed "more" since R1d (spec fixed); (2) R2b undo click timeout; (3) R2c Switch touch target 24 px; (4) R3a URL predicate after archive; (5) R3b element not found; (6) R4b review flow; (7) R5 coach-inbox targets under 44 px at 360; (8, 9) R5 synthetic states: browser console errors; (10) R5 numerals: Western digits shown after choosing Arabic-Indic on /app/today. Triage one by one; the ones that are spec bugs get a spec fix citing the plan, the ones that are product bugs get a product fix.
