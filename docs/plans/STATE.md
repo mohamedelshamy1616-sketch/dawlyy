@@ -1035,3 +1035,7 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 
 - Job `20261118-235502-screens-p8b` (after the hub fix `2567657`) rendered every Arabic page and part of the English set, then died at the 1 h test timeout. No render fault: the first `Error:` was `owner-coach-clients-archived-en-390.png` with a session-closed protocol error. Commit `dd20080` raises the single test timeout to 3 h (a duration limit, no assertion changed). Job `20261119-152106-screens-p8c` is running; expect 1.5 to 2 h.
 - Next: if green, commit `docs/qa/screens`, run `run_checks.py` on a clean tree, then HANDOFF to opus high for the review.
+
+## 19 Nov 2026 15:46 (Cairo): screens-p8c failed at server start; p8d running
+
+- `20261119-152106-screens-p8c`: migrations and seed finished, then "Timed out waiting 600000ms from config.webServer" with no server output. The PC had about 1.2 GB free RAM and many unrelated node processes; no stale dawlyy server or port 3210 listener existed. Cause is not proven. `a729211` pipes the server output; `20261119-154310-screens-p8d` is the one relaunch.
