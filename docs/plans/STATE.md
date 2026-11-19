@@ -1039,3 +1039,7 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 ## 19 Nov 2026 15:46 (Cairo): screens-p8c failed at server start; p8d running
 
 - `20261119-152106-screens-p8c`: migrations and seed finished, then "Timed out waiting 600000ms from config.webServer" with no server output. The PC had about 1.2 GB free RAM and many unrelated node processes; no stale dawlyy server or port 3210 listener existed. Cause is not proven. `a729211` pipes the server output; `20261119-154310-screens-p8d` is the one relaunch.
+
+## 19 Nov 2026 18:55 (Cairo): screens-p8d lost to a PC reboot; full rerun p8e
+
+- `20261119-154310-screens-p8d` ended as "lost": the PC rebooted at 18:41 (boot time 18:41:50, job log last written 18:41:22). Before that it had captured all 684 owner screens (57 routes x 2 locales x 6 widths) and 70 client screens with zero `Error:` lines, so no render fault. index.md needs a complete run, so `20261119-184513-screens-p8e` runs everything again with a 5 h test timeout (`33cc92a`); expect about 3.5 h.
