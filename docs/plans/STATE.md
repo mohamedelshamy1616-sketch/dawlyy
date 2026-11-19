@@ -1030,3 +1030,8 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 - Why it escaped: typecheck, lint and test-web do not render the page, and the beta e2e specs did not open the client hub for this role path. The P9 review should check that a hub open is covered.
 - Screens rerun started as job `20261118-235502-screens-p8b`. P9 step 1 needs no change: `playwright.e2e.config.ts` uses `testDir ./e2e/beta` and every spec tags `@${locale}`, so r2a to r5 are already in e2e-ar and e2e-en.
 - Next: read the screens result, then `run_checks.py` on a clean tree, then HANDOFF to opus high for the review.
+
+## 19 Nov 2026 15:23 (Cairo): screens rerun with a 3 h timeout
+
+- Job `20261118-235502-screens-p8b` (after the hub fix `2567657`) rendered every Arabic page and part of the English set, then died at the 1 h test timeout. No render fault: the first `Error:` was `owner-coach-clients-archived-en-390.png` with a session-closed protocol error. Commit `dd20080` raises the single test timeout to 3 h (a duration limit, no assertion changed). Job `20261119-152106-screens-p8c` is running; expect 1.5 to 2 h.
+- Next: if green, commit `docs/qa/screens`, run `run_checks.py` on a clean tree, then HANDOFF to opus high for the review.
