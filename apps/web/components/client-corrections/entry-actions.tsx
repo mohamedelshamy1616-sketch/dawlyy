@@ -95,7 +95,7 @@ export function EntryActions({ kind, id, createdAt, voidedAt, onEdit, onChanged,
     {action.pending ? <Text role="status">{t('pending')}</Text> : null}
     {action.saved ? <Text role="status">{t('saved')}</Text> : null}
     {action.error ? <Text role="alert">{t(action.error)}</Text> : null}
-    <Dialog isOpen={open} onOpenChange={value => { if (!action.pending) setOpen(value); }} aria-label={t('remove')}>
+    <Dialog isOpen={open && !action.pending} onOpenChange={value => { if (!action.pending) setOpen(value); }} aria-label={t('remove')}>
       <VStack gap={4} className="min-w-0 max-w-full">
         <DialogHeader title={t('remove')} subtitle={t('removeHint')} />
         <TextArea label={t('reason')} value={reason} onChange={value => { if (!action.pending && !operation.current) setReason(value); }} maxLength={500} controlClassName="min-h-11" />

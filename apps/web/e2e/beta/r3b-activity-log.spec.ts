@@ -91,7 +91,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
       const ids = await owner.locator('[data-activity-id]').evaluateAll(rows => rows.map(row => row.getAttribute('data-activity-id')));
       expect(ids.indexOf(restored.id)).toBeLessThan(ids.indexOf(archived.id));
       await visit(owner, locale, '/coach/settings');
-      await owner.getByRole('link', { name: translate('title'), exact: true }).click();
+      // A hub card is one link named by its title and its body, so match the title as a substring inside main.
+      await owner.getByRole('main').getByRole('link', { name: translate('title') }).click();
       await expect(owner).toHaveURL(new RegExp(`/${locale}/coach/settings/activity$`));
       await filter(owner, 'clients'); await assertRow(owner, restored, 'restore');
       for (const width of [360, 375, 390, 430, 1440]) {

@@ -52,6 +52,16 @@ export function formatNumber(value: number | null | undefined, opts: NumberOptio
   return /^[-‎‏؜−]+[0٠.,٫]+$/.test(formatted) ? formatter(opts.locale, opts.numerals ?? 'latn', 0).format(0) : formatted;
 }
 
+const ARABIC_INDIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+
+/**
+ * Text a coach wrote or the app stored ("Phase 1") keeps Western digits in the database. Show it in the reader's
+ * numeral system, so one screen never mixes the two. Only the digits 0 to 9 change; every other character stays.
+ */
+export function localizeDigits(text: string, numerals: NumeralSystem = 'latn'): string {
+  return numerals === 'arab' ? text.replace(/[0-9]/g, digit => ARABIC_INDIC_DIGITS[Number(digit)]!) : text;
+}
+
 /** The numeral system chosen in a user's preferences; anything unreadable falls back to Western digits. */
 export function numeralPolicy(preferences: unknown): NumeralSystem {
   if (typeof preferences !== 'object' || preferences === null) return 'latn';

@@ -10,7 +10,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 import { localize } from '@dawlyy/core/types';
 import { Link } from '@/i18n/navigation';
-import { formatNumber } from '@/src/lib/numbers';
+import { formatNumber, localizeDigits } from '@/src/lib/numbers';
 import type { ClientTodayModel } from './types';
 
 const rowLink = 'focus-ring flex min-h-11 min-w-0 items-center justify-between gap-3 rounded-lg py-2 text-start break-words';
@@ -89,8 +89,8 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
               </>
             ) : (
               <>
-                <Heading level={2}>{localize(workout.name, model.locale) || t('workout.untitled')}</Heading>
-                {workout.dayLabel ? <Text as="p" color="secondary">{localize(workout.dayLabel, model.locale)}</Text> : null}
+                <Heading level={2}>{localizeDigits(localize(workout.name, model.locale), model.numerals) || t('workout.untitled')}</Heading>
+                {workout.dayLabel ? <Text as="p" color="secondary">{localizeDigits(localize(workout.dayLabel, model.locale), model.numerals)}</Text> : null}
                 {workout.exerciseCount !== undefined ? (
                   <Text as="p">{t('workout.exercises', { n: workout.exerciseCount, shown: formatNumber(workout.exerciseCount, number) })}</Text>
                 ) : null}
@@ -143,7 +143,7 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
                       />
                     ) : (
                       <Button
-                        variant="ghost" size="sm" className="min-h-11 shrink-0" label={t('meals.change')}
+                        variant="ghost" size="sm" className="min-h-11 min-w-11 shrink-0" label={t('meals.change')}
                         href={preview ? undefined : '/app/nutrition/history'} isDisabled={preview}
                       />
                     )}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EMPTY_NUMBER, formatKcal, formatMacro, formatNumber, numeralPolicy } from './numbers';
+import { EMPTY_NUMBER, formatKcal, formatMacro, formatNumber, localizeDigits, numeralPolicy } from './numbers';
 
 const ar = { locale: 'ar' as const };
 const en = { locale: 'en' as const };
@@ -56,6 +56,15 @@ describe('formatNumber', () => {
   it('returns the dash for missing input', () => {
     expect(formatNumber(null, en)).toBe(EMPTY_NUMBER);
     expect(formatNumber(Number.NaN, ar)).toBe(EMPTY_NUMBER);
+  });
+});
+
+describe('localizeDigits', () => {
+  it('turns Western digits into Arabic-Indic digits only when asked, and leaves other characters alone', () => {
+    expect(localizeDigits('المرحلة 1 · 5x5 / HIIT 30', 'arab')).toBe('المرحلة ١ · ٥x٥ / HIIT ٣٠');
+    expect(localizeDigits('المرحلة 1', 'latn')).toBe('المرحلة 1');
+    expect(localizeDigits('Phase 1')).toBe('Phase 1');
+    expect(localizeDigits('', 'arab')).toBe('');
   });
 });
 

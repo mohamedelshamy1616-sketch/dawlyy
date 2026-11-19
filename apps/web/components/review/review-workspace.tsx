@@ -163,10 +163,10 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
     {busy ? <Text as="p" role="status" aria-live="polite">{t('working')}</Text> : null}
     {!draft ? <VStack gap={3} className={frame}>
       <Heading level={2}>{t('empty.title')}</Heading><Text as="p">{t('empty.body')}</Text>
-      <HStack gap={2} wrap="wrap"><Button label={t('build')} size="lg" variant="primary" isDisabled={busy} onClick={() => void run(build)} /><Button label={t('refresh')} size="lg" variant="secondary" isDisabled={busy} onClick={() => void run(refresh)} /></HStack>
+      <HStack gap={2} wrap="wrap"><Button label={t('build')} size="lg" className="min-h-11" variant="primary" isDisabled={busy} onClick={() => void run(build)} /><Button label={t('refresh')} size="lg" className="min-h-11" variant="secondary" isDisabled={busy} onClick={() => void run(refresh)} /></HStack>
     </VStack> : <>
       <Text as="p" role="status" aria-live="polite">{t(`status.${draft.status}`)}</Text>
-      {stale ? <VStack gap={2} className={frame}><Text as="p" role="alert">{t('stale')}</Text><Button label={t('rebuild')} size="lg" variant="primary" isDisabled={busy} onClick={() => void run(build)} /></VStack> : null}
+      {stale ? <VStack gap={2} className={frame}><Text as="p" role="alert">{t('stale')}</Text><Button label={t('rebuild')} size="lg" className="min-h-11" variant="primary" isDisabled={busy} onClick={() => void run(build)} /></VStack> : null}
       {summary ? <VStack as="section" gap={3} className={frame} aria-labelledby="review-evidence-title">
         <Heading level={2} id="review-evidence-title">{t('summary.title')}</Heading>
         {empty ? <Text as="p" role="status">{t('summary.emptyWeek')}</Text> : null}
@@ -185,7 +185,7 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
       </VStack> : null}
       {blocked || requiresRebuild ? <VStack as="section" gap={3} className={frame} aria-labelledby="review-flags-title">
         <Heading level={2} id="review-flags-title">{t('flags.title')}</Heading><Text as="p" role="alert">{t('flags.blocked')}</Text>
-        <List edge="flush" hasDividers density="spacious" className={frame}>{flags.map(flag => <ListItem key={flag.id} label={<Text wordBreak="break-word">{t(`flags.category.${flag.category}`)}</Text>} description={<VStack gap={2} className={frame}><Text as="p">{t(`flags.source.${flag.source}`)}</Text><Button label={t('flags.handle')} size="lg" variant="secondary" isDisabled={busy} onClick={() => void run(() => handle(flag))} /></VStack>} />)}</List>
+        <List edge="flush" hasDividers density="spacious" className={frame}>{flags.map(flag => <ListItem key={flag.id} label={<Text wordBreak="break-word">{t(`flags.category.${flag.category}`)}</Text>} description={<VStack gap={2} className={frame}><Text as="p">{t(`flags.source.${flag.source}`)}</Text><Button label={t('flags.handle')} size="lg" className="min-h-11" variant="secondary" isDisabled={busy} onClick={() => void run(() => handle(flag))} /></VStack>} />)}</List>
         {requiresRebuild ? <Text as="p" role="status">{t('flags.rebuild')}</Text> : null}
       </VStack> : null}
       <VStack as="section" gap={3} className={frame} aria-labelledby="review-reply-title">
@@ -196,15 +196,15 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
         {saved ? <Text as="p" role="status">{t('reply.saved')}</Text> : null}
         {!canSend && draft.status === 'draft' ? <Text as="p">{t('reply.noSendPermission')}</Text> : null}
         <HStack gap={2} wrap="wrap">
-          <Button label={t('reply.save')} size="lg" variant="secondary" isDisabled={busy || !editable || !dirty || !text.trim() || text.trim().length > 4000} onClick={() => void run(save)} />
-          <Button label={t('reply.approve')} size="lg" variant="primary" isDisabled={busy || !editable || blocked || !canSend || !text.trim() || text.trim().length > 4000} onClick={() => void run(approve)} />
-          {!stale ? <Button label={t('rebuild')} size="lg" variant="ghost" isDisabled={busy} onClick={() => void run(build)} /> : null}
+          <Button label={t('reply.save')} size="lg" className="min-h-11" variant="secondary" isDisabled={busy || !editable || !dirty || !text.trim() || text.trim().length > 4000} onClick={() => void run(save)} />
+          <Button label={t('reply.approve')} size="lg" className="min-h-11" variant="primary" isDisabled={busy || !editable || blocked || !canSend || !text.trim() || text.trim().length > 4000} onClick={() => void run(approve)} />
+          {!stale ? <Button label={t('rebuild')} size="lg" className="min-h-11" variant="ghost" isDisabled={busy} onClick={() => void run(build)} /> : null}
         </HStack>
         {sent ? <VStack gap={2} className={frame}><Text as="p" role="status">{t(sent.notified ? 'reply.sent' : 'reply.sentNotNotified')}</Text><Link className={link} href={`/coach/messages/${sent.conversationId}`}>{t('reply.openMessage')}</Link></VStack> : null}
       </VStack>
       <VStack as="section" gap={3} className={frame} aria-labelledby="review-proposal-title">
         <Heading level={2} id="review-proposal-title">{t('proposal.title')}</Heading><Text as="p" color="secondary">{t('proposal.hint')}</Text>
-        {draft.proposalDraft ? <VStack gap={2} className={frame}><Text as="p" role="status">{t('proposal.created', { version: n(draft.proposalDraft.versionNo, 0) })}</Text>{canViewNutrition ? <HStack gap={2} wrap="wrap"><Link className={link} href={`/coach/nutrition/${draft.proposalDraft.planId}/history`}>{t('proposal.history')}</Link><Link className={link} href={`/coach/nutrition/${draft.proposalDraft.planId}`}>{t('proposal.publish')}</Link></HStack> : null}</VStack> : draft.review.proposals.length ? <List edge="flush" density="spacious" hasDividers className={frame}>{draft.review.proposals.map(item => <ListItem key={item.code} label={<Text weight="semibold">{t(`proposal.codes.${item.code}`)}</Text>} description={<VStack gap={2} className={frame}><Text as="p">{t('proposal.targets', { kcal: formatKcal(item.change.targets.kcal, options), protein: formatMacro(item.change.targets.proteinG, options), carbs: formatMacro(item.change.targets.carbsG, options), fat: formatMacro(item.change.targets.fatG, options) })}</Text><Button label={t('proposal.apply')} size="lg" variant="secondary" isDisabled={busy || !editable || blocked || !canPropose} onClick={() => void run(() => proposal(item.code))} /></VStack>} />)}</List> : <Text as="p">{t('proposal.empty')}</Text>}
+        {draft.proposalDraft ? <VStack gap={2} className={frame}><Text as="p" role="status">{t('proposal.created', { version: n(draft.proposalDraft.versionNo, 0) })}</Text>{canViewNutrition ? <HStack gap={2} wrap="wrap"><Link className={link} href={`/coach/nutrition/${draft.proposalDraft.planId}/history`}>{t('proposal.history')}</Link><Link className={link} href={`/coach/nutrition/${draft.proposalDraft.planId}`}>{t('proposal.publish')}</Link></HStack> : null}</VStack> : draft.review.proposals.length ? <List edge="flush" density="spacious" hasDividers className={frame}>{draft.review.proposals.map(item => <ListItem key={item.code} label={<Text weight="semibold">{t(`proposal.codes.${item.code}`)}</Text>} description={<VStack gap={2} className={frame}><Text as="p">{t('proposal.targets', { kcal: formatKcal(item.change.targets.kcal, options), protein: formatMacro(item.change.targets.proteinG, options), carbs: formatMacro(item.change.targets.carbsG, options), fat: formatMacro(item.change.targets.fatG, options) })}</Text><Button label={t('proposal.apply')} size="lg" className="min-h-11" variant="secondary" isDisabled={busy || !editable || blocked || !canPropose} onClick={() => void run(() => proposal(item.code))} /></VStack>} />)}</List> : <Text as="p">{t('proposal.empty')}</Text>}
         {!canPropose && !draft.proposalDraft ? <Text as="p">{t('proposal.noPermission')}</Text> : null}
         {draft.status === 'approved' && !draft.proposalDraft ? <Text as="p">{t('proposal.approvedImmutable')}</Text> : null}
       </VStack>

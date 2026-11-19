@@ -67,7 +67,8 @@ for (const locale of ['ar', 'en'] as const) {
       try {
         await clearFlags();
         // Current flow. The timer starts when the coach opens the client's evidence and stops at the confirmed send.
-        await visit(coach, locale, '/coach/inbox');
+        // The ranked Inbox is the coach home page (R1b, app/[locale]/coach/page.tsx); there is no /coach/inbox route.
+        await visit(coach, locale, '/coach');
         const action = coach.locator(`a[href$="/coach${base()}"]`).first();
         const viaInbox = await action.count() > 0;
         const startedCurrent = performance.now();
@@ -132,7 +133,7 @@ for (const locale of ['ar', 'en'] as const) {
       const flags = await api<{ items: Flag[] }>(coach, 'GET', `/red-flags?status=open&clientId=${clientId}&limit=100`);
       expect(flags.items.map(flag => flag.category)).toContain('pain_injury');
 
-      await visit(coach, locale, '/coach/inbox');
+      await visit(coach, locale, '/coach');
       await expect(coach.locator(`a[href*="/coach/clients/${clientId}"]`).first()).toBeVisible();
 
       await visit(coach, locale, url());

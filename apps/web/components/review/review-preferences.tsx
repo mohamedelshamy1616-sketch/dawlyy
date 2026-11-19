@@ -51,10 +51,10 @@ export function ReviewPreferencesForm({ initial, numerals = 'latn', initialError
     {error !== 'forbidden' ? <VStack as="section" gap={4} className="min-w-0 max-w-full">
       <VStack gap={2} className="min-w-0 max-w-full" role="group" aria-labelledby="review-dialect-label">
         <Heading level={2} id="review-dialect-label">{t('settings.dialect')}</Heading>
-        <HStack gap={2} wrap="wrap">{(['egyptian', 'gulf'] as const).map(value => <Button key={value} label={t(`settings.dialects.${value}`)} aria-pressed={dialect === value} size="lg" variant={dialect === value ? 'primary' : 'secondary'} isDisabled={busy} onClick={() => { setDialect(value); setSaved(false); }} />)}</HStack>
+        <HStack gap={2} wrap="wrap">{(['egyptian', 'gulf'] as const).map(value => <Button key={value} label={t(`settings.dialects.${value}`)} aria-pressed={dialect === value} size="lg" className="min-h-11" variant={dialect === value ? 'primary' : 'secondary'} isDisabled={busy} onClick={() => { setDialect(value); setSaved(false); }} />)}</HStack>
       </VStack>
       <TextArea label={t('settings.phrases')} description={t('settings.phrasesHint', { max: count(5), length: count(200) })} value={phrases} onChange={value => { setPhrases(value); setSaved(false); }} rows={5} isDisabled={busy} containerClassName="min-w-0 max-w-full" controlClassName="min-h-11" />
-      <Button label={t('settings.save')} size="lg" variant="primary" isDisabled={busy} onClick={() => void save()} />
+      <Button label={t('settings.save')} size="lg" className="min-h-11" variant="primary" isDisabled={busy} onClick={() => void save()} />
       {busy ? <Text as="p" role="status">{t('settings.saving')}</Text> : null}
       {saved ? <Text as="p" role="status" aria-live="polite">{t('settings.saved')}</Text> : null}
     </VStack> : null}

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
+import { expect, test, type BrowserContext, type Locator, type Page, type Route } from '@playwright/test';
 import { createTranslator } from 'next-intl';
 import { api, browserHealth, devLogin, mutation, visit, type Locale } from './helpers';
 
@@ -10,7 +10,7 @@ const OWNER = 'd0250000-0000-4000-8000-000000000101';
 const sizes = [{ width: 360, height: 780 }, { width: 390, height: 844 }, { width: 430, height: 932 }];
 
 /** The two R3a namespaces are not in helpers.labels(), so load them here with the same ICU formatting as next-intl. */
-function catalog(locale: Locale, namespace: 'archiveControls' | 'controlUndo') {
+function catalog(locale: Locale, namespace: 'archiveControls' | 'controlUndo' | 'calendar') {
   const file: unknown = JSON.parse(readFileSync(join(process.cwd(), 'messages', locale, `${namespace}.json`), 'utf8'));
   return (path: string, values: Record<string, string | number> = {}): string => {
     let value: unknown = file;
@@ -28,13 +28,14 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
     let health: () => Promise<void>;
     let t: ReturnType<typeof catalog>;
     let u: ReturnType<typeof catalog>;
+    let cal: ReturnType<typeof catalog>;
     const runId = `${locale}-${Date.now()}-${randomUUID().slice(0, 6)}`;
     const names = { main: `R3a ${runId} main`, second: `R3a ${runId} second`, third: `R3a ${runId} third`, program: `R3a ${runId} program` };
     const ids: Record<string, string> = {};
 
     test.beforeAll(async ({ browser, baseURL }) => {
       if (!baseURL) throw new Error('Use playwright.e2e.config.ts with its local baseURL.');
-      t = catalog(locale, 'archiveControls'); u = catalog(locale, 'controlUndo');
+      t = catalog(locale, 'archiveControls'); u = catalog(locale, 'controlUndo'); cal = catalog(locale, 'calendar');
       context = await browser.newContext({ baseURL, viewport: sizes[1], locale: locale === 'ar' ? 'ar-EG' : 'en-EG', timezoneId: 'Africa/Cairo', reducedMotion: 'reduce' });
       context.setDefaultTimeout(60_000); context.setDefaultNavigationTimeout(240_000);
       health = browserHealth(context, locale);
@@ -120,21 +121,31 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
 
     test('calendar: cancelling an event offers Undo, and a cancelled event offers Restore', async () => {
       const title = `R3a ${runId} event`;
-      // A moment from now, so the event falls inside the month the calendar loads first.
+      // A moment from now. The agenda lists 100 events a page, oldest first, and ends with a "load more" button
+      // (Task 8), so on a busy month the new event sits on a later page and the test pages to it like a coach would.
       const dueAt = new Date(Date.now() + 60_000).toISOString();
       const event = await api<{ id: string }>(owner, 'POST', '/calendar', 201, { clientId: ids.second, type: 'custom', title: { ar: title, en: title }, dueAt, timezone: 'Africa/Cairo', windowDays: 1 });
       await visit(owner, locale, '/coach/calendar');
       const cancel = owner.getByRole('button', { name: t('cancelEventItem', { name: title }), exact: true });
+      const more = owner.getByRole('button', { name: cal('actions.more'), exact: true });
+      // Every action reloads the agenda from its first page, so the event is paged to again after each one.
+      const reveal = (target: Locator) => expect.poll(async () => {
+        if (await target.count()) return true;
+        if (await more.count()) await more.click();
+        return false;
+      }, { timeout: 120_000, message: 'the event appears on some page of the agenda' }).toBe(true);
+      await reveal(cancel);
       await expect(cancel).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/cancel`, 200, () => cancel.click());
       await expect(toast()).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/restore`, 200, () => toast().getByRole('button', { name: u('undo') }).click());
-      await expect(cancel).toHaveCount(1);
+      await reveal(cancel); await expect(cancel).toHaveCount(1);
+      await reveal(cancel);
       await mutation(owner, 'POST', `/calendar/${event.id}/cancel`, 200, () => cancel.click());
       const restore = owner.getByRole('button', { name: t('restoreEventItem', { name: title }), exact: true });
-      await expect(restore).toHaveCount(1);
+      await reveal(restore); await expect(restore).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/restore`, 200, () => restore.click());
-      await expect(cancel).toHaveCount(1);
+      await reveal(cancel); await expect(cancel).toHaveCount(1);
       await settled(); await noHorizontalOverflow();
     });
 

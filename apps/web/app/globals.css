@@ -38,6 +38,28 @@
 }
 
 /*
+ * A Selector takes its 44 px floor on the trigger container (controlClassName="min-h-11"). The trigger button inside
+ * takes the same floor, so the focusable control is the whole touch target and not a 20 px strip within it (found by
+ * the R5 target check on the activity filter and the client search box). Text-like inputs follow the same shape:
+ * the wrapper carries `controlClassName="min-h-11"` and the native input sits inside it. `inherit` copies the
+ * wrapper's value; no value is chosen here.
+ */
+@layer components {
+  [data-astryx-theme] .astryx-selector > button[aria-haspopup],
+  [data-astryx-theme] .astryx-text-input > input,
+  [data-astryx-theme] .astryx-number-input > input,
+  [data-astryx-theme] .astryx-time-input > input,
+  [data-astryx-theme] .astryx-date-input > input {
+    min-height: inherit;
+  }
+  /* The calendar toggle of a DateInput is a 16 px icon button; it takes the touch-target token on both sides. */
+  [data-astryx-theme] .astryx-date-input > button {
+    min-height: var(--dawlyy-touch-target-min);
+    min-width: var(--dawlyy-touch-target-min);
+  }
+}
+
+/*
  * Astryx reads its own font tokens. Point them at the app fonts so Arabic renders in IBM Plex Sans Arabic
  * and Latin in Inter, the same as the rest of the app. Unlayered on purpose: it must beat the theme layer.
  */

@@ -21,8 +21,8 @@ function catalog(locale: Locale) {
   };
 }
 
-async function actor(browser: Browser, baseURL: string | undefined, locale: Locale, userId: string, width = 390): Promise<BrowserContext> {
-  const context = await browser.newContext({ baseURL, viewport: { width, height: 844 }, locale: locale === 'ar' ? 'ar-EG' : 'en-EG', timezoneId: 'Africa/Cairo' });
+async function actor(browser: Browser, baseURL: string | undefined, locale: Locale, userId: string, width = 390, touch = false): Promise<BrowserContext> {
+  const context = await browser.newContext({ baseURL, viewport: { width, height: 844 }, locale: locale === 'ar' ? 'ar-EG' : 'en-EG', timezoneId: 'Africa/Cairo', ...(touch ? { hasTouch: true, isMobile: true } : {}) });
   await devLogin(context, userId, locale);
   return context;
 }
@@ -129,7 +129,7 @@ for (const locale of ['ar', 'en'] as const) {
 
     test(`all modules off settles without overflow at 360, 390 and 430 px @${locale}`, async ({ browser, baseURL }) => {
       test.setTimeout(240_000);
-      const owner = await actor(browser, baseURL, locale, OWNER);
+      const owner = await actor(browser, baseURL, locale, OWNER, 390, true);
       try {
         expect((await put(owner.request, '/settings/client-modules', Object.fromEntries(MODULES.map(m => [m, false])))).ok()).toBe(true);
         for (const width of [360, 390, 430]) {
@@ -140,8 +140,21 @@ for (const locale of ['ar', 'en'] as const) {
           await expect(page.getByText(t.preview.empty)).toBeVisible();
           await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
           expect(await overflow(page), `Horizontal overflow at ${width}px`).toBeLessThanOrEqual(1);
-          const box = await page.getByRole('switch', { name: t.modules.workouts.name }).boundingBox();
-          expect(box?.height ?? 0, 'Switch touch target').toBeGreaterThanOrEqual(44);
+          // The Astryx Switch draws a 24 px track and grows its tap area under a coarse pointer (hitArea.js), so the
+          // proof is real touch taps across the 44 px band centred on the track: every one of them must toggle it.
+          expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches), 'touch emulation').toBe(true);
+          const toggle = page.getByRole('switch', { name: t.modules.workouts.name });
+          let box = (await toggle.boundingBox())!;
+          const first = { ...box };
+          const missed: number[] = [];
+          for (const offset of [-20, -16, -8, 0, 8, 16, 20]) {
+            // The first change shows the unsaved status and may move the row, so measure it again before every tap.
+            box = (await toggle.boundingBox())!;
+            const before = await toggle.isChecked();
+            await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2 + offset);
+            if ((await toggle.isChecked()) === before) missed.push(offset);
+          }
+          expect(missed, `box ${JSON.stringify(first)}; tap offsets (px from the track centre) that did not toggle the switch`).toEqual([]);
           await page.close();
         }
       } finally {

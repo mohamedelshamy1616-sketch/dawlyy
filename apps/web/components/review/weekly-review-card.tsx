@@ -35,7 +35,7 @@ export function WeeklyReviewCard({ clientId, initial }: { clientId: string; init
     <VStack gap={3} className="min-w-0 max-w-full" dir={locale === 'ar' ? 'rtl' : 'ltr'} aria-busy={busy}>
       <Heading level={3} wordBreak="break-word">{t('card.title')}</Heading>
       <Text as="p" color="secondary" wordBreak="break-word">{t('card.body')}</Text>
-      <Button label={t(opened ? 'refresh' : 'card.open')} size="lg" variant="secondary" isDisabled={busy} onClick={() => void open()} />
+      <Button label={t(opened ? 'refresh' : 'card.open')} size="lg" className="min-h-11" variant="secondary" isDisabled={busy} onClick={() => void open()} />
       {busy ? <Text as="p" role="status">{t('loading')}</Text> : null}
       {error ? <Text as="p" role="alert">{t(`errors.${error}`)}</Text> : null}
       {opened && !error ? <>

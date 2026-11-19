@@ -41,7 +41,7 @@ export function MeasurementEditor({ row, onClose, onChanged, onPendingChange }: 
     });
   }
   if (!modules?.measurements) return null;
-  return <Dialog isOpen onOpenChange={open => { if (!open && !action.pending) onClose(); }} aria-label={t('measurement.title')} data-testid="measurement-editor">
+  return <Dialog isOpen={!action.pending} onOpenChange={open => { if (!open && !action.pending) onClose(); }} aria-label={t('measurement.title')} data-testid="measurement-editor">
     <VStack gap={4} className="min-w-0 max-w-full"><DialogHeader title={t('measurement.title')} subtitle={t('editHint')} />
       {!values.length ? <Text>{t('measurement.empty')}</Text> : values.map((item, index) => <VStack gap={2} key={index} className="min-w-0 border-b border-border pb-3">
         <Text>{t('measurement.entry', { count: formatNumber(index + 1, { locale, numerals }) })}</Text>

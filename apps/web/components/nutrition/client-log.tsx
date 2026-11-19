@@ -40,8 +40,8 @@ export function ClientQuickEntry({ localDate }: { localDate: string }) {
     <TextArea controlClassName="min-h-11" label={t('client.entryText')} description={t('client.entryHint')} value={text} onChange={setText} rows={4} maxLength={4000} isRequired />
     <TextArea controlClassName="min-h-11" label={t('common.note')} value={note} onChange={setNote} rows={2} maxLength={4000} isOptional />
     <HStack gap={2} wrap="wrap">
-      <Button size="lg" variant="primary" label={t('client.saveEntry')} isLoading={state === 'busy'} isDisabled={!text.trim() || state === 'busy'} onClick={() => void submit()} />
-      <Button size="lg" variant="ghost" href="/app/nutrition" label={t('client.backToMeals')} />
+      <Button size="lg" className="min-h-11" variant="primary" label={t('client.saveEntry')} isLoading={state === 'busy'} isDisabled={!text.trim() || state === 'busy'} onClick={() => void submit()} />
+      <Button size="lg" className="min-h-11" variant="ghost" href="/app/nutrition" label={t('client.backToMeals')} />
     </HStack>
   </VStack>;
 }

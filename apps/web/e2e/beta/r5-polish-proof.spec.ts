@@ -47,7 +47,12 @@ async function smallTargets(page: Page): Promise<string[]> {
       if (element.tagName === 'A' && (element.getAttribute('href') ?? '').startsWith('#')) continue;
       if (element.tagName === 'A' && style.display === 'inline' && element.closest('p, li')?.textContent !== element.textContent) continue;
       if (box.right <= 0 || box.left >= window.innerWidth) continue;
-      if (box.width < 43.5 || box.height < 43.5) out.push(`${element.tagName.toLowerCase()} "${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}" ${Math.round(box.width)}x${Math.round(box.height)}`);
+      // An Astryx ClickableCard puts a visually hidden 1 px link or button inside the card and forwards a tap anywhere
+      // on the card surface to it (ClickableCard.js: "a visually-hidden <button> or <a> inside the card provides the
+      // accessible role and label"). The card is the real touch target, so it is the box that must reach 44 px.
+      const card = box.width <= 2 && box.height <= 2 ? element.closest<HTMLElement>('.astryx-clickable-card') : null;
+      const hit = card ? card.getBoundingClientRect() : box;
+      if (hit.width < 43.5 || hit.height < 43.5) out.push(`${element.tagName.toLowerCase()} "${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}" ${Math.round(hit.width)}x${Math.round(hit.height)}`);
     }
     return out;
   });
@@ -75,7 +80,8 @@ for (const locale of ['ar', 'en'] as const) {
               await page.evaluate(async () => { await document.fonts.ready; });
               const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
               expect(overflow, `${label}: horizontal overflow`).toBeLessThanOrEqual(1);
-              expect(await smallTargets(page), `${label}: interactive targets under 44 px`).toEqual([]);
+              // Soft: one run reports every route that has a small target; the test still fails if any does.
+              expect.soft(await smallTargets(page), `${label}: interactive targets under 44 px`).toEqual([]);
               await test.info().attach(`${label}.png`, { body: await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'initial' }), contentType: 'image/png' });
             }
           } finally { await health().finally(() => context.close()); }

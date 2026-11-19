@@ -49,7 +49,7 @@ export function MealEditor({ row, plan, onClose, onChanged, onPendingChange }: {
   }
   const locked = action.pending || action.retryable;
   if (!modules?.nutrition) return null;
-  return <Dialog isOpen onOpenChange={open => { if (!open && !action.pending) onClose(); }} aria-label={t('meal.title')} data-testid="meal-editor">
+  return <Dialog isOpen={!action.pending} onOpenChange={open => { if (!open && !action.pending) onClose(); }} aria-label={t('meal.title')} data-testid="meal-editor">
     <VStack gap={4} className="min-w-0 max-w-full">
       <DialogHeader title={t('meal.title')} subtitle={t('editHint')} />
       {!free && !plannedExists ? <><Text role="status">{t('meal.removedPlan')}</Text><Button label={t('meal.useFreeEntry')} className="min-h-11" variant="secondary" onClick={() => { setFree(true); setText(''); }} /></> : null}
