@@ -1043,3 +1043,7 @@ tables that reference them; Bash heredocs break under the rtk hook (use the Writ
 ## 19 Nov 2026 18:55 (Cairo): screens-p8d lost to a PC reboot; full rerun p8e
 
 - `20261119-154310-screens-p8d` ended as "lost": the PC rebooted at 18:41 (boot time 18:41:50, job log last written 18:41:22). Before that it had captured all 684 owner screens (57 routes x 2 locales x 6 widths) and 70 client screens with zero `Error:` lines, so no render fault. index.md needs a complete run, so `20261119-184513-screens-p8e` runs everything again with a 5 h test timeout (`33cc92a`); expect about 3.5 h.
+
+## 19 Nov 2026 19:08 (Cairo): screens-p8e failed on a stopped database; p8f running
+
+- `20261119-184513-screens-p8e` failed in 15 minutes: `/api/dev-login` answered 500 with ECONNREFUSED on 127.0.0.1:54329. The 18:41 reboot had stopped the local cluster. A foreground `local_pg.ps1 -Action start` died with its tool call (Ctrl-C reached the server), so I started it as `job.py` job `20261119-190303-pg-start`; `psql select 1` returns 1. Screens relaunched as `20261119-190321-screens-p8f`. LESSONS.md has the line.
