@@ -43,7 +43,11 @@ function redact(message: string): string {
 }
 
 /** Task 12 step 10: observe every page (including popups); never ignore ordinary network/React errors. */
-export function browserHealth(context: BrowserContext, locale: Locale) {
+/**
+ * `injected` names failing requests ("500 GET /api/v1/activity") that a test itself forces with page.route to prove an error state.
+ * Only those exact failures are forgiven; any other failing request or console error still fails the test.
+ */
+export function browserHealth(context: BrowserContext, locale: Locale, injected: readonly string[] = []) {
   const errors: string[] = [];
   const observed = new Set<Page>();
   const failures: string[] = [];
@@ -62,6 +66,7 @@ export function browserHealth(context: BrowserContext, locale: Locale) {
       // Second permitted exception: Next's development-only instant-navigation diagnostic, replayed from the server
       // console. The same rule is enforced for production by `next build` (check build-web), which prerenders every route.
       if (/^Error: Route "[^"]+": (?:Next\.js encountered uncached data during prerendering or a navigation|Could not validate that a segment in your UI has instant navigation)\./.test(text)) return;
+      if (/^Failed to load resource/.test(text) && failures.length > 0 && injected.includes(failures[failures.length - 1] ?? '')) return;
       // Browser 'Failed to load resource' lines carry no URL: name the most recent failing requests.
       errors.push(redact(/^Failed to load resource/.test(text) ? `${text} (recent failing requests: ${failures.slice(-3).join('; ')})` : text));
     });
@@ -87,7 +92,8 @@ export function browserHealth(context: BrowserContext, locale: Locale) {
 export async function visit(page: Page, locale: Locale, path: string): Promise<void> {
   const response = await page.goto(`/${locale}${path}`, { waitUntil: 'load' });
   expect(response?.ok(), `Screen ${path} must load successfully`).toBe(true);
-  await expect(page).toHaveURL(url => url.pathname === `/${locale}${path}`);
+  // A path may carry a query string (search, filters); the pathname alone must match.
+  await expect(page).toHaveURL(url => url.pathname === `/${locale}${path.split('?')[0]}`);
   await expect(page.locator('html')).toHaveAttribute('lang', locale);
   await expect(page.locator('html')).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);

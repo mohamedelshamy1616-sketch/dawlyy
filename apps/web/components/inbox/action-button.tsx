@@ -22,7 +22,7 @@ export function InboxAction({ item }: { item: InboxItem }) {
     } catch { setFailed(true); setBusy(false); }
   }
   return <VStack gap={1} className="shrink-0">
-    <Button label={t(`actions.${item.primaryAction}`)} variant="secondary" className="min-h-11"
+    <Button label={t(`actions.${item.primaryAction}`)} variant="secondary" className="min-h-11 min-w-11"
       href={item.actionHref ?? undefined} isDisabled={busy} onClick={item.actionHref ? undefined : () => void openConversation()} />
     {failed ? <Text type="supporting" size="xsm" role="alert">{t('actionError')}</Text> : null}
   </VStack>;

@@ -37,7 +37,7 @@ for (const locale of ['ar', 'en'] as const) {
       clientId = (await api<{ clientId: string }>(client, 'GET', '/me')).clientId;
       const opened = await coach.request.fetch('/api/v1/conversations', { method: 'POST', data: { clientId }, headers: { 'Idempotency-Key': randomUUID() } });
       expect([200, 201]).toContain(opened.status());
-      conversationId = (await opened.json() as { conversation: { id: string } }).conversation.id; await opened.dispose();
+      conversationId = (await opened.json() as { id: string }).id; await opened.dispose();
     });
     test.afterAll(async () => { await coachContext?.close(); await clientContext?.close(); });
 

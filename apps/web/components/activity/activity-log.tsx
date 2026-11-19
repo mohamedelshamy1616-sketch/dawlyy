@@ -142,7 +142,9 @@ function ActivityController({ clientId, initial, environment: supplied }: { clie
 
 /** Client hub slot: activity, app preferences and tenant timezone use authenticated GETs only. */
 export function ActivityLog(props: { clientId?: string; initial?: ActivityPage }): React.JSX.Element {
-  return <ActivityController {...props} />;
+  const t = useTranslations('activity');
+  // The hub already has its page heading, so the embedded log is a labelled section (found by heading, not by position).
+  return <VStack gap={3} width="100%" className={frame}><Heading level={2}>{t('title')}</Heading><ActivityController {...props} /></VStack>;
 }
 
 export function ActivityScreen({ initial, ...environment }: { initial: ActivityPage } & ActivityEnvironment) {

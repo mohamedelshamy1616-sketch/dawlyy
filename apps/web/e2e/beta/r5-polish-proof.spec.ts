@@ -20,10 +20,10 @@ const FIRST_CLIENT = 'd0250000-0000-4000-8000-000000000301';
 const HEIGHTS: Record<number, number> = { 360: 800, 390: 844, 430: 932, 1366: 900, 375: 812, 1440: 900 };
 const catalog = (locale: Locale, name: string) => JSON.parse(readFileSync(join(process.cwd(), 'messages', locale, `${name}.json`), 'utf8')) as Record<string, unknown>;
 
-async function open(browser: Browser, baseURL: string, locale: Locale, userId: string, width: number) {
+async function open(browser: Browser, baseURL: string, locale: Locale, userId: string, width: number, injected: readonly string[] = []) {
   const context = await browser.newContext({ baseURL, viewport: { width, height: HEIGHTS[width] ?? 900 }, locale: locale === 'ar' ? 'ar-EG' : 'en-EG', timezoneId: 'Africa/Cairo', reducedMotion: 'reduce' });
   context.setDefaultTimeout(60_000); context.setDefaultNavigationTimeout(240_000);
-  const health = browserHealth(context, locale);
+  const health = browserHealth(context, locale, injected);
   await devLogin(context, userId, locale);
   return { context, health, page: await context.newPage() };
 }
@@ -76,7 +76,7 @@ for (const locale of ['ar', 'en'] as const) {
               const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
               expect(overflow, `${label}: horizontal overflow`).toBeLessThanOrEqual(1);
               expect(await smallTargets(page), `${label}: interactive targets under 44 px`).toEqual([]);
-              await test.info().attach(`${label}.png`, { body: await page.screenshot({ fullPage: true, animations: 'disabled' }), contentType: 'image/png' });
+              await test.info().attach(`${label}.png`, { body: await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'initial' }), contentType: 'image/png' });
             }
           } finally { await health().finally(() => context.close()); }
         }
@@ -87,7 +87,7 @@ for (const locale of ['ar', 'en'] as const) {
       if (!baseURL) throw new Error('Use the existing beta E2E configuration and migrated local database.');
       const messages = catalog(locale, 'activity');
       const translate = createTranslator({ locale, messages }) as unknown as (key: string) => string;
-      const { context, health, page } = await open(browser, baseURL, locale, OWNER, 390);
+      const { context, health, page } = await open(browser, baseURL, locale, OWNER, 390, ['500 GET /api/v1/activity']);
       try {
         await page.goto(`/${locale}/coach/settings/activity`, { waitUntil: 'load' });
         await assertSettled(page, 'activity');
@@ -111,7 +111,7 @@ for (const locale of ['ar', 'en'] as const) {
     test(`synthetic state: the assign dialog list renders empty and a retryable error @${locale}`, async ({ browser, baseURL }) => {
       if (!baseURL) throw new Error('Use the existing beta E2E configuration and migrated local database.');
       const text = await labels(locale);
-      const { context, health, page } = await open(browser, baseURL, locale, OWNER, 390);
+      const { context, health, page } = await open(browser, baseURL, locale, OWNER, 390, ['500 GET /api/v1/programs']);
       const isTemplates = (url: URL) => url.pathname === '/api/v1/programs' && url.searchParams.get('kind') === 'template';
       try {
         for (const mode of ['empty', 'error'] as const) {
@@ -172,7 +172,7 @@ for (const locale of ['ar', 'en'] as const) {
         for (let node = walker.nextNode(); node; node = walker.nextNode()) {
           if (node.parentElement?.closest(skip)) continue;
           const digits = (node.textContent ?? '').match(/[0-9]+/g);
-          if (digits) found.push(...digits);
+          if (digits) found.push(`${digits.join(',')} in <${node.parentElement?.tagName.toLowerCase()}> "${(node.textContent ?? '').trim().slice(0, 60)}"`);
         }
         return found;
       });
