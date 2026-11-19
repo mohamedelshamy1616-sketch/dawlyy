@@ -32,6 +32,9 @@ export default defineConfig({
     url: 'http://localhost:3210/ar/login',
     reuseExistingServer: false,
     timeout: 600_000,
+    // 19 Nov 2026: a start-up timeout printed nothing. Pipe the server's output so the next one shows its cause.
+    stdout: 'pipe',
+    stderr: 'pipe',
     env: {
       NODE_ENV: 'development',
       DAWLYY_DIST_DIR: '.next-screens',
