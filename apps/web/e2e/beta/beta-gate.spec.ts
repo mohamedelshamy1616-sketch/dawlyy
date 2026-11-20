@@ -251,6 +251,9 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         await picker.getByRole('textbox', { name: labelPrefix(t('programs.exerciseSearch')) }).fill(exerciseName);
         await picker.getByRole('button', { name: exerciseName, exact: true }).click();
         await expect(picker).not.toBeVisible();
+        // R1d (reinvent plan, "one line per exercise"): an exercise row is a collapsed details element named by its title and
+        // its set summary. Open it before touching its sets.
+        await owner.locator('details > summary').filter({ hasText: exerciseName }).first().click();
         // Item creation defaults to three sets. Keep one set, selected by its localized legend.
         for (const setNo of [3, 2]) {
           const row = owner.getByRole('group', { name: t('programs.setNumber', { number: new Intl.NumberFormat(locale).format(setNo) }), exact: true });
@@ -330,7 +333,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         await expect(client.getByRole('heading', { name: nutritionName, level: 2, exact: true })).toBeVisible();
         for (const food of foods) await expect(client.getByRole('main')).toContainText(localize(food.name, locale));
         await visit(client, locale, '/app/today');
-        await expect(client.getByRole('link', { name: t('client.today.start'), exact: true })).toBeVisible();
+        // R2a rebuilt Today: the lead card's start button is labelled "Start" and carries data-testid="start-workout" (r2a-client-start.spec.ts).
+        await expect(client.getByTestId('start-workout')).toBeVisible();
       });
     });
 
@@ -339,7 +343,7 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
         await visit(client, locale, '/app/program');
         await expect(client.getByRole('heading', { name: programName, exact: true })).toBeVisible();
         await visit(client, locale, '/app/today');
-        await client.getByRole('link', { name: t('client.today.start'), exact: true }).click();
+        await client.getByTestId('start-workout').click();
         await expect(client).toHaveURL(new RegExp(`/${locale}/app/workout/[0-9a-f-]{36}$`), { timeout: 240_000 });
         sessionId = new URL(client.url()).pathname.split('/').at(-1) ?? '';
         const row = client.getByRole('group', { name: t('workout.setNumber', { count: 1 }), exact: true });
