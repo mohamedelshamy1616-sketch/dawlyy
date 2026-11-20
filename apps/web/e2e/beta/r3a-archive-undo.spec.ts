@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect, test, type BrowserContext, type Locator, type Page, type Route } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
 import { createTranslator } from 'next-intl';
 import { api, browserHealth, devLogin, mutation, visit, type Locale } from './helpers';
 
@@ -52,6 +52,8 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
 
     const toast = () => owner.locator('[data-undo-toast]');
     const row = (name: string) => owner.getByRole('main').getByRole('article').filter({ hasText: name });
+    // In English the client list also has a status filter named "Active", so scope to the archive filter's own group (ArchivedFilter, aria-label "filterLabel").
+    const filterGroup = () => owner.getByRole('main').getByRole('group', { name: t('filterLabel'), exact: true });
     const rowButton = (name: string, key: 'archiveItem' | 'restoreItem') => owner.getByRole('button', { name: t(key, { name }), exact: true });
     async function noHorizontalOverflow() {
       for (const size of sizes) {
@@ -85,14 +87,14 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
 
       // Archived-only filter: the client is listed there, not in the active list.
       // The filter is a link (URL-backed). The toast is not asserted here: its 6 s window may already have closed.
-      await owner.getByRole('main').getByRole('link', { name: t('archivedFilter'), exact: true }).click();
+      await filterGroup().getByRole('link', { name: t('archivedFilter'), exact: true }).click();
       await expect(owner).toHaveURL(url => url.searchParams.get('archived') === 'true');
       await expect(row(name)).toHaveCount(1);
       await noHorizontalOverflow();
 
       await mutation(owner, 'POST', `/clients/${id}/unarchive`, 200, () => rowButton(name, 'restoreItem').click());
       await expect(row(name)).toHaveCount(0);
-      await owner.getByRole('main').getByRole('link', { name: t('activeFilter'), exact: true }).click();
+      await filterGroup().getByRole('link', { name: t('activeFilter'), exact: true }).click();
       await expect(row(name)).toHaveCount(1);
 
       // History is preserved: the same client record, restored as inactive, never deleted.
@@ -121,31 +123,26 @@ for (const locale of ['ar', 'en'] as const satisfies readonly Locale[]) {
 
     test('calendar: cancelling an event offers Undo, and a cancelled event offers Restore', async () => {
       const title = `R3a ${runId} event`;
-      // A moment from now. The agenda lists 100 events a page, oldest first, and ends with a "load more" button
-      // (Task 8), so on a busy month the new event sits on a later page and the test pages to it like a coach would.
+      // A moment from now. The agenda lists 100 events a page, oldest first (Task 8), and reloads from page one after each
+      // action, so the test narrows it to the one client first, as a coach with a busy month would.
       const dueAt = new Date(Date.now() + 60_000).toISOString();
       const event = await api<{ id: string }>(owner, 'POST', '/calendar', 201, { clientId: ids.second, type: 'custom', title: { ar: title, en: title }, dueAt, timezone: 'Africa/Cairo', windowDays: 1 });
       await visit(owner, locale, '/coach/calendar');
+      // The Undo window is 6 s: a one-row list keeps the click, the toast and Undo inside it even on a busy machine.
+      await owner.getByRole('combobox', { name: cal('filters.client'), exact: true }).first().click(); // the filter row comes before the add-event form's own client selector
+      await owner.getByRole('option', { name: names.second, exact: true }).click();
+      await owner.getByRole('button', { name: cal('actions.apply'), exact: true }).click();
       const cancel = owner.getByRole('button', { name: t('cancelEventItem', { name: title }), exact: true });
-      const more = owner.getByRole('button', { name: cal('actions.more'), exact: true });
-      // Every action reloads the agenda from its first page, so the event is paged to again after each one.
-      const reveal = (target: Locator) => expect.poll(async () => {
-        if (await target.count()) return true;
-        if (await more.count()) await more.click();
-        return false;
-      }, { timeout: 120_000, message: 'the event appears on some page of the agenda' }).toBe(true);
-      await reveal(cancel);
       await expect(cancel).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/cancel`, 200, () => cancel.click());
       await expect(toast()).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/restore`, 200, () => toast().getByRole('button', { name: u('undo') }).click());
-      await reveal(cancel); await expect(cancel).toHaveCount(1);
-      await reveal(cancel);
+      await expect(cancel).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/cancel`, 200, () => cancel.click());
       const restore = owner.getByRole('button', { name: t('restoreEventItem', { name: title }), exact: true });
-      await reveal(restore); await expect(restore).toHaveCount(1);
+      await expect(restore).toHaveCount(1);
       await mutation(owner, 'POST', `/calendar/${event.id}/restore`, 200, () => restore.click());
-      await reveal(cancel); await expect(cancel).toHaveCount(1);
+      await expect(cancel).toHaveCount(1);
       await settled(); await noHorizontalOverflow();
     });
 
