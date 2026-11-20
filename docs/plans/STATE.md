@@ -1097,3 +1097,12 @@ State: HEAD after this block. Commit `fb0073b` fixed the P9 worklist (19 Nov 23:
 - Later beta-gate reruns (jobs `...-gate3`, `-gate4`, `-gate5`) failed for the machine, not the code: the PC slept about 17 h, then Chrome and other apps left about 0.4 GB free RAM, `next dev` reported "Slow filesystem detected 920 to 1631 ms", step 1 hit its 300 s timeout and gate5 never started the server in 600 s. Same cause as the 11 and 12 Nov lessons.
 
 Next: when `Get-CimInstance Win32_OperatingSystem` shows more than 2 GB free, run `python tools/run_e2e.py e2e-ar --reuse-db beta-gate` as a `job.py` job; if green, commit `beta-gate.spec.ts`, then full `e2e-ar` and `e2e-en` with `--reuse-db`, read every first error, then `run_checks.py` on a clean tree with no commits during the run, then HANDOFF to opus high for `docs/qa/REINVENT_REVIEW.md`.
+
+## 20 Nov 2026 22:35 (Cairo): run_checks at ecf0de2 triaged; both e2e failures were environment, not product
+
+State: HEAD after this block. At `ecf0de2` six checks were green and `e2e-ar` (2 failed) and `e2e-en` (4 failed, 2 not run) were red. Triage:
+- `e2e-ar` r3b: a Turbopack dev panic ("task is missing in memory or persistent storage"), seen as 500s on `/ar/coach/intake/<id>`, not a fault in the page. The stale `.next-e2e` Turbopack cache from earlier filtered runs over edited sources is the likely cause. `tools/run_e2e.py` now deletes `apps/web/.next-e2e` at the start of every full run (not with `--reuse-db`).
+- `e2e-en`: no panic in its log. r2a (300 s), the r3b revert-link click, r4b timing (1.288 against 0.7) and r5 (900 s) followed a starved PC. Filtered reruns on a fresh cache: en r2a, r3b and r4b 8 of 8 green (5.7 min, the 30% review-time assertion unchanged and passing), en r5 5 of 5 green (9.3 min), ar r3b and r5 7 of 7 green (6.6 min).
+- R5 is slow on `next dev` (5 to 10 min); its test timeout goes from 900 s to 1500 s. Duration only, no assertion changed.
+
+Next: `run_checks.py` on a clean tree as a job. If all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`; mention in it that a busy coach's calendar agenda opens at the month start (100-row first page), not at today.

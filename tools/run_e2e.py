@@ -10,6 +10,7 @@ Credentials are read from packages/db/.env and never printed.
 import os
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 
@@ -75,6 +76,10 @@ def main() -> None:
         env['SCREENS_ONLY'] = extra[at + 1]
         del extra[at:at + 2]
     if not reuse:
+        # A full run starts from a clean Turbopack cache. A cache left by earlier runs over edited sources made the dev
+        # server panic ("task is missing in memory or persistent storage", run_checks at ecf0de2: 500s on one route,
+        # then rebuild loops and timeouts in the next project). `--reuse-db` runs keep it for speed.
+        shutil.rmtree(ROOT / 'apps/web/.next-e2e', ignore_errors=True)
         admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
         for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):
             run([str(PSQL), admin, '-v', 'ON_ERROR_STOP=1', '-c', sql], env)
