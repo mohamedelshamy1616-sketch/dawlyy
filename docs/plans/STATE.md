@@ -1122,3 +1122,13 @@ State: HEAD after this block. Full run at `a8bff0d`: typecheck, lint, build-web,
 Fix, harness only: `tools/run_e2e.py` wipes `apps/web/.next-e2e` on a full run only when fonts.gstatic.com answers (three tries); otherwise it keeps the old cache and says so.
 
 Next: full `run_checks.py` on the clean tree (HEAD changes with this commit); if all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`.
+
+## 21 Nov 2026 23:25 (Cairo): P9 step 2 done, all eight checks green at 905f9ec; handoff to the review
+
+State: `run_checks.py` at HEAD `905f9ec` (job `20261121-223058-checks-p9g`): typecheck, lint, build-web, test-core, test-db, test-web, e2e-ar and e2e-en all exit 0 on a clean tree; the run record for that commit is in `.autopilot`.
+
+For the opus high reviewer (P9 steps 3 to 6):
+- Review the whole Reinvent build adversarially: up to 3 verifiers plus a Codex second opinion. Write `docs/qa/REINVENT_REVIEW.md`, ending in `Reinvent build: complete`; fix every critical and high finding; rerun `run_checks.py`; DONE only when `done_check.py` exits 0.
+- Product note to weigh: a busy coach's calendar agenda lists 100 rows a page oldest first and opens at the month start, not at today (R3a had to page with "load more"; the e2e narrows to one client).
+- Harness notes: a full e2e run starts from a clean `.next-e2e` only when fonts.gstatic.com answers (the cold cache downloads Google fonts); `apps/web/e2e/beta/warm-up.ts` warms the first routes in sequence; the R5 sweep has a 1500 s duration. Flakes seen once and not reproduced: R2b "planned" quick-log choice missing in one full run (passes 4 of 4 filtered, twice), `net::ERR_NETWORK_CHANGED` in one R5 sweep (host network change; allow-list untouched), a Turbopack dev panic on a stale cache. The `Could not validate that a segment in your UI has instant navigation` server messages are printed by every run and are not test failures.
+- Fixes in this stretch were spec or harness corrections except the product ones listed in the 20 Nov blocks (R2b undo reachable, 44 px targets, Today numerals).
