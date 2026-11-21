@@ -1115,3 +1115,10 @@ State: HEAD after this block. The second full run at `838e503` (job `...-checks-
 Fix, harness only: `apps/web/e2e/beta/warm-up.ts` (Playwright `globalSetup`) requests `/ar/login`, `/en/login`, `/api/v1/me/app` and `/api/v1/me` one at a time before any spec; it asserts nothing. With a cleaned cache, `e2e-en --reuse-db beta-gate` passes 10 of 10.
 
 Next: full `run_checks.py` on the clean tree as a job; if all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`.
+
+## 21 Nov 2026 22:40 (Cairo): run_checks at a8bff0d: 7 of 8 green again; e2e wipe made conditional on the network
+
+State: HEAD after this block. Full run at `a8bff0d`: typecheck, lint, build-web, test-core, test-db, test-web and `e2e-en` green. `e2e-ar` failed once on `net::ERR_NETWORK_CHANGED` (the host's network changed during the R5 sweep; not an app error; the console-error allow-list was not loosened), and its rerun never started: the cleaned cache needed the Google fonts, the network was flapping and the dev server timed out at 600 s (the second time this happened).
+Fix, harness only: `tools/run_e2e.py` wipes `apps/web/.next-e2e` on a full run only when fonts.gstatic.com answers (three tries); otherwise it keeps the old cache and says so.
+
+Next: full `run_checks.py` on the clean tree (HEAD changes with this commit); if all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`.

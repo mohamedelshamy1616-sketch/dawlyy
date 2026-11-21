@@ -13,6 +13,8 @@ import re
 import shutil
 import subprocess
 import sys
+import time
+import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DB = 'dawlyy_e2e'
@@ -51,6 +53,19 @@ def ensure_cluster() -> None:
         sys.exit(code)
 
 
+def fonts_reachable() -> bool:
+    """True when the Google font host answers; three tries, a few seconds apart."""
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen('https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2', timeout=10) as reply:
+                if reply.status == 200:
+                    return True
+        except OSError:
+            pass
+        time.sleep(5 * (attempt + 1))
+    return False
+
+
 def main() -> None:
     if len(sys.argv) < 2 or sys.argv[1] not in ('e2e-ar', 'e2e-en', 'screens'):
         sys.exit('usage: python tools/run_e2e.py e2e-ar|e2e-en|screens')
@@ -79,7 +94,12 @@ def main() -> None:
         # A full run starts from a clean Turbopack cache. A cache left by earlier runs over edited sources made the dev
         # server panic ("task is missing in memory or persistent storage", run_checks at ecf0de2: 500s on one route,
         # then rebuild loops and timeouts in the next project). `--reuse-db` runs keep it for speed.
-        shutil.rmtree(ROOT / 'apps/web/.next-e2e', ignore_errors=True)
+        # A cold cache must download the Google fonts (next/font/google), so it is wiped only when the font host answers;
+        # with the network down (22:10 on 21 Nov, twice) the dev server never became ready, so the old cache stays.
+        if fonts_reachable():
+            shutil.rmtree(ROOT / 'apps/web/.next-e2e', ignore_errors=True)
+        else:
+            print('run_e2e: fonts.gstatic.com is unreachable, keeping the existing .next-e2e cache', flush=True)
         admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
         for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):
             run([str(PSQL), admin, '-v', 'ON_ERROR_STOP=1', '-c', sql], env)
