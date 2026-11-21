@@ -9,6 +9,7 @@ if (!databaseUrl || !serviceUrl) {
 /** Task 12 / P5-T12b: isolated, explicitly selected Arabic and English beta gates. */
 export default defineConfig({
   testDir: './e2e/beta',
+  globalSetup: './e2e/beta/warm-up.ts',
   outputDir: './test-results/beta',
   fullyParallel: false,
   workers: 1,

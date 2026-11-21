@@ -1106,3 +1106,12 @@ State: HEAD after this block. At `ecf0de2` six checks were green and `e2e-ar` (2
 - R5 is slow on `next dev` (5 to 10 min); its test timeout goes from 900 s to 1500 s. Duration only, no assertion changed.
 
 Next: `run_checks.py` on a clean tree as a job. If all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`; mention in it that a busy coach's calendar agenda opens at the month start (100-row first page), not at today.
+
+## 21 Nov 2026 21:15 (Cairo): run_checks at 838e503 down to one e2e-en cold-start race; warm-up added
+
+State: HEAD after this block. The second full run at `838e503` (job `...-checks-p9e`) had typecheck, lint, build-web, test-core, test-db, test-web and `e2e-ar` green (the first run's r2b "planned" miss did not recur and r2b passes 4 of 4 when filtered). `e2e-en` failed twice for environment reasons:
+- First, the cleaned Turbopack cache needs Google Fonts (`next/font/google`) and the network was down, so the dev server never became ready (600 s). Note for the review: a full e2e run now needs internet on a cold cache; an outage shows as a timeout.
+- Second (network up): 26 passed, step 1 of beta-gate failed on one 500 from `/api/v1/me/app`, "Unexpected end of JSON input" inside Next while compiling the route on a cold dist dir; 9 serial steps did not run.
+Fix, harness only: `apps/web/e2e/beta/warm-up.ts` (Playwright `globalSetup`) requests `/ar/login`, `/en/login`, `/api/v1/me/app` and `/api/v1/me` one at a time before any spec; it asserts nothing. With a cleaned cache, `e2e-en --reuse-db beta-gate` passes 10 of 10.
+
+Next: full `run_checks.py` on the clean tree as a job; if all eight are green, HANDOFF to opus high for the adversarial review and `docs/qa/REINVENT_REVIEW.md`.
