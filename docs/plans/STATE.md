@@ -1132,3 +1132,15 @@ For the opus high reviewer (P9 steps 3 to 6):
 - Product note to weigh: a busy coach's calendar agenda lists 100 rows a page oldest first and opens at the month start, not at today (R3a had to page with "load more"; the e2e narrows to one client).
 - Harness notes: a full e2e run starts from a clean `.next-e2e` only when fonts.gstatic.com answers (the cold cache downloads Google fonts); `apps/web/e2e/beta/warm-up.ts` warms the first routes in sequence; the R5 sweep has a 1500 s duration. Flakes seen once and not reproduced: R2b "planned" quick-log choice missing in one full run (passes 4 of 4 filtered, twice), `net::ERR_NETWORK_CHANGED` in one R5 sweep (host network change; allow-list untouched), a Turbopack dev panic on a stale cache. The `Could not validate that a segment in your UI has instant navigation` server messages are printed by every run and are not test failures.
 - Fixes in this stretch were spec or harness corrections except the product ones listed in the 20 Nov blocks (R2b undo reachable, 44 px targets, Today numerals).
+
+## 22 Nov 2026 00:05 (Cairo): P9 review under way; slices A and B done by Codex; Codex out of usage until 04:32
+
+State: weekly Claude usage is 87%, so the review runs on Codex (read-only, `gpt-6.1-sol`, max) and I write no code. Reports: `docs/qa/review-parts/A-db.md` (4 findings: 2 critical, 1 high, 1 medium) and `B-api.md` (9 findings: 4 critical, 3 high, 2 medium). Slice C (core and web UI, `tools/codex_briefs/p9-review-c-core-ui.md`) died after one minute on the Codex plan limit: "try again at Nov 22nd, 2026 4:32 AM". Codex unavailable until 04:32.
+
+My triage (severity is mine, from reading the code; Codex over-grades in-tenant issues):
+- Real and to fix: RA-001 = RB-001 (ordinary meal and measurement sync overwrites the logged facts, confirmed in `server/nutrition/logs.ts` and `server/tracking/entries.ts`); RA-002 (set_logs of a voided workout stay writable); RB-007 (a handled red flag suppresses later evidence); RB-002 (Inbox ignores source-module permissions); RB-003 (form archive authorizes `forms:edit` for every form kind); RB-006 (generic `/metrics` writes water or calories with nutrition disabled).
+- Contract reading: RB-005 (hidden module still readable) is by plan: `docs/plans/2026-11-13-reinvent-build-plan.md` R2a says only "the API refuses its writes with 403". Record in OPEN_DECISIONS, status accepted.
+- Medium, candidates to accept with reason: RA-003 = RB-008 (approval source check races a concurrent writer), RB-004 (idempotency replay after assignment revoked, 24 h, replays only the caller's own earlier response), RB-009 (message UUID collision, needs an unusual grant mix), RA-004 (no Drizzle snapshot for 0008, affects only the next `drizzle-kit generate`).
+- Fix brief written: `tools/codex_briefs/p9-fix-1.md` (F1 to F6). 0008 has not been applied anywhere hosted, so it is edited in place.
+
+Next: at 04:35 start the C review and the fix job (one Codex job at a time while the plan limit is fresh), review the diffs, run typecheck, lint and the filtered suites, write `docs/qa/REINVENT_REVIEW.md`, run `run_checks.py` on a clean tree, then `done_check.py`.
