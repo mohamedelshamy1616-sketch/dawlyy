@@ -45,6 +45,8 @@ def main() -> int:
     ap.add_argument("--fast", action="store_true", help="service_tier priority: about 2x speed, uses the ChatGPT plan limit faster")
     ap.add_argument("--multi-agent", action="store_true",
                     help="enable multi_agent_v2 so Codex can spawn its own sub-agents (spawn_agent, wait_agent)")
+    ap.add_argument("--sandbox", default="workspace-write", choices=["workspace-write", "read-only"],
+                    help="read-only for review jobs: the final answer is the report (22 Nov 2026: workspace-write failed with 'split writable root sets')")
     ap.add_argument("--cwd", type=Path, default=REPO, help="repository root Codex works in")
     ap.add_argument("--common", default=str(COMMON), help="shared rules file prepended to the brief, or 'none'")
     args = ap.parse_args()
@@ -66,7 +68,7 @@ def main() -> int:
         "exec",
         "--skip-git-repo-check",
         "-s",
-        "workspace-write",
+        args.sandbox,
         "-c",
         'windows.sandbox="unelevated"',
         "-m",

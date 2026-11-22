@@ -1,0 +1,1 @@
+Do ONLY finding F3 of `tools/codex_briefs/p9-fix-1.md` (a handled red flag suppresses later evidence). Earlier edits for F1 and F2 may already be applied to `0008_reinvent_control.sql`: read its current content. Other findings are separate jobs: do not touch them.

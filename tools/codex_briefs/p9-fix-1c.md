@@ -1,0 +1,1 @@
+Do ONLY findings F4, F5 and F6 of `tools/codex_briefs/p9-fix-1.md` (Inbox source permissions, form archive module by kind, metric module gate). Earlier edits for F1 to F3 may already be applied to `0008_reinvent_control.sql` and other files: read the current content. Other findings are separate jobs: do not touch them.

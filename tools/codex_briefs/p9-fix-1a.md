@@ -1,0 +1,1 @@
+Do ONLY findings F1 and F2 of `tools/codex_briefs/p9-fix-1.md` (history overwrite through ordinary sync, and voided-workout set writes). Other findings (F3 to F6) are separate jobs: do not touch them.
