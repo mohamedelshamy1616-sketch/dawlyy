@@ -89,9 +89,10 @@ export async function saveMeasurements(tx: Tx, auth: AuthContext, input: z.infer
   await requireClientModule(tx, auth, 'measurements');
   const clientId = trackingClient(auth, input.clientId, 'create'); await visibleClient(tx, auth, clientId);
   const clientUpdatedAt = new Date(input.clientUpdatedAt);
-  await tx.insert(measurementSets).values({ tenantId: auth.tenantId, clientId, localDate: input.localDate, values: input.values, takenBy: auth.role === 'client' ? 'client' : 'coach', clientUuid: input.clientUuid, clientUpdatedAt }).onConflictDoUpdate({ target: [measurementSets.tenantId, measurementSets.clientId, measurementSets.clientUuid], set: { localDate: input.localDate, values: input.values, note: null, clientUpdatedAt }, setWhere: sql`excluded.client_updated_at is not null and (${measurementSets.clientUpdatedAt} is null or ${measurementSets.clientUpdatedAt} < excluded.client_updated_at)` });
+  // R0a: corrections INSERT a replacement; ordinary sync never updates facts.
+  await tx.insert(measurementSets).values({ tenantId: auth.tenantId, clientId, localDate: input.localDate, values: input.values, takenBy: auth.role === 'client' ? 'client' : 'coach', clientUuid: input.clientUuid, clientUpdatedAt }).onConflictDoNothing({ target: [measurementSets.tenantId, measurementSets.clientId, measurementSets.clientUuid] });
   const [row] = await tx.select(clientColumns.measurementSets).from(measurementSets).where(and(eq(measurementSets.tenantId, auth.tenantId), eq(measurementSets.clientId, clientId), eq(measurementSets.clientUuid, input.clientUuid))).limit(1);
   if (!row) throw notFound();
-  await completeTrackingEvents(tx, auth, clientId, row.localDate, 'measurements');
+  if (row.voidedAt === null) await completeTrackingEvents(tx, auth, clientId, row.localDate, 'measurements');
   return row;
 }

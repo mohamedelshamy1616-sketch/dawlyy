@@ -142,13 +142,20 @@ describe('Task 6 nutrition versions and isolation', () => {
     expect(z.object({ items: z.array(z.object({ id: z.string() })) }).parse(byIds.json).items.map(f => f.id)).toEqual([food.id]);
     expect((await call(app, 'POST', '/api/v1/meal-logs', { as, body: logBody({ mealId: 'lunch', optionId: 'first', status: 'eaten' }) })).status).toBe(200);
     expect(await call(app, 'POST', '/api/v1/meal-logs', { as, body: logBody({ mealId: 'nope', status: 'eaten' }) })).toMatchObject({ status: 422, json: { error: { code: 'meal_unknown' } } });
-    expect((await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: logBody({ supplementId: 'vit', taken: true }) })).status).toBe(200);
+    const supplement = logBody({ supplementId: 'vit', taken: true });
+    const logged = await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: supplement });
+    expect(logged.status).toBe(200);
+    expect(await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: supplement })).toEqual(logged);
+    expect(await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: { ...supplement, taken: false, clientUpdatedAt: '2099-01-01T00:00:00Z' } })).toEqual(logged);
+    const skipped = await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: { ...supplement, clientUuid: randomUUID(), taken: false } });
+    expect(skipped.status).toBe(200);
+    expect(skipped.json).toMatchObject({ taken: false });
     expect(await call(app, 'POST', '/api/v1/meal-logs/supplements', { as, body: logBody({ supplementId: 'nope', taken: true }) })).toMatchObject({ status: 422, json: { error: { code: 'supplement_unknown' } } });
     expect((await call(app, 'POST', '/api/v1/meal-logs/water', { as, body: { clientUuid: randomUUID(), localDate: '2026-11-10', amountMl: 500 } })).status).toBe(200);
     const day = z.object({ items: z.array(z.object({ mealId: z.string().nullable() })), supplements: z.array(z.object({ taken: z.boolean() })), waterMl: z.number() });
     for (const [who, path] of [[as, '/api/v1/meal-logs?date=2026-11-10'], [fixture.owner.userId, `/api/v1/meal-logs?date=2026-11-10&clientId=${client.id}`]] as const) {
       const r = await call(app, 'GET', path, { as: who }); expect(r.status).toBe(200);
-      const parsed = day.parse(r.json); expect(parsed.items.map(i => i.mealId)).toEqual(['lunch']); expect(parsed.supplements).toEqual([{ taken: true }]); expect(parsed.waterMl).toBe(500);
+      const parsed = day.parse(r.json); expect(parsed.items.map(i => i.mealId)).toEqual(['lunch']); expect(parsed.supplements).toEqual([{ taken: false }, { taken: true }]); expect(parsed.waterMl).toBe(500);
     }
   });
 });

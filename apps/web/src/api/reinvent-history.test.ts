@@ -71,6 +71,36 @@ describe('R0c history-preserving void and correct routes', () => {
       : { clientUuid: randomUUID(), localDate: date, values: [{ type: 'waist', value: 82, unit: 'cm' }], clientUpdatedAt: new Date().toISOString() };
   }
   for (const [table, route] of [['meal_logs', 'meal-logs'], ['measurement_sets', 'measurements']] as const) {
+    it(`${table}: ordinary POST preserves existing facts before and after seven days and after void`, async () => {
+      const body = correction(table), status = table === 'meal_logs' ? 200 : 201;
+      const created = await call(app, 'POST', `/api/v1/${route}`, { as: f.a.userId, body });
+      expect(created.status).toBe(status);
+      const id = rowId(created.json);
+      const snapshot = () => setupApiData(f.owner.tenantId, 'snapshot immutable sync row', tx =>
+        tx.execute(sql`select to_jsonb(t) as row from ${sql.identifier(table)} t where id = ${id}`));
+      const changed = table === 'meal_logs'
+        ? { ...body, localDate: '2026-11-14', status: 'skipped', freeEntry: { text: 'Changed lunch' }, note: 'Changed note', clientUpdatedAt: '2099-01-01T00:00:00Z' }
+        : { ...body, localDate: '2026-11-14', values: [{ type: 'waist', value: 99, unit: 'cm' }], clientUpdatedAt: '2099-01-01T00:00:00Z' };
+      const before = await snapshot();
+      for (const payload of [body, changed]) {
+        const retry = await call(app, 'POST', `/api/v1/${route}`, { as: f.a.userId, body: payload });
+        expect(retry).toEqual(created);
+        expect(await snapshot()).toEqual(before);
+      }
+      await setupApiData(f.owner.tenantId, 'age the server creation timestamp', tx =>
+        tx.execute(sql`update ${sql.identifier(table)} set created_at = now() - interval '8 days' where id = ${id}`));
+      const aged = await snapshot();
+      expect((await call(app, 'POST', `/api/v1/${route}`, { as: f.a.userId, body: changed })).json).toMatchObject({ id });
+      expect(await snapshot()).toEqual(aged);
+      expect((await call(app, 'POST', `/api/v1/${route}/${id}/correct`, { as: f.a.userId, body: correction(table) })).status).toBe(403);
+      expect((await call(app, 'POST', `/api/v1/${route}/${id}/void`, { as: f.owner.userId, body: {} })).status).toBe(200);
+      const voided = await snapshot();
+      const retry = await call(app, 'POST', `/api/v1/${route}`, { as: f.a.userId, body: changed });
+      expect(retry.status).toBe(status);
+      expect(retry.json).toMatchObject({ id, voidedAt: expect.any(String) });
+      expect(await snapshot()).toEqual(voided);
+    });
+
     it(`${table}: correction INSERT voids original atomically; repeated and old corrections refuse`, async () => {
       const id = await seed(table); const key = randomUUID(); const body = correction(table);
       const result = await call(app, 'POST', `/api/v1/${route}/${id}/correct`, { as: f.a.userId, body, headers: { 'Idempotency-Key': key } });

@@ -306,7 +306,7 @@ export const matrix = (Object.keys(TABLE_GRANTS) as MatrixTable[]).flatMap((tabl
   const commands: MatrixCommand[] = actor === 'sx' || actor === 'ubT2' ? ['select'] : ['select', 'insert', 'update', 'delete'];
   return commands.map((command) => ({ table, actor, command, rowClass:'default', factory: makeRow, keys: keyColumns(table), predicate: keyWhere, statement,
     expectedValues: (row:Record<string,unknown>,changes:Record<string,unknown>) => command==='insert'?row:changes,
-    expected: command === 'select' ? 'exact-select-set' : writeOutcome(table, actor, command),
+    expected: command === 'select' ? 'exact-select-set' : command === 'update' && ['ua', 'ub', 'uc'].includes(actor) && ['meal_logs', 'measurement_sets', 'supplement_logs'].includes(table) ? 'guard' : writeOutcome(table, actor, command),
     covers: POLICY_CONTRACTS.filter((p) => p.table === table && (p.command === command || p.command === 'all')).map((p) => `policy:${p.name}`),
     implications: POLICY_CONTRACTS.filter((p) => p.table === table && p.impliedBy).map((p) => `${p.name} => ${p.impliedBy}`),
   }));

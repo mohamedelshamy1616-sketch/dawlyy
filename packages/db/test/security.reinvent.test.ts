@@ -362,6 +362,95 @@ describe('reinvent R0a voids and history-preserving corrections', () => {
     }
     expect(await serviceRow('metric_entries', old)).toEqual(before);
   });
+  for (const [table, column, original, changed] of [
+    ['meal_logs', 'status', sql`'eaten'`, sql`'partial'`],
+    ['measurement_sets', 'values', sql`'[]'::jsonb`, sql`'[{"type":"waist","value":82,"unit":"cm"}]'::jsonb`],
+    ['supplement_logs', 'taken', sql`true`, sql`false`],
+  ] as const) it(`${table}: client fact UPDATE and newer conflict UPDATE cannot rewrite history`, async () => {
+    const id = randomUUID(), uuid = randomUUID(), payload = sql.identifier(column);
+    const supplement = table === 'supplement_logs' ? sql`, supplement_id` : sql``;
+    const supplementValue = table === 'supplement_logs' ? sql`, 'vitamin'` : sql``;
+    const create = (key: string, clientUuid: string, value: SQL) => sql`insert into ${sql.identifier(table)}
+      (id, tenant_id, client_id, local_date, client_uuid, client_updated_at, ${payload}${supplement})
+      values (${key}, ${f.t1}, ${f.clientA}, current_date, ${clientUuid}, now(), ${value}${supplementValue})`;
+    await as(f.ua, tx => q(tx, create(id, uuid, original)));
+    if (table !== 'supplement_logs') await svc(tx => q(tx, sql`update ${sql.identifier(table)} set created_at = now() - interval '8 days' where id = ${id}`));
+    const before = await serviceRow(table, id);
+    await expectGuard(as(f.ua, tx => q(tx, sql`update ${sql.identifier(table)} set ${payload} = ${changed} where id = ${id}`)), 'client_update', column);
+    await expectGuard(as(f.ua, tx => q(tx, sql`${create(randomUUID(), uuid, changed)}
+      on conflict (tenant_id, client_id, client_uuid) do update set ${payload} = excluded.${payload},
+        client_updated_at = '2099-01-01T00:00:00Z'`)), 'client_update', column);
+    expect(await serviceRow(table, id)).toEqual(before);
+    const appended = randomUUID();
+    await as(f.ua, tx => q(tx, create(appended, randomUUID(), changed)));
+    expect(await serviceRow(table, appended)).toMatchObject({ [column]: table === 'meal_logs' ? 'partial' : table === 'measurement_sets' ? [{ type: 'waist', value: 82, unit: 'cm' }] : false });
+    expect(await serviceRow(table, id)).toEqual(before);
+  });
+
+  for (const actorName of ['ua', 'o1', 's2'] as const) it(`set_logs: ${actorName} can write a live parent but cannot insert, update or soft delete after void`, async () => {
+    const actor = f[actorName], parent = await entry('workout_sessions'), id = randomUUID();
+    const create = (key: string) => sql`insert into set_logs
+      (id, tenant_id, client_id, session_id, exercise_id, set_no, reps, client_uuid, client_updated_at)
+      values (${key}, ${f.t1}, ${f.clientA}, ${parent}, ${f.exerciseSystem}, 1, 10, ${randomUUID()}, now())`;
+    await as(actor, tx => q(tx, create(id)));
+    await as(actor, tx => q(tx, sql`update set_logs set reps = 12, deleted_at = now() where id = ${id}`));
+    expect(await serviceRow('set_logs', id)).toMatchObject({ reps: 12, deleted_at: expect.any(Date) });
+    await as(actor, tx => q(tx, sql`update set_logs set deleted_at = null where id = ${id}`));
+    await voidEntry(f.ua, 'workout_sessions', parent);
+    const before = await serviceRow('set_logs', id), parentBefore = await serviceRow('workout_sessions', parent), extra = randomUUID();
+    for (const statement of [create(extra), sql`update set_logs set reps = 14 where id = ${id}`, sql`update set_logs set deleted_at = now() where id = ${id}`]) {
+      await refusal(as(actor, tx => q(tx, statement)), 'P0001', 'rule:app.set_logs_parent_live', 'set_logs', 'session_id');
+      expect(await serviceRow('set_logs', id)).toEqual(before);
+      expect(await serviceRow('set_logs', extra)).toBeUndefined();
+      expect(await serviceRow('workout_sessions', parent)).toEqual(parentBefore);
+    }
+  });
+
+  for (const voidFirst of [true, false]) it(`set_logs: concurrent fact write and void serialize with voidFirst=${voidFirst}`, async () => {
+    const parent = await entry('workout_sessions'), id = randomUUID();
+    await as(f.ua, tx => q(tx, sql`insert into set_logs
+      (id, tenant_id, client_id, session_id, exercise_id, set_no, reps, client_uuid, client_updated_at)
+      values (${id}, ${f.t1}, ${f.clientA}, ${parent}, ${f.exerciseSystem}, 1, 10, ${randomUUID()}, now())`));
+    const before = await serviceRow('set_logs', id);
+    const write = sql`update set_logs set reps = 12 where id = ${id}`;
+    const voidSql = sql`select app.void_entry('workout_sessions', ${parent}::uuid, 'concurrent void')`;
+    let heldResolve!: (pid: number) => void, readyResolve!: (pid: number) => void, release!: () => void;
+    const held = new Promise<number>(resolve => { heldResolve = resolve; });
+    const ready = new Promise<number>(resolve => { readyResolve = resolve; });
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    const first = as(f.ua, async tx => {
+      await q(tx, voidFirst ? voidSql : write);
+      heldResolve((await one<{ pid: number }>(tx, sql`select pg_backend_pid() as pid`)).pid);
+      await gate;
+    });
+    let second: Promise<unknown> | undefined;
+    try {
+      const holder = await Promise.race([held, first.then(() => { throw new Error('lock holder ended early'); })]);
+      second = as(f.ua, async tx => {
+        readyResolve((await one<{ pid: number }>(tx, sql`select pg_backend_pid() as pid`)).pid);
+        return q(tx, voidFirst ? write : voidSql);
+      });
+      const result = Promise.allSettled([second]), pid = await ready, deadline = Date.now() + 3000;
+      let blocked = false;
+      while (Date.now() < deadline && !blocked) {
+        blocked = (await svc(tx => one<{ blocked: boolean }>(tx, sql`select ${holder}::int = any(pg_blocking_pids(${pid}::int)) as blocked`))).blocked;
+        if (!blocked) await new Promise<void>(resolve => setTimeout(resolve, 10));
+      }
+      expect(blocked).toBe(true);
+      release(); await first;
+      const [outcome] = await result;
+      if (voidFirst) {
+        if (outcome?.status !== 'rejected') throw new Error('write after void must fail');
+        await refusal(Promise.reject(outcome.reason), 'P0001', 'rule:app.set_logs_parent_live', 'set_logs', 'session_id');
+      } else expect(outcome?.status).toBe('fulfilled');
+      expect(await serviceRow('set_logs', id)).toEqual({ ...before, reps: voidFirst ? 10 : 12 });
+      expect(await serviceRow('workout_sessions', parent)).toMatchObject({ voided_at: expect.any(Date) });
+    } finally {
+      release();
+      await Promise.allSettled([first, ...(second ? [second] : [])]);
+    }
+  });
+
   it('voiding a workout leaves all attached set logs unchanged', async () => {
     const id = await entry('workout_sessions'), set = randomUUID();
     await as(f.ua, tx => q(tx, sql`insert into set_logs
@@ -566,7 +655,7 @@ describe('reinvent R0a database object contracts', () => {
   });
   it('new functions have the required trust mode, empty search_path, and no PUBLIC or trigger execute grant', async () => {
     const definers = ['void_entry', 'approve_ai_draft', 'raise_red_flag'];
-    const names = ['guard_archive', 'guard_void', 'apply_correction', ...definers].sort();
+    const names = ['guard_archive', 'guard_void', 'apply_correction', 'set_logs_parent_live', ...definers].sort();
     const functions = await svc(tx => q<{ name: string; definer: boolean; config: string[]; runtime: boolean; public_execute: boolean }>(tx, sql`
       select p.proname as name, p.prosecdef as definer, p.proconfig as config,
         has_function_privilege('dawlyy_rls', p.oid, 'EXECUTE') as runtime,
@@ -580,7 +669,7 @@ describe('reinvent R0a database object contracts', () => {
       expect(fn.config).toContain('search_path=""');
     }
   });
-  for (const table of ['ai_drafts', 'red_flags', 'calendar_events'] as const) it(`${table}: exact additive guard config is installed`, async () => {
+  for (const table of ['ai_drafts', 'red_flags', 'calendar_events', 'meal_logs', 'measurement_sets', 'supplement_logs'] as const) it(`${table}: exact additive guard config is installed`, async () => {
     const guard = await svc(tx => one<{ args: string }>(tx, sql`select encode(tgargs, 'hex') as args from pg_trigger
       where tgrelid = ${'public.' + table}::regclass and tgname = ${table + '_50_guard'}`));
     const config: unknown = JSON.parse(Buffer.from(guard.args, 'hex').toString('utf8').replace(/\0$/, ''));

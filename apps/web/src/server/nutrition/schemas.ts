@@ -46,7 +46,7 @@ export const foodInput = foodFields.strict();
 export const foodPatch = foodFields.extend({ aliases: z.array(text).max(100), measures: FoodSeed.shape.measures.unwrap().max(50), tags }).partial().strict().refine(value => Object.keys(value).length > 0);
 /** Task 6: client-authored meal data; no author/client/version stamps are accepted. */
 export const mealLogSchema = z.object({ clientUuid: z.uuid(), localDate: IsoDate, mealId: z.string().min(1).max(64).optional(), optionId: z.string().min(1).max(64).optional(), status: z.enum(['eaten', 'skipped', 'partial']), freeEntry: z.object({ text: z.string().trim().min(1).max(4000), macros: Macros.optional() }).strict().optional(), note: note.optional(), clientUpdatedAt: IsoDateTime }).strict().refine(value => !!value.mealId || !!value.freeEntry, 'meal_or_entry_required');
-/** Task 6: supplement sync uses the same monotonic timestamp rule as meal logs. */
+/** R0a: each supplement status event is immutable; clientUuid deduplicates retries. */
 export const supplementLogSchema = z.object({ clientUuid: z.uuid(), supplementId: z.string().min(1).max(64), localDate: IsoDate, taken: z.boolean(), clientUpdatedAt: IsoDateTime }).strict();
 /** Task 6: append-only hydration, measured in millilitres. */
 export const waterSchema = z.object({ clientUuid: z.uuid(), amountMl: z.number().positive().max(10000), localDate: IsoDate }).strict();

@@ -79,7 +79,7 @@ function TodayMeals({ plan, document, logs }: { plan: ClientNutrition; document:
     queueMicrotask(() => { void refresh(); });
     return () => { mounted.current = false; globalThis.document.removeEventListener('visibilitychange', foreground); window.removeEventListener('online', foreground); };
   }, [refresh]);
-  const [supplements, setSupplements] = useState<Record<string, { clientUuid: string; taken: boolean }>>(() => Object.fromEntries(logs.supplements.map(s => [s.supplementId, { clientUuid: s.clientUuid, taken: s.taken }])));
+  const [supplements, setSupplements] = useState<Record<string, { clientUuid: string; taken: boolean }>>(() => Object.fromEntries([...logs.supplements].reverse().map(s => [s.supplementId, { clientUuid: s.clientUuid, taken: s.taken }])));
   const [waterMl, setWaterMl] = useState(logs.waterMl); const [notice, setNotice] = useState<Notice>(null);
   const chosen = (mealId: string, first: string) => choice[mealId] ?? first;
   const planned = useMemo(() => { try { return documentTotals({ ...document, targets }, plan.foods, choice); } catch { return null; } }, [document, targets, plan.foods, choice]);
@@ -129,7 +129,7 @@ function TodayMeals({ plan, document, logs }: { plan: ClientNutrition; document:
     if (ok) void refresh(); locked.current.delete(mealId);
   }
   async function logSupplement(supplementId: string, taken: boolean) {
-    const previous = supplements[supplementId]; const clientUuid = previous?.clientUuid ?? crypto.randomUUID();
+    const previous = supplements[supplementId]; const clientUuid = crypto.randomUUID();
     setSupplements(old => ({ ...old, [supplementId]: { clientUuid, taken } }));
     const ok = await write('/api/v1/meal-logs/supplements', { clientUuid, supplementId, localDate: plan.localDate, taken, clientUpdatedAt: new Date().toISOString() });
     if (mounted.current && !ok) setSupplements(old => { const copy = { ...old }; if (previous) copy[supplementId] = previous; else delete copy[supplementId]; return copy; });

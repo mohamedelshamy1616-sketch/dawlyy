@@ -30,22 +30,29 @@ async function logPlan(tx: Tx, auth: AuthContext, clientId: string) {
 export async function logMeal(tx: Tx, auth: AuthContext, body: z.infer<typeof mealLogSchema>) {
   await requireClientModule(tx, auth, 'nutrition');
   const clientId = own(auth); const plan = await logPlan(tx, auth, clientId);
+  // R0a supersedes timestamp overwrites: a UUID always identifies its original facts.
+  const [existing] = await tx.select(clientColumns.mealLogs).from(mealLogs).where(and(
+    eq(mealLogs.tenantId, auth.tenantId), eq(mealLogs.clientId, clientId), eq(mealLogs.clientUuid, body.clientUuid))).limit(1);
+  if (existing) return existing;
   const meal = plan.version?.document.meals.find(m => m.id === body.mealId);
   if (body.mealId && (!meal || (body.optionId && !meal.options.some(o => o.id === body.optionId)))) throw unprocessable('meal_unknown');
   const values = { planVersionId: body.mealId ? plan.version?.id ?? null : null, localDate: body.localDate, mealId: body.mealId ?? null, optionId: body.optionId ?? meal?.options[0]?.id ?? null, freeEntry: body.freeEntry ?? null, status: body.status, note: body.note ?? null, clientUpdatedAt: new Date(body.clientUpdatedAt), recordedAt: new Date() };
-  await tx.insert(mealLogs).values({ tenantId: auth.tenantId, clientId, clientUuid: body.clientUuid, ...values }).onConflictDoUpdate({ target: [mealLogs.tenantId, mealLogs.clientId, mealLogs.clientUuid], set: values,
-    setWhere: sql`excluded.client_updated_at is not null and (${mealLogs.clientUpdatedAt} is null or ${mealLogs.clientUpdatedAt} < excluded.client_updated_at)` });
+  const [inserted] = await tx.insert(mealLogs).values({ tenantId: auth.tenantId, clientId, clientUuid: body.clientUuid, ...values })
+    .onConflictDoNothing({ target: [mealLogs.tenantId, mealLogs.clientId, mealLogs.clientUuid] }).returning({ id: mealLogs.id });
   const [row] = await tx.select(clientColumns.mealLogs).from(mealLogs).where(and(eq(mealLogs.tenantId, auth.tenantId), eq(mealLogs.clientId, clientId), eq(mealLogs.clientUuid, body.clientUuid))).limit(1); if (!row) throw notFound();
-  await raiseRedFlags(tx, 'meal_note', row.id, row.note); return row;
+  if (inserted) await raiseRedFlags(tx, 'meal_note', row.id, row.note); return row;
 }
-/** Task 6: supplement sync shares meal-log freshness and caller-owned plan validation. */
+/** R0a: supplement status events preserve history and validate the caller's plan on creation. */
 export async function logSupplement(tx: Tx, auth: AuthContext, body: z.infer<typeof supplementLogSchema>) {
   await requireClientModule(tx, auth, 'nutrition');
   const clientId = own(auth); const plan = await logPlan(tx, auth, clientId);
+  const [existing] = await tx.select(clientColumns.supplementLogs).from(supplementLogs).where(and(
+    eq(supplementLogs.tenantId, auth.tenantId), eq(supplementLogs.clientId, clientId), eq(supplementLogs.clientUuid, body.clientUuid))).limit(1);
+  if (existing) return existing;
   if (!plan.version?.document.supplements.some(s => s.id === body.supplementId)) throw unprocessable('supplement_unknown');
   const values = { planVersionId: plan.version.id, supplementId: body.supplementId, localDate: body.localDate, taken: body.taken, clientUpdatedAt: new Date(body.clientUpdatedAt), recordedAt: new Date() };
-  await tx.insert(supplementLogs).values({ tenantId: auth.tenantId, clientId, clientUuid: body.clientUuid, ...values }).onConflictDoUpdate({ target: [supplementLogs.tenantId, supplementLogs.clientId, supplementLogs.clientUuid], set: values,
-    setWhere: sql`excluded.client_updated_at is not null and (${supplementLogs.clientUpdatedAt} is null or ${supplementLogs.clientUpdatedAt} < excluded.client_updated_at)` });
+  await tx.insert(supplementLogs).values({ tenantId: auth.tenantId, clientId, clientUuid: body.clientUuid, ...values })
+    .onConflictDoNothing({ target: [supplementLogs.tenantId, supplementLogs.clientId, supplementLogs.clientUuid] });
   const [row] = await tx.select(clientColumns.supplementLogs).from(supplementLogs).where(and(eq(supplementLogs.tenantId, auth.tenantId), eq(supplementLogs.clientId, clientId), eq(supplementLogs.clientUuid, body.clientUuid))).limit(1); if (!row) throw notFound(); return row;
 }
 /** Task 6: water is append-only; duplicate UUIDs never update existing measurements. */

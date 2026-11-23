@@ -20,7 +20,7 @@ router.use('*', idempotentReplay);
 router.openapi(createRoute({ method: 'get', path: '/', request: { query: rangeQuery }, responses: { 200: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => listMeasurements(tx, auth, c.req.valid('query'))), 200);
 });
-router.openapi(createRoute({ method: 'post', path: '/', request: { body: { required: true, content: { 'application/json': { schema: measurementInput } } } }, responses: { 201: resultResponse, ...errors } }), async c => {
+router.openapi(createRoute({ method: 'post', path: '/', description: 'Creates a measurement set. Reusing a clientUuid returns the stored row unchanged, even when facts or timestamps differ or the row is voided. Edit through /{id}/correct.', request: { body: { required: true, content: { 'application/json': { schema: measurementInput } } } }, responses: { 201: resultResponse, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await withAuthTx(auth, tx => saveMeasurements(tx, auth, c.req.valid('json'))), 201);
 });
 

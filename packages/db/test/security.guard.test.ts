@@ -289,7 +289,7 @@ describe('guard engine', () => {
     expect(await serviceRow('dawlyy_probe.t', id)).toMatchObject({ id, tenant_id: fx.t1 });
   });
 });
-type MatrixRow = { f: Fixture;ctx: AuthContext;table: string;where: SQL;row: Row;versionId?: string;asset: string };
+type MatrixRow = { f: Fixture;ctx: AuthContext;table: string;where: SQL;row: Row;versionId?: string;asset: string;parentVoided?: boolean };
 const noUpdateGrant = ['staff_client_assignments', 'subscription_events', 'tenant_hidden_items', 'metric_entries'];
 const clientInvisible = ['invitations', 'business_settings', 'client_notes', 'client_flags', 'tasks', 'ai_requests', 'packages', 'subscriptions', 'client_entitlement_overrides', 'exercises', 'foods', 'programs', 'nutrition_plans', 'forms', 'program_versions', 'nutrition_plan_versions', 'form_versions'];
 const heads = ['programs', 'nutrition_plans', 'forms'];
@@ -414,6 +414,7 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
     case 'set_logs': {
       const session = await mkSession(f.t1, f.clientA);
       await create({ ...base, session_id: sql`${session}`, exercise_id: sql`${f.exerciseSystem}`, set_no: sql`1`, client_uuid: sql`${randomUUID()}`, client_updated_at: sql`'2026-01-01T00:00:00Z'` });
+      if (state === 'parent_voided') await svc(tx => tx.execute(sql`update workout_sessions set voided_at=now() where id=${session}`));
       break;
     }
     case 'meal_logs': await create({ ...base, local_date: sql`current_date`, client_uuid: sql`${randomUUID()}`, client_updated_at: state === 'set' ? sql`'2026-01-01T00:00:00Z'` : sql`null` });
@@ -447,7 +448,7 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
   if (state === 'voided' && voidTables.includes(table)) {
     await svc(tx => tx.execute(sql`update ${sql.identifier(table)} set voided_at='2026-01-01T00:00:00Z',voided_by=${ctx.userId},void_reason='service OLD state' where ${where}`));
   }
-  const m: MatrixRow = { f, ctx, table, where, row: {}, versionId, asset };
+  const m: MatrixRow = { f, ctx, table, where, row: {}, versionId, asset, parentVoided: table === 'set_logs' && state === 'parent_voided' };
   m.row = await readMatrix(m);
   return m;
 }
@@ -630,6 +631,7 @@ function firstRule(m: MatrixRow, column: string, alternateValue: unknown): strin
   const before = m.row;
   const old = before[column];
   const role = m.ctx.role;
+  if (m.parentVoided) return 'rule:app.set_logs_parent_live';
   // 0008: B _45_void precedes _50_guard and blocks every update after voiding.
   if (voidTables.includes(m.table) && (before.voided_at !== null || ['voided_at', 'voided_by', 'void_reason', 'replaces_id'].includes(column))) {
     return 'void';
@@ -706,7 +708,7 @@ async function matrixRefusal(m: MatrixRow, statement: SQL, rule: string, column:
     expect(error.table_name).toBe(m.table);
     return;
   }
-  const error = await expectGuard(as(m.ctx, tx => tx.execute(statement)), rule, column);
+  const error = await expectGuard(as(m.ctx, tx => tx.execute(statement)), rule, rule === 'rule:app.set_logs_parent_live' ? 'session_id' : column);
   expect(error.table_name).toBe(m.table);
   if (rule.startsWith('rule:')) expect(error.code).toBe(rule === 'rule:app.head_rules' ? '42501' : 'P0001');
 }

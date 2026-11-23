@@ -145,6 +145,7 @@ async function runWrite(cell: typeof matrix[number]): Promise<void> {
   if (cell.expected === 'privilege') {const error=await expectPrivilege(work);expect(error.message).toMatch(new RegExp(`^permission denied for table ${cell.table}\\b`,'i'));}
   else if (cell.expected === 'rls') await expectRls(work);
   else if (cell.expected === 'noeffect') await expectNoEffect(actor, statement, cell.table, where);
+  else if (cell.expected === 'guard') await expectGuard(work, 'client_update', cell.table === 'supplement_logs' ? 'taken' : 'note');
   else {
     const {rows:returned,now} = await work();
     expect(returned).toHaveLength(1);

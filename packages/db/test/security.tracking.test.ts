@@ -51,6 +51,12 @@ async function row(table: string, f: Fixture, extra: Record<string, SQL> = {}): 
   const id = randomUUID(); await svc((tx) => q(tx, insert(table, f, id, extra)), f.t1); return id;
 }
 async function legal(actor: AuthContext, table: string, id: string): Promise<void> {
+  if (actor.role === 'client' && ['meal_logs', 'measurement_sets', 'supplement_logs'].includes(table)) {
+    const before = await serviceRow(table, id);
+    expect(before).toBeDefined();
+    expect(await as(actor, tx => one(tx, sql`select * from ${sql.identifier(table)} where id = ${id}`))).toEqual(before);
+    return;
+  }
   const column = table === 'workout_sessions' ? 'client_note' : table === 'supplement_logs' ? 'taken' : table === 'form_submissions' ? 'answers' : 'note';
   const value = column === 'taken' ? sql`false` : column === 'answers' ? sql`'{"allowed":true}'::jsonb` : sql`'allowed'`;
   await as(actor, (tx) => q(tx, sql`update ${sql.identifier(table)} set ${sql.identifier(column)} = ${value} where id = ${id}`));
@@ -108,6 +114,7 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
     const bad = target === 'draft' ? draft.versionId : f.planPubB;
     await refusal(f, () => as(actor, (tx) => q(tx, operation === 'insert' ? insert(table, f, id, { plan_version_id: sql`${bad}::uuid` }) : sql`update ${sql.identifier(table)} set plan_version_id = ${bad} where id = ${id}`)), target === 'B-visible' ? `fk:${table}_plan_version_fk` : 'parent:visible_refs', 'plan_version_id', table);
     if (operation === 'insert') await as(actor, (tx) => q(tx, insert(table, f, id, { plan_version_id: sql`${f.planPubA}::uuid` })));
+    else if (actor.role === 'client') await as(actor, tx => q(tx, sql`update ${sql.identifier(table)} set plan_version_id = plan_version_id where id = ${id}`));
     else await as(actor, (tx) => q(tx, sql`update ${sql.identifier(table)} set plan_version_id = plan_version_id, ${sql.identifier(table === 'meal_logs' ? 'note' : 'taken')} = ${table === 'meal_logs' ? sql`'allowed'` : sql`false`} where id = ${id}`));
     expect(await serviceRow(table, id)).toMatchObject({ plan_version_id: f.planPubA });
   });
@@ -176,10 +183,21 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
     await refusal(f, () => as(f.ua, (tx) => q(tx, sql`update workout_sessions set ${sql.identifier(column)} = ${value} where id = ${id}`)), 'immutable', column, 'workout_sessions'); await legal(f.ua, 'workout_sessions', id);
   });
   for (const table of ['measurement_sets', 'progress_photo_sets'] as const) {
-    it(`K08 ${table} ua UPDATE payload/note own mutable`, async () => {
+    it(`K08 ${table} ua payload/note ${table === 'measurement_sets' ? 'requires a replacement' : 'remains mutable'}`, async () => {
       const f = await buildPrivateFixture(), id = await row(table, f);
       const payload = table === 'measurement_sets' ? { values: [{ type: 'waist', value: 80, unit: 'cm' }], note: 'allowed' } : { poses: [{ pose: 'front', mediaId: f.mediaA }], weight_kg: '79.50', note: 'allowed' };
-      await as(f.ua, (tx) => q(tx, table === 'measurement_sets' ? sql`update measurement_sets set "values" = ${JSON.stringify(payload.values)}::jsonb, note = 'allowed' where id = ${id}` : sql`update progress_photo_sets set poses = ${JSON.stringify(payload.poses)}::jsonb, weight_kg = 79.5, note = 'allowed' where id = ${id}`));
+      if (table === 'measurement_sets') {
+        await refusal(f, () => as(f.ua, tx => q(tx, sql`update measurement_sets set "values" = ${JSON.stringify(payload.values)}::jsonb where id = ${id}`)), 'client_update', 'values', table);
+        await refusal(f, () => as(f.ua, tx => q(tx, sql`update measurement_sets set note = 'allowed' where id = ${id}`)), 'client_update', 'note', table);
+        const replacement = randomUUID();
+        await as(f.ua, tx => q(tx, insert(table, f, replacement, {
+          values: sql`${JSON.stringify(payload.values)}::jsonb`, note: sql`'allowed'`, replaces_id: sql`${id}::uuid`,
+        })));
+        expect(await serviceRow(table, id)).toMatchObject({ values: [], note: null, voided_at: expect.any(Date) });
+        expect(await serviceRow(table, replacement)).toMatchObject({ ...payload, replaces_id: id });
+        return;
+      }
+      await as(f.ua, tx => q(tx, sql`update progress_photo_sets set poses = ${JSON.stringify(payload.poses)}::jsonb, weight_kg = 79.5, note = 'allowed' where id = ${id}`));
       expect(await serviceRow(table, id)).toMatchObject(payload);
     });
     for (const column of ['id', 'tenant_id', 'client_id', 'client_uuid', 'created_at']) it(`K08 ${table} ua UPDATE ${column} identity`, async () => {
@@ -222,6 +240,20 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
       from ${sql.identifier(table)} t where id = ${id}
       on conflict (tenant_id, client_id, client_uuid) do update set ${sql.join(syncColumns[table].map((column) => sql`${sql.identifier(column)} = excluded.${sql.identifier(column)}`), sql`, `)}
       where excluded.client_updated_at is not null and (${sql.identifier(table)}.client_updated_at is null or ${sql.identifier(table)}.client_updated_at < excluded.client_updated_at) returning id`));
+    if (['meal_logs', 'measurement_sets', 'supplement_logs'].includes(table)) {
+      const before = await serviceRow(table, id);
+      await refusal(f, () => replay('2026-02-01T00:00:00Z'), 'client_update', table === 'supplement_logs' ? 'taken' : 'note', table);
+      for (const time of ['2026-01-01T00:00:00Z', '2026-02-01T00:00:00Z', '2026-03-01T00:00:00Z']) {
+        expect(await as(f.ua, tx => q(tx, sql`insert into ${sql.identifier(table)}
+          select (jsonb_populate_record(null::${sql.identifier(table)}, to_jsonb(t)
+            || jsonb_build_object('id', ${randomUUID()}::text, 'client_updated_at', ${time}::text))).*
+          from ${sql.identifier(table)} t where id = ${id}
+          on conflict (tenant_id, client_id, client_uuid) do nothing returning id`))).toEqual([]);
+        expect(await serviceRow(table, id)).toEqual(before);
+      }
+      await legal(f.ua, table, id);
+      return;
+    }
     expect(await replay('2026-02-01T00:00:00Z')).toEqual([{ id }]);
     const afterFirst = await serviceRow(table, id);
     expect(afterFirst).toMatchObject({ client_updated_at: new Date('2026-02-01T00:00:00Z'), ...(table === 'set_logs' ? { reps: 12, note: 'newer' } : table === 'workout_sessions' ? { client_note: 'newer', active_seconds: 60 } : table === 'supplement_logs' ? { taken: false } : { note: 'newer' }) });
@@ -241,9 +273,9 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
     if (state === 'scheduled' || state === 'overdue') { const proposed = randomUUID(); await refusal(f, () => as(f.ua, (tx) => q(tx, insert('form_submissions', f, proposed, { state: sql`${state}` }))), state === 'scheduled' ? 'client_transitions' : 'transitions', 'state', 'form_submissions'); await as(f.ua, (tx) => q(tx, insert('form_submissions', f, proposed))); expect(await serviceRow('form_submissions', proposed)).toMatchObject({ state: 'due' }); }
   });
   it('K11 form_submissions ua INSERT race 23505 savepoint then UPDATE retry and batch continues', async () => {
-    const f = await buildPrivateFixture(), offline = randomUUID(), existing = randomUUID(), measurement = await row('measurement_sets', f, { client_updated_at: sql`'2026-02-01T00:00:00Z'::timestamptz` });
-    const measurementBefore = await serviceRow('measurement_sets', measurement);
-    if (!measurementBefore) throw new Error('private measurement was not inserted');
+    const f = await buildPrivateFixture(), offline = randomUUID(), existing = randomUUID(), photo = await row('progress_photo_sets', f, { client_updated_at: sql`'2026-02-01T00:00:00Z'::timestamptz` });
+    const photoBefore = await serviceRow('progress_photo_sets', photo);
+    if (!photoBefore) throw new Error('private photo was not inserted');
     await as(f.ua, async (tx) => {
       expect(await q(tx, sql`select id from form_submissions where tenant_id = ${f.t1} and client_id = ${f.clientA} and client_uuid = ${offline}`)).toEqual([]);
       // A second connection wins after the RLS lookup but before this transaction's ordinary INSERT.
@@ -254,11 +286,11 @@ describe('tracking isolation and offline synchronization (§5.2, §6.3, §7.5)',
       expect(await one(tx, sql`select id from form_submissions where tenant_id = ${f.t1} and client_id = ${f.clientA} and client_uuid = ${offline}`)).toEqual({ id: existing });
       expect(await q(tx, sql`update form_submissions set answers = '{"retry":true}', missing_required = array[]::text[], state = 'due', client_updated_at = '2026-03-01T00:00:00Z' where id = ${existing}
         and ('2026-03-01T00:00:00Z'::timestamptz is not null) and (client_updated_at is null or client_updated_at < '2026-03-01T00:00:00Z'::timestamptz) returning id`)).toEqual([{ id: existing }]);
-      const immutable = await expectGuard(() => tx.transaction((sp) => q(sp, sql`update measurement_sets set client_uuid = ${randomUUID()} where id = ${measurement}`)), 'immutable', 'client_uuid'); expect(immutable.table_name).toBe('measurement_sets');
-      const monotonic = await expectGuard(() => tx.transaction((sp) => q(sp, sql`update measurement_sets set client_updated_at = '2026-01-01T00:00:00Z' where id = ${measurement}`)), 'monotonic', 'client_updated_at'); expect(monotonic.table_name).toBe('measurement_sets');
-      await q(tx, sql`update measurement_sets set note = 'later valid' where id = ${measurement}`);
+      const immutable = await expectGuard(() => tx.transaction((sp) => q(sp, sql`update progress_photo_sets set client_uuid = ${randomUUID()} where id = ${photo}`)), 'immutable', 'client_uuid'); expect(immutable.table_name).toBe('progress_photo_sets');
+      const monotonic = await expectGuard(() => tx.transaction((sp) => q(sp, sql`update progress_photo_sets set client_updated_at = '2026-01-01T00:00:00Z' where id = ${photo}`)), 'monotonic', 'client_updated_at'); expect(monotonic.table_name).toBe('progress_photo_sets');
+      await q(tx, sql`update progress_photo_sets set note = 'later valid' where id = ${photo}`);
     });
-    expect(await serviceRow('form_submissions', existing)).toMatchObject({ answers: { retry: true } }); expect(await serviceRow('measurement_sets', measurement)).toEqual({ ...measurementBefore, note: 'later valid' });
+    expect(await serviceRow('form_submissions', existing)).toMatchObject({ answers: { retry: true } }); expect(await serviceRow('progress_photo_sets', photo)).toEqual({ ...photoBefore, note: 'later valid' });
   });
   it('K11 messages ua INSERT sender offline dedupe then separate edit/read', async () => {
     const f = await buildPrivateFixture(), id = randomUUID(), offline = randomUUID();

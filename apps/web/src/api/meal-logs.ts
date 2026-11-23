@@ -26,10 +26,10 @@ async function transaction<T>(auth: AuthContext, fn: (tx: Tx) => Promise<T>): Pr
 router.openapi(createRoute({ method: 'get', path: '/', request: { query: logListSchema }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => listMealLogs(tx, auth, c.req.valid('query'))), 200);
 });
-router.openapi(createRoute({ method: 'post', path: '/', request: { body: body(mealLogSchema) }, responses: { 200: json, ...errors } }), async c => {
+router.openapi(createRoute({ method: 'post', path: '/', description: 'Creates a meal log. Reusing a clientUuid returns the stored row unchanged, even when facts or timestamps differ or the row is voided. Edit through /{id}/correct.', request: { body: body(mealLogSchema) }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => logMeal(tx, auth, c.req.valid('json'))), 200);
 });
-router.openapi(createRoute({ method: 'post', path: '/supplements', request: { body: body(supplementLogSchema) }, responses: { 200: json, ...errors } }), async c => {
+router.openapi(createRoute({ method: 'post', path: '/supplements', description: 'Appends a supplement status event. Reusing a clientUuid returns the stored row unchanged even when the payload differs. A later taken/skipped action uses a new clientUuid and retains earlier events.', request: { body: body(supplementLogSchema) }, responses: { 200: json, ...errors } }), async c => {
   const auth = c.get('auth'); return c.json(await transaction(auth, tx => logSupplement(tx, auth, c.req.valid('json'))), 200);
 });
 router.openapi(createRoute({ method: 'post', path: '/water', request: { body: body(waterSchema) }, responses: { 200: json, ...errors } }), async c => {

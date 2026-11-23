@@ -18,13 +18,15 @@ import { comparisonHistory, getSession, readSets, sessionProjection } from './re
 import { finishSchema, patchSessionSchema, sessionSyncSchema, startSessionSchema, type SessionWrite, type SetWrite } from './contracts';
 
 const conflict = () => new ApiError(409, 'session_conflict', 'Session identity conflicts with an existing session');
+const voidedSession = () => new ApiError(409, 'session_voided', 'Voided sessions cannot accept writes');
 
 /** Task 5: preserve database refusals as API errors; never bypass a guard. */
 export function workoutError(error: unknown): unknown {
   if (error instanceof ApiError) return error;
   let cause = error;
   for (let i = 0; i < 6 && cause && typeof cause === 'object'; i++) {
-    const pg = cause as { code?: string; cause?: unknown };
+    const pg = cause as { code?: string; detail?: string; cause?: unknown };
+    if (pg.code === 'P0001' && pg.detail === 'rule:app.set_logs_parent_live') return voidedSession();
     if (pg.code === '42501') return forbidden();
     if (pg.code === '23503') return notFound();
     if (pg.code === '23505') return conflict();
@@ -93,6 +95,7 @@ async function syncSession(tx: Tx, auth: AuthContext, body: SessionWrite) {
     await startSession(tx, auth, parsed.data); row = await ownSession(tx, auth, body.clientUuid);
   }
   if (!row) throw notFound();
+  if (row.voidedAt !== null) throw voidedSession();
   for (const key of ['programId', 'programVersionId', 'dayId', 'workoutId'] as const) {
     if (body[key] !== undefined && body[key] !== row[key]) throw conflict();
   }
@@ -117,6 +120,7 @@ async function syncSession(tx: Tx, auth: AuthContext, body: SessionWrite) {
 async function syncSet(tx: Tx, auth: AuthContext, body: SetWrite) {
   const clientId = requireClient(auth, true); const session = await ownSession(tx, auth, body.sessionClientUuid);
   if (!session) throw notFound();
+  if (session.voidedAt !== null) throw voidedSession();
   const ids = [body.exerciseId, ...(body.substitutedFor ? [body.substitutedFor] : [])];
   const visible = await tx.select({ id: clientColumns.exercises.id }).from(exercises).where(inArray(exercises.id, ids));
   if (ids.some(id => !visible.some(e => e.id === id))) throw notFound();
@@ -154,6 +158,7 @@ export async function syncWorkout(tx: Tx, auth: AuthContext, body: { sessions: S
     } catch (error) {
       const mapped = workoutError(error);
       if (!(mapped instanceof ApiError)) throw error;
+      if (mapped.code === 'session_voided') throw mapped;
       rejected.push({ clientUuid: entry.record.clientUuid, reason: mapped.code });
     }
   }

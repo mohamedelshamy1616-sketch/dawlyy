@@ -54,6 +54,31 @@ describe('Task 5 offline workout API / G2 and G3', () => {
     expect(conflict.status).toBe(409); expect(conflict.json).toMatchObject({ error: { code: 'session_conflict' } });
   });
 
+  it('void then sync refuses inserts, updates, soft deletes and stale session retries without changing sets', async () => {
+    const detail = await start(), original = set(detail);
+    expect((await sync([original])).accepted).toEqual([original.clientUuid]);
+    expect((await call(app, 'POST', `${base}/${detail.session.id}/void`, { as: f.a.userId, body: {} })).status).toBe(200);
+    const read = () => call(app, 'GET', `${base}/${detail.session.id}`, { as: f.a.userId });
+    const before = await read();
+    expect(before.status).toBe(200);
+    expect((before.json as SessionDetail).sets).toHaveLength(1);
+    const later = '2099-01-01T00:00:00Z';
+    const payloads = [
+      { sessions: [], sets: [{ ...original, clientUuid: randomUUID(), clientUpdatedAt: later }] },
+      { sessions: [], sets: [{ ...original, reps: 99, clientUpdatedAt: later }] },
+      { sessions: [], sets: [{ ...original, deletedAt: later, clientUpdatedAt: later }] },
+      { sessions: [{ clientUuid: detail.session.clientUuid, clientUpdatedAt: original.clientUpdatedAt }], sets: [] },
+    ];
+    for (const body of payloads) {
+      const response = await call(app, 'POST', `${base}/sync`, { as: f.a.userId, body });
+      expect(response.status).toBe(409);
+      expect(response.json).toMatchObject({ error: { code: 'session_voided' } });
+      expect(await read()).toEqual(before);
+    }
+    const live = await start();
+    expect((await sync([set(live)])).rejected).toEqual([]);
+  });
+
   it('creates a missing session before its sets in the same batch and rejects only invalid rows', async () => {
     const body = startBody();
     const row: SetWrite = { ...set({ session: { clientUuid: body.clientUuid } } as SessionDetail), sessionClientUuid: body.clientUuid };

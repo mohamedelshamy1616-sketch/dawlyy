@@ -120,6 +120,20 @@ create unique index meal_logs_replaces_uq on public.meal_logs (tenant_id, client
 --> statement-breakpoint
 create unique index measurement_sets_replaces_uq on public.measurement_sets (tenant_id, client_id, replaces_id) where replaces_id is not null;
 --> statement-breakpoint
+-- R0a: ordinary client sync may INSERT facts, never UPDATE an existing fact.
+-- Keep the immutable and monotonic rules; void_entry still owns void attribution.
+drop trigger meal_logs_50_guard on public.meal_logs;
+--> statement-breakpoint
+create trigger meal_logs_50_guard before insert or update or delete on public.meal_logs for each row execute function app.guard_row('{"immutable":["id","tenant_id","client_id","client_uuid","created_at"],"monotonic":["client_updated_at"],"client_update":[]}');
+--> statement-breakpoint
+drop trigger measurement_sets_50_guard on public.measurement_sets;
+--> statement-breakpoint
+create trigger measurement_sets_50_guard before insert or update or delete on public.measurement_sets for each row execute function app.guard_row('{"client_insert_eq":{"taken_by":"client"},"immutable":["id","tenant_id","client_id","client_uuid","taken_by","created_at"],"monotonic":["client_updated_at"],"client_update":[]}');
+--> statement-breakpoint
+drop trigger supplement_logs_50_guard on public.supplement_logs;
+--> statement-breakpoint
+create trigger supplement_logs_50_guard before insert or update or delete on public.supplement_logs for each row execute function app.guard_row('{"immutable":["id","tenant_id","client_id","client_uuid"],"monotonic":["client_updated_at"],"client_update":[]}');
+--> statement-breakpoint
 create function app.guard_void() returns trigger
 language plpgsql
 set search_path = ''
@@ -165,6 +179,37 @@ create trigger measurement_sets_45_void before insert or update or delete on pub
 --> statement-breakpoint
 create trigger workout_sessions_45_void before insert or update or delete on public.workout_sessions
   for each row execute function app.guard_void();
+--> statement-breakpoint
+-- The SHARE lock conflicts with void_entry's UPDATE lock and lasts until commit.
+-- UPDATE checks OLD: an attempted session reassignment must not escape a voided parent.
+create function app.set_logs_parent_live() returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  target public.set_logs%rowtype;
+  parent_voided_at timestamptz;
+begin
+  if current_user <> 'dawlyy_rls' then
+    return case when tg_op = 'DELETE' then old else new end;
+  end if;
+  if tg_op = 'INSERT' then target := new; else target := old; end if;
+  select s.voided_at into parent_voided_at
+    from public.workout_sessions s
+    where s.tenant_id = target.tenant_id and s.client_id = target.client_id and s.id = target.session_id
+    for share;
+  if parent_voided_at is not null then
+    raise exception 'a voided workout session cannot accept set writes'
+      using errcode = 'P0001', detail = 'rule:app.set_logs_parent_live', table = 'set_logs', column = 'session_id';
+  end if;
+  -- Missing/inaccessible parents remain subject to RLS and the composite session FK.
+  return case when tg_op = 'DELETE' then old else new end;
+end $$;
+--> statement-breakpoint
+revoke all on function app.set_logs_parent_live() from public;
+--> statement-breakpoint
+create trigger set_logs_45_parent_live before insert or update or delete on public.set_logs
+  for each row execute function app.set_logs_parent_live();
 --> statement-breakpoint
 create function app.void_entry(p_table text, p_id uuid, p_reason text) returns void
 language plpgsql security definer
