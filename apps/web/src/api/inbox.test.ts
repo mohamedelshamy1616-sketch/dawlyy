@@ -51,7 +51,7 @@ describe('R1b staff inbox under real RLS', () => {
         formId: f.formId, formVersionId: f.versionId, formKind: 'checkin', state: 'reviewed',
         submittedAt: new Date(Date.now() - 2 * 86400000), reviewedAt: new Date() });
       await tx.insert(redFlags).values({ id: randomUUID(), tenantId: f.owner.tenantId, clientId: f.otherClientId, source: 'checkin', sourceId,
-        category: 'pain_injury', matched: 'pain' });
+        category: 'pain_injury', matched: 'pain', evidenceHash: 'a'.repeat(64) });
     });
     const result = await inbox(f.owner.userId, '?limit=1');
     expect(result.items).toHaveLength(1);

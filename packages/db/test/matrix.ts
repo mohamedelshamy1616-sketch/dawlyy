@@ -190,7 +190,7 @@ export async function makeRow(table: MatrixTable, f: Fixture, actor: AuthContext
     case 'ai_requests': return { ...bound, kind: 'matrix', input: {}, created_by: actor.userId, state: 'draft' };
     // reinvent R0a: valid independent service recipes for the new table inventory.
     case 'ai_drafts': return { ...bound, kind: 'week_review', input_hash: 'a'.repeat(64), input_version: 'matrix-v1', body: {}, status: 'draft' };
-    case 'red_flags': return { ...bound, source: 'message', source_id: randomUUID(), category: 'other', matched: 'matrix', status: 'open' };
+    case 'red_flags': return { ...bound, source: 'message', source_id: randomUUID(), category: 'other', matched: 'matrix', evidence_hash: 'a'.repeat(64), status: 'open' };
     case 'packages': return { ...base, name: { en: 'Matrix package' }, duration_days: 30, schedule_rules: { checkins: [], workouts: [] }, is_public: true };
     case 'subscriptions': {
       const packageId=tenant_id===f.t2?f.packageT2:f.packageT1;

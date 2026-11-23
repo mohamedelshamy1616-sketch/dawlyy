@@ -91,8 +91,8 @@ for (const table of ['meal_logs','measurement_sets'] as const) {
   unique(table,`${table}_tenant_client_id_uq`,'tenant_id,client_id,id');
   unique(table,`${table}_replaces_uq`,'tenant_id,client_id,replaces_id','replaces_id IS NOT NULL');
 }
-// 0008: E one flag per scoped source/category.
-unique('red_flags','red_flags_source_category_uq','tenant_id,source,source_id,category');
+// 0008: E one flag per scoped source/category and persisted evidence hash.
+unique('red_flags','red_flags_source_category_uq','tenant_id,source,source_id,category,evidence_hash');
 const checks: { table: string; name: string; expression: string }[] = [
   // 0008: B bounds all four void reasons.
   ...['meal_logs','metric_entries','measurement_sets','workout_sessions'].map(table=>({table,name:`${table}_void_reason_ck`,expression:'length(void_reason) <= 500'})),
@@ -109,6 +109,7 @@ const checks: { table: string; name: string; expression: string }[] = [
   {table:'red_flags',name:'red_flags_source_ck',expression:"source IN ('message','checkin','meal_note')"},
   {table:'red_flags',name:'red_flags_category_ck',expression:"category IN ('pain_injury','eating_disorder','pregnancy','medication','other')"},
   {table:'red_flags',name:'red_flags_matched_ck',expression:'length(matched) >= 1 AND length(matched) <= 200'},
+  {table:'red_flags',name:'red_flags_evidence_hash_ck',expression:"evidence_hash ~ '^[0-9a-f]{64}$'"},
   {table:'red_flags',name:'red_flags_status_ck',expression:"status IN ('open','handled')"},
   {table:'tenant_hidden_items',name:'tenant_hidden_items_kind_ck',expression:"kind IN ('exercise','food')"},
   ...['programs','nutrition_plans','forms'].map((table)=>({table,name:`${table}_kind_client_ck`,expression:"(kind = 'template') = (client_id IS NULL)"})),
@@ -342,9 +343,9 @@ describe('native integrity',()=>{
     if(uniqueRule.table==='conversations')duplicate.last_message_at=null;
     const before=await state();const error=await expectCode(()=>svc((tx)=>insertRow(tx,uniqueRule.table,duplicate)),'23505');expect(error.constraint_name).toBe(uniqueRule.name);expect(await state()).toEqual(before);
     const changed=uniqueRule.columns[uniqueRule.columns.length-1]!;
-    // 0008: B/E the positive variants must satisfy the correction FK and flag category CHECK.
+    // 0008: B/E the positive variants must satisfy the correction FK and evidence hash CHECK.
     if(changed==='replaces_id')duplicate[changed]=(await seeded(uniqueRule.table,f)).id;
-    else if(uniqueRule.name==='red_flags_source_category_uq')duplicate[changed]='pain_injury';
+    else if(uniqueRule.name==='red_flags_source_category_uq')duplicate[changed]='b'.repeat(64);
     else if(changed==='client_id')duplicate[changed]=await mkClient(f.t1);
     else if(changed==='membership_id')duplicate[changed]=(await mkMembership(f.s2)).membershipId;
     else if(changed==='user_id')duplicate[changed]=randomUUID();

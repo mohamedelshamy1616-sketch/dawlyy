@@ -560,6 +560,38 @@ describe('reinvent R0a red flags', () => {
     expect(await as(f.ua, tx => q(tx, sql`select id from red_flags where id = ${first.id}`))).toEqual([]);
     expect(await svc(tx => q(tx, sql`select id from audit_log where tenant_id = ${f.t1} and entity = 'red_flags' and entity_id = ${first.id} and action = 'insert'`))).toHaveLength(1);
   });
+  for (const kind of ['message', 'meal_note'] as const) it(`${kind}: new evidence after handling creates an open occurrence and identical text dedupes`, async () => {
+    const source = kind === 'message' ? await message() : await entry('meal_logs', f.ua, { note: sql`'pain'` });
+    const first = await raise(f.ua, kind, source);
+    const original = await serviceRow('red_flags', first.id);
+    expect(original).toMatchObject({ evidence_hash: expect.stringMatching(/^[0-9a-f]{64}$/) });
+    await as(f.s1, tx => q(tx, sql`update red_flags set status = 'handled' where id = ${first.id}`));
+    const handled = await serviceRow('red_flags', first.id);
+    expect(handled).toMatchObject({ status: 'handled', handled_by: f.s1.userId, handled_at: expect.any(Date) });
+    // Changing the caller's matched term cannot manufacture a new evidence revision.
+    expect(await raise(f.ua, kind, source, 'pain_injury', 'Pain')).toEqual(first);
+    const text = 'pain is much worse';
+    if (kind === 'message') {
+      await as(f.ua, tx => q(tx, sql`update messages set body = ${text} where tenant_id = ${f.t1} and id = ${source}`));
+    } else {
+      // Meal facts are immutable at runtime; a trusted source revision isolates the definer's dedupe.
+      await svc(tx => q(tx, sql`update meal_logs set note = ${text} where tenant_id = ${f.t1} and id = ${source}`));
+    }
+    const next = await raise(f.ua, kind, source);
+    expect(next.id).not.toBe(first.id);
+    const nextRow = await serviceRow('red_flags', next.id);
+    expect(nextRow).toMatchObject({
+      source: kind, source_id: source, category: 'pain_injury', matched: 'pain',
+      evidence_hash: expect.stringMatching(/^[0-9a-f]{64}$/),
+      status: 'open', handled_by: null, handled_at: null,
+    });
+    expect(nextRow?.evidence_hash).not.toBe(original?.evidence_hash);
+    expect(await raise(f.ua, kind, source)).toEqual(next);
+    expect(await raise(f.ua, kind, source, 'pain_injury', 'Pain')).toEqual(next);
+    expect(await serviceRow('red_flags', first.id)).toEqual(handled);
+    expect(await svc(tx => q(tx, sql`select id from red_flags where tenant_id = ${f.t1}
+      and source = ${kind} and source_id = ${source} and category = 'pain_injury'`))).toHaveLength(2);
+  });
   it('client cannot raise a flag on another client message or a missing source', async () => {
     const source = await message(f.ub);
     await refusal(raise(f.ua, 'message', source), '42501', 'rule:app.raise_red_flag');
@@ -621,11 +653,11 @@ describe('reinvent R0a red flags', () => {
     for (const [column, value] of [['handled_by', sql`${f.ua.userId}::uuid`], ['handled_at', sql`now()`], ['matched', sql`'changed'`]] as const)
       await expectGuard(as(f.o1, tx => q(tx, sql`update red_flags set ${sql.identifier(column)} = ${value} where id = ${flag.id}`)), 'immutable', column);
   });
-  for (const column of ['id', 'tenant_id', 'client_id', 'source', 'source_id', 'category', 'matched', 'created_at', 'handled_by', 'handled_at'] as const) it(`red_flags: ${column} is immutable for runtime owner and staff`, async () => {
+  for (const column of ['id', 'tenant_id', 'client_id', 'source', 'source_id', 'category', 'matched', 'evidence_hash', 'created_at', 'handled_by', 'handled_at'] as const) it(`red_flags: ${column} is immutable for runtime owner and staff`, async () => {
     const flag = await raise(f.ua, 'message', await message());
     const values: Record<typeof column, SQL> = { id: sql`${randomUUID()}::uuid`, tenant_id: sql`${f.t2}::uuid`,
       client_id: sql`${f.clientB}::uuid`, source: sql`'meal_note'`, source_id: sql`${randomUUID()}::uuid`, category: sql`'other'`,
-      matched: sql`'changed'`, created_at: sql`'2001-01-01T00:00:00Z'::timestamptz`, handled_by: sql`${f.o1.userId}::uuid`, handled_at: sql`now()` };
+      matched: sql`'changed'`, evidence_hash: sql`${'b'.repeat(64)}`, created_at: sql`'2001-01-01T00:00:00Z'::timestamptz`, handled_by: sql`${f.o1.userId}::uuid`, handled_at: sql`now()` };
     for (const actor of [f.o1, f.s1]) await expectGuard(as(actor, tx => q(tx, sql`update red_flags set ${sql.identifier(column)} = ${values[column]} where id = ${flag.id}`)), 'immutable', column);
   });
   for (const [source, category] of [['invalid', 'other'], ['message', 'invalid']] as const) it(`red flag validates source ${source} and category ${category}`, async () => {
@@ -701,15 +733,16 @@ describe('reinvent R0a database object contracts', () => {
   for (const [column, value, constraint] of [
     ['source', sql`'invalid'`, 'source'], ['category', sql`'invalid'`, 'category'],
     ['matched', sql`''`, 'matched'], ['matched', sql`${'x'.repeat(201)}`, 'matched'], ['status', sql`'invalid'`, 'status'],
+    ['evidence_hash', sql`'bad'`, 'evidence_hash'],
   ] as const) it(`red_flags: ${column} CHECK ${constraint} applies to trusted inserts`, async () => {
     const error = await expectCode(svc(tx => q(tx, insert('red_flags', { tenant_id: sql`${f.t1}::uuid`, client_id: sql`${f.clientA}::uuid`,
-      source: sql`'message'`, source_id: sql`${randomUUID()}::uuid`, category: sql`'other'`, matched: sql`'pain'`, [column]: value }))), '23514');
+      source: sql`'message'`, source_id: sql`${randomUUID()}::uuid`, category: sql`'other'`, matched: sql`'pain'`, evidence_hash: sql`${hash}`, [column]: value }))), '23514');
     expect(error.constraint_name).toBe(`red_flags_${constraint}_ck`);
   });
   for (const table of ['ai_drafts', 'red_flags'] as const) it(`${table}: a client foreign key cannot cross tenants even for the service`, async () => {
     const values: Record<string, SQL> = table === 'ai_drafts'
       ? { kind: sql`'week_review'`, input_hash: sql`${hash}`, input_version: sql`'v1'`, body: sql`'{}'::jsonb` }
-      : { source: sql`'message'`, source_id: sql`${randomUUID()}::uuid`, category: sql`'other'`, matched: sql`'pain'` };
+      : { source: sql`'message'`, source_id: sql`${randomUUID()}::uuid`, category: sql`'other'`, matched: sql`'pain'`, evidence_hash: sql`${hash}` };
     const error = await expectCode(svc(tx => q(tx, insert(table, { tenant_id: sql`${f.t1}::uuid`, client_id: sql`${f.clientC}::uuid`, ...values }))), '23503');
     expect(error.constraint_name).toBe(`${table}_client_fk`);
   });

@@ -160,7 +160,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
   it('blocks open flags without sending; handling requires rebuild before approval', async () => {
     const flagId = randomUUID();
     await setupApiData(f.owner.tenantId, 'open safety flag', tx => tx.insert(redFlags).values({ id: flagId,
-      tenantId: f.owner.tenantId, clientId: f.a.clientId, source: 'message', sourceId: randomUUID(), category: 'pain_injury', matched: 'pain' }));
+      tenantId: f.owner.tenantId, clientId: f.a.clientId, source: 'message', sourceId: randomUUID(), category: 'pain_injury', matched: 'pain', evidenceHash: 'a'.repeat(64) }));
     const draft = await build();
     expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })))
       .toMatchObject({ status: 409, json: { error: { code: 'red_flags_open' } } });

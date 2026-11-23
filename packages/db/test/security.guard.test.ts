@@ -368,7 +368,7 @@ async function arrange(table: string, who: Who, state: string | null = 'base'): 
     // 0008: D/E trusted service inserts every OLD status, including otherwise unreachable approved/stale/handled.
     case 'ai_drafts': await create({ ...base, kind: sql`'week_review'`, input_hash: sql`${'a'.repeat(64)}`, input_version: sql`'guard-v1'`, body: sql`'{}'::jsonb`, provider: sql`'none'`, status: sql`${state}`, created_by: sql`${ctx.userId}`, approved_by: state === 'approved' ? sql`${ctx.userId}` : sql`null`, approved_at: state === 'approved' ? sql`now()` : sql`null` });
     break;
-    case 'red_flags': await create({ ...base, source: sql`'meal_note'`, source_id: sql`${randomUUID()}`, category: sql`'other'`, matched: sql`'guard'`, status: sql`${state}`, handled_by: state === 'handled' ? sql`${ctx.userId}` : sql`null`, handled_at: state === 'handled' ? sql`now()` : sql`null` });
+    case 'red_flags': await create({ ...base, source: sql`'meal_note'`, source_id: sql`${randomUUID()}`, category: sql`'other'`, matched: sql`'guard'`, evidence_hash: sql`${'a'.repeat(64)}`, status: sql`${state}`, handled_by: state === 'handled' ? sql`${ctx.userId}` : sql`null`, handled_at: state === 'handled' ? sql`now()` : sql`null` });
     break;
     case 'packages': id = await mkPackage(f.t1);
     break;
@@ -464,6 +464,7 @@ async function alternate(m: MatrixRow, column: string, type: string): Promise<un
   if (m.table === 'ai_drafts' && column === 'provider') return old === 'none' ? 'anthropic' : 'none';
   if (m.table === 'red_flags' && column === 'source') return old === 'meal_note' ? 'message' : 'meal_note';
   if (m.table === 'red_flags' && column === 'category') return old === 'other' ? 'pain_injury' : 'other';
+  if (m.table === 'red_flags' && column === 'evidence_hash') return 'b'.repeat(64);
   // 0008: B a replacement alternate is a real same-client row, even though runtime UPDATE must refuse it.
   if (column === 'replaces_id') {
     const original = await makeRow(m.table as MatrixTable, f, f.ua);

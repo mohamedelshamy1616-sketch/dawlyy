@@ -28,7 +28,7 @@ describe('R0c/R4c deterministic red flags in authenticated source transactions',
     const sent = await call(app, 'POST', `/api/v1/conversations/${conversationId}/messages`, { as: actor.userId, body });
     expect(sent.status).toBe(201); return { id: idOf(sent.json), conversationId, body };
   }
-  it('pain message creates one open flag, client routes refuse, repeats dedupe, handling stamps', async () => {
+  it('message evidence revisions create separate flags; retries dedupe and handling preserves attribution', async () => {
     const source = await message();
     const open = await list(); expect(open.items).toHaveLength(1);
     const flag = open.items[0]!;
@@ -37,11 +37,24 @@ describe('R0c/R4c deterministic red flags in authenticated source transactions',
     expect((await call(app, 'POST', `/api/v1/red-flags/${flag.id}/handle`, { as: f.a.userId })).status).toBe(403);
     expect((await call(app, 'POST', `/api/v1/conversations/${source.conversationId}/messages`, { as: f.a.userId, body: source.body })).status).toBe(200);
     expect((await call(app, 'PATCH', `/api/v1/conversations/${source.conversationId}/messages/${source.id}`, { as: f.a.userId, body: { body: 'There is still knee pain' } })).status).toBe(200);
-    expect((await list()).items).toHaveLength(1);
+    const revised = (await list()).items; expect(revised).toHaveLength(2);
+    const secondFlag = revised.find(row => row.id !== flag.id)!;
     const handled = await call(app, 'POST', `/api/v1/red-flags/${flag.id}/handle`, { as: f.owner.userId, headers: { 'Idempotency-Key': randomUUID() } });
     expect(handled.status).toBe(200); expect(handled.json).toMatchObject({ id: flag.id, status: 'handled', handledBy: f.owner.userId, handledAt: expect.any(String) });
-    expect((await list()).items).toHaveLength(0); expect((await list('handled')).items).toHaveLength(1);
+    expect((await list()).items).toEqual([secondFlag]);
+    expect((await call(app, 'POST', `/api/v1/red-flags/${secondFlag.id}/handle`, { as: f.owner.userId })).status).toBe(200);
+    expect((await list()).items).toHaveLength(0); expect((await list('handled')).items).toHaveLength(2);
     expect((await call(app, 'POST', `/api/v1/red-flags/${flag.id}/handle`, { as: f.owner.userId })).json).toEqual(handled.json);
+    const history = (await list('handled')).items;
+    const edit = () => call(app, 'PATCH', `/api/v1/conversations/${source.conversationId}/messages/${source.id}`,
+      { as: f.a.userId, body: { body: 'The knee pain is much worse' } });
+    expect((await edit()).status).toBe(200);
+    const next = (await list()).items; expect(next).toHaveLength(1);
+    expect(next[0]).toMatchObject({ sourceId: source.id, category: 'pain_injury', status: 'open', handledBy: null, handledAt: null });
+    expect(history.map(row => row.id)).not.toContain(next[0]!.id);
+    expect((await edit()).status).toBe(200);
+    expect((await list()).items).toEqual(next);
+    expect((await list('handled')).items).toEqual(history);
     expect((await call(app, 'GET', '/api/v1/red-flags?status=unknown', { as: f.owner.userId })).status).toBe(400);
   });
   it('staff grants and assigned-client scope govern listing and either review permission handles', async () => {
@@ -67,6 +80,19 @@ describe('R0c/R4c deterministic red flags in authenticated source transactions',
     expect((await list()).items).toHaveLength(0);
     const corrected = await call(app, 'POST', `/api/v1/meal-logs/${idOf(first.json)}/correct`, { as: f.a.userId, body: meal('I have pain') }); expect(corrected.status).toBe(201);
     expect((await list()).items).toEqual([expect.objectContaining({ source: 'meal_note', sourceId: idOf(corrected.json), category: 'pain_injury' })]);
+    const flag = (await list()).items[0]!;
+    expect((await call(app, 'POST', `/api/v1/red-flags/${flag.id}/handle`, { as: f.owner.userId })).status).toBe(200);
+    const history = (await list('handled')).items;
+    const replacementBody = meal('The pain is much worse');
+    const replacement = await call(app, 'POST', `/api/v1/meal-logs/${idOf(corrected.json)}/correct`,
+      { as: f.a.userId, body: replacementBody });
+    expect(replacement.status).toBe(201);
+    const next = (await list()).items;
+    expect(next).toEqual([expect.objectContaining({ source: 'meal_note', sourceId: idOf(replacement.json), category: 'pain_injury', status: 'open' })]);
+    expect(next[0]!.id).not.toBe(flag.id);
+    expect((await call(app, 'POST', '/api/v1/meal-logs', { as: f.a.userId, body: replacementBody })).status).toBe(200);
+    expect((await list()).items).toEqual(next);
+    expect((await list('handled')).items).toEqual(history);
   });
   it('only text-type checkin answers are detected on insert, update and submit', async () => {
     const formId = randomUUID(), versionId = randomUUID(), id = randomUUID();
@@ -82,6 +108,19 @@ describe('R0c/R4c deterministic red flags in authenticated source transactions',
     const body = { clientUuid: randomUUID(), clientUpdatedAt: new Date().toISOString(), answers: { note: 'Knee pain', choice: 'medication' } };
     expect((await call(app, 'PUT', `/api/v1/submissions/${id}/answers`, { as: f.a.userId, body })).status).toBe(200);
     expect((await list()).items).toEqual([expect.objectContaining({ source: 'checkin', sourceId: id, category: 'pain_injury' })]);
+    const flag = (await list()).items[0]!;
+    expect((await call(app, 'POST', `/api/v1/red-flags/${flag.id}/handle`, { as: f.owner.userId })).status).toBe(200);
+    const history = (await list('handled')).items;
+    const save = (answers: Record<string, string>, offset: number) => call(app, 'PUT', `/api/v1/submissions/${id}/answers`,
+      { as: f.a.userId, body: { ...body, answers, clientUpdatedAt: new Date(Date.parse(body.clientUpdatedAt) + offset).toISOString() } });
+    // Non-text answers do not change the evidence, even after handling.
+    expect((await save({ note: 'Knee pain' }, 1000)).status).toBe(200);
+    expect((await list()).items).toHaveLength(0);
+    expect((await save({ note: 'The knee pain is much worse' }, 2000)).status).toBe(200);
+    const next = (await list()).items;
+    expect(next).toEqual([expect.objectContaining({ source: 'checkin', sourceId: id, category: 'pain_injury', status: 'open' })]);
+    expect(next[0]!.id).not.toBe(flag.id);
+    expect((await list('handled')).items).toEqual(history);
     expect((await call(app, 'POST', `/api/v1/submissions/${id}/submit`, { as: f.a.userId })).status).toBe(200);
     expect((await list()).items).toHaveLength(1);
   });

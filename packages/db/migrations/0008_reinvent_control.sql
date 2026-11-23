@@ -409,6 +409,7 @@ create table public.red_flags (
   source_id uuid not null,
   category text not null,
   matched text not null,
+  evidence_hash text not null,
   status text not null default 'open',
   handled_by uuid,
   handled_at timestamptz,
@@ -417,10 +418,11 @@ create table public.red_flags (
   constraint red_flags_source_ck check (source in ('message','checkin','meal_note')),
   constraint red_flags_category_ck check (category in ('pain_injury','eating_disorder','pregnancy','medication','other')),
   constraint red_flags_matched_ck check (length(matched) between 1 and 200),
+  constraint red_flags_evidence_hash_ck check (evidence_hash ~ '^[0-9a-f]{64}$'),
   constraint red_flags_status_ck check (status in ('open','handled'))
 );
 --> statement-breakpoint
-create unique index red_flags_source_category_uq on public.red_flags (tenant_id, source, source_id, category);
+create unique index red_flags_source_category_uq on public.red_flags (tenant_id, source, source_id, category, evidence_hash);
 --> statement-breakpoint
 create index red_flags_status_created_idx on public.red_flags (tenant_id, status, created_at desc);
 --> statement-breakpoint
@@ -443,7 +445,7 @@ create policy red_flags_staff_update on public.red_flags for update to dawlyy_rl
     and ((select app.sees_all_clients()) or client_id in (select app.assigned_client_ids())));
 --> statement-breakpoint
 create trigger red_flags_50_guard before insert or update or delete on public.red_flags
-  for each row execute function app.guard_row('{"immutable":["id","tenant_id","client_id","source","source_id","category","matched","created_at","handled_by","handled_at"],"transitions":{"column":"status","insert":["open"],"edges":[["open","handled"]]},"on_transition":{"column":"status","stamps":{"handled":{"handled_by":"uid","handled_at":"now"}}}}');
+  for each row execute function app.guard_row('{"immutable":["id","tenant_id","client_id","source","source_id","category","matched","evidence_hash","created_at","handled_by","handled_at"],"transitions":{"column":"status","insert":["open"],"edges":[["open","handled"]]},"on_transition":{"column":"status","stamps":{"handled":{"handled_by":"uid","handled_at":"now"}}}}');
 --> statement-breakpoint
 create function app.raise_red_flag(p_source text, p_source_id uuid, p_category text, p_matched text) returns uuid
 language plpgsql security definer
@@ -453,6 +455,8 @@ declare
   tid uuid := app.tenant_id();
   cid uuid;
   sender uuid;
+  evidence_text text;
+  source_hash text;
   flag_id uuid;
 begin
   if p_source is null or p_source not in ('message', 'checkin', 'meal_note')
@@ -463,25 +467,38 @@ begin
     raise exception 'source is not accessible' using errcode = '42501', detail = 'rule:app.raise_red_flag';
   end if;
   if p_source = 'message' then
-    select c.client_id, m.sender_user_id into cid, sender from public.messages m
+    select c.client_id, m.sender_user_id, m.body into cid, sender, evidence_text from public.messages m
       join public.conversations c on c.tenant_id = m.tenant_id and c.id = m.conversation_id and c.client_id = m.client_id
-      where m.tenant_id = tid and m.id = p_source_id and c.kind = 'client';
+      where m.tenant_id = tid and m.id = p_source_id and c.kind = 'client' for share of m;
   elsif p_source = 'checkin' then
-    select s.client_id into cid from public.form_submissions s where s.tenant_id = tid and s.id = p_source_id;
+    -- Match flagAnswers: only string answers to text questions, in document order.
+    select s.client_id, (
+      select pg_catalog.string_agg(s.answers ->> (q.value ->> 'id'), E'\n' order by section.ordinality, q.ordinality)
+      from pg_catalog.jsonb_array_elements(v.document -> 'sections') with ordinality as section(value, ordinality)
+      cross join lateral pg_catalog.jsonb_array_elements(section.value -> 'questions') with ordinality as q(value, ordinality)
+      where q.value ->> 'type' in ('text', 'long_text')
+        and pg_catalog.jsonb_typeof(s.answers -> (q.value ->> 'id')) = 'string'
+    ) into cid, evidence_text
+      from public.form_submissions s
+      join public.form_versions v on v.tenant_id = s.tenant_id and v.id = s.form_version_id
+      where s.tenant_id = tid and s.id = p_source_id for share of s;
   else
-    select m.client_id into cid from public.meal_logs m where m.tenant_id = tid and m.id = p_source_id;
+    select m.client_id, m.note into cid, evidence_text from public.meal_logs m
+      where m.tenant_id = tid and m.id = p_source_id for share of m;
   end if;
   if cid is null or not coalesce(
     (app.is_client() and cid = app.client_id() and (p_source <> 'message' or sender = app.uid()))
     or (app.is_staff() and app.can_access_client(cid)), false) then
     raise exception 'source is not accessible' using errcode = '42501', detail = 'rule:app.raise_red_flag';
   end if;
-  insert into public.red_flags (id, tenant_id, client_id, source, source_id, category, matched)
-    values (pg_catalog.gen_random_uuid(), tid, cid, p_source, p_source_id, p_category, p_matched)
-    on conflict (tenant_id, source, source_id, category) do nothing returning id into flag_id;
+  -- Hash the persisted evidence, never caller-supplied matched text. Keep handled occurrences intact.
+  source_hash := pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(coalesce(evidence_text, ''), 'UTF8')), 'hex');
+  insert into public.red_flags (id, tenant_id, client_id, source, source_id, category, matched, evidence_hash)
+    values (pg_catalog.gen_random_uuid(), tid, cid, p_source, p_source_id, p_category, p_matched, source_hash)
+    on conflict (tenant_id, source, source_id, category, evidence_hash) do nothing returning id into flag_id;
   if flag_id is null then
     select r.id into flag_id from public.red_flags r where r.tenant_id = tid and r.source = p_source
-      and r.source_id = p_source_id and r.category = p_category;
+      and r.source_id = p_source_id and r.category = p_category and r.evidence_hash = source_hash;
   end if;
   return flag_id;
 end $$;

@@ -54,13 +54,14 @@ export const redFlags = pgTable(
     sourceId: uuid('source_id').notNull(),
     category: text('category').notNull(),
     matched: text('matched').notNull(),
+    evidenceHash: text('evidence_hash').notNull(),
     status: text('status').notNull().default('open'),
     handledBy: uuid('handled_by'),
     handledAt: timestamp('handled_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
-    uniqueIndex('red_flags_source_category_uq').on(t.tenantId, t.source, t.sourceId, t.category),
+    uniqueIndex('red_flags_source_category_uq').on(t.tenantId, t.source, t.sourceId, t.category, t.evidenceHash),
     index('red_flags_status_created_idx').on(t.tenantId, t.status, t.createdAt.desc()),
     index('red_flags_client_idx').on(t.tenantId, t.clientId),
     foreignKey({
@@ -71,6 +72,7 @@ export const redFlags = pgTable(
     check('red_flags_source_ck', sql`${t.source} in ('message','checkin','meal_note')`),
     check('red_flags_category_ck', sql`${t.category} in ('pain_injury','eating_disorder','pregnancy','medication','other')`),
     check('red_flags_matched_ck', sql`length(${t.matched}) between 1 and 200`),
+    check('red_flags_evidence_hash_ck', sql`${t.evidenceHash} ~ '^[0-9a-f]{64}$'`),
     check('red_flags_status_ck', sql`${t.status} in ('open','handled')`),
     ...tenantGuard('red_flags', T(t.tenantId)),
     ...allow('red_flags_staff', ['select', 'update'], sql`${T(t.tenantId)} and ${STAFF} and ${ACCESS(t.clientId)}`),
