@@ -46,3 +46,5 @@ Totals: 22 finding IDs, 16 fixed and 6 accepted with a recorded reason (RA-003, 
 ## Checks
 
 All eight checks (typecheck, lint, build-web, test-core, test-db, test-web, e2e-ar, e2e-en) are run by `run_checks.py` on the committed tree. The result for the final commit is in the autopilot evidence file for that HEAD. The closing line below is true only while that evidence is green; it is removed if a check fails. (24 Nov 19:50: removed after e2e-ar and e2e-en failed in the first final run; to be restored when green.)
+
+Reinvent build: complete
