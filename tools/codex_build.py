@@ -39,9 +39,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("brief", type=Path, help="markdown brief for this batch")
     ap.add_argument("--timeout", type=int, default=5400, help="seconds before the Codex process is killed")
-    ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max", "ultra"],
+    ap.add_argument("--effort", default="medium", choices=["low", "medium", "high", "xhigh", "max", "ultra"],
                     help="model_reasoning_effort (max and ultra exist on gpt-6.1-sol and gpt-6-astra)")
-    ap.add_argument("--model", default="gpt-6.1-sol", help="Codex model slug (models_cache.json); default the newest workhorse")
+    ap.add_argument("--model", default="gpt-6.2-astra", help="Codex model slug (models_cache.json); default gpt-6.2-astra since 24 Nov 2026")
     ap.add_argument("--fast", action="store_true", help="service_tier priority: about 2x speed, uses the ChatGPT plan limit faster")
     ap.add_argument("--multi-agent", action="store_true",
                     help="enable multi_agent_v2 so Codex can spawn its own sub-agents (spawn_agent, wait_agent)")
