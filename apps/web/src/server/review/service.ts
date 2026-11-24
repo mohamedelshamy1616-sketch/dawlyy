@@ -11,7 +11,7 @@ import { getAiProvider } from '../ai';
 import { notifyMessage, openConversation, sendMessage } from '../messaging/service';
 import { postgresCode } from '../postgres-code';
 import { requirePermission } from '../require-permission';
-import { hashReviewInputs } from './hash';
+import { hashReviewInputs, hashReviewText } from './hash';
 import { assertReviewEvidenceAllowed, getReviewClient, loadReviewInputs, requireReviewAccess } from './inputs';
 import { getReviewPreferences } from './preferences';
 import { buildReviewSchema, editReviewSchema } from './schemas';
@@ -20,7 +20,7 @@ import type { ReviewContext, ReviewDraftBody, ReviewDraftDto } from './types';
 type DraftRow = typeof aiDrafts.$inferSelect;
 const bodySchema = z.object({
   review: z.custom<WeekReview>(value => !!value && typeof value === 'object' && 'summary' in value && 'draft' in value && 'proposals' in value && 'mustHandleFlags' in value),
-  text: z.string().trim().min(1).max(4000),
+  text: z.string().max(4000).refine(text => text.trim().length > 0),
   context: z.object({ period: WeekReviewInput.shape.period, locale: z.enum(['ar', 'en']), coach: WeekReviewInput.shape.coach }).strict(),
   sourceRevision: z.string(), sourcePermissions: z.array(z.object({ module: z.enum(MODULES), action: z.enum(ACTIONS) }).strict()),
   evidenceUnavailable: z.array(z.string()),
@@ -40,8 +40,14 @@ function dto(auth: AuthContext, row: DraftRow): ReviewDraftDto {
   const provider = z.enum(['none', 'anthropic', 'openrouter']).safeParse(row.provider);
   if (!status.success || !provider.success) throw new ApiError(500, 'review_integrity_error', 'The stored review cannot be read');
   return { id: row.id, clientId: row.clientId, status: status.data, provider: provider.data, inputVersion: row.inputVersion,
-    createdAt: row.createdAt.toISOString(), review: body.review, text: body.text, evidenceUnavailable: body.evidenceUnavailable,
+    createdAt: row.createdAt.toISOString(), review: body.review, text: body.text, textHash: hashReviewText(body.text), evidenceUnavailable: body.evidenceUnavailable,
     proposalDraft: body.proposalDraft };
+}
+
+function checkReviewedText(auth: AuthContext, row: DraftRow, text: string, expectedTextHash: string) {
+  if (hashReviewText(text) !== expectedTextHash) {
+    throw new ApiError(409, 'draft_changed', 'The draft changed. Review it again.', { draft: dto(auth, row) });
+  }
 }
 
 /** R4b: scoped row lock, shared by text edits, approval and proposal writes. Source rows remain independently mutable. */
@@ -90,6 +96,7 @@ export async function buildReview(tx: Tx, auth: AuthContext, clientId: string, r
 export async function editReview(tx: Tx, auth: AuthContext, clientId: string, draftId: string, request: z.infer<typeof editReviewSchema>): Promise<ReviewDraftDto> {
   const parsed = editReviewSchema.parse(request); const { row, body } = await lockReviewDraft(tx, auth, clientId, draftId);
   if (row.status !== 'draft') throw new ApiError(409, 'draft_not_editable', 'Only a draft review can be edited');
+  if (parsed.expectedTextHash !== undefined) checkReviewedText(auth, row, body.text, parsed.expectedTextHash);
   const [updated] = await tx.update(aiDrafts).set({ body: { ...body, text: parsed.text } }).where(and(eq(aiDrafts.tenantId, auth.tenantId), eq(aiDrafts.id, draftId), eq(aiDrafts.status, 'draft'))).returning();
   if (!updated) throw new ApiError(409, 'draft_not_editable', 'The review changed');
   return dto(auth, updated);
@@ -139,9 +146,10 @@ async function approvedReplay(tx: Tx, auth: AuthContext, row: DraftRow): Promise
   return { kind: 'approved', draftId: row.id, conversation, message, created: false };
 }
 /** R4b: independently hashed approval plus existing-message creation is one authenticated transaction. */
-export async function approveReview(tx: Tx, auth: AuthContext, clientId: string, draftId: string): Promise<ReviewApprovalResult> {
+export async function approveReview(tx: Tx, auth: AuthContext, clientId: string, draftId: string, expectedTextHash: string): Promise<ReviewApprovalResult> {
   requireReviewAccess(auth); requirePermission(auth, 'messages', 'create');
   const { row, body } = await lockReviewDraft(tx, auth, clientId, draftId);
+  checkReviewedText(auth, row, body.text, expectedTextHash);
   if (row.status === 'approved') return approvedReplay(tx, auth, row);
   if (row.status !== 'draft') throw new ApiError(409, row.status === 'stale' ? 'review_stale' : 'draft_not_editable', 'Rebuild this review');
   await assertNoOpenReviewFlags(tx, auth, clientId);

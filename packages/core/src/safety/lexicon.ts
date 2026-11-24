@@ -3,12 +3,14 @@ export type RedFlagCategory = 'pain_injury' | 'eating_disorder' | 'pregnancy' | 
 /** Literal search forms only. Body parts alone are deliberately absent. */
 export const RED_FLAG_LEXICON: Record<RedFlagCategory, readonly string[]> = {
   pain_injury: [
+    'الام', 'اصابات', 'مصابه', 'مولم', 'مولمه', 'متورم', 'متورمه',
     'الم', 'وجع', 'اوجاع', 'بتوجعني', 'بيوجعني', 'توجعني', 'واجعني', 'يعورني',
     'اصابه', 'مصاب', 'التواء', 'تمزق', 'شد عضلي', 'تورم', 'وارمه', 'تنميل', 'خدر',
     'غضروف', 'انزلاق', 'مش قادر اتحرك', 'ركبه بتوجعني', 'ركبت بتوجعني',
     'ضهر واجعني', 'ظهر يعورني', 'بطن بتوجعني', 'تالمت',
     'wag3', 'waga3', 'wag3any', 'betwga3ny', 'bywga3ny', 'ragly betwga3ny',
     'pain', 'ache', 'aches', 'hurts', 'hurt', 'injury', 'injured', 'sprain', 'sprained',
+    'painful', 'pains', 'aching', 'hurting', 'injuries', 'sprains', 'swollen',
     'torn', 'swelling', 'numbness', 'numb', 'can t move', 'cannot move', 'muscle pain',
     'ouch',
   ],
@@ -20,6 +22,7 @@ export const RED_FLAG_LEXICON: Record<RedFlagCategory, readonly string[]> = {
     'نهم بالاكل', 'نوبات نهم', 'شره مرضي', 'بوليميا', 'انوركسيا',
     'baraga3 ba3d el akl', 'bagra3 ba3d el akl', 'msh bakol khales', 'bagawa3 nafsy',
     'binge', 'binge eating', 'purge', 'purging', 'vomiting after eating',
+    'binged on food', 'binging on food', 'purged after eating', 'vomit after eating',
     'making myself throw up', 'make myself throw up', 'laxatives for weight',
     'laxatives', 'not eating for days', 'not eaten for days', 'starving myself',
     'i hate my body', 'fear of eating', 'afraid to eat', 'bulimia', 'anorexia',
@@ -31,6 +34,7 @@ export const RED_FLAG_LEXICON: Record<RedFlagCategory, readonly string[]> = {
     '7amel', '7amil', '7aml', 'hamel', 'bardaa', 'barda3', 'rada3a',
     'pregnant', 'pregnancy', 'expecting a baby', 'expecting', 'missed period',
     'missed my period', 'late period', 'breastfeeding', 'breast feeding',
+    'pregnancies', 'breastfeed', 'breastfed',
     'nursing a baby', 'postpartum', 'lactating',
   ],
   medication: [
@@ -40,6 +44,7 @@ export const RED_FLAG_LEXICON: Record<RedFlagCategory, readonly string[]> = {
     'مضاد اكتياب', 'حبوب السكر', 'bakhod dawa', 'ba5od dawa',
     'dawa', 'insulin', 'cortisone', 'medication', 'medications', 'medicine',
     'pills', 'steroids', 'thyroid medicine', 'antidepressants', 'antidepressant',
+    'medicines', 'steroid', 'prescribed pills',
     'blood pressure medicine', 'blood pressure medication', 'metformin',
     'levothyroxine',
   ],

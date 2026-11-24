@@ -27,6 +27,7 @@
     "red_flags_open": "This client has open safety flags. Handle them and rebuild the review first.",
     "nutrition_draft_exists": "A nutrition draft already exists. Finish or publish it first.",
     "proposal_version_mismatch": "The published nutrition plan changed. Rebuild the review.",
+    "draft_changed": "The draft changed. Read the updated reply before approving it.",
     "draft_not_editable": "This review can no longer be changed. Rebuild it."
   },
   "summary": {

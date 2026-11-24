@@ -3,7 +3,7 @@ import { getTableName, type SQL } from 'drizzle-orm';
 import { PgDialect } from 'drizzle-orm/pg-core';
 import { WeekReviewInput } from '@dawlyy/core/review';
 import type { AuthContext, Tx } from '../db';
-import { approveReview, buildReview, editReview, finalizeReviewApproval, getLatestReview } from './service';
+import { approveReview as approveStoredReview, buildReview, editReview, finalizeReviewApproval, getLatestReview } from './service';
 import { applyReviewProposal } from './proposals';
 import type { ReviewDraftBody } from './types';
 
@@ -75,8 +75,17 @@ async function transaction<T>(fn: () => Promise<T>): Promise<T> {
   const before = structuredClone(row); const priorMessage = structuredClone(message);
   try { return await fn(); } catch (error) { row = before; message = priorMessage; throw error; } finally { release(); }
 }
-async function build() { return transaction(() => buildReview(tx, auth, ids.client, { locale: 'en', period: liveInput.period })); }
+let reviewedHash: string;
+async function build() {
+  const draft = await transaction(() => buildReview(tx, auth, ids.client, { locale: 'en', period: liveInput.period }));
+  reviewedHash = draft.textHash;
+  return draft;
+}
+function approveReview(transactionTx: Tx, actor: AuthContext, clientId: string, draftId: string) {
+  return approveStoredReview(transactionTx, actor, clientId, draftId, reviewedHash);
+}
 beforeEach(() => {
+  reviewedHash = '0'.repeat(64);
   vi.clearAllMocks(); row = undefined; liveInput = input(); source = 'A'; calls = []; flags = []; message = undefined;
   sourceVersion = ids.version; working = false; lockTail = Promise.resolve();
   fake.client.mockResolvedValue({ id: ids.client, firstName: 'Mona', goal: 'lose', timezone: 'Africa/Cairo', today: '2026-11-07' });
@@ -98,7 +107,8 @@ describe('R4b approval transaction', () => {
     expect(fake.send).not.toHaveBeenCalled(); expect(fake.notify).not.toHaveBeenCalled(); expect(fake.put).not.toHaveBeenCalled();
   });
   it('sends edited prose once with stable draft id and notifies after commit', async () => {
-    const draft = await build(); await editReview(tx, auth, ids.client, draft.id, { text: 'Coach edited text' });
+    const draft = await build();
+    reviewedHash = (await editReview(tx, auth, ids.client, draft.id, { text: 'Coach edited text' })).textHash;
     const result = await transaction(() => approveReview(tx, auth, ids.client, draft.id));
     expect(fake.notify).not.toHaveBeenCalled(); expect(row?.status).toBe('approved');
     expect(await finalizeReviewApproval(auth, result)).toMatchObject({ messageId: ids.message, notified: true });

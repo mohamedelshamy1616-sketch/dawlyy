@@ -26,7 +26,8 @@ const owner: AuthContext = { userId: id, tenantId: id, membershipId: id, role: '
 const tx = {} as Tx;
 const base = `/api/v1/clients/${clientId}/review`;
 const dto = { id: draftId, clientId, status: 'draft', provider: 'none', inputVersion: 'review-v1:2026-11-01:2026-11-07', createdAt: '2026-11-07T00:00:00.000Z',
-  review: { summary: {}, mustHandleFlags: false, draft: { locale: 'en', dialect: 'egyptian', text: 'Hi' }, proposals: [] }, text: 'Hi', evidenceUnavailable: [], proposalDraft: null };
+  review: { summary: {}, mustHandleFlags: false, draft: { locale: 'en', dialect: 'egyptian', text: 'Hi' }, proposals: [] }, text: 'Hi', textHash: 'a'.repeat(64), evidenceUnavailable: [], proposalDraft: null };
+const approval = { expectedTextHash: dto.textHash };
 
 function application() {
   const app = new OpenAPIHono<ApiEnv>();
@@ -51,7 +52,7 @@ beforeEach(() => {
 
 describe('R4b review router with mocked authentication and service boundary', () => {
   const requests: [string, string, unknown?][] = [
-    ['GET', base], ['POST', base, { locale: 'en' }], ['PATCH', `${base}/${draftId}`, { text: 'x' }], ['POST', `${base}/${draftId}/approve`, {}],
+    ['GET', base], ['POST', base, { locale: 'en' }], ['PATCH', `${base}/${draftId}`, { text: 'x' }], ['POST', `${base}/${draftId}/approve`, approval],
     ['POST', `${base}/${draftId}/proposal`, { proposalCode: 'lower_kcal_flat' }], ['GET', '/api/v1/settings/review-preferences'],
     ['PUT', '/api/v1/settings/review-preferences', { dialect: 'gulf', signaturePhrases: [] }],
   ];
@@ -92,6 +93,8 @@ describe('R4b review router with mocked authentication and service boundary', ()
     ['oversized text', 'PATCH', `${base}/${draftId}`, { text: 'x'.repeat(4001) }],
     ['edit of the input hash', 'PATCH', `${base}/${draftId}`, { text: 'ok', inputHash: 'x' }],
     ['edit of the provider', 'PATCH', `${base}/${draftId}`, { text: 'ok', provider: 'none' }],
+    ['missing reviewed digest', 'POST', `${base}/${draftId}/approve`, {}],
+    ['malformed reviewed digest', 'POST', `${base}/${draftId}/approve`, { expectedTextHash: 'abc' }],
     ['forged hash on approve', 'POST', `${base}/${draftId}/approve`, { hash: 'A' }],
     ['client supplied proposal target', 'POST', `${base}/${draftId}/proposal`, { proposalCode: 'lower_kcal_flat', deltaKcal: -900 }],
     ['unknown proposal code', 'POST', `${base}/${draftId}/proposal`, { proposalCode: 'other' }],
@@ -114,21 +117,22 @@ describe('R4b approval status mapping', () => {
   it('returns the exact success shape and notifies only after the transaction committed', async () => {
     mock.approve.mockResolvedValue(approved);
     mock.notify.mockImplementation(async () => { expect(mock.commits).toEqual(['commit']); return 1; });
-    const response = await application().request(`${base}/${draftId}/approve`, json('POST', {}));
+    const response = await application().request(`${base}/${draftId}/approve`, json('POST', approval));
+    expect(mock.approve).toHaveBeenCalledWith(tx, owner, clientId, draftId, dto.textHash);
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ draftId, status: 'approved', conversationId: approved.conversation.id, messageId: approved.message.id, notified: true });
     expect(mock.notify).toHaveBeenCalledTimes(1);
   });
   it('keeps the sent message when notification fails and never notifies a replay', async () => {
     mock.approve.mockResolvedValue(approved); mock.notify.mockRejectedValueOnce(new Error('push down'));
-    expect(await (await application().request(`${base}/${draftId}/approve`, json('POST', {}))).json()).toMatchObject({ status: 'approved', notified: false });
+    expect(await (await application().request(`${base}/${draftId}/approve`, json('POST', approval))).json()).toMatchObject({ status: 'approved', notified: false });
     mock.approve.mockResolvedValue({ ...approved, created: false }); mock.notify.mockClear();
-    expect(await (await application().request(`${base}/${draftId}/approve`, json('POST', {}))).json()).toMatchObject({ notified: false });
+    expect(await (await application().request(`${base}/${draftId}/approve`, json('POST', approval))).json()).toMatchObject({ notified: false });
     expect(mock.notify).not.toHaveBeenCalled();
   });
   it('commits the stale mark first, then answers 409 review_stale with no notification', async () => {
     mock.approve.mockResolvedValue({ kind: 'stale', draftId });
-    const response = await application().request(`${base}/${draftId}/approve`, json('POST', {}));
+    const response = await application().request(`${base}/${draftId}/approve`, json('POST', approval));
     expect(response.status).toBe(409); expect(await response.json()).toMatchObject({ error: { code: 'review_stale' } });
     // The transaction callback returned normally, so withAuthTx committed instead of rolling back.
     expect(mock.commits).toEqual(['commit']); expect(mock.notify).not.toHaveBeenCalled();
@@ -142,7 +146,7 @@ describe('R4b approval status mapping', () => {
     ['a missing draft', new ApiError(404, 'not_found', 'x'), 404, 'not_found'],
   ])('maps %s', async (_name, failure, status, code) => {
     mock.approve.mockRejectedValue(failure);
-    const response = await application().request(`${base}/${draftId}/approve`, json('POST', {}));
+    const response = await application().request(`${base}/${draftId}/approve`, json('POST', approval));
     expect(response.status).toBe(status); expect(await response.json()).toMatchObject({ error: { code } });
     expect(mock.notify).not.toHaveBeenCalled();
   });

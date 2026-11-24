@@ -14,8 +14,9 @@ export type ReviewDraftBody = {
   review: WeekReview; text: string; context: ReviewContext; sourceRevision: string;
   sourcePermissions: SourcePermission[]; evidenceUnavailable: string[]; proposalDraft: ReviewProposalDraft | null;
 };
-/** R4b: staff DTO excludes hash, revision and protected context. */
+/** The text digest binds approval to the displayed prose. Source metadata stays server-side. */
 export type ReviewDraftDto = {
+  textHash: string;
   id: string; clientId: string; status: 'draft' | 'approved' | 'rejected' | 'stale';
   provider: 'none' | 'anthropic' | 'openrouter'; inputVersion: string; createdAt: string;
   review: WeekReview; text: string; evidenceUnavailable: string[]; proposalDraft: ReviewProposalDraft | null;

@@ -17,7 +17,7 @@ function catalog(locale: Locale, namespace: string) {
   const messages = JSON.parse(readFileSync(join(process.cwd(), 'messages', locale, `${namespace}.json`), 'utf8'));
   return createTranslator({ locale, messages, onError: error => { throw error; } });
 }
-type Draft = { id: string; status: string; text: string };
+type Draft = { id: string; status: string; text: string; textHash: string };
 type Flag = { id: string; category: string };
 
 for (const locale of ['ar', 'en'] as const) {
@@ -106,8 +106,9 @@ for (const locale of ['ar', 'en'] as const) {
         expect(bodies.filter(body => body === finalText.trim())).toHaveLength(1);
 
         // A repeated click is the same message, not a second one.
-        const again = await coach.request.fetch(`/api/v1${base()}/${(await api<{ draft: Draft }>(coach, 'GET', base())).draft.id}/approve`,
-          { method: 'POST', data: {}, headers: { 'Idempotency-Key': randomUUID() } });
+        const approved = (await api<{ draft: Draft }>(coach, 'GET', base())).draft;
+        const again = await coach.request.fetch(`/api/v1${base()}/${approved.id}/approve`,
+          { method: 'POST', data: { expectedTextHash: approved.textHash }, headers: { 'Idempotency-Key': randomUUID() } });
         expect(again.status()).toBe(200); expect((await again.json() as { messageId: string }).messageId).toBe(result.messageId); await again.dispose();
         expect((await clientBodies()).filter(body => body === finalText.trim())).toHaveLength(1);
 
@@ -157,16 +158,28 @@ for (const locale of ['ar', 'en'] as const) {
       });
       try {
         const a = `${marker} first edit`, b = `${marker} second edit`;
-        for (const [index, text] of [a, b, a].entries()) {
-          await reply(coach).fill(text);
-          await button(coach, r('reply.save')).click();
-          if (index === 0) await expect(coach.getByRole('alert').filter({ hasText: r('errors.request') })).toBeVisible();
-          else await expect(coach.getByText(r('reply.saved'), { exact: true })).toBeVisible();
+        const save = async (text: string) => { await reply(coach).fill(text); await button(coach, r('reply.save')).click(); };
+        const saved = async (text: string) => {
+          await expect(coach.getByText(r('reply.saved'), { exact: true })).toBeVisible();
           expect((await readDraft()).text).toBe(text);
-        }
-        expect(keys).toHaveLength(3);
+        };
+        // 1. A commits on the server but its response is lost: the client cannot know and keeps A's key.
+        await save(a);
+        await expect(coach.getByRole('alert').filter({ hasText: r('errors.request') })).toBeVisible();
+        expect((await readDraft()).text).toBe(a);
+        // 2. B carries the draft hash the client last saw. The server holds A, so it refuses B (P9 RC-001: a save
+        // never overwrites prose the writer has not seen) and the editor adopts the stored draft A.
+        await save(b);
+        await expect(coach.getByRole('alert').filter({ hasText: r('errors.draft_changed') })).toBeVisible();
+        await expect(reply(coach)).toHaveValue(a);
+        expect((await readDraft()).text).toBe(a);
+        // 3. With the current hash B saves, then A saves again. A must not reuse step 1's key (P9 RC-002), or the
+        // server would replay the old response and the stored draft would stay B.
+        await save(b); await saved(b);
+        await save(a); await saved(a);
+        expect(keys).toHaveLength(4);
         expect(keys.every(Boolean)).toBe(true);
-        expect(new Set(keys).size).toBe(3);
+        expect(new Set(keys).size).toBe(4);
       } finally { await coach.unroute(match); }
     });
 
@@ -186,7 +199,7 @@ for (const locale of ['ar', 'en'] as const) {
       await expect(button(coach, r('reply.approve'))).toBeDisabled();
       await expect(coach.getByRole('main').getByText(r('flags.category.pain_injury'))).toBeVisible();
       const draft = (await api<{ draft: Draft }>(coach, 'GET', base())).draft;
-      const forced = await coach.request.fetch(`/api/v1${base()}/${draft.id}/approve`, { method: 'POST', data: {}, headers: { 'Idempotency-Key': randomUUID() } });
+      const forced = await coach.request.fetch(`/api/v1${base()}/${draft.id}/approve`, { method: 'POST', data: { expectedTextHash: draft.textHash }, headers: { 'Idempotency-Key': randomUUID() } });
       expect(forced.status()).toBe(409); expect(await forced.json()).toMatchObject({ error: { code: 'red_flags_open' } }); await forced.dispose();
       expect((await clientBodies()).length).toBe(sentBefore + 1); // only the client's own pain message
 

@@ -105,6 +105,15 @@ describe('attention thresholds', () => {
   it('returns no rows for empty input', () => {
     expect(rankAttention([], { today })).toEqual([]);
   });
+  it('keeps both Inbox rows when one client supplies 200000 samples', () => {
+    const weights14 = Array.from({ length: 200000 }, (_, i) => ({
+      on: i % 2 === 0 ? today : '2026-11-03', kg: 80,
+    }));
+    const ranked = rankAttention([client({ goal: 'lose', weights14 }), client({ clientId: id(2), paymentPending: true })], { today });
+    expect(ranked).toHaveLength(2);
+    expect(ranked.find(item => item.clientId === id(1))?.reasons).toEqual([reason('weight_flat', { days: 10 })]);
+    expect(ranked.find(item => item.clientId === id(2))?.reasons).toEqual([reason('payment_pending')]);
+  });
 });
 
 describe('attention scoring and determinism', () => {

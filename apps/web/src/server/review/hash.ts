@@ -15,6 +15,9 @@ function canonical(value: unknown): unknown {
 export function canonicalSourceRevision(sources: readonly ReviewSourceMarker[], projection: unknown): string {
   return JSON.stringify(canonical({ projection, sources: [...sources].sort((a, b) => a.table.localeCompare(b.table, 'en') || a.id.localeCompare(b.id, 'en')) }));
 }
+export function hashReviewText(text: string): string {
+  return createHash('sha256').update(text, 'utf8').digest('hex');
+}
 /** R4b: exact server SHA-256 binding, independent of browser metadata. */
 export function hashReviewInputs(input: WeekReviewInput, sourceRevision: string, locale: 'ar' | 'en'): string {
   return createHash('sha256').update(JSON.stringify({ locale, canonical: canonicalReviewInput(input), sourceRevision })).digest('hex');

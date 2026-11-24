@@ -69,9 +69,13 @@ export async function readInboxInputs(tx: Tx, auth: AuthContext) {
     ` : sql`select null::uuid as client_id, null::int as meal_days where false`}), weights as (${canTracking ? sql`
       select m.client_id, jsonb_agg(jsonb_build_object('on', m.local_date::text, 'kg',
         case when m.unit = 'lb' then m.value * 0.45359237 else m.value end) order by m.local_date, m.id) as weights
-      from public.metric_entries m join scoped c on c.id = m.client_id
-      where m.tenant_id = ${T} and m.metric = 'weight' and m.voided_at is null and m.unit in ('kg', 'lb')
-        and m.local_date between ${D} - 13 and ${D} group by m.client_id
+      from (
+        select distinct on (e.client_id, e.local_date) e.client_id, e.local_date, e.id, e.unit, e.value
+        from public.metric_entries e join scoped c on c.id = e.client_id
+        where e.tenant_id = ${T} and e.metric = 'weight' and e.voided_at is null and e.unit in ('kg', 'lb')
+          and e.local_date between ${D} - 13 and ${D}
+        order by e.client_id, e.local_date, e.recorded_at desc, e.id desc
+      ) m group by m.client_id
     ` : sql`select null::uuid as client_id, null::jsonb as weights where false`}), nutrition as (${canNutrition ? sql`
       select distinct p.client_id from public.nutrition_plans p join scoped c on c.id = p.client_id
       join public.nutrition_plan_versions v on v.tenant_id = p.tenant_id and v.id = p.published_version_id and v.status = 'published'

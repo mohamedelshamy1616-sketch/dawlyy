@@ -54,7 +54,13 @@ function weightReasons(client: AttentionInput, add: (code: ReasonCode, params: A
   const first = samples[0]!;
   const span = daysBetween(first.on, samples[samples.length - 1]!.on);
   const values = samples.map(sample => sample.kg);
-  if (span >= 10 && Math.max(...values) - Math.min(...values) <= 0.5) {
+  let minimum = first.kg;
+  let maximum = first.kg;
+  for (const kg of values) {
+    minimum = Math.min(minimum, kg);
+    maximum = Math.max(maximum, kg);
+  }
+  if (span >= 10 && maximum - minimum <= 0.5) {
     add('weight_flat', { days: span });
   }
   if (span < 7) return;

@@ -64,6 +64,7 @@ export async function getReviewClient(tx: Tx, auth: AuthContext, clientId: strin
   return { ...row, goal: attentionGoal(row.goal) };
 }
 function shift(on: string, days: number): string { return new Date(Date.parse(`${on}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 10); }
+function weightWindowStart(to: string): string { return shift(to, -21); }
 function span(context: ReviewContext): number { return Math.round((Date.parse(context.period.to) - Date.parse(context.period.from)) / 86400000) + 1; }
 function inPeriod(on: string, from: string, to: string): boolean { return on >= from && on <= to; }
 function planned(document: ProgramDocument | undefined, assignedOn: string | null, from: string, to: string): number {
@@ -166,6 +167,12 @@ export function projectReviewInputs(client: ReviewClient, context: ReviewContext
   const previous = current ? checkins.find(row => row.id !== current.id && Date.parse(row.submittedAt) <= Date.parse(current.submittedAt)) : checkins[0];
   const weights = rows.weights.filter(row => !row.voidedAt && (row.unit === 'kg' || row.unit === 'lb'))
     .map(row => ({ on: row.localDate, kg: Number(row.value) * (row.unit === 'lb' ? 0.45359237 : 1) }));
+  // The query orders readings by recording time and ID within each local date.
+  const dailyWeights = new Map<string, typeof weights[number]>();
+  const weightFrom = weightWindowStart(to);
+  for (const sample of weights) {
+    if (inPeriod(sample.on, weightFrom, to)) dailyWeights.set(sample.on, sample);
+  }
   const flags = rows.flags.filter(row => row.status === 'open').map(({ id, category, source }) => ({ id, category, source }));
   const workoutWindows = program ? plannedWorkouts(program.document, program.assignedOn, to) : { planned7: 0, planned14: 0 };
   const messages = rows.messages.filter(row => !row.deletedAt);
@@ -198,6 +205,7 @@ export function projectReviewInputs(client: ReviewClient, context: ReviewContext
     exercises: exerciseInputs(rows, context), meals: { nutritionAssigned: !!nutrition, daysLogged: mealDays, daysInPeriod: length, avgKcal: average, targetKcal: nutrition?.document.targets.kcal ?? null },
     checkin: { current: snapshot(current), previous: snapshot(previous) },
     weights: weights.filter(row => inPeriod(row.on, from, to)).sort((a, b) => a.on.localeCompare(b.on) || a.kg - b.kg).slice(-60),
+    rollingWeights: [...dailyWeights.values()],
     measurements: rows.measurements.filter(row => !row.voidedAt && inPeriod(row.localDate, from, to)).sort((a, b) => a.localDate.localeCompare(b.localDate) || a.id.localeCompare(b.id)).slice(-30)
       .map(row => ({ on: row.localDate, values: Object.fromEntries(row.values.map(value => [value.side ? `${value.type}_${value.side}` : value.type, Number(value.value) * (value.unit === 'in' ? 2.54 : 1)])) })),
     redFlags: flags, attention, nutrition: nutrition ? { versionId: nutrition.id, targets: nutrition.document.targets } : null,
@@ -268,7 +276,8 @@ export async function loadReviewInputs(tx: Tx, auth: AuthContext, clientId: stri
   if (allowed('tracking')) {
     rows.weights = [...await tx.execute<Weight>(sql`
       select id::text as id, local_date::text as "localDate", value::float8 as value, unit, correction_of::text as "correctionOf", voided_at::text as "voidedAt", client_updated_at::text as "updatedAt"
-      from public.metric_entries where tenant_id = ${T} and client_id = ${C} and metric = 'weight' and local_date between ${shift(to, -13)}::date and ${to}::date`)];
+      from public.metric_entries where tenant_id = ${T} and client_id = ${C} and metric = 'weight' and local_date between ${weightWindowStart(to)}::date and ${to}::date
+      order by local_date, recorded_at, id`)];
     rows.measurements = [...await tx.execute<Measurements>(sql`
       select id::text as id, local_date::text as "localDate", values, replaces_id::text as "replacesId", voided_at::text as "voidedAt", client_updated_at::text as "updatedAt"
       from public.measurement_sets where tenant_id = ${T} and client_id = ${C} and local_date between ${from}::date and ${to}::date`)];

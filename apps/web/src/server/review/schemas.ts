@@ -5,10 +5,11 @@ import { WeekReviewInput } from '@dawlyy/core/review';
 export const reviewPeriodSchema = WeekReviewInput.shape.period;
 /** R4b: no browser-supplied evidence, provider or hash. */
 export const buildReviewSchema = z.strictObject({ locale: z.enum(['ar', 'en']), period: reviewPeriodSchema.optional() });
+export const textHashSchema = z.string().regex(/^[0-9a-f]{64}$/);
 /** R4b: edits change only coach-owned prose. */
-export const editReviewSchema = z.strictObject({ text: z.string().trim().min(1).max(4000) });
+export const editReviewSchema = z.strictObject({ text: z.string().trim().min(1).max(4000), expectedTextHash: textHashSchema.optional() });
 /** R4b: current evidence is recomputed server-side. */
-export const approveReviewSchema = z.strictObject({});
+export const approveReviewSchema = z.strictObject({ expectedTextHash: textHashSchema });
 /** R4b: targets and deltas are never browser supplied. */
 export const proposalReviewSchema = z.strictObject({ proposalCode: z.enum(['lower_kcal_flat', 'raise_kcal_flat', 'slow_loss_too_fast']) });
 /** R4b: complete validated personal preferences. */

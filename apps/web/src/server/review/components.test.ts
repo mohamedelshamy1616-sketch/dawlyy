@@ -58,7 +58,7 @@ const input: WeekReviewInput = {
 };
 function draft(locale: 'ar' | 'en' = 'en', changes: Partial<ReviewDraftDto> = {}): ReviewDraftDto {
   const review = weekReview(input, { locale });
-  return { id: '10000000-0000-4000-8000-000000000003', clientId: input.client.id, status: 'draft', provider: 'none', inputVersion: 'review-v1:2026-11-01:2026-11-07', createdAt: '2026-11-07T12:00:00Z', review, text: review.draft.text, evidenceUnavailable: [], proposalDraft: null, ...changes };
+  return { id: '10000000-0000-4000-8000-000000000003', clientId: input.client.id, status: 'draft', provider: 'none', inputVersion: 'review-v1:2026-11-01:2026-11-07', createdAt: '2026-11-07T12:00:00Z', review, text: review.draft.text, textHash: 'a'.repeat(64), evidenceUnavailable: [], proposalDraft: null, ...changes };
 }
 const Provider = NextIntlClientProvider as ComponentType<Omit<ComponentProps<typeof NextIntlClientProvider>, 'children'>>;
 function render(locale: 'ar' | 'en', child: ReactNode) {

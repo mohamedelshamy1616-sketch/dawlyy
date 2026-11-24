@@ -10,6 +10,7 @@ export function canonicalReviewInput(input: WeekReviewInput): string {
   return stableJson({
     ...parsed,
     weights: sortRecords(parsed.weights, value => value.on),
+    rollingWeights: parsed.rollingWeights && sortRecords(parsed.rollingWeights, value => value.on),
     measurements: sortRecords(parsed.measurements, value => value.on),
     exercises: sortRecords(parsed.exercises, value => value.exerciseId),
     redFlags: sortRecords(parsed.redFlags, value => value.id),

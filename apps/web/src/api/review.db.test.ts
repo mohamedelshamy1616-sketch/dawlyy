@@ -1,7 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { and, eq, sql } from 'drizzle-orm';
-import { aiDrafts, clients, foods, measurementSets, memberships, messages, metricEntries,
+import { createHash } from 'node:crypto';
+import { emptyProgram } from '@dawlyy/core/program-edit';
+import { aiDrafts, clients, foods, mealLogs, measurementSets, memberships, messages, metricEntries, programs, programVersions, workoutSessions,
   nutritionPlans, nutritionPlanVersions, redFlags, staffClientAssignments } from '@dawlyy/db/schema';
 import type { StaffPermissions } from '@dawlyy/core/authz';
 import type { NutritionDocument } from '@dawlyy/core/types';
@@ -46,6 +48,9 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     expect(draft).not.toHaveProperty('inputHash'); expect(draft).not.toHaveProperty('context');
     return draft;
   }
+  function approve(draft: ReviewDraftDto, as = f.owner.userId) {
+    return call(app, 'POST', path(draft.clientId, `/${draft.id}/approve`), { as, body: { expectedTextHash: draft.textHash } });
+  }
   async function snapshot(id: string) {
     return setupApiData(f.owner.tenantId, 'independent review state witness', async tx => {
       const [row] = await tx.select().from(aiDrafts).where(and(eq(aiDrafts.tenantId, f.owner.tenantId), eq(aiDrafts.id, id)));
@@ -57,7 +62,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
       body: messages.body, senderUserId: messages.senderUserId, conversationId: messages.conversationId })
       .from(messages).where(and(eq(messages.tenantId, f.owner.tenantId), eq(messages.clientUuid, id))));
   }
-  async function proposalFixture() {
+  async function proposalFixture(weights: ReadonlyArray<readonly [string, number]> = [['2026-11-01', 90], ['2026-11-07', 88], ['2026-11-14', 86]]) {
     const planId = randomUUID(), versionId = randomUUID(), foodId = randomUUID();
     const document: NutritionDocument = { schemaVersion: 1, targets: { kcal: 2000, proteinG: 120, carbsG: 240, fatG: 60 },
       meals: [{ id: 'meal', name: { en: 'Lunch' }, options: [{ id: 'option', items: [
@@ -71,7 +76,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
       await tx.insert(nutritionPlanVersions).values({ id: versionId, tenantId: f.owner.tenantId, planId, versionNo: 1,
         status: 'published', document, publishedAt: new Date(), publishedBy: f.owner.userId });
       await tx.update(nutritionPlans).set({ currentVersionId: versionId }).where(eq(nutritionPlans.id, planId));
-      for (const [date, value] of [['2026-11-01', 90], ['2026-11-07', 88], ['2026-11-14', 86]] as const) {
+      for (const [date, value] of weights) {
         await tx.insert(metricEntries).values({ tenantId: f.owner.tenantId, clientId: f.a.clientId, metric: 'weight', value,
           unit: 'kg', source: 'manual', localDate: date, recordedAt: new Date(`${date}T07:00:00Z`), timezone: 'Africa/Cairo', clientUuid: randomUUID() });
       }
@@ -102,7 +107,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     expect(corrected.status).toBe(201);
     const send = vi.spyOn(messaging, 'sendMessage');
     expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: { inputHash: original.inputHash } })).status).toBe(400);
-    const result = await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} });
+    const result = await approve(draft);
     expect(result).toMatchObject({ status: 409, json: { error: { code: 'review_stale' } } });
     expect(await snapshot(draft.id)).toMatchObject({ status: 'stale', approvedBy: null, approvedAt: null, inputHash: original.inputHash });
     expect(send).not.toHaveBeenCalled(); expect(messaging.notifyMessage).not.toHaveBeenCalled(); expect(await linked(draft.id)).toEqual([]);
@@ -113,31 +118,41 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     for (const extra of [{ inputHash: 'x' }, { provider: 'anthropic' }, { context: {} }, { review: {} }]) {
       expect((await call(app, 'PATCH', path(f.a.clientId, `/${draft.id}`), { as: f.owner.userId, body: { text, ...extra } })).status).toBe(400);
     }
-    expect((await call(app, 'PATCH', path(f.a.clientId, `/${draft.id}`), { as: f.owner.userId, body: { text } })).status).toBe(200);
+    expect(draft.textHash).toBe(createHash('sha256').update(draft.text).digest('hex'));
+    const reviewer = await staff();
+    const patched = await call(app, 'PATCH', path(f.a.clientId, `/${draft.id}`), {
+      as: reviewer.userId, body: { text, expectedTextHash: draft.textHash },
+    });
+    expect(patched.status).toBe(200);
+    const current = patched.json as ReviewDraftDto;
+    expect(current.textHash).toBe(createHash('sha256').update(text).digest('hex'));
     const edited = await snapshot(draft.id);
     expect(edited).toMatchObject({ inputHash: before.inputHash, inputVersion: before.inputVersion, provider: before.provider });
     expect(edited.body.context).toEqual(before.body.context); expect(edited.body.review).toEqual(before.body.review);
-    const sent = await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} });
+    expect(await approve(draft)).toMatchObject({ status: 409, json: { error: { code: 'draft_changed', details: { draft: current } } } });
+    expect(await snapshot(draft.id)).toMatchObject({ status: 'draft', approvedAt: null });
+    expect(await linked(draft.id)).toEqual([]); expect(messaging.notifyMessage).not.toHaveBeenCalled();
+    const sent = await approve(current);
     expect(sent.status).toBe(200); expect(await linked(draft.id)).toMatchObject([{ body: text }]);
     expect((await call(app, 'PATCH', path(f.a.clientId, `/${draft.id}`), { as: f.owner.userId, body: { text: 'later edit' } })).status).toBe(409);
   });
   it('rolls the real approval back on a send error; a later retry succeeds', async () => {
     const draft = await build();
     vi.spyOn(messaging, 'sendMessage').mockRejectedValueOnce(new Error('injected send failure'));
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })).status).toBe(500);
+    expect((await approve(draft)).status).toBe(500);
     expect(await snapshot(draft.id)).toMatchObject({ status: 'draft', approvedAt: null });
     expect(await linked(draft.id)).toEqual([]); expect(messaging.notifyMessage).not.toHaveBeenCalled();
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })).status).toBe(200);
+    expect((await approve(draft)).status).toBe(200);
     expect(await linked(draft.id)).toHaveLength(1);
   });
   it('concurrent double clicks and a different authorized coach return a single original message', async () => {
     const draft = await build();
-    const [a, b] = await Promise.all([1, 2].map(() => call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })));
+    const [a, b] = await Promise.all([approve(draft), approve(draft)]);
     expect(a.status).toBe(200); expect(b.status).toBe(200);
     expect(a.json).toMatchObject({ messageId: (b.json as { messageId: string }).messageId });
     expect(await linked(draft.id)).toHaveLength(1);
     const second = await staff();
-    const retried = await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: second.userId, body: {} });
+    const retried = await approve(draft, second.userId);
     expect(retried.status).toBe(200); expect(retried.json).toMatchObject({ messageId: (a.json as { messageId: string }).messageId });
     expect(await linked(draft.id)).toMatchObject([{ senderUserId: f.owner.userId }]);
   });
@@ -152,9 +167,9 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
   });
   it('missing drafts return 404; messages/create remains required at approval', async () => {
     const draft = await build();
-    expect((await call(app, 'POST', path(f.a.clientId, `/${randomUUID()}/approve`), { as: f.owner.userId, body: {} })).status).toBe(404);
+    expect((await approve({ ...draft, id: randomUUID() })).status).toBe(404);
     const actor = await staff({ ...sourceGrants, messages: ['view'] });
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: actor.userId, body: {} })).status).toBe(403);
+    expect((await approve(draft, actor.userId)).status).toBe(403);
     expect(await linked(draft.id)).toEqual([]);
   });
   it('blocks open flags without sending; handling requires rebuild before approval', async () => {
@@ -162,14 +177,39 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     await setupApiData(f.owner.tenantId, 'open safety flag', tx => tx.insert(redFlags).values({ id: flagId,
       tenantId: f.owner.tenantId, clientId: f.a.clientId, source: 'message', sourceId: randomUUID(), category: 'pain_injury', matched: 'pain', evidenceHash: 'a'.repeat(64) }));
     const draft = await build();
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })))
+    expect(await approve(draft))
       .toMatchObject({ status: 409, json: { error: { code: 'red_flags_open' } } });
     expect(await linked(draft.id)).toEqual([]);
     expect((await call(app, 'POST', `/api/v1/red-flags/${flagId}/handle`, { as: f.owner.userId })).status).toBe(200);
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })))
+    expect(await approve(draft))
       .toMatchObject({ status: 409, json: { error: { code: 'review_stale' } } });
     const rebuilt = await build();
-    expect((await call(app, 'POST', path(f.a.clientId, `/${rebuilt.id}/approve`), { as: f.owner.userId, body: {} })).status).toBe(200);
+    expect((await approve(rebuilt)).status).toBe(200);
+  });
+  it.each([
+    ['2026-11-01', []],
+    ['2026-10-31', ['lower_kcal_flat']],
+  ] as const)('uses rolling evidence starting %s for a one-day review', async (first, expected) => {
+    const end = period.to;
+    await proposalFixture([[first, 80], ['2026-11-07', 80], [end, 80]]);
+    const tenantId = f.owner.tenantId, clientId = f.a.clientId;
+    await setupApiData(tenantId, 'one planned and completed training day and a logged meal', async tx => {
+      const programId = randomUUID();
+      const document = emptyProgram({ newId: randomUUID }, { weeks: 1, trainingDays: [0] });
+      document.startDate = end;
+      await tx.insert(programs).values({ id: programId, tenantId, clientId, kind: 'client', name: { en: 'Training' } });
+      await tx.insert(programVersions).values({ tenantId, clientId, programId, versionNo: 1, status: 'published',
+        document, publishedAt: new Date(), publishedBy: f.owner.userId });
+      await tx.insert(workoutSessions).values({ tenantId, clientId, localDate: end, clientUuid: randomUUID(), state: 'completed', timezone: 'Africa/Cairo' });
+      await tx.insert(mealLogs).values({ tenantId, clientId, localDate: end, clientUuid: randomUUID(), status: 'eaten', freeEntry: { text: 'Lunch' } });
+    });
+    const response = await call(app, 'POST', path(clientId), { as: f.owner.userId, body: { locale: 'en', period: { from: end, to: end } } });
+    expect(response.status).toBe(201);
+    const { review } = response.json as ReviewDraftDto;
+    expect(review.summary.adherence.workouts.percent).toBe(100);
+    expect(review.summary.adherence.meals?.percent).toBe(100);
+    expect(review.summary.weight.first?.on).toBe(end);
+    expect(review.proposals.map(item => item.code)).toEqual(expected);
   });
   it('creates only a nutrition draft, replays its result, and then approves without self-staling', async () => {
     const source = await proposalFixture(), draft = await build();
@@ -188,7 +228,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     }));
     expect(state.heads[0]?.publishedVersionId).toBe(source.versionId);
     expect(state.versions.find(row => row.id === result.versionId)?.status).toBe('draft');
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })).status).toBe(200);
+    expect((await approve(draft)).status).toBe(200);
     expect((await call(app, 'POST', route, { as: f.owner.userId, body: { proposalCode: code } })).json).toEqual(a.json);
   });
   it('rejects overwriting another working draft and blocks changed publication', async () => {
@@ -199,7 +239,7 @@ describe('R4b real API isolation, approval commit and message atomicity', () => 
     expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/proposal`), { as: f.owner.userId, body })))
       .toMatchObject({ status: 409, json: { error: { code: 'nutrition_draft_exists' } } });
     expect((await call(app, 'POST', `/api/v1/nutrition/${source.planId}/publish`, { as: f.owner.userId, body: {} })).status).toBe(200);
-    expect((await call(app, 'POST', path(f.a.clientId, `/${draft.id}/approve`), { as: f.owner.userId, body: {} })))
+    expect(await approve(draft))
       .toMatchObject({ status: 409, json: { error: { code: 'review_stale' } } });
     expect(await linked(draft.id)).toEqual([]);
   });

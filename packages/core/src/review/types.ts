@@ -62,6 +62,7 @@ export const WeekReviewInput = z.object({
   }),
   checkin: z.object({ current: CheckinSnapshot.nullable(), previous: CheckinSnapshot.nullable() }),
   weights: z.array(z.object({ on: IsoDate, kg: z.number().positive() })).max(60),
+  rollingWeights: z.array(z.object({ on: IsoDate, kg: z.number().positive() })).max(22).optional(),
   measurements: z.array(z.object({ on: IsoDate, values: z.record(z.string(), z.number()) })).max(30),
   redFlags: z.array(z.object({ id: z.uuid(), category, source: z.enum(['message', 'checkin', 'meal_note']) })),
   attention: attention.nullable(),

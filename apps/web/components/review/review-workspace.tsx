@@ -22,7 +22,7 @@ type ApprovalResult = { draftId: string; status: 'approved'; conversationId: str
 
 /** R4b: same-origin failures carry codes; raw server text never becomes product copy. */
 export class ReviewRequestError extends Error {
-  constructor(public readonly status: number, public readonly code: string) { super(code); }
+  constructor(public readonly status: number, public readonly code: string, public readonly draft?: ReviewDraftDto) { super(code); }
 }
 
 /** R4b: explicit read/write transport; callers retain write keys across indeterminate failures. */
@@ -36,6 +36,10 @@ export async function reviewRequest<T>(path: string, options: { method?: 'GET' |
   if (!response.ok) {
     const error = data && typeof data === 'object' && 'error' in data ? data.error : undefined;
     const code = error && typeof error === 'object' && 'code' in error && typeof error.code === 'string' ? error.code : 'request_failed';
+    if (response.status === 409 && code === 'draft_changed') {
+      const conflict = data as { error: { details: { draft: ReviewDraftDto } } };
+      throw new ReviewRequestError(response.status, code, conflict.error.details.draft);
+    }
     throw new ReviewRequestError(response.status, code);
   }
   return data as T;
@@ -103,6 +107,10 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
     if (failure instanceof ReviewRequestError && failure.status === 403) {
       setDraft(null); setText(''); setFlags([]); setError('forbidden'); return;
     }
+    if (failure instanceof ReviewRequestError && failure.code === 'draft_changed' && failure.draft) {
+      adopt(failure.draft);
+      setText(failure.draft.text); setSaved(false); setError('draft_changed'); return;
+    }
     const code = failure instanceof ReviewRequestError ? failure.code : 'request_failed';
     if (code === 'review_stale') { setDraft(current => current ? { ...current, status: 'stale' } : current); setRequiresRebuild(true); setError('stale'); }
     else if (code === 'red_flags_open') {
@@ -112,7 +120,7 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
     } else if (code === 'nutrition_draft_exists' || code === 'proposal_version_mismatch' || code === 'draft_not_editable') setError(code);
     else setError('request');
   }
-  async function run(action: () => Promise<void>) {
+  async function run(action: () => Promise<unknown>) {
     if (working.current) return;
     working.current = true; setBusy(true); setError(null); setSaved(false);
     try { await action(); } catch (failure) { await fail(failure); }
@@ -126,14 +134,16 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
   async function refresh() { const latest = await reviewRequest<{ draft: ReviewDraftDto | null }>(base); if (latest.draft) adopt(latest.draft); else { setDraft(null); setText(''); setFlags([]); } }
   async function save() {
     if (!draft || !editable) return;
-    const result = await mutate<ReviewDraftDto>(`${base}/${draft.id}`, 'PATCH', { text: text.trim() });
-    setDraft(result); setSaved(true);
+    const result = await mutate<ReviewDraftDto>(`${base}/${draft.id}`, 'PATCH', { text: text.trim(), expectedTextHash: draft.textHash });
+    setDraft(result); setText(result.text); setSaved(true);
+    return result;
   }
   async function approve() {
     if (!draft || !editable || blocked || !canSend || !text.trim() || text.trim().length > 4000) return;
-    if (dirty) await save();
-    const result = await mutate<ApprovalResult>(`${base}/${draft.id}/approve`, 'POST', {});
-    setSent(result); setDraft(current => current ? { ...current, status: 'approved', text: text.trim() } : current);
+    const reviewed = dirty ? await save() : draft;
+    if (!reviewed) return;
+    const result = await mutate<ApprovalResult>(`${base}/${reviewed.id}/approve`, 'POST', { expectedTextHash: reviewed.textHash });
+    setSent(result); setDraft({ ...reviewed, status: 'approved' }); setText(reviewed.text);
   }
   async function proposal(proposalCode: ProposalCode) {
     if (!draft || !editable || blocked || !canPropose) return;
