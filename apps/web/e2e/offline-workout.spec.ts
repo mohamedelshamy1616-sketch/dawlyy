@@ -68,8 +68,14 @@ test('offline reload, three durable sets, previous values, rest controls and dup
     await page.getByRole('button', { name: 'Reduce rest by 15 seconds' }).click();
     await expect.poll(async () => Number(await page.getByTestId('rest-seconds').textContent())).toBeLessThanOrEqual(before);
     await expect(page.getByTestId('unsynced-count')).not.toContainText('Unsynced: 0');
+    const syncPath = '/api/v1/workout-sessions/sync';
+    const delivery = page.waitForResponse(response => response.request().method() === 'POST' &&
+      new URL(response.url()).pathname === syncPath && response.request().postDataJSON().sets.length > 0);
     await context.setOffline(false);
-    await page.getByTestId('sync-now').click();
+    const first = await delivery;
+    expect(first.ok()).toBe(true);
+    expect(await first.json()).toMatchObject({ rejected: [] });
+    const batch = first.request().postDataJSON() as { sets: Array<{ clientUuid: string }> };
     async function serverSets() {
       const result = await context.request.get(`/api/v1/workout-sessions/${current.session.id}`); expect(result.ok()).toBe(true);
       return (await result.json() as SessionDetail).sets;
@@ -77,6 +83,12 @@ test('offline reload, three durable sets, previous values, rest controls and dup
     await expect.poll(async () => (await serverSets()).length).toBe(3);
     // Reinvent plan R0b item 3: the sync card (and its sync-now button) shows only while pending is above 0.
     await expect(page.getByTestId('sync-now')).toHaveCount(0);
+    const replay = await context.request.post(syncPath, { data: first.request().postData()!,
+      headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() } });
+    expect(replay.ok()).toBe(true);
+    expect(await replay.json()).toMatchObject({ rejected: [], accepted: expect.arrayContaining(batch.sets.map(set => set.clientUuid)) });
+    const stored = await serverSets();
+    for (const set of batch.sets) expect(stored.filter(row => row.clientUuid === set.clientUuid)).toHaveLength(1);
     expect(await serverSets()).toHaveLength(3);
     expect(new Set((await serverSets()).map(s => s.clientUuid)).size).toBe(3);
     expect((await serverSets()).map(s => s.reps)).toEqual([8, 9, 10]);

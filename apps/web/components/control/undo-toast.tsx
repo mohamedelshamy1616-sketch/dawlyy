@@ -15,7 +15,8 @@ import { undoStore, type UndoSnapshot } from '@/src/lib/control/undo-store';
 export function UndoToastView({ state, onUndo, onClose }: { state: UndoSnapshot | null; onUndo: () => void; onClose: () => void }) {
   const t = useTranslations('controlUndo');
   const message = !state ? '' : state.phase === 'executing' ? t('executing') : state.phase === 'undoing' ? t('undoing')
-    : state.phase === 'committing' ? t('committing') : state.phase === 'failed' ? t('failed', { label: state.label }) : state.label;
+    : state.phase === 'committing' ? t('committing') : state.phase === 'failed'
+      ? t(state.mode === 'deferred' ? 'saveFailed' : 'failed', { label: state.label }) : state.label;
   const working = state !== null && (state.phase === 'executing' || state.phase === 'undoing' || state.phase === 'committing');
   return <>
     {/* One persistent polite live region: its text changes only when the phase or label changes, never on a timer. */}
@@ -25,7 +26,7 @@ export function UndoToastView({ state, onUndo, onClose }: { state: UndoSnapshot 
         <Text as="p" display="block" className="min-w-0 flex-1 break-words">{message}</Text>
         <HStack gap={2} wrap="wrap" className="min-w-0">
           {state.phase === 'executing' || state.phase === 'committing' ? null
-            : <Button variant="primary" className="min-h-11 min-w-11" isDisabled={working} onClick={onUndo} label={state.phase === 'failed' ? t('retry') : t('undo')} />}
+            : <Button variant="primary" className="min-h-11 min-w-11" isDisabled={working} onClick={onUndo} label={state.phase === 'failed' ? t(state.mode === 'deferred' ? 'retrySave' : 'retry') : t('undo')} />}
           {state.phase === 'undoable' || state.phase === 'failed'
             ? <Button variant="ghost" className="min-h-11 min-w-11" onClick={onClose} label={state.mode === 'deferred' && state.phase === 'undoable' ? t('keep') : t('close')} /> : null}
         </HStack>

@@ -52,9 +52,9 @@ export function useDeferredEntryMutation(onChanged: () => void, onPendingChange?
       } }),
       optimistic: () => { setPending(true); latest.current.onPendingChange?.(true); },
       restore: () => { setPending(false); latest.current.onPendingChange?.(false); },
-      onCommitted: () => { setPending(false); setSaved(true); onSettled?.(); },
+      onCommitted: () => { setPending(false); setError(null); setRetryable(false); setSaved(true); onSettled?.(); },
       onError: cause => { setRetryable(cause instanceof CorrectionError && cause.retryable); setError(correctionErrorKey(cause)); },
-      onChanged: () => { latest.current.onChanged(); router.refresh(); },
+      onChanged: () => { router.refresh(); if (mounted.current) latest.current.onChanged(); },
       isMounted: () => mounted.current,
     });
     locked.current = false;

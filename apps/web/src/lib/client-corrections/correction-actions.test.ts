@@ -41,10 +41,28 @@ describe('saved corrections consume the real shared undo store', () => {
     const first = retry(); await store.flush(); expect((await first).status).toBe('failed'); const second = retry(); await store.flush(); expect((await second).status).toBe('committed');
     expect(fetcher.mock.calls[1]?.[1]).toEqual(fetcher.mock.calls[0]?.[1]);
   });
-  it('survives SPA unmount without state callbacks on departed components', async () => {
-    const store = createUndoStore(); let mounted = true; let writes = 0; const callbacks: string[] = [];
-    const result = runCorrection({ run: store.run, label: 'Save', commit: async () => { writes++; return 'saved'; }, optimistic: () => { callbacks.push('pending'); }, restore: () => { callbacks.push('restore'); }, onCommitted: () => { callbacks.push('saved'); }, onChanged: () => { callbacks.push('refresh'); }, isMounted: () => mounted });
-    mounted = false; await vi.advanceTimersByTimeAsync(6000); expect((await result).status).toBe('committed'); expect(writes).toBe(1); expect(callbacks).toEqual(['pending']);
+  it('retries a failed commit from the shared toast after unmount and refreshes on success', async () => {
+    const store = createUndoStore(); let mounted = true;
+    const operation = mealCorrection('old', body, 'original-key');
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('lost acknowledgement'))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 'replacement' }), { status: 201 }));
+    const optimistic = vi.fn(), localCallback = vi.fn(), invalidate = vi.fn();
+    const result = runCorrection({ run: store.run, label: 'Save', commit: () => sendMutation(operation, { fetch: fetcher }),
+      optimistic, restore: localCallback, onError: localCallback, onCommitted: localCallback,
+      onChanged: invalidate, isMounted: () => mounted });
+    mounted = false;
+    await vi.advanceTimersByTimeAsync(6000);
+    expect((await result).status).toBe('failed');
+    expect(store.getSnapshot()).toMatchObject({ mode: 'deferred', phase: 'failed', label: 'Save' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    invalidate.mockClear();
+    await store.undo();
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls[1]).toEqual(fetcher.mock.calls[0]);
+    expect(optimistic).toHaveBeenCalledTimes(1);
+    expect(localCallback).not.toHaveBeenCalled();
+    expect(invalidate).toHaveBeenCalledTimes(1);
+    expect(store.getSnapshot()).toBeNull();
   });
   it('full pagehide cancels without a final mutation request', async () => {
     const store = createUndoStore(); let display = 'original'; let writes = 0;

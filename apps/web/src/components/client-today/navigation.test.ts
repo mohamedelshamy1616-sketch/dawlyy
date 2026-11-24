@@ -66,11 +66,18 @@ describe('client destinations', () => {
     ['nutrition', ['/app/nutrition', '/app/nutrition/history', '/app/nutrition/log']],
     ['checkins', ['/app/checkins', '/app/assessment', '/app/intake']],
     ['payments', ['/app/subscription']],
-    ['measurements', ['/app/progress', '/app/tracking']],
-    ['progress_photos', ['/app/progress', '/app/tracking']],
   ] as const)('links no route of the disabled %s module', (module, gone) => {
     const shown = [...getPlanLinks(off(module)), ...getMeLinks(off(module))].map(link => link.href);
     for (const href of gone) expect(shown).not.toContain(href);
+  });
+
+  it('keeps both tracking routes reachable while either tracking module is enabled', () => {
+    for (const href of ['/app/progress', '/app/tracking']) {
+      for (const disabled of ['measurements', 'progress_photos'] as const) {
+        expect(getMeLinks(off(disabled)).map(link => link.href)).toContain(href);
+      }
+      expect(getMeLinks(off('measurements', 'progress_photos')).map(link => link.href)).not.toContain(href);
+    }
   });
 
   it('keeps notifications and consent reachable with every module off', () => {

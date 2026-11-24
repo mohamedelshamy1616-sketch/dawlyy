@@ -80,15 +80,17 @@ export function createUndoStore() {
     finish(target, { status: 'committed', value: target.value });
     return Promise.resolve();
   }
-  /** Deferred mode: the one and only commit call happens here. */
+  /** Expiry and explicit retry both use the original commit closure. */
   function commitDeferred(target: Slot): Promise<void> {
-    if (slot !== target || target.phase !== 'undoable') return target.inflight ?? Promise.resolve();
+    if (slot !== target || (target.phase !== 'undoable' && target.phase !== 'failed')) return target.inflight ?? Promise.resolve();
     if (target.timer !== null) { clearTimeout(target.timer); target.timer = null; }
-    target.phase = 'committing'; publish();
+    target.phase = 'committing'; target.error = null; publish();
     target.inflight = (async () => {
       let value: unknown;
       try { value = await target.action.commit(); } catch (error) {
-        safe(() => target.action.onError?.(error)); finish(target, { status: 'failed', error }); return;
+        target.phase = 'failed'; target.error = error;
+        if (!target.settled) { target.settled = true; target.settle({ status: 'failed', error }); }
+        safe(() => target.action.onError?.(error)); publish(); return;
       }
       safe(() => target.action.onCommitted?.(value)); finish(target, { status: 'committed', value });
     })();
@@ -131,14 +133,20 @@ export function createUndoStore() {
     const target = slot;
     while (target && slot === target) {
       if (target.phase === 'undoable') await (target.action.mode === 'deferred' ? commitDeferred(target) : closeWindow(target));
-      else if (target.phase === 'failed') finish(target, { status: 'committed', value: target.value });
+      else if (target.phase === 'failed') {
+        if (target.action.mode === 'deferred') return;
+        finish(target, { status: 'committed', value: target.value });
+      }
       else await target.inflight;
     }
   }
 
   async function run<T>(action: UndoableAction<T>): Promise<UndoResult<T>> {
     // Never silently drop an earlier intended mutation: settle it first, then take the single slot.
-    while (slot) await flush();
+    while (slot) {
+      if (slot.action.mode === 'deferred' && slot.phase === 'failed') finish(slot, { status: 'failed', error: slot.error });
+      else await flush();
+    }
     let settle!: (result: UndoResult<unknown>) => void;
     const done = new Promise<UndoResult<unknown>>(resolve => { settle = resolve; });
     const target: Slot = { id: `undo-${++counter}`, action: action as UndoableAction<unknown>, phase: 'executing', value: undefined, error: null,
@@ -156,7 +164,7 @@ export function createUndoStore() {
       if (target.action.mode === 'deferred') { cancelDeferred(target); return Promise.resolve(); }
       return rollbackNow(target);
     }
-    if (target.phase === 'failed') return rollbackNow(target);
+    if (target.phase === 'failed') return target.action.mode === 'deferred' ? commitDeferred(target) : rollbackNow(target);
     return target.phase === 'undoing' ? target.inflight ?? Promise.resolve() : Promise.resolve();
   }
 
@@ -164,7 +172,8 @@ export function createUndoStore() {
   function dismiss(): Promise<void> {
     const target = slot;
     if (!target) return Promise.resolve();
-    if (target.phase === 'undoable' || target.phase === 'failed') return flush();
+    if (target.phase === 'failed' && target.action.mode === 'deferred') finish(target, { status: 'failed', error: target.error });
+    else if (target.phase === 'undoable' || target.phase === 'failed') return flush();
     return Promise.resolve();
   }
 

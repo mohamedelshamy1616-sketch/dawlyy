@@ -211,9 +211,12 @@ describe('hubs', () => {
   it('Me uses rows and hides the entry points of disabled modules', () => {
     const all = render(createElement(MeHub, bootstrap(DEFAULT_CLIENT_MODULES)));
     for (const href of ['/app/progress', '/app/history', '/app/checkins', '/app/subscription', '/app/notifications']) expect(all).toContain(`href="${href}"`);
-    const reduced = render(createElement(MeHub, bootstrap(off('checkins', 'payments', 'measurements'))));
-    for (const href of ['/app/progress', '/app/checkins', '/app/subscription', '/app/assessment']) expect(reduced).not.toContain(`href="${href}"`);
+    // P9 RC-007: progress and tracking show each section by its own module, so the entry hides only when both are off.
+    const reduced = render(createElement(MeHub, bootstrap(off('checkins', 'payments', 'measurements', 'progress_photos'))));
+    for (const href of ['/app/progress', '/app/tracking', '/app/checkins', '/app/subscription', '/app/assessment']) expect(reduced).not.toContain(`href="${href}"`);
     expect(reduced).toContain('href="/app/notifications"');
+    const photosOnly = render(createElement(MeHub, bootstrap(off('measurements'))));
+    expect(photosOnly).toContain('href="/app/progress"');
     expect(CLIENT_MODULES).toHaveLength(7);
   });
 

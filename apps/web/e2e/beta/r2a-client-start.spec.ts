@@ -20,8 +20,8 @@ function cairoToday(): string {
   return `${part('year')}-${part('month')}-${part('day')}`;
 }
 
-/** A published, assigned program whose first day is today's planned workout. Returns the client id. */
-async function seedPlannedDay(coach: APIRequestContext, client: APIRequestContext): Promise<string> {
+/** A published, assigned program whose first day is today's planned workout. */
+async function seedPlannedDay(coach: APIRequestContext, client: APIRequestContext) {
   const me = await client.get('/api/v1/me');
   expect(me.ok()).toBe(true);
   const { clientId } = await me.json() as { clientId: string };
@@ -40,7 +40,10 @@ async function seedPlannedDay(coach: APIRequestContext, client: APIRequestContex
   expect((await coach.post(`/api/v1/programs/${created.head.id}/publish`, { data: {} })).ok()).toBe(true);
   const assigned = await coach.post(`/api/v1/programs/${created.head.id}/assign`, { data: { clientId, publish: true, replace: true, startDate: cairoToday() } });
   expect(assigned.status()).toBe(201);
-  return clientId;
+  const copy = await assigned.json() as { head: { id: string }; currentVersion: { id: string; document: ProgramDocument } };
+  const planned = copy.currentVersion.document.phases[0]!.weeks[0]!.days[0]!;
+  return { clientId, session: { programId: copy.head.id, programVersionId: copy.currentVersion.id, dayId: planned.id,
+    workoutId: planned.workout!.id, clientUuid: randomUUID(), localDate: cairoToday(), timezone: 'Africa/Cairo' } };
 }
 
 async function actors(browser: Browser, baseURL: string | undefined, locale: Locale, width = 390): Promise<{ client: BrowserContext; coach: BrowserContext }> {
@@ -89,7 +92,8 @@ for (const locale of ['ar', 'en'] as const) {
       const { client, coach } = await actors(browser, baseURL, locale);
       let clientId = '';
       try {
-        clientId = await seedPlannedDay(coach.request, client.request);
+        const seeded = await seedPlannedDay(coach.request, client.request);
+        clientId = seeded.clientId;
         const off = await coach.request.put(`/api/v1/clients/${clientId}/overrides/chat`, { data: { enabled: true, modules: { workouts: false } }, headers: { 'Idempotency-Key': randomUUID() } });
         expect(off.ok()).toBe(true);
         const page = await client.newPage();
@@ -99,6 +103,11 @@ for (const locale of ['ar', 'en'] as const) {
         await expect(page.getByTestId('start-workout')).toHaveCount(0);
         const app = await client.request.get('/api/v1/me/app');
         expect((await app.json() as { clientModules: { workouts: boolean } }).clientModules.workouts).toBe(false);
+        const denied = await page.request.post('/api/v1/workout-sessions', {
+          data: seeded.session, headers: { 'Idempotency-Key': randomUUID() },
+        });
+        expect(denied.status()).toBe(403);
+        expect(await denied.json()).toMatchObject({ error: { code: 'module_disabled' } });
       } finally {
         if (clientId) await coach.request.put(`/api/v1/clients/${clientId}/overrides/chat`, { data: { enabled: true, modules: { workouts: true } }, headers: { 'Idempotency-Key': randomUUID() } });
         await client.close(); await coach.close();

@@ -55,8 +55,19 @@ describe('quick log choices', () => {
     for (const planVersionId of [null, 'old-version']) {
       const choices = buildQuickLogChoices({ ...input, recent: [row({ planVersionId })] });
       expect(choices.some(choice => choice.kind === 'recentFood')).toBe(false);
-      expect(choices.some(choice => choice.kind === 'yesterday')).toBe(true);
+      expect(choices.some(choice => choice.kind === 'yesterday')).toBe(false);
     }
+  });
+  it('does not repeat a republished option with the same IDs and a different quantity', () => {
+    const recent = [row()];
+    const input = { localDate: plan.localDate, plan, recent, locale: 'en' as const };
+    expect(buildQuickLogChoices(input).find(choice => choice.kind === 'yesterday')?.labelParams.portion).toContain('150');
+    const revised = structuredClone(plan);
+    revised.version!.id = 'v2';
+    revised.version!.document.meals[0]!.options[0]!.items[0]!.quantity = 100;
+    const choices = buildQuickLogChoices({ ...input, plan: revised });
+    expect(choices.map(choice => choice.kind)).toEqual(['planned']);
+    expect(choices[0]!.labelParams.portion).toContain('100');
   });
   it('one chosen row submits once, blocks duplicate clicks and preserves identity on retry', async () => {
     const choice = buildQuickLogChoices({ localDate: plan.localDate, plan, recent: [], locale: 'en' })[0]!;

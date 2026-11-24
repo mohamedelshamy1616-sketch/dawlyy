@@ -133,12 +133,15 @@ describe('undo store', () => {
     expect(commit).toHaveBeenCalledTimes(1); expect(await result).toEqual({ status: 'committed', value: 'v' });
   });
 
-  it('runs onError, clears the slot and reports failed when a deferred commit fails', async () => {
+  it('reports a failed deferred commit and keeps it visible until dismissed', async () => {
     const store = createUndoStore(); const error = new Error('no'); const onError = vi.fn(); const onCommitted = vi.fn();
     const result = store.run({ mode: 'deferred', label: 'void', commit: async () => { throw error; }, onError, onCommitted });
     await vi.advanceTimersByTimeAsync(UNDO_WINDOW_MS);
     expect(onError).toHaveBeenCalledWith(error); expect(onCommitted).not.toHaveBeenCalled();
-    expect(await result).toEqual({ status: 'failed', error }); expect(store.getSnapshot()).toBeNull();
+    expect(await result).toEqual({ status: 'failed', error });
+    await store.flush();
+    expect(store.getSnapshot()).toMatchObject({ phase: 'failed', mode: 'deferred', error });
+    await store.dismiss(); expect(store.getSnapshot()).toBeNull();
   });
 
   it('keeps a failed rollback visible and retries it with the original committed result and the same closure', async () => {

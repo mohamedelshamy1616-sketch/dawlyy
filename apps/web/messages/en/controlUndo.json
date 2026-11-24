@@ -3,6 +3,8 @@
   "undoing": "Undoing…",
   "committing": "Saving…",
   "failed": "Could not undo: {label}. The change is still in place.",
+  "saveFailed": "Could not confirm this change: {label}.",
+  "retrySave": "Retry save",
   "region": "Last change",
   "retry": "Retry undo",
   "undo": "Undo",

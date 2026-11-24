@@ -52,7 +52,9 @@ export function buildQuickLogChoices({ localDate, plan, recent, locale, numerals
   const yesterday = addDays(localDate, -1); const oldest = addDays(localDate, -7);
   const rows = recent.filter(row => !row.voidedAt && !superseded.has(row.id) && row.status === 'eaten' && row.localDate >= oldest && row.localDate <= yesterday);
   for (const row of rows) {
-    const meal = meals.find(value => value.id === row.mealId);
+    // History supplies the version ID but no item quantities or older version documents.
+    const meal = row.planVersionId && row.planVersionId === plan?.version?.id
+      ? meals.find(value => value.id === row.mealId) : undefined;
     const option = meal?.options.find(value => value.id === row.optionId);
     if (row.localDate === yesterday) {
       if (!row.mealId && row.freeEntry?.text?.trim()) {
@@ -65,9 +67,7 @@ export function buildQuickLogChoices({ localDate, plan, recent, locale, numerals
           create: (uuid, at) => ({ ...base(uuid, at), mealId: meal.id, optionId: option.id, ...(row.note ? { note: row.note } : {}) }) });
       }
     }
-    // Changed plan versions cannot prove the historical portion. Never guess it from the text.
-    const versionId = (row as MealHistoryRow & { planVersionId?: string | null }).planVersionId;
-    if (!option || !versionId || versionId !== plan?.version?.id) continue;
+    if (!option) continue;
     for (const value of portions(option)) {
       if (!value) continue;
       const portion = `${formatNumber(value.computed.grams, options)} ${copy.grams}`;

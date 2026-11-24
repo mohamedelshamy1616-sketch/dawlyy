@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { CLIENT_MODULES, ClientModules, EntitlementOverride, type ClientModule } from '@dawlyy/core/types';
 import { COMPOSER_KEY, sortRows, type ComposerOverrideRow } from './state';
+import { createMutationAttempts } from '../mutation-attempts';
 
 /** R2c: only the existing request contracts of the module and override routes; no generic API client. */
 export type FetchLike = (input: string, init: RequestInit) => Promise<Response>;
@@ -73,19 +74,15 @@ export type ComposerTransport = ReturnType<typeof createComposerTransport>;
 export function createComposerTransport(options: { fetch?: FetchLike; newKey?: () => string } = {}) {
   const send: FetchLike = options.fetch ?? ((input, init) => globalThis.fetch(input, init));
   const newKey = options.newKey ?? (() => crypto.randomUUID());
-  const pending = new Map<string, string>();
+  const attempts = createMutationAttempts(newKey);
 
   async function call<T>(method: 'GET' | 'PUT' | 'DELETE', path: string, body: string | undefined,
     parse: (json: unknown) => T | null): Promise<ComposerResult<T>> {
     const mutating = method !== 'GET';
-    const signature = JSON.stringify([method, path, body ?? null]);
+    const key = mutating ? attempts.begin(path, JSON.stringify([method, body ?? null])) : undefined;
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (body !== undefined) headers['Content-Type'] = 'application/json';
-    if (mutating) {
-      const key = pending.get(signature) ?? newKey();
-      pending.set(signature, key);
-      headers['Idempotency-Key'] = key;
-    }
+    if (key !== undefined) headers['Idempotency-Key'] = key;
     let response: Response;
     try {
       response = await send(path, { method, credentials: 'same-origin', cache: 'no-store', headers, ...(body === undefined ? {} : { body }) });
@@ -94,9 +91,13 @@ export function createComposerTransport(options: { fetch?: FetchLike; newKey?: (
     }
     let json: unknown = null;
     try { json = await response.json(); } catch { /* an empty or non-JSON body is judged by the status below */ }
-    if (mutating && response.status < 500 && !(response.status === 409 && envelope(json).code === 'idempotency_in_progress')) pending.delete(signature);
-    if (!response.ok) return classify(response.status, json);
+    if (!response.ok) {
+      const error = classify(response.status, json);
+      if (key !== undefined && !error.indeterminate) attempts.refused(path, key);
+      return error;
+    }
     const data = parse(json);
+    if (key !== undefined && data !== null) attempts.succeeded(path);
     // A 2xx whose body cannot be read may still have applied the write: treat it as unknown, never as saved.
     return data === null ? failure('server', response.status, 'bad_response', '', mutating) : { ok: true, data };
   }

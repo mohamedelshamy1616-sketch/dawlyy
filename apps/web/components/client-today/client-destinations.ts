@@ -46,13 +46,10 @@ export const PLAN_LINKS: readonly DestinationLink[] = [
   { key: 'quickMeal', href: '/app/nutrition/log', Icon: UtensilsCrossed, enabled: m => m.nutrition },
 ];
 
-/**
- * Me hub rows. /app/progress and /app/tracking render photos and measurements together, so they need both
- * modules on: a single remaining module must not expose the other one's section.
- */
+/** The two tracking destinations gate their measurement and photo sections independently. */
 export const ME_LINKS: readonly DestinationLink[] = [
-  { key: 'progress', href: '/app/progress', Icon: TrendingUp, enabled: m => m.measurements && m.progress_photos },
-  { key: 'tracking', href: '/app/tracking', Icon: Activity, enabled: m => m.measurements && m.progress_photos },
+  { key: 'progress', href: '/app/progress', Icon: TrendingUp, enabled: m => m.measurements || m.progress_photos },
+  { key: 'tracking', href: '/app/tracking', Icon: Activity, enabled: m => m.measurements || m.progress_photos },
   { key: 'workoutHistory', href: '/app/history', Icon: History, enabled: m => m.workouts },
   { key: 'nutritionHistory', href: '/app/nutrition/history', Icon: Utensils, enabled: m => m.nutrition },
   { key: 'checkins', href: '/app/checkins', Icon: ClipboardCheck, enabled: m => m.checkins },

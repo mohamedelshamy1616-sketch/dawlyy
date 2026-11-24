@@ -13,6 +13,7 @@ import type { ProposalCode, WeekReview } from '@dawlyy/core/review';
 import { Link } from '@/i18n/navigation';
 import { formatNumber, formatKcal, formatMacro, numberLocale, type NumberLocale, type NumeralSystem } from '@/src/lib/numbers';
 import type { ReviewDraftDto, ReviewProposalDraft } from '@/src/server/review/types';
+import { createMutationAttempts } from '@/src/lib/mutation-attempts';
 
 const frame = 'min-w-0 max-w-full';
 const link = 'inline-flex min-h-11 min-w-11 max-w-full items-center break-words rounded-lg underline focus-ring';
@@ -70,7 +71,7 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
   const [error, setError] = useState<string | null>(initialError ?? null);
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
-  const keys = useRef(new Map<string, string>());
+  const [attempts] = useState(createMutationAttempts);
   const [requiresRebuild, setRequiresRebuild] = useState(false);
   const [flags, setFlags] = useState<Flag[]>(initialError === 'forbidden' ? [] : initial?.review.summary.redFlags ?? []);
   const [sent, setSent] = useState<ApprovalResult | null>(null);
@@ -87,14 +88,14 @@ export function ReviewWorkspace({ clientId, initial, numerals = 'latn', initialE
 
   async function mutate<T>(path: string, method: 'POST' | 'PATCH', body?: unknown): Promise<T> {
     const fingerprint = JSON.stringify([path, method, body]);
-    const key = keys.current.get(fingerprint) ?? crypto.randomUUID();
-    keys.current.set(fingerprint, key);
+    const key = attempts.begin(base, fingerprint);
     try {
       const value = await reviewRequest<T>(path, { method, body, key });
-      keys.current.delete(fingerprint);
+      attempts.succeeded(base);
       return value;
     } catch (failure) {
-      if (failure instanceof ReviewRequestError && failure.status < 500) keys.current.delete(fingerprint);
+      if (failure instanceof ReviewRequestError && failure.status < 500 &&
+          !(failure.status === 409 && failure.code === 'idempotency_in_progress')) attempts.refused(base, key);
       throw failure;
     }
   }

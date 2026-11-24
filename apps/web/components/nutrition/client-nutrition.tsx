@@ -114,9 +114,9 @@ function TodayMeals({ plan, document, logs }: { plan: ClientNutrition; document:
         optimistic: () => { setEntries(rows => ({ ...rows, [mealId]: { ...previous, status: intended.status, pending: true } })); setChoice(rows => ({ ...rows, [mealId]: intended.optionId ?? optionId })); },
         restore: () => { setEntries(rows => ({ ...rows, [mealId]: previous })); if (previousChoice) setChoice(rows => ({ ...rows, [mealId]: previousChoice })); },
         commit: () => sendMutation<MealHistoryRow>(operation!, { onModuleDisabled: async () => { await modules.refresh(); }, onRefresh: () => { router.refresh(); } }),
-        onCommitted: row => { operations.current.delete(mealId); setFailed(rows => ({ ...rows, [mealId]: false })); setEntries(rows => ({ ...rows, [mealId]: { clientUuid: row.clientUuid, status: row.status as MealStatus, row } })); },
+        onCommitted: row => { operations.current.delete(mealId); setChangeError(null); setFailed(rows => ({ ...rows, [mealId]: false })); setEntries(rows => ({ ...rows, [mealId]: { clientUuid: row.clientUuid, status: row.status as MealStatus, row } })); },
         onError: error => { setChangeError(correctionErrorKey(error)); setFailed(rows => ({ ...rows, [mealId]: !(error instanceof CorrectionError) || error.retryable })); if (error instanceof CorrectionError && !error.retryable) operations.current.delete(mealId); },
-        onChanged: () => { void refresh(); router.refresh(); },
+        onChanged: () => { router.refresh(); if (mounted.current) void refresh(); },
       });
       if (result.status === 'undone') operations.current.delete(mealId);
       if (mounted.current) setChanging(rows => ({ ...rows, [mealId]: false }));

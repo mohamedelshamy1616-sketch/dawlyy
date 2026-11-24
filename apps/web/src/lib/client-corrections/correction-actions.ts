@@ -18,9 +18,9 @@ export function runCorrection<T>(options: DeferredOptions<T>): Promise<UndoResul
   if (active()) options.optimistic();
   const action: UndoableAction<T> = {
     mode: 'deferred', label: options.label, commit: options.commit,
-    onCommitted: value => { if (active()) { options.onCommitted?.(value); options.onChanged?.(); } },
+    onCommitted: value => { if (active()) options.onCommitted?.(value); options.onChanged?.(); },
     onUndone: () => { if (active()) options.restore(); },
-    onError: error => { if (active()) { options.restore(); options.onError?.(error); options.onChanged?.(); } },
+    onError: error => { if (active()) { options.restore(); options.onError?.(error); } options.onChanged?.(); },
   };
   return options.run(action);
 }

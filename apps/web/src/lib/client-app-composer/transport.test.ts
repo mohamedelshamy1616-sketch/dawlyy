@@ -80,14 +80,41 @@ describe('idempotency keys', () => {
     await h.transport.putClientOverride(CLIENT, { nutrition: false });
     expect(h.header(2, 'Idempotency-Key')).not.toBe(h.header(1, 'Idempotency-Key'));
   });
-  it('uses a new key when the payload changes, and keeps the old one for its own retry', async () => {
+  it('supersedes a different payload even when neither write has been acknowledged', async () => {
     let attempt = 0;
     const h = harness(() => (++attempt <= 2 ? json(503, { error: { code: 'unavailable', message: 'x' } }) : json(200, overridesBody)));
     await h.transport.putClientOverride(CLIENT, { nutrition: false });
     await h.transport.putClientOverride(CLIENT, { nutrition: true });
     await h.transport.putClientOverride(CLIENT, { nutrition: false });
     expect(h.header(1, 'Idempotency-Key')).not.toBe(h.header(0, 'Idempotency-Key'));
-    expect(h.header(2, 'Idempotency-Key')).toBe(h.header(0, 'Idempotency-Key'));
+    expect(h.header(2, 'Idempotency-Key')).not.toBe(h.header(0, 'Idempotency-Key'));
+  });
+  it('commits A again after a lost acknowledgement for A and a successful save of B', async () => {
+    const receipts = new Map<string, typeof DEFAULT_CLIENT_MODULES>();
+    const keys: string[] = [];
+    let stored = DEFAULT_CLIENT_MODULES;
+    const transport = createComposerTransport({
+      newKey: () => `attempt-${keys.length}`,
+      fetch: async (_, init) => {
+        const key = new Headers(init.headers).get('Idempotency-Key')!;
+        keys.push(key);
+        const cached = receipts.get(key);
+        if (cached) return json(200, cached);
+        stored = JSON.parse(String(init.body)) as typeof stored;
+        receipts.set(key, stored);
+        if (keys.length === 1) throw new TypeError('Response lost after commit');
+        return json(200, stored);
+      },
+    });
+    const a = { ...DEFAULT_CLIENT_MODULES, nutrition: false };
+    const b = { ...DEFAULT_CLIENT_MODULES, nutrition: true };
+    expect(await transport.putTenantModules(a)).toMatchObject({ ok: false, kind: 'network' });
+    expect(stored).toEqual(a);
+    expect(await transport.putTenantModules(b)).toEqual({ ok: true, data: b });
+    expect(stored).toEqual(b);
+    expect(await transport.putTenantModules(a)).toEqual({ ok: true, data: a });
+    expect(new Set(keys).size).toBe(3);
+    expect(stored).toEqual(a);
   });
   it('keeps the key while the same request is still in progress', async () => {
     let attempt = 0;

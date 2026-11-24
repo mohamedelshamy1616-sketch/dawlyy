@@ -9,6 +9,7 @@ import { api, browserHealth, button, devLogin, labelPrefix, visit, type Locale }
 // Every message below carries a per-run marker, so a rerun never matches an earlier run's message.
 const CLIENT = 'd0250000-0000-4000-8000-000000000103';
 const OWNER = 'd0250000-0000-4000-8000-000000000101';
+const CHECKIN_FORM = 'd0250000-0000-4000-8000-000000000382';
 // The brief's promise: the review flow takes at most 70% of the manual flow's time (a 30% saving).
 const TARGET_RATIO = 0.7;
 
@@ -51,6 +52,18 @@ for (const locale of ['ar', 'en'] as const) {
       const open = await api<{ items: Flag[] }>(coach, 'GET', `/red-flags?status=open&clientId=${clientId}&limit=100`);
       for (const flag of open.items) await api(coach, 'POST', `/red-flags/${flag.id}/handle`, 200);
     }
+    /**
+     * The Inbox offers the review action only for a client with a submitted weekly check-in waiting for the coach
+     * (core attention rank, `checkin_waiting` -> `review`). The seed has none, so submit one through the real routes
+     * (P9 RC-009: the Inbox action is required, never skipped).
+     */
+    async function submitWaitingCheckin() {
+      const event = await api<{ id: string }>(coach, 'POST', '/forms/send', 201, { clientId, formId: CHECKIN_FORM, formKind: 'checkin' });
+      const saved = await api<{ id: string }>(client, 'PUT', `/submissions/${event.id}/answers`, 200,
+        { answers: { adherence: 8, sleep: 7, notes: marker }, clientUuid: randomUUID(), clientUpdatedAt: new Date().toISOString() });
+      const submitted = await api<{ state: string }>(client, 'POST', `/submissions/${saved.id}/submit`, 200);
+      expect(submitted.state).toBe('submitted');
+    }
     const reply = (page: Page) => page.getByRole('main').getByRole('textbox', { name: labelPrefix(r('reply.label')) });
     async function build(page: Page) {
       const created = page.waitForResponse(response => response.request().method() === 'POST' && new URL(response.url()).pathname === `/api/v1${base()}`);
@@ -68,12 +81,13 @@ for (const locale of ['ar', 'en'] as const) {
         await clearFlags();
         // Current flow. The timer starts when the coach opens the client's evidence and stops at the confirmed send.
         // The ranked Inbox is the coach home page (R1b, app/[locale]/coach/page.tsx); there is no /coach/inbox route.
+        await submitWaitingCheckin();
         await visit(coach, locale, '/coach');
-        const action = coach.locator(`a[href$="/coach${base()}"]`).first();
-        const viaInbox = await action.count() > 0;
+        const action = coach.getByRole('main').getByRole('listitem').locator(`a[href$="/coach${base()}"]`);
+        await expect(action).toBeVisible();
         const startedCurrent = performance.now();
-        if (viaInbox) { await action.click(); await expect(coach).toHaveURL(target => target.pathname === `/${locale}${url()}`); }
-        else await visit(coach, locale, url());
+        await action.click();
+        await expect(coach).toHaveURL(target => target.pathname === `/${locale}${url()}`);
         await build(coach);
         const box = reply(coach); const generated = await box.inputValue();
         const finalText = `${generated.trim()}\n${marker}`;
@@ -112,10 +126,9 @@ for (const locale of ['ar', 'en'] as const) {
         const manualMs = Math.round(performance.now() - startedManual);
 
         const ratio = manualMs > 0 ? currentMs / manualMs : Number.NaN;
-        const evidence = { locale, viaInbox, currentMs, baselineMs: manualMs, ratio: Number(ratio.toFixed(3)), targetRatio: TARGET_RATIO, samples: 1 };
+        const evidence = { locale, viaInbox: true, currentMs, baselineMs: manualMs, ratio: Number(ratio.toFixed(3)), targetRatio: TARGET_RATIO, samples: 1 };
         await test.info().attach('r4b-review-timing', { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
         test.info().annotations.push({ type: 'r4b-timing', description: JSON.stringify(evidence) });
-        if (!viaInbox) test.info().annotations.push({ type: 'r4b-inbox-link-missing', description: 'The seeded client had no review action in the Inbox; the route was opened directly.' });
         // The 30% promise is asserted only from this comparable measured baseline (same client, same start/end, same text).
         expect(Number.isFinite(ratio), 'A comparable manual baseline must be measured').toBe(true);
         expect(ratio, `review ${currentMs} ms vs manual ${manualMs} ms`).toBeLessThanOrEqual(TARGET_RATIO);
@@ -124,6 +137,37 @@ for (const locale of ['ar', 'en'] as const) {
           expect(await coach.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
         }
       } finally { await healthy(); }
+    });
+
+    test('saving the first review text again after another save updates the stored draft', async () => {
+      await visit(coach, locale, url());
+      await build(coach);
+      const readDraft = async () => (await api<{ draft: Draft }>(coach, 'GET', base())).draft;
+      const path = `/api/v1${base()}/${(await readDraft()).id}`;
+      const keys: Array<string | null> = [];
+      const match = (target: URL) => target.pathname === path;
+      await coach.route(match, async route => {
+        if (route.request().method() !== 'PATCH') return route.continue();
+        keys.push(await route.request().headerValue('idempotency-key'));
+        if (keys.length > 1) return route.continue();
+        const committed = await route.fetch();
+        expect(committed.ok()).toBe(true);
+        await committed.dispose();
+        await route.abort('failed');
+      });
+      try {
+        const a = `${marker} first edit`, b = `${marker} second edit`;
+        for (const [index, text] of [a, b, a].entries()) {
+          await reply(coach).fill(text);
+          await button(coach, r('reply.save')).click();
+          if (index === 0) await expect(coach.getByRole('alert').filter({ hasText: r('errors.request') })).toBeVisible();
+          else await expect(coach.getByText(r('reply.saved'), { exact: true })).toBeVisible();
+          expect((await readDraft()).text).toBe(text);
+        }
+        expect(keys).toHaveLength(3);
+        expect(keys.every(Boolean)).toBe(true);
+        expect(new Set(keys).size).toBe(3);
+      } finally { await coach.unroute(match); }
     });
 
     test('a client pain message raises a flag, the review blocks, handling it and rebuilding allows approval', async () => {
