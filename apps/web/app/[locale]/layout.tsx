@@ -2,7 +2,7 @@
 import "../layers.css";
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
@@ -13,16 +13,24 @@ import { UndoToast } from "@/components/control/undo-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { isLocale, locales } from "@/i18n/routing";
 
-const inter = Inter({
+// Self-hosted (OFL) so neither the build nor the dev server needs the network: Inter (latin, variable) and
+// IBM Plex Sans Arabic (arabic subset, weights 400 to 700), as served by Google Fonts on 24 Nov 2026.
+const inter = localFont({
+  src: "../fonts/Inter-Variable-latin.woff2",
   variable: "--font-inter",
-  subsets: ["latin"],
+  weight: "100 900",
   display: "swap",
 });
 
-const plexArabic = IBM_Plex_Sans_Arabic({
+const plexArabic = localFont({
+  // next/font/local reads its options at build time, so the four weights are written out.
+  src: [
+    { path: "../fonts/IBMPlexSansArabic-400-arabic.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/IBMPlexSansArabic-500-arabic.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/IBMPlexSansArabic-600-arabic.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/IBMPlexSansArabic-700-arabic.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-plex-arabic",
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 

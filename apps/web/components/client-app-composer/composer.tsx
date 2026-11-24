@@ -42,7 +42,7 @@ export function ComposerLoadError({ href }: { href: string }) {
   return (
     <VStack gap={3} className={frame}>
       <Text as="p" role="alert">{t('errors.load')}</Text>
-      <Button label={t('load.retry')} href={href} variant="secondary" className="min-h-11 self-start" />
+      <Button label={t('load.retry')} href={href} variant="secondary" className="min-h-11 min-w-11 self-start" />
     </VStack>
   );
 }
@@ -172,19 +172,19 @@ export function ClientAppComposer({ seed, transport }: { seed: ComposerSeed; tra
             {seed.canSave ? (
               <Button
                 label={t(phase.kind === 'pending' && phase.action === 'save' ? 'actions.saving' : failure?.indeterminate ? 'actions.retry' : 'actions.save')}
-                variant="primary" className="min-h-11" isDisabled={pending || (!dirty && !failure?.indeterminate)} onClick={() => { void save(); }}
+                variant="primary" className="min-h-11 min-w-11" isDisabled={pending || (!dirty && !failure?.indeterminate)} onClick={() => { void save(); }}
               />
             ) : null}
             {failure?.indeterminate ? (
-              <Button label={t('actions.check')} variant="secondary" className="min-h-11" isDisabled={pending} onClick={() => { void check(); }} />
+              <Button label={t('actions.check')} variant="secondary" className="min-h-11 min-w-11" isDisabled={pending} onClick={() => { void check(); }} />
             ) : null}
             {seed.canSave && dirty && !pending ? (
-              <Button label={t('actions.discard')} variant="ghost" className="min-h-11" onClick={() => { setSelection(baseline); setPhase({ kind: 'idle' }); }} />
+              <Button label={t('actions.discard')} variant="ghost" className="min-h-11 min-w-11" onClick={() => { setSelection(baseline); setPhase({ kind: 'idle' }); }} />
             ) : null}
             {seed.canSave && seed.mode === 'client' && hasComposerRow(rows) ? (
               <Button
                 label={t(phase.kind === 'pending' && phase.action === 'reset' ? 'actions.resetting' : 'actions.reset')}
-                variant="secondary" className="min-h-11" isDisabled={pending} onClick={() => { void reset(); }}
+                variant="secondary" className="min-h-11 min-w-11" isDisabled={pending} onClick={() => { void reset(); }}
               />
             ) : null}
           </HStack>

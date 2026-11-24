@@ -25,7 +25,8 @@ for (const locale of ['ar', 'en'] as const) {
     test.describe.configure({ mode: 'serial' });
     let coachContext: BrowserContext, clientContext: BrowserContext, coach: Page, client: Page;
     let clientId: string, conversationId: string;
-    const marker = `R4b ${locale} ${randomUUID()}`;
+    // Digit-free token: the numerals spec (r5) reads this text on the review page and rejects Western digits outside codes.
+    const marker = `Rfourb ${locale} ${randomUUID().replace(/-/g, "").replace(/[0-9]/g, (d) => "ghijklmnop"[Number(d)])}`;
     const r = catalog(locale, 'review'), m = catalog(locale, 'messaging');
     const base = () => `/clients/${clientId}/review`;
     const url = () => `/coach${base()}`;

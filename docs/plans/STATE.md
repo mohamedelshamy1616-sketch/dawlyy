@@ -1181,3 +1181,23 @@ Next: read the first error of that job; if it is load only, rerun the failing sp
 
 Cause: the weak network. `next dev` in the e2e config waited on `next/font/google` downloads (fonts.googleapis.com timed out) and never became ready; `run_e2e.py` judged the network by fonts.gstatic.com alone. Fix: `fonts_reachable()` probes both hosts; offline runs use `tools/e2e-font-mock.js` through `NEXT_FONT_GOOGLE_MOCKED_RESPONSES`. No test or assertion changed. Evidence: `run_e2e.py e2e-ar --reuse-db r2a-client-start`: 3 passed (5.8 min). Self-hosting the fonts (`next/font/local`, Mohamed approved the download) is left to the UI polish round after the staging deploy.
 Next: `run_checks.py` on the clean tree, then restore the closing line of REINVENT_REVIEW.md and rerun for that HEAD, then `done_check.py`.
+
+## 24 Nov 2026 22:20 (Cairo): second final run red; three causes, fixes uncommitted, probe running
+
+State: `run_checks.py` on HEAD 4248c1f: typecheck, lint, build-web, test-core, test-db, test-web exit 0 again. `e2e-ar`: 35 passed, 2 failed, both in `r5-polish-proof`. `e2e-en`: 23 passed, 3 failed, 11 did not run.
+Causes, read from the per-check logs `e2e-ar.log` and `e2e-en.log` under `.autopilot/evidence/<HEAD>/`:
+1. Fonts again. The reachability probe said "online" in the ar run, then the network dropped (`ERR_NETWORK_CHANGED` console error in en r5; font fetch errors all over the ar log; ECONNRESET and a missing Edit button in en beta-gate and r2b). Fix: `run_e2e.py` now always mocks `next/font/google` for `e2e-ar` and `e2e-en` (only `screens` keeps real fonts), so those runs need no network.
+2. Real UI defect: the "حفظ" (Save) button in the client-app composer measured 43x44 at 360 px (a target must reach 44). Added `min-w-11` to the five composer buttons in `components/client-app-composer/composer.tsx`, the same convention as `activity-log.tsx`.
+3. Spec data clash: `r4b` writes a marker with a UUID into the review text; `r5` numerals then finds Western digits in it. The marker is user-written text, so the product is right and the r4b test data was wrong. The marker is now digit-free in `r4b-review-approve.spec.ts`. The r5 assertion is unchanged.
+Probe: job `20261124-221303-e2e-ar-r4b-r5` (fresh database, only those two specs, ar). Next: if green, commit, rerun `run_checks.py`; remove the closing line of REINVENT_REVIEW.md if that run is red.
+
+## 24 Nov 2026 22:35 (Cairo): the font mock does not work with Turbopack; fonts are now self-hosted
+
+The probe failed: `Timed out waiting 600000ms from config.webServer`. Turbopack honours the mocked stylesheet but fetches the font files itself, from `https://fonts.gstatic.com/mock/...` (404), so the dev server never became ready on a cold cache (the earlier filtered pass had kept a warm cache). The mock is dropped (`tools/e2e-font-mock.js` removed, `run_e2e.py` back to its old shape with an unconditional cache wipe and no network probe).
+Fix at the root: the network was reachable now, so I downloaded the five font files Google Fonts serves for the app's current options (Inter latin variable; IBM Plex Sans Arabic arabic subset at 400, 500, 600, 700; OFL) into `apps/web/app/fonts/` (Mohamed approved the download on 24 Nov) and `app/[locale]/layout.tsx` uses `next/font/local` with the same CSS variables (`--font-inter`, `--font-plex-arabic`). No build, dev server or e2e run needs the network for fonts any more. Probe: job `20261124-223120-e2e-ar-r4b-r5-b` (fresh database, r4b and r5, ar).
+Next: if green, typecheck, commit explicit paths (layout, fonts, composer, r4b spec, run_e2e, STATE, LESSONS) and run `run_checks.py` on the clean tree.
+
+## 24 Nov 2026 23:15 (Cairo): full e2e-ar with self-hosted fonts: 36 passed, 1 failed
+
+Probe `r4b` + `r5` first failed on the marker prefix `R4b` (the digit 4); the marker is now `Rfourb <locale> <letters>`. Then the full `run_e2e.py e2e-ar` on a fresh database (job `20261124-223915-e2e-ar-full`, 24.7 min): 36 passed, 1 failed: `r5-polish-proof` "new routes settle..." with `page.goto` timeout 240000 ms on `/ar/coach/clients/<id>`; no server error logged for it, and that route passed in the earlier runs, so it looks like a slow dev compile under load (4.2 GB free then). Rerunning r5 alone with `--reuse-db` (job `20261124-231055-e2e-ar-r5-only`) to see whether it repeats. Typecheck green on the working tree. All fixes are still uncommitted.
+Result of the r5 rerun alone (`--reuse-db`, ar): 5 passed (13.5 min), so the goto timeout was a transient slow compile. Committing the fonts, composer, r4b marker and run_e2e changes, then the full `run_checks.py` (e2e-en has not run since the fixes).
