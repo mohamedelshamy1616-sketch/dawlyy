@@ -54,15 +54,23 @@ def ensure_cluster() -> None:
 
 
 def fonts_reachable() -> bool:
-    """True when the Google font host answers; three tries, a few seconds apart."""
+    """True when both Google font hosts answer (the css2 API that next/font asks first, and a font file); three tries.
+
+    24 Nov 2026: fonts.gstatic.com answered while fonts.googleapis.com timed out, so checking the file host alone
+    said "reachable" and `next dev` then never became ready."""
+    urls = ('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap',
+            'https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2')
     for attempt in range(3):
         try:
-            with urllib.request.urlopen('https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2', timeout=10) as reply:
-                if reply.status == 200:
-                    return True
+            ok = True
+            for url in urls:
+                with urllib.request.urlopen(url, timeout=10) as reply:
+                    ok = ok and reply.status == 200
+            if ok:
+                return True
         except OSError:
             pass
-        time.sleep(5 * (attempt + 1))
+        time.sleep(3 * (attempt + 1))
     return False
 
 
@@ -81,6 +89,12 @@ def main() -> None:
     env.pop('DRIZZLE_NO_POLICIES', None)
     env.setdefault('DAWLYY_DEV_LOGIN_SECRET', '0123456789abcdef0123456789abcdef0123456789abcdef')
 
+    fonts_online = fonts_reachable()
+    if not fonts_online:
+        # Offline: without a mock `next dev` waits on font downloads until they time out and never becomes ready.
+        env['NEXT_FONT_GOOGLE_MOCKED_RESPONSES'] = str(ROOT / 'tools/e2e-font-mock.js')
+        print('run_e2e: fonts unreachable, using tools/e2e-font-mock.js for next/font/google', flush=True)
+
     extra = sys.argv[2:]
     # --reuse-db: debugging only. Keeps the existing dawlyy_e2e (migrating it takes ~10 min on this disk).
     reuse = '--reuse-db' in extra
@@ -96,10 +110,10 @@ def main() -> None:
         # then rebuild loops and timeouts in the next project). `--reuse-db` runs keep it for speed.
         # A cold cache must download the Google fonts (next/font/google), so it is wiped only when the font host answers;
         # with the network down (22:10 on 21 Nov, twice) the dev server never became ready, so the old cache stays.
-        if fonts_reachable():
+        if fonts_online:
             shutil.rmtree(ROOT / 'apps/web/.next-e2e', ignore_errors=True)
         else:
-            print('run_e2e: fonts.gstatic.com is unreachable, keeping the existing .next-e2e cache', flush=True)
+            print('run_e2e: the Google font hosts are unreachable, keeping the existing .next-e2e cache', flush=True)
         admin = re.sub(r'(//[^/]+/)[^/?]+', r'\g<1>postgres', urls['DATABASE_URL_SERVICE'], count=1)
         for sql in (f'drop database if exists {DB} with (force)', f'create database {DB}'):
             run([str(PSQL), admin, '-v', 'ON_ERROR_STOP=1', '-c', sql], env)
