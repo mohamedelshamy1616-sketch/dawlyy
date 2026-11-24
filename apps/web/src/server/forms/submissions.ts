@@ -14,6 +14,7 @@ import { ApiError, notFound, unprocessable } from '../../api/errors';
 import { clientFormForEvent, clientIntake, ownClient, ownSubmission, publicSubmission } from './client-read';
 import { mappedMetrics } from './helpers';
 import type { answersSchema } from './schemas';
+import { enabledMetrics } from '../tracking/metric-module';
 
 function postgresCode(error: unknown): string | undefined {
   let current = error;
@@ -120,7 +121,7 @@ export async function recordFormMetrics(tx: Tx, auth: AuthContext, submission: {
   const [client] = await tx.select({ timezone: clientColumns.clients.timezone }).from(clients).where(and(eq(clients.tenantId, auth.tenantId), eq(clients.id, submission.clientId))).limit(1);
   if (!client) throw notFound(); const timezone = client.timezone || 'Africa/Cairo'; const now = new Date();
   const localDate = new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
-  for (const value of mappedMetrics(document, answers)) {
+  for (const value of await enabledMetrics(tx, auth, submission.clientId, mappedMetrics(document, answers))) {
     const hex = createHash('sha256').update(`${submission.id}:${value.questionId}`).digest('hex');
     const uuid = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-8${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
     await tx.insert(metricEntries).values({ tenantId: auth.tenantId, clientId: submission.clientId, metric: value.metric, metricKey: value.metricKey,

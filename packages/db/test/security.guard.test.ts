@@ -693,8 +693,14 @@ function firstRule(m: MatrixRow, column: string, alternateValue: unknown): strin
 }
 
 // 0008: A archive requires module edit (or manage); arrange deliberately preserves the existing staff grants.
+// P9 fix F5: a form is archived under the module of its kind (guard_archive in 0008).
+function archiveModuleOf(table: string, row: Row): string {
+  if (table !== 'forms') return archiveModules[table]!;
+  return row.form_kind === 'checkin' ? 'checkins' : row.form_kind === 'assessment' ? 'assessments' : 'forms';
+}
 function canArchive(m: MatrixRow): boolean {
-  const actions = m.ctx.permissions?.modules?.[archiveModules[m.table]!];
+  const moduleName = archiveModuleOf(m.table, m.row);
+  const actions = m.ctx.permissions?.modules?.[moduleName];
   return m.ctx.role === 'owner' || m.ctx.role === 'staff' && !!actions?.some(action => action === 'edit' || action === 'manage');
 }
 
@@ -945,10 +951,11 @@ function contractTuples(configs:Readonly<Record<string,GuardConfig>>):string[] {
 
 describe('per-table guard matrix', () => {
   // 0008: A explicit restore/set attribution covers both owner and staff with the named module edit grant.
-  for (const [table, module] of Object.entries(archiveModules)) for (const who of ['o1', 's1'] as const) {
+  for (const table of Object.keys(archiveModules)) for (const who of ['o1', 's1'] as const) {
     for (const state of ['base', 'archived']) it(`G21 ${table} ${who} UPDATE archived_at OLD ${state} archive attribution`, async () => {
       const m = await arrange(table, who, state);
       if (who === 's1') {
+        const module = archiveModuleOf(table, m.row);
         const permissions = m.ctx.permissions!;
         m.ctx = await mkMembership(m.ctx, { permissions: { ...permissions, modules: { ...permissions.modules, [module]: [...(permissions.modules[module] ?? []), 'edit'] } } });
       }

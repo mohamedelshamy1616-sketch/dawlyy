@@ -21,6 +21,8 @@ create function app.guard_archive() returns trigger
 language plpgsql
 set search_path = ''
 as $$
+declare
+  archive_module text;
 begin
   if current_user <> 'dawlyy_rls' then
     return new;
@@ -38,7 +40,15 @@ begin
       using errcode = '42501', detail = 'guard:archive', table = tg_table_name, column = 'archived_by';
   end if;
   if new.archived_at is distinct from old.archived_at then
-    if not app.is_staff() or not app.has_perm(tg_argv[0], 'edit') then
+    archive_module := tg_argv[0];
+    if tg_table_name = 'forms' then
+      archive_module := case (pg_catalog.to_jsonb(old) ->> 'form_kind')
+        when 'checkin' then 'checkins'
+        when 'assessment' then 'assessments'
+        else 'forms'
+      end;
+    end if;
+    if not app.is_staff() or not app.has_perm(archive_module, 'edit') then
       raise exception '%: archive and restore require the module edit permission', tg_table_name
         using errcode = '42501', detail = 'guard:archive', table = tg_table_name, column = 'archived_at';
     end if;

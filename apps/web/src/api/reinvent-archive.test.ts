@@ -48,6 +48,39 @@ describe('R0c library archive and restore', () => {
       expect((await call(app, 'POST', `/api/v1/${route}/${id}/unarchive`, { as: f.owner.userId })).json).toEqual(restored.json);
     });
   }
+  for (const grant of ['forms', 'checkins', 'assessments'] as const) {
+    it(`${grant}/edit archives and restores only its own form kind`, async () => {
+      const tenantId = f.owner.tenantId;
+      const permissions = { client_scope: 'all', modules: { [grant]: ['edit'] } };
+      await setupApiData(tenantId, 'disjoint form archive permission', tx => tx.execute(sql`
+        update memberships set permissions = ${JSON.stringify(permissions)}::jsonb
+        where tenant_id = ${tenantId} and user_id = ${staff}`));
+      for (const [formKind, requiredModule] of [
+        ['intake', 'forms'], ['checkin', 'checkins'], ['assessment', 'assessments'],
+      ] as const) {
+        const id = randomUUID();
+        await setupApiData(tenantId, 'form archive kind fixture', tx => tx.execute(sql`
+          insert into forms (id,tenant_id,name,kind,form_kind)
+          values (${id},${tenantId},'{"en":"Kind archive"}'::jsonb,'template',${formKind})`));
+        const state = async () => {
+          const [row] = await setupApiData(tenantId, 'inspect form archive result', tx => tx.execute<{
+            archived: boolean; actor: string | null;
+          }>(sql`select archived_at is not null as archived, archived_by::text as actor
+            from forms where tenant_id = ${tenantId} and id = ${id}`));
+          if (!row) throw new Error('Missing archive fixture');
+          return row;
+        };
+        const allowed = grant === requiredModule;
+        const archived = await call(app, 'POST', `/api/v1/forms/${id}/archive`, { as: staff });
+        expect(archived.status).toBe(allowed ? 200 : 403);
+        expect(await state()).toEqual({ archived: allowed, actor: allowed ? staff : null });
+        expect((await call(app, 'POST', `/api/v1/forms/${id}/archive`, { as: f.owner.userId })).status).toBe(200);
+        const restored = await call(app, 'POST', `/api/v1/forms/${id}/unarchive`, { as: staff });
+        expect(restored.status).toBe(allowed ? 200 : 403);
+        expect(await state()).toEqual({ archived: !allowed, actor: allowed ? null : f.owner.userId });
+      }
+    });
+  }
   it('system exercises point at the existing tenant hide', async () => {
     const id = randomUUID();
     await setupApiData(null, 'system archive refusal', tx => tx.execute(sql`insert into exercises

@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { clients, formSubmissions, memberships, redFlags, staffClientAssignments, workoutSessions } from '@dawlyy/db/schema';
-import { call, setupApiData } from '../test/api-harness';
+import { clients, formSubmissions, memberships, payments, redFlags, staffClientAssignments, subscriptions, workoutSessions } from '@dawlyy/db/schema';
+import { call, setupActiveSubscription, setupApiData } from '../test/api-harness';
 import { formsFixture } from '../server/forms/api-fixture';
 import { withAuthTx } from '../server/db';
 import { readInboxInputs } from '../server/inbox/service';
@@ -72,7 +72,45 @@ describe('R1b staff inbox under real RLS', () => {
     const data = await withAuthTx(f.owner, tx => readInboxInputs(tx, f.owner));
     expect(data.inputs.find(input => input.clientId === f.clientId)?.workouts).toMatchObject({ done7: 1, done14: 1 });
   });
+  it('withholds billing facts and links until billing/view is granted', async () => {
+    const tenantId = f.owner.tenantId;
+    const { today } = await inbox();
+    const paymentId = randomUUID();
+    await setupActiveSubscription(tenantId, f.clientId);
+    await setupApiData(tenantId, 'sensitive inbox billing facts', async tx => {
+      await tx.update(subscriptions).set({ endsOn: today }).where(eq(subscriptions.tenantId, tenantId));
+      await tx.insert(payments).values({ id: paymentId, tenantId, clientId: f.clientId, amount: 100, method: 'cash' });
+    });
+    expect((await inbox(staffUser)).items).toEqual([]);
+    await setupApiData(tenantId, 'grant inbox billing view', tx => tx.update(memberships).set({
+      permissions: { client_scope: 'assigned', modules: { clients: ['view'], billing: ['view'] } },
+    }).where(eq(memberships.userId, staffUser)));
+    const result = await inbox(staffUser);
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0]).toMatchObject({
+      client: { id: f.clientId }, primaryAction: 'confirm_payment',
+      actionHref: `/coach/billing/payments/${paymentId}`,
+      reasons: [{ code: 'payment_pending', params: {} }, { code: 'subscription_ends', params: { days: 0 } }],
+    });
+    expect((await inbox(staffUser)).items).toEqual(result.items);
+  });
+  it('requires the check-in and message view grants for their reasons', async () => {
+    expect((await inbox(staffUser)).items).toEqual([]);
+    for (const [moduleName, expected] of [
+      ['checkins', ['checkin_waiting']], ['messages', ['no_contact']],
+    ] as const) {
+      await setupApiData(f.owner.tenantId, 'grant one inbox source', tx => tx.update(memberships).set({
+        permissions: { client_scope: 'assigned', modules: { clients: ['view'], [moduleName]: ['view'] } },
+      }).where(eq(memberships.userId, staffUser)));
+      const result = await inbox(staffUser);
+      expect(result.items).toHaveLength(1);
+      expect(result.items[0]!.reasons.map(reason => reason.code)).toEqual(expected);
+    }
+  });
   it('scopes staff to assigned clients and excludes archived or inactive clients', async () => {
+    await setupApiData(f.owner.tenantId, 'scope test check-in view', tx => tx.update(memberships).set({
+      permissions: { client_scope: 'assigned', modules: { clients: ['view'], checkins: ['view'] } },
+    }).where(eq(memberships.userId, staffUser)));
     expect((await inbox(staffUser)).items.map(row => row.client.id)).toEqual([f.clientId]);
     await setupApiData(f.owner.tenantId, 'archived and inactive inbox clients', async tx => {
       await tx.update(clients).set({ archivedAt: new Date() }).where(eq(clients.id, f.clientId));

@@ -12,6 +12,7 @@ import { measurementInput, metricInput, metricKinds, rangeQuery } from './contra
 import { trackingClient, visibleClient } from './access';
 import { completeTrackingEvents } from './client-read';
 import { measurementDeltas } from './helpers';
+import { metricClientModule } from './metric-module';
 
 /** Task 8: range query plus optional scalar kind/key filters. */
 export type EntryQuery = z.infer<typeof rangeQuery> & { metric?: typeof metricKinds[number]; metricKey?: string };
@@ -38,7 +39,7 @@ export async function listMetrics(tx: Tx, auth: AuthContext, input: EntryQuery) 
 }
 /** Task 8 / §12.1(12): append-only metric UUID dedupe; retries cannot rewrite history. */
 export async function logMetric(tx: Tx, auth: AuthContext, input: z.infer<typeof metricInput>) {
-  await requireClientModule(tx, auth, 'measurements');
+  await requireClientModule(tx, auth, metricClientModule(input.metric));
   const clientId = trackingClient(auth, input.clientId, 'create'); await visibleClient(tx, auth, clientId);
   if (input.correctionOf) {
     const [target] = await tx.select({ metric: clientColumns.metricEntries.metric, metricKey: clientColumns.metricEntries.metricKey }).from(metricEntries).where(and(eq(metricEntries.tenantId, auth.tenantId), eq(metricEntries.clientId, clientId), eq(metricEntries.id, input.correctionOf))).limit(1);

@@ -85,6 +85,9 @@ def apply_update(path: Path, body: list[str]) -> str:
             continue
         i = find(lines, old, pos)
         if i < 0:
+            # Codex sometimes overlaps two hunks on a shared context line; retry from the top (first match).
+            i = find(lines, old, 0)
+        if i < 0:
             raise SystemExit(f"{path}: hunk not found:\n" + "\n".join(old[:6]))
         lines[i:i + len(old)] = new
         pos = i + len(new)

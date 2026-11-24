@@ -24,7 +24,7 @@ beforeAll(async () => {
   f = await buildPrivateFixture();
   editor = await mkMembership(f.s1, { permissions: { client_scope: 'assigned', modules: {
     clients: ['edit'], programs: ['edit'], nutrition: ['edit'], forms: ['edit'],
-    packages: ['edit'], exercises: ['edit'], tracking: ['edit'],
+    packages: ['edit'], exercises: ['edit'], tracking: ['edit'], checkins: ['edit'],
   } } });
   reviewer = await mkMembership(f.s1, { permissions: { client_scope: 'assigned', modules: { checkins: ['review'] } } });
 });
@@ -152,6 +152,42 @@ describe('reinvent R0a archive and calendar controls', () => {
     await as(editor, tx => q(tx, sql`update ${sql.identifier(table)} set archived_at = null where id = ${id}`));
     expect(await serviceRow(table, id)).toMatchObject({ archived_at: null, archived_by: null });
   });
+  for (const [formKind, requiredModule] of [
+    ['intake', 'forms'], ['checkin', 'checkins'], ['assessment', 'assessments'],
+  ] as const) for (const grant of ['forms', 'checkins', 'assessments'] as const) {
+    it(`forms ${formKind}: only ${requiredModule}/edit permits archive and restore with ${grant}/edit`, async () => {
+      const actor = await mkMembership(f.s1, { permissions: {
+        client_scope: 'assigned', modules: { [grant]: ['edit'] },
+      } });
+      for (const kind of ['template', 'client'] as const) {
+        const id = randomUUID();
+        await svc(tx => q(tx, insert('forms', {
+          id: sql`${id}::uuid`, tenant_id: sql`${f.t1}::uuid`, name: sql`'{"en":"Kind archive"}'::jsonb`,
+          kind: sql`${kind}`, form_kind: sql`${formKind}`,
+          client_id: kind === 'client' ? sql`${f.clientA}::uuid` : sql`null`,
+        })), f.t1);
+        const before = await serviceRow('forms', id);
+        const archive = () => as(actor, tx => q(tx, sql`update forms set archived_at = now() where tenant_id = ${f.t1} and id = ${id}`));
+        if (grant === requiredModule) {
+          await archive();
+          expect(await serviceRow('forms', id)).toMatchObject({ archived_at: expect.any(Date), archived_by: actor.userId });
+        } else {
+          await refusal(archive(), '42501', 'guard:archive', 'forms', 'archived_at');
+          expect(await serviceRow('forms', id)).toEqual(before);
+          await as(f.o1, tx => q(tx, sql`update forms set archived_at = now() where tenant_id = ${f.t1} and id = ${id}`));
+        }
+        const archived = await serviceRow('forms', id);
+        const restore = () => as(actor, tx => q(tx, sql`update forms set archived_at = null where tenant_id = ${f.t1} and id = ${id}`));
+        if (grant === requiredModule) {
+          await restore();
+          expect(await serviceRow('forms', id)).toMatchObject({ archived_at: null, archived_by: null });
+        } else {
+          await refusal(restore(), '42501', 'guard:archive', 'forms', 'archived_at');
+          expect(await serviceRow('forms', id)).toEqual(archived);
+        }
+      }
+    });
+  }
   for (const [table] of archives) it(`${table}: archived_by cannot be forged and timestamps cannot be replaced`, async () => {
     const id = await archiveRow(table);
     await refusal(as(f.o1, tx => q(tx, sql`update ${sql.identifier(table)} set archived_by = ${f.ua.userId} where id = ${id}`)), '42501', 'guard:archive', table, 'archived_by');

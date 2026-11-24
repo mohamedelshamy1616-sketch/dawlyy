@@ -91,6 +91,7 @@ const cases: Case[] = [
   { name: 'ten days since contact triggers', patch: { lastCoachMessageOn: '2026-11-03' }, expected: [reason('no_contact', { days: 10 })] },
   { name: 'eleven days since contact triggers', patch: { lastCoachMessageOn: '2026-11-02' }, expected: [reason('no_contact', { days: 11 })] },
   { name: 'unknown contact uses 999 days', patch: { lastCoachMessageOn: null }, expected: [reason('no_contact', { days: 999 })] },
+  { name: 'unavailable messages create neither contact nor unread reasons', patch: { messagesAvailable: false, lastCoachMessageOn: null, unreadFromClient: 3 }, expected: [] },
   { name: 'future coach message is not stale', patch: { lastCoachMessageOn: '2026-11-14' }, expected: [] },
 ];
 

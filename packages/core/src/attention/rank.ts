@@ -95,7 +95,7 @@ export function rankAttention(clients: readonly AttentionInput[], opts: { today:
     if (dueOn !== null && dueOn < today && (submittedOn === null || submittedOn < dueOn)) {
       add('checkin_overdue', { days: daysBetween(dueOn, today) });
     }
-    if (client.unreadFromClient > 0) add('unread_messages', { count: client.unreadFromClient });
+    if (client.messagesAvailable !== false && client.unreadFromClient > 0) add('unread_messages', { count: client.unreadFromClient });
     if (client.paymentPending) add('payment_pending');
     if (client.subscriptionEndsOn !== null) {
       const days = daysBetween(today, client.subscriptionEndsOn);
@@ -113,8 +113,10 @@ export function rankAttention(clients: readonly AttentionInput[], opts: { today:
     }
     if (client.nutritionAssigned && client.mealLogDays7 <= 2) add('meals_missing', { days: 7 - client.mealLogDays7 });
     weightReasons(client, add);
-    const days = client.lastCoachMessageOn === null ? 999 : daysBetween(client.lastCoachMessageOn, today);
-    if (days >= 10) add('no_contact', { days });
+    if (client.messagesAvailable !== false) {
+      const days = client.lastCoachMessageOn === null ? 999 : daysBetween(client.lastCoachMessageOn, today);
+      if (days >= 10) add('no_contact', { days });
+    }
     if (!reasons.length) continue;
     reasons.sort((a, b) => points(b) - points(a) || importance.indexOf(a.code) - importance.indexOf(b.code));
     result.push({

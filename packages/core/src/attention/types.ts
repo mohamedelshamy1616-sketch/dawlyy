@@ -26,6 +26,7 @@ export const AttentionInput = z.object({
   subscriptionEndsOn: IsoDate.nullable(),
   lastCoachMessageOn: IsoDate.nullable(),
   unreadFromClient: z.number().int().nonnegative(),
+  messagesAvailable: z.boolean().optional(),
 });
 export type AttentionInput = z.infer<typeof AttentionInput>;
 
