@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { ViewTransition, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { evaluateVisibility } from '@dawlyy/core/forms';
 import { localize } from '@dawlyy/core/types';
@@ -17,7 +17,8 @@ import { TextArea } from '@astryxdesign/core/TextArea';
 import { TextInput } from '@astryxdesign/core/TextInput';
 import { VStack } from '@astryxdesign/core/VStack';
 import { AnswerView } from '../form-runner/answer-view';
-import { FormRequestError, formRequest } from '../form-runner/http';
+import { submitReview } from './review-submit';
+import { FormRequestError } from '../form-runner/http';
 import { coachFormPath, type FormKind, type ReviewDetail } from './contracts';
 
 /** Task 7: results travel as number | string | null; blank clears, numeric text becomes a number. */
@@ -48,15 +49,14 @@ export function ReviewPanel({ detail, canReview }: { detail: ReviewDetail; canRe
   const kind = (['intake', 'checkin', 'assessment'].includes(submission.formKind) ? submission.formKind : 'checkin') as FormKind;
   const when = submission.submittedAt ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(submission.submittedAt)) : '';
 
-  async function review() {
+  async function review(openNext = false) {
     setBusy(true); setErrorKey('');
     try {
       const entries = Object.entries(results).map(([key, value]) => [key, toResult(value)] as const).filter(([, value]) => value !== null);
-      await formRequest(`/submissions/${submission.id}/review`, 'POST', {
-        outcome: 'reviewed', ...(feedback.trim() ? { coachFeedback: feedback.trim() } : {}),
-        ...(assessment && entries.length ? { results: Object.fromEntries(entries) } : {}),
-      }, crypto.randomUUID());
-      setDone(true); router.refresh();
+      await submitReview(submission.id, feedback, assessment && entries.length ? Object.fromEntries(entries) : undefined);
+      setDone(true);
+      if (openNext) router.replace(`/coach/checkins?afterReview=${submission.id}`);
+      else router.refresh();
     } catch (error) { setErrorKey(error instanceof FormRequestError && t.has(`errors.${error.code}`) ? error.code : 'request_failed'); } finally { setBusy(false); }
   }
 
@@ -65,7 +65,7 @@ export function ReviewPanel({ detail, canReview }: { detail: ReviewDetail; canRe
     <Card>
       <VStack gap={2}>
         <HStack gap={2} wrap="wrap" vAlign="center">
-          <Heading level={2} wordBreak="break-word">{detail.clientName}</Heading>
+          <ViewTransition name={`submission-${submission.id}`} default="none" share="review-name"><Heading level={2} wordBreak="break-word">{detail.clientName}</Heading></ViewTransition>
           <Badge label={submission.state === 'reviewed' || done ? status('complete') : status('waitingForCoach')} variant={submission.state === 'reviewed' || done ? 'success' : 'warning'} />
         </HStack>
         <Text as="p" wordBreak="break-word">{localize(detail.name, locale)}</Text>
@@ -118,6 +118,7 @@ export function ReviewPanel({ detail, canReview }: { detail: ReviewDetail; canRe
           {canReview && open && !done
             ? <>
               <Button label={t('review.reviewed')} variant="primary" size="lg" isLoading={busy} onClick={() => void review()} />
+              {kind === 'checkin' ? <Button label={t('review.sendNext')} size="lg" isDisabled={busy} onClick={() => void review(true)} /> : null}
               <Button label={t('review.resubmit')} variant="secondary" size="lg" isDisabled={busy} onClick={() => setResubmitOpen(true)} />
             </>
             : null}

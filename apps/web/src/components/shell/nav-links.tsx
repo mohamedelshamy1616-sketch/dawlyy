@@ -56,12 +56,6 @@ export function NavLinks({ area, layout, onNavigate, className }: Props) {
                   layout === "tabs" && active && "bg-transparent",
                 )}
               >
-                {layout === "tabs" && active ? (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-brand"
-                  />
-                ) : null}
                 <span
                   aria-hidden
                   className={cn(

@@ -66,8 +66,66 @@
 [data-astryx-theme] {
   --font-family-body: var(--dawlyy-font-latin);
   --font-family-heading: var(--dawlyy-font-latin);
+  --color-background-body: var(--background);
+  --color-background-card: var(--card);
+  --color-background-surface: var(--secondary);
+  --color-background-muted: var(--muted);
+  --color-background-popover: var(--popover);
 }
 html[dir="rtl"] [data-astryx-theme] {
   --font-family-body: var(--dawlyy-font-arabic);
   --font-family-heading: var(--dawlyy-font-arabic);
+}
+
+.client-shell:has(#workout-footer > *) {
+  block-size: 100dvh;
+  min-block-size: 0;
+}
+.client-shell:has(#workout-footer > *) > main {
+  min-block-size: 0;
+  overflow-y: auto;
+  padding-block-end: 1rem;
+  scroll-padding-block: 6rem 1rem;
+}
+.client-shell:has(#workout-footer > *) > :is(header, #workout-footer, .client-mobile-nav) {
+  flex-shrink: 0;
+}
+.client-shell:has(#workout-footer > *) > .client-mobile-nav {
+  position: static;
+}
+html[lang="ar"] {
+  font-size: 112.5%;
+  line-height: 1.65;
+  letter-spacing: normal;
+}
+.astryx-card, [data-slot="card"] {
+  box-shadow: var(--card-edge);
+}
+
+html { --page-forward: 12%; --page-back: -12%; }
+html[dir="rtl"] { --page-forward: -12%; --page-back: 12%; }
+
+@keyframes page-enter { from { opacity: 0; } }
+@keyframes page-leave { to { opacity: 0; } }
+@keyframes tab-enter { from { opacity: 0; translate: var(--slide-from) 0; } }
+@keyframes tab-leave { to { opacity: 0; translate: var(--slide-to) 0; } }
+::view-transition-new(.page-in) { animation: page-enter 150ms ease-out both; }
+::view-transition-old(.page-out) { animation: page-leave 120ms ease-in both; }
+::view-transition-new(.tab-next-in), ::view-transition-new(.tab-prev-in) {
+  animation: tab-enter 190ms ease-out both;
+}
+::view-transition-old(.tab-next-out), ::view-transition-old(.tab-prev-out) {
+  animation: tab-leave 150ms ease-in both;
+}
+::view-transition-new(.tab-next-in) { --slide-from: var(--page-forward); }
+::view-transition-new(.tab-prev-in) { --slide-from: var(--page-back); }
+::view-transition-old(.tab-next-out) { --slide-to: var(--page-back); }
+::view-transition-old(.tab-prev-out) { --slide-to: var(--page-forward); }
+::view-transition { pointer-events: none; }
+::view-transition-group(*) { animation-duration: 190ms; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-image-pair(*),
+  ::view-transition-old(*), ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

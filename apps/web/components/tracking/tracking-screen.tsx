@@ -61,6 +61,15 @@ export function TrackingScreen({ clientId, mode, today, timezone, cadence, metri
   const weights = currentMetrics.filter(item => item.metric === 'weight' && !corrected.has(item.id));
   const weight = weights[0]; const prior = weight ? weights.find(item => item.id !== weight.id && (item.unit === weight.unit || ['kg', 'lb'].includes(item.unit) && ['kg', 'lb'].includes(weight.unit))) : undefined;
   const baseline = weight && prior ? prior.value * (prior.unit === weight.unit ? 1 : weight.unit === 'kg' ? 0.45359237 : 1 / 0.45359237) : null;
+  // Compare entries recorded in the current unit. Older pages may add more points.
+  const trend = weights.filter(entry => entry.unit === weight?.unit).slice(0, 7).reverse();
+  const low = Math.min(...trend.map(entry => entry.value));
+  const high = Math.max(...trend.map(entry => entry.value));
+  const points = trend.map((entry, index) => {
+    const x = 3 + index * 122 / Math.max(1, trend.length - 1);
+    const y = high === low ? 18 : 32 - (entry.value - low) * 28 / (high - low);
+    return `${x},${y}`;
+  }).join(' ');
   const delta = weight ? numericDelta(weight.value, baseline) : null;
   return <Layout content={<LayoutContent><VStack gap={6} className="min-w-0 max-w-full text-start">
     <PageHeader title={title} subtitle={t('subtitle')} />
@@ -72,6 +81,13 @@ export function TrackingScreen({ clientId, mode, today, timezone, cadence, metri
     </> : null}
     {mode !== 'tracking' ? <>
       {showMeasurements ? <><Heading level={2}>{t('weightProgress')}</Heading>
+      {showMeasurements && trend.length > 1 && weight ? <figure className="m-0 grid gap-2 rounded-xl bg-card p-4 shadow-card-edge">
+        <svg viewBox="0 0 128 36" aria-hidden="true" className="h-12 w-44 max-w-full text-brand rtl:-scale-x-100">
+          <polyline points={points} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+        </svg>
+        <figcaption>{t('weightTrend', { count: number.format(trend.length), from: number.format(trend[0]!.value),
+          to: number.format(weight.value), unit: t.has(`units.${weight.unit}`) ? t(`units.${weight.unit}`) : weight.unit })}</figcaption>
+      </figure> : null}
       {weight && delta ? <Text>{number.format(weight.value)} {t.has(`units.${weight.unit}`) ? t(`units.${weight.unit}`) : weight.unit} · {t('delta', { absolute: delta.absolute === null ? t('noBaseline') : number.format(delta.absolute), percent: delta.percent === null ? t('noBaseline') : percent.format(delta.percent / 100) })}</Text> : <Text>{t('noWeights')}</Text>}</> : null}
       <ProgressPanel staffMode={mode === 'coach'} clientId={clientId} date={date} measurements={sets.items} photos={images.items} cadence={cadence} onSaved={() => { void refresh(); }} />
       <HStack gap={3} wrap="wrap">

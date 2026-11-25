@@ -1,5 +1,6 @@
 'use client';
 import { useLocale, useTranslations } from 'next-intl';
+import { useTheme } from 'next-themes';
 import { Avatar } from '@astryxdesign/core/Avatar';
 import { Button } from '@astryxdesign/core/Button';
 import { EmptyState } from '@astryxdesign/core/EmptyState';
@@ -15,7 +16,7 @@ import { getMeLinks, getPlanLinks, type DestinationLink } from './client-destina
 import { ClientModuleSeed, useResolvedModules } from './client-module-provider';
 import type { ClientBootstrap, CoachIdentity, CoachPromise } from './types';
 
-const row = 'focus-ring flex min-h-14 min-w-0 items-center gap-3 border-b py-3 text-start break-words';
+const row = 'focus-ring flex min-h-14 min-w-0 items-center gap-3 border-b px-3 py-3 text-start hover:bg-muted break-words';
 const list = 'm-0 list-none p-0';
 
 /** A hub page that failed to load: translated message and a Retry that asks the server for the page again. */
@@ -53,7 +54,7 @@ function Rows({ links, group }: { links: readonly DestinationLink[]; group: 'pla
             <Icon aria-hidden className="size-5 shrink-0" />
             <VStack gap={0} className="min-w-0 flex-1">
               <Text as="p" weight="medium">{t(`${group}.links.${key}.title`)}</Text>
-              <Text as="p" color="secondary" className="text-sm">{t(`${group}.links.${key}.hint`)}</Text>
+              <Text as="p" color="secondary" className="text-base">{t(`${group}.links.${key}.hint`)}</Text>
             </VStack>
           </Link>
         </li>
@@ -93,13 +94,23 @@ export function PlanHub({ userId, bootstrap }: Seed) {
 
 /** R2a: Me = progress, history, check-ins, subscription and notifications as rows. Hidden modules have no row. */
 export function MeHub({ userId, bootstrap }: Seed) {
+  const { theme, setTheme } = useTheme();
   const t = useTranslations('clientToday');
   const { modules } = useResolvedModules(bootstrap);
   return (
     <>
       <ClientModuleSeed userId={userId} {...bootstrap} />
       <Hub title={t('me.title')} subtitle={t('me.subtitle')}>
-        <Rows links={getMeLinks(modules)} group="me" />
+        {(['account', 'activity'] as const).map(group => {
+          const links = getMeLinks(modules).filter(link =>
+            ['subscription', 'notifications', 'consent'].includes(link.key) === (group === 'account'));
+          return links.length > 0 ? <section key={group} className="grid gap-2">
+            <Heading level={2}>{t(`me.${group}`)}</Heading>
+            <Rows links={links} group="me" />
+          </section> : null;
+        })}
+        <Button label={t('me.lightTheme')} aria-pressed={theme === 'light'} variant="secondary"
+          className="min-h-11 self-start" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
       </Hub>
     </>
   );

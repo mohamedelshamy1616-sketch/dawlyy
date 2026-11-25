@@ -1,4 +1,6 @@
 {
+  "tabsUnread": "رسائل غير مقروءة: {count}",
+  "mealProgress": "الوجبات المسجّلة: {done} من {total}",
   "tabs": {
     "today": "النهاردة",
     "plan": "الخطة",
@@ -91,6 +93,9 @@
     }
   },
   "me": {
+    "account": "الحساب",
+    "activity": "النشاط والتقدّم",
+    "lightTheme": "المظهر الفاتح",
     "title": "أنا",
     "subtitle": "تقدمك وسجلّك وحسابك.",
     "links": {

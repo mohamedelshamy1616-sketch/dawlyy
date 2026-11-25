@@ -169,6 +169,7 @@
     "scoreFor": "Score for {test}",
     "done": "Saved. The client can see your feedback.",
     "alreadyReviewed": "This submission is no longer waiting for review.",
+    "sendNext": "Send and open next",
     "reviewed": "Mark as reviewed",
     "resubmit": "Ask to resubmit",
     "back": "Back to the list",

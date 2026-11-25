@@ -3,6 +3,8 @@ import { VStack } from '@astryxdesign/core/VStack';
 import { Text } from '@astryxdesign/core/Text';
 import { Heading } from '@astryxdesign/core/Heading';
 import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useClientModules } from '@/components/client-today/client-module-provider';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import { Dumbbell } from 'lucide-react';
@@ -26,6 +28,9 @@ import { FinishSummary } from './finish-summary';
 
 /** Task 5: session renders entirely from its owner outbox; network refresh is optional. */
 export function WorkoutScreen({ sessionId, initial }: { sessionId: string; initial?: SessionDetail }) {
+  const { numerals } = useClientModules();
+  const [footer, setFooter] = useState<HTMLElement | null>(null);
+  useEffect(() => { setFooter(document.getElementById('workout-footer')); }, []);
   const t = useTranslations('workout'); const status = useTranslations('status'); const locale = useLocale(); const { db, sync } = useOutbox();
   const [ready, setReady] = useState(false); const [error, setError] = useState(false); const [deadline, setDeadline] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<'completed' | 'partially_completed' | 'abandoned'>('completed'); const [finishing, setFinishing] = useState(false);
@@ -109,9 +114,13 @@ export function WorkoutScreen({ sessionId, initial }: { sessionId: string; initi
       }
     } catch { setError(true); } finally { setFinishing(false); }
   }
+  const finishControl = <div className="mx-auto w-full max-w-xl bg-background px-4 py-2 md:max-w-5xl md:px-6">
+    <Button className="min-h-12 w-full shadow-primary-glow" isDisabled={finishing || session.state === 'not_started'}
+      onClick={() => void finish()} data-testid="finish-workout" label={t('finish')} />
+  </div>;
   return <VStack className="flex min-w-0 flex-col gap-5" data-testid="workout-screen">
     <VStack className="flex flex-wrap items-center justify-between gap-3"><Heading level={2} className="min-w-0 break-words text-xl font-bold">{localized(session.plannedWorkout?.name, locale)}</Heading>
-      <output aria-label={t('sessionTimer')} className="font-mono text-2xl tabular-nums">{new Intl.NumberFormat(locale, { minimumIntegerDigits: 2 }).format(Math.floor(session.activeSeconds / 60))}:{new Intl.NumberFormat(locale, { minimumIntegerDigits: 2 }).format(session.activeSeconds % 60)}</output>
+      <output aria-label={t('sessionTimer')} dir="ltr" className="font-sans text-4xl font-extrabold tabular-nums">{new Intl.NumberFormat(locale, { minimumIntegerDigits: 2, numberingSystem: numerals }).format(Math.floor(session.activeSeconds / 60))}:{new Intl.NumberFormat(locale, { minimumIntegerDigits: 2, numberingSystem: numerals }).format(session.activeSeconds % 60)}</output>
       {!finished ? <Button className="min-h-11" variant="secondary" onClick={() => void change({ state: sessionTarget(session.state, session.state === 'paused' ? 'active' : 'paused') }).catch(() => {})} label={t(session.state === 'paused' ? 'resume' : 'pause')} /> : <Text>{status('complete')}</Text>}</VStack>
     {error ? <Text as="p" role="alert" className="rounded-xl border p-3">{t('storageError')}</Text> : null}
     <RestTimer deadline={deadline} onChange={setDeadline} />
@@ -136,7 +145,7 @@ export function WorkoutScreen({ sessionId, initial }: { sessionId: string; initi
         onChange={value => { if (value === null || value >= 1 && value <= 10) void change({ rpeOverall: value }).catch(() => {}); }} />
       <Selector label={t('outcome')} controlClassName="min-h-11" value={outcome} onChange={value => setOutcome(value as typeof outcome)}
         options={(['completed', 'partially_completed', 'abandoned'] as const).map(value => ({ value, label: t(`outcomes.${value}`) }))} />
-      <Button className="min-h-12 w-full" isDisabled={finishing || session.state === 'not_started'} onClick={() => void finish()} data-testid="finish-workout" label={t('finish')} />
     </VStack> : null}
+    {!finished ? (footer ? createPortal(finishControl, footer) : finishControl) : null}
   </VStack>;
 }

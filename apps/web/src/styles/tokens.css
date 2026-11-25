@@ -7,7 +7,7 @@
  *   1. @theme inline: the Tailwind aliases. Their names and meanings are unchanged from the shadcn era
  *      (text-primary, border-border, rounded-lg ...). The Astryx Tailwind bridge is NOT imported on purpose.
  *   2. :root / .dark: the app-owned neutral tokens that those aliases read (values unchanged).
- *   3. DAWLYY palette: the brand teal is chosen here, once, as a light and a dark value. --brand* and the
+ *   3. DAWLYY palette: the brand lime is chosen here, once, as a light and a dark value. --brand* and the
  *      Astryx theme (theme/dawlyy.theme.ts) both point at these variables.
  *   4. Fonts, focus ring and touch target.
  *
@@ -17,6 +17,8 @@
 
 /* 1. Tailwind aliases */
 @theme inline {
+  --shadow-card-edge: var(--card-edge);
+  --shadow-primary-glow: var(--primary-glow);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--dawlyy-font-latin);
@@ -69,6 +71,11 @@
 
 /* 2. App-owned neutral tokens (light) */
 :root {
+  --stage: oklch(0.147945 0.002695 145.437);
+  --surface: oklch(0.191238 0.007583 145.271);
+  --raised: oklch(0.234611 0.008755 137.828);
+  --card-edge: inset 0 1px 0 rgba(255,255,255,.07);
+  --primary-glow: 0 6px 22px -9px color-mix(in oklab, var(--brand) 45%, transparent);
   --success: oklch(0.62 0.15 150);
   --warning: oklch(0.75 0.15 75);
   --background: oklch(1 0 0);
@@ -98,7 +105,7 @@
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary-foreground: var(--brand-foreground);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
@@ -107,9 +114,9 @@
 
 /* App-owned neutral tokens (dark) */
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: var(--stage);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: var(--surface);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -117,7 +124,7 @@
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
+  --muted: var(--raised);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
@@ -132,8 +139,8 @@
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: var(--brand-foreground);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
@@ -141,20 +148,20 @@
 }
 
 /*
- * 3. DAWLYY palette. The brand is a deep teal: white text on it passes AA (about 7:1). The soft pair tints active
+ * 3. DAWLYY palette. The brand is a deep olive in light mode and bright lime in dark mode. The soft pair tints active
  * nav items, empty-state badges and skeletons. Change these eight values to re-brand the shell and the Astryx theme.
  * The light and dark values are separate variables because Astryx switches with color-scheme (light-dark()), while
  * the shadcn-era tokens switch with the .dark class.
  */
 :root {
-  --dawlyy-accent-light: oklch(0.45 0.09 185);
-  --dawlyy-on-accent-light: oklch(0.99 0.01 185);
-  --dawlyy-accent-soft-light: oklch(0.955 0.03 185);
-  --dawlyy-accent-soft-text-light: oklch(0.34 0.07 185);
-  --dawlyy-accent-dark: oklch(0.72 0.11 185);
-  --dawlyy-on-accent-dark: oklch(0.2 0.04 185);
-  --dawlyy-accent-soft-dark: oklch(0.3 0.05 185);
-  --dawlyy-accent-soft-text-dark: oklch(0.9 0.05 185);
+  --dawlyy-accent-light: oklch(0.445 0.098 119);
+  --dawlyy-on-accent-light: oklch(0.99 0.01 119);
+  --dawlyy-accent-soft-light: oklch(0.955 0.05 119);
+  --dawlyy-accent-soft-text-light: oklch(0.34 0.07 119);
+  --dawlyy-accent-dark: oklch(0.901213 0.201400 121.897);
+  --dawlyy-on-accent-dark: oklch(0.177247 0.040720 116.587);
+  --dawlyy-accent-soft-dark: oklch(0.29 0.045 121);
+  --dawlyy-accent-soft-text-dark: oklch(0.91 0.13 121);
 
   /* Selected-item inset ring: the light accent at half strength (the Astryx --shadow-inset-selected token). */
   --dawlyy-selected-inset: inset 0 0 0 2px color-mix(in oklab, var(--dawlyy-accent-light) 50%, transparent);

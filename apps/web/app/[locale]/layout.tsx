@@ -57,9 +57,10 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html
+      suppressHydrationWarning
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${inter.variable} ${plexArabic.variable} h-full antialiased`}
+      className={`${inter.variable} ${plexArabic.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {/* cacheComponents: next-intl reads its request config and messages at request time, so the provider and

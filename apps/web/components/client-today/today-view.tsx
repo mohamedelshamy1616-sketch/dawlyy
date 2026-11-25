@@ -9,6 +9,7 @@ import { HStack } from '@astryxdesign/core/HStack';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 import { localize } from '@dawlyy/core/types';
+import { User } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { formatNumber, localizeDigits } from '@/src/lib/numbers';
 import type { ClientTodayModel } from './types';
@@ -51,27 +52,20 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
   const hasCheckins = modules.checkins && model.checkins.length > 0;
   const hasIntake = modules.checkins && model.intakePending;
   const subscription = modules.payments ? model.subscription ?? null : null;
+  const loggedMeals = model.meals.filter(meal => meal.status !== null).length;
   const empty = !hasWorkout && !hasMeals && !hasCheckins && !hasIntake && !subscription;
 
   return (
     <VStack gap={6} className="min-w-0 max-w-full break-words">
-      <VStack gap={1} className="min-w-0">
+      <div className="flex items-start justify-between gap-3">
+        <VStack gap={1} className="min-w-0">
         <Heading level={headingLevel}>{t('today.title')}</Heading>
         <Text as="p" color="secondary">{dates.day(model.date)}</Text>
-      </VStack>
+        </VStack>
+        {!preview ? <Link href="/app/me" aria-label={t('tabs.me')} className="focus-ring grid size-11 shrink-0 place-items-center rounded-full border bg-card text-brand"><User aria-hidden className="size-5" /></Link> : null}
+      </div>
 
       {preview ? <Banner status="info" title={t('preview.title')} description={t('preview.body')} role="note" /> : null}
-
-      {subscription ? (
-        <Banner
-          status="warning"
-          title={t('subscription.title')}
-          description={subscription.daysLeft !== undefined && subscription.state === 'active'
-            ? t('subscription.daysLeft', { n: Math.max(0, subscription.daysLeft), shown: formatNumber(Math.max(0, subscription.daysLeft), number) })
-            : t('subscription.stateText', { state: subscription.state })}
-          endContent={preview ? null : <Link href="/app/subscription" className={rowLink}>{t('subscription.open')}</Link>}
-        />
-      ) : null}
 
       {hasWorkout && workout ? (
         <Card padding={5} data-testid="today-workout" aria-label={t('workout.eyebrow')}>
@@ -106,7 +100,7 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
                   </>
                 ) : (
                   <Button
-                    variant="primary" size="lg" className="min-h-12 w-full" data-testid="start-workout"
+                    variant="primary" size="lg" className="min-h-12 w-full shadow-primary-glow" data-testid="start-workout"
                     label={t(workout.state === 'active' ? 'workout.continue' : 'workout.start')}
                     href={preview ? undefined : workout.state === 'active' && workout.sessionId ? `/app/workout/${workout.sessionId}` : '/app/workout/start'}
                     isDisabled={preview}
@@ -118,9 +112,28 @@ export function ClientTodayView({ model, preview = false, onLogMeal, busyMealId 
         </Card>
       ) : null}
 
+      {subscription ? (
+        <Banner
+          status="warning"
+          title={t('subscription.title')}
+          description={subscription.daysLeft !== undefined && subscription.state === 'active'
+            ? t('subscription.daysLeft', { n: Math.max(0, subscription.daysLeft), shown: formatNumber(Math.max(0, subscription.daysLeft), number) })
+            : t('subscription.stateText', { state: subscription.state })}
+          endContent={preview ? null : <Link href="/app/subscription" className={rowLink}>{t('subscription.open')}</Link>}
+        />
+      ) : null}
+
       {hasMeals ? (
         <VStack as="section" gap={2} className="min-w-0" aria-labelledby="today-meals">
           <Heading level={2} id="today-meals">{t('meals.title')}</Heading>
+          {model.meals.length > 0 ? <div className="flex items-center gap-3 rounded-xl bg-muted p-3">
+            <span>{t('mealProgress', { done: formatNumber(loggedMeals, number), total: formatNumber(model.meals.length, number) })}</span>
+            <svg aria-hidden="true" viewBox="0 0 40 40" className="order-first size-10 shrink-0 -rotate-90 rtl:-scale-y-100" fill="none">
+              <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="4" className="text-muted-foreground/25" />
+              <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="4" className="text-brand"
+                pathLength="100" strokeDasharray={`${100 * loggedMeals / model.meals.length} 100`} />
+            </svg>
+          </div> : null}
           {model.meals.length === 0 ? (
             <Text as="p" color="secondary">{t('meals.empty')}</Text>
           ) : (

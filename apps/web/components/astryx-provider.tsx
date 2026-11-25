@@ -4,6 +4,7 @@ import { InternationalizationProvider } from "@astryxdesign/core/i18n";
 import { LinkProvider } from "@astryxdesign/core/Link";
 import arSA from "@astryxdesign/core/locales/ar-SA.generated.js";
 import { Theme } from "@astryxdesign/core/theme";
+import { ThemeProvider, useTheme } from "next-themes";
 import { Link } from "@/i18n/navigation";
 import { dawlyyTheme } from "@/theme/built/dawlyy";
 
@@ -17,18 +18,27 @@ const messages = { "ar-SA": arSA };
 
 /**
  * Root provider for the Astryx design system (Meta, @astryxdesign/core).
- * - Theme: the built DAWLYY theme (neutral with the brand teal accent; source theme/dawlyy.theme.ts,
+ * - Theme: the built DAWLYY theme (neutral with the brand lime accent; source theme/dawlyy.theme.ts,
  *   rebuilt with `pnpm --filter @dawlyy/web theme:build`); its CSS is imported in app/globals.css.
- *   The app has no dark mode switch yet, so the mode is fixed to light to match the shadcn tokens.
+ *   Me stores the appearance preference. The default is dark.
  * - InternationalizationProvider: Astryx's own strings and RTL mirroring follow the page locale.
  *   Product copy stays in next-intl.
  * - LinkProvider: Astryx links use the locale-aware next-intl Link.
  */
-export function AstryxProvider({ locale, children }: Props) {
+export function AstryxProvider(props: Props) {
+  return (
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="dawlyy-appearance">
+      <LocalizedTheme {...props} />
+    </ThemeProvider>
+  );
+}
+
+function LocalizedTheme({ locale, children }: Props) {
+  const { theme } = useTheme();
   return (
     <InternationalizationProvider locale={astryxLocale[locale]} messages={messages}>
       <LinkProvider component={Link}>
-        <Theme theme={dawlyyTheme} mode="light">
+        <Theme theme={dawlyyTheme} mode={theme === "light" ? "light" : "dark"}>
           {children}
         </Theme>
       </LinkProvider>

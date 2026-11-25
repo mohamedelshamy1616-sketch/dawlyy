@@ -35,7 +35,7 @@ export function InboxPageView({ title, noAccess = false, numerals = 'latn', data
       {queueDenied ? <Text role="status">{t('queueAccess')}</Text> : null}
       {canViewQueues ? <VStack gap={1} as="section" aria-label={t('allQueues')}>
         <Heading level={2} className="text-base">{t('allQueues')}</Heading>
-        <HStack gap={2} wrap="wrap">{QUEUE_KINDS.map(kind => <Link key={kind} href={`/coach?queue=${kind}`} className="focus-ring inline-flex min-h-11 items-center rounded-lg px-2 text-sm underline">{dashboard(`counts.${kind}.label`)}</Link>)}</HStack>
+        <HStack gap={2} wrap="wrap">{QUEUE_KINDS.map(kind => <Link key={kind} href={`/coach?queue=${kind}`} className="focus-ring inline-flex min-h-11 items-center rounded-lg border bg-card px-3 text-base hover:bg-muted">{dashboard(`counts.${kind}.label`)}</Link>)}</HStack>
       </VStack> : null}
     </>}
   </VStack>;

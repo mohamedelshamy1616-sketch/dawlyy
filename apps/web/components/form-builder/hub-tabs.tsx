@@ -9,14 +9,17 @@ import type { FormKind } from './contracts';
 import { coachFormPath } from './contracts';
 
 /** Task 7: review queue / templates switch on a coach hub; the active tab is the `tab` search parameter. */
-export function HubTabs({ formKind, active }: { formKind: FormKind; active: 'review' | 'templates' }) {
+export function HubTabs({ formKind, active, count }: { count?: number; formKind: FormKind; active: 'review' | 'templates' }) {
   const t = useTranslations('forms');
+  const status = useTranslations('status');
   const router = useRouter();
   const base = coachFormPath(formKind);
   const siblings = (['intake', 'checkin', 'assessment'] as const).filter(kind => kind !== formKind);
   return <VStack gap={3}>
     <TabList value={active} size="lg" hasDivider onChange={value => router.push(`${base}?tab=${value === 'templates' ? 'templates' : 'review'}`)}>
-      <Tab value="review" label={t('hub.reviewQueue')} />
+      <Tab value="review" aria-label={t('hub.reviewQueue')} label={formKind === 'checkin'
+        ? `${status('needsReview')}${count === undefined ? '' : ` (${count})`}`
+        : t('hub.reviewQueue')} />
       <Tab value="templates" label={t('hub.templates')} />
     </TabList>
     <HStack gap={2} wrap="wrap">

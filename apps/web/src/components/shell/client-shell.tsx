@@ -11,7 +11,7 @@ import { Wordmark } from "./wordmark";
  */
 export function ClientShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-svh w-full flex-col overflow-x-clip">
+    <div className="client-shell flex min-h-svh w-full flex-col overflow-x-clip">
       <SkipLink />
       <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-3 py-1.5 md:px-6">
@@ -30,7 +30,8 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
       >
         {children}
       </main>
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background pb-[env(safe-area-inset-bottom)] md:hidden">
+      <div id="workout-footer" />
+      <div className="client-mobile-nav fixed inset-x-0 bottom-0 z-30 border-t bg-background/90 backdrop-blur-md pb-[env(safe-area-inset-bottom)] md:hidden">
         <ClientTabBar layout="tabs" className="mx-auto max-w-xl" />
       </div>
     </div>

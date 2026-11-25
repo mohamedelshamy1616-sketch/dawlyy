@@ -1,4 +1,6 @@
 {
+  "tabsUnread": "Unread messages: {count}",
+  "mealProgress": "Meals logged: {done} of {total}",
   "tabs": {
     "today": "Today",
     "plan": "Plan",
@@ -91,6 +93,9 @@
     }
   },
   "me": {
+    "account": "Account",
+    "activity": "Activity and progress",
+    "lightTheme": "Light appearance",
     "title": "Me",
     "subtitle": "Your progress, history and account.",
     "links": {

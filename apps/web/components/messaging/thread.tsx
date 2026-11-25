@@ -207,7 +207,7 @@ export function Thread({ initial, viewerRole, canSend, title, backHref, backLabe
       <div ref={endRef} />
       {notice ? <Text role="alert" type="supporting">{t(notice)}</Text> : null}
       {canSend ? (
-        <div className="sticky bottom-0 z-10 min-w-0 bg-background pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+        <div className="sticky [inset-block-end:calc(4rem+env(safe-area-inset-bottom))] md:[inset-block-end:0] z-10 min-w-0 bg-background pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
           <HStack gap={2} align="end" className="min-w-0">
             <div className="min-w-0 flex-1">
               <TextArea label={t('composerLabel')} isLabelHidden placeholder={t('composerPlaceholder')} value={draft} rows={2} onChange={setDraft} />

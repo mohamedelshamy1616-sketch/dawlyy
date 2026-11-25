@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@astryxdesign/core/Button";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Text } from "@astryxdesign/core/Text";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { activeClientTab, getClientDestinations } from "@/components/client-today/client-destinations";
-import { useClientModules } from "@/components/client-today/client-module-provider";
+import { useClientModules, useClientUnread } from "@/components/client-today/client-module-provider";
 
 type Props = {
   /** `tabs`: the phone bottom bar. `top`: the horizontal links in the wide-screen header. */
@@ -23,7 +23,9 @@ export function ClientTabBar({ layout, className }: Props) {
   const t = useTranslations("clientToday");
   const common = useTranslations("common");
   const pathname = usePathname();
-  const { modules, status, refresh } = useClientModules();
+  const { modules, status, refresh, numerals } = useClientModules();
+  const unread = useClientUnread();
+  const locale = useLocale();
   const tabs = getClientDestinations(modules);
   const current = activeClientTab(pathname, tabs);
 
@@ -44,6 +46,11 @@ export function ClientTabBar({ layout, className }: Props) {
               <Link
                 href={href}
                 prefetch={false}
+                transitionTypes={current && current !== key ? [
+                  tabs.findIndex(tab => tab.key === key) > tabs.findIndex(tab => tab.key === current)
+                    ? "tab-forward" : "tab-back",
+                ] : undefined}
+                aria-description={key === "coach" && unread ? t("tabsUnread", { count: new Intl.NumberFormat(locale, { numberingSystem: numerals }).format(unread) }) : undefined}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "focus-ring relative flex items-center text-sm font-medium transition-colors",
@@ -53,11 +60,12 @@ export function ClientTabBar({ layout, className }: Props) {
                   layout === "tabs" && active && "bg-transparent",
                 )}
               >
-                {layout === "tabs" && active ? <span aria-hidden className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-brand" /> : null}
                 <span aria-hidden className={cn("grid shrink-0 place-items-center", layout === "tabs" && "h-7 w-12 rounded-full transition-colors", layout === "tabs" && active && "bg-brand-soft")}>
                   <Icon className={cn("size-5", active && "text-brand")} strokeWidth={active ? 2.4 : 2} />
                 </span>
-                <span className="min-w-0 break-words text-center">{t(`tabs.${key}`)}</span>
+                <span className="min-w-0 break-words text-center">{t(`tabs.${key}`)}{key === "coach" && unread !== undefined && unread > 0 ? (
+                  <span className="ms-1 rounded-full bg-brand px-1.5 text-brand-foreground" aria-hidden>{new Intl.NumberFormat(locale, { numberingSystem: numerals }).format(unread)}</span>
+                ) : null}</span>
               </Link>
             </li>
           );

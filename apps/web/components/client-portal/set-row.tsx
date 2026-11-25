@@ -49,7 +49,7 @@ export function SetRow({ sessionUuid, item, blockId, warmup, plan, previous, sav
     }}
     onChange={number => { if (number === null || Number.isFinite(number) && number >= min && number <= max) void edit({ [field]: number }); }} />;
   const fmt = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
-  return <fieldset disabled={disabled} className="min-w-0 space-y-3 rounded-xl border bg-background p-3" data-testid="set-row">
+  return <fieldset disabled={disabled} className="min-w-0 space-y-3 rounded-xl border bg-card p-3 shadow-card-edge" data-testid="set-row">
     <legend className="px-2 text-sm font-semibold">{t('setNumber', { count: plan.setNo })}</legend>
     <Text as="p" className="break-words text-sm text-muted-foreground">{t('prescription')}: {plan.reps ?? t('asPrescribed')}{plan.load ? ` · ${fmt.format(plan.load.value)} ${t(`units.${plan.load.unit}`)}` : ''}{plan.tempo ? ` · ${t('tempo')}: ${plan.tempo}` : ''}{plan.restSec !== undefined ? ` · ${t('restSeconds', { count: plan.restSec })}` : ''}</Text>
     {previous ? <Text as="p" className="text-sm" data-testid="last-time">{t('lastTime')}: {fmt.format(previous.reps ?? 0)} {t('repUnit')} · {fmt.format(convertLoad(previous.load ?? 0, previous.loadUnit ?? unit, unit))} {t(`units.${unit}`)}</Text> : null}

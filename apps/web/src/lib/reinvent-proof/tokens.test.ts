@@ -97,14 +97,14 @@ describe('R5 token consolidation: tokens.css is the one source', () => {
     expect(theme0).toContain('--font-heading: var(--font-sans);');
   });
 
-  it('defines the brand teal once, as one light and one dark value, and aliases --brand* to them', () => {
+  it('defines the brand lime once, as one light and one dark value, and aliases --brand* to them', () => {
     for (const name of ['accent', 'on-accent', 'accent-soft', 'accent-soft-text']) {
       for (const scheme of ['light', 'dark']) {
         expect(declarations(tokens, `--dawlyy-${name}-${scheme}`), `--dawlyy-${name}-${scheme}`).toHaveLength(1);
         expect(root).toContain(`--dawlyy-${name}-${scheme}: oklch(`);
       }
     }
-    expect(root).toContain('--dawlyy-accent-light: oklch(0.45 0.09 185);');
+    expect(root).toContain('--dawlyy-accent-light: oklch(0.445 0.098 119);');
     // .dark only re-points the --brand aliases; it never declares a second palette of its own.
     expect([...declared(dark)].filter(name => name.startsWith('--dawlyy-'))).toEqual([]);
     for (const [brand, pair] of [['brand', 'accent'], ['brand-foreground', 'on-accent'], ['brand-soft', 'accent-soft'], ['brand-soft-foreground', 'accent-soft-text']] as const) {
@@ -128,12 +128,12 @@ describe('R5 token consolidation: tokens.css is the one source', () => {
     expect(root).toContain('--background: oklch(1 0 0);');
     expect(root).toContain('--primary: oklch(0.205 0 0);');
     expect(root).toContain('--destructive: oklch(0.577 0.245 27.325);');
-    expect(dark).toContain('--background: oklch(0.145 0 0);');
+    expect(dark).toContain('--background: var(--stage);');
     expect(dark).toContain('--foreground: oklch(0.985 0 0);');
     expect(dark).toContain('--primary: oklch(0.922 0 0);');
     expect(dark).toContain('--border: oklch(1 0 0 / 10%);');
     expect(dark).toContain('--input: oklch(1 0 0 / 15%);');
-    expect(dark).toContain('--sidebar-primary: oklch(0.488 0.243 264.376);');
+    expect(dark).toContain('--sidebar-primary: var(--brand);');
     // Every neutral token that .dark overrides exists in :root first, so no dark-only token appears from nowhere.
     const lightNames = declared(root);
     for (const name of declared(dark)) expect(lightNames.has(name), name).toBe(true);
@@ -174,9 +174,9 @@ describe('R5 token consolidation: the Astryx theme source holds no color of its 
     expect(used.length).toBeGreaterThanOrEqual(7);
     const known = declared(tokens);
     for (const name of used) expect(known.has(name), `${name} is declared in tokens.css`).toBe(true);
-    expect(source).toContain('"--color-accent": teal');
-    expect(source).toContain('"--color-accent-muted": tealSoft');
-    expect(source).toContain('"--color-on-accent": onTeal');
+    expect(source).toContain('"--color-accent": accentPair');
+    expect(source).toContain('"--color-accent-muted": accentSoft');
+    expect(source).toContain('"--color-on-accent": onAccent');
     expect(source).toContain('"--shadow-inset-selected": "var(--dawlyy-selected-inset)"');
   });
 

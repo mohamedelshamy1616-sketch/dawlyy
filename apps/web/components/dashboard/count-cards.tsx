@@ -16,7 +16,7 @@ export function CountCards({ counts }: { counts: CountItem[] }) {
         <ClickableCard key={kind} href={href} label={`${t(`${kind}.label`)}: ${fmt.format(count)}`} variant={count === 0 ? 'muted' : 'default'} padding={4} className="min-h-11 min-w-0">
           <VStack gap={1} className="min-w-0">
             <Text type="supporting" className="break-words">{t(`${kind}.label`)}</Text>
-            <Text type="display-2" weight="bold">{fmt.format(count)}</Text>
+            <Text type="display-2" weight="bold" className="font-sans text-4xl font-extrabold tabular-nums">{fmt.format(count)}</Text>
             <Text type="supporting" size="xsm" className="break-words">{t(`${kind}.hint`)}</Text>
           </VStack>
         </ClickableCard>

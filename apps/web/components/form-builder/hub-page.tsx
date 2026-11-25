@@ -1,4 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
+import { formModule } from '@/src/server/forms/read';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { isAllowed } from '@dawlyy/core/authz';
 import { requirePage } from '@/src/server/auth';
 import { withAuthTx } from '@/src/server/db';
@@ -28,12 +30,17 @@ export async function FormHubPage({ formKind, search }: { formKind: FormKind; se
       queue: tab === 'review' ? await listSubmissions(tx, auth, { formKind }) : null,
     };
   });
+  const canReviewCheckins = formKind === 'checkin' && isAllowed(auth, formModule(formKind), 'review');
+  if (canReviewCheckins && data.queue && firstParam(search.afterReview)) {
+    const next = data.queue.items[0];
+    if (next) redirect({ href: `/coach/checkins/review/${next.id}`, locale: await getLocale() });
+  }
   return <div className="grid min-w-0 max-w-full gap-5 [overflow-wrap:anywhere]">
     <PageHeader title={t(`hub.title.${formKind}`)} subtitle={t(`hub.subtitle.${formKind}`)} />
     <div className="flex flex-wrap gap-2">{grants.create ? <SendFormButton formKind={formKind} templates={toJson(data.sendable)} label={t(`hub.send.${formKind}`)} /> : null}</div>
-    <HubTabs formKind={formKind} active={tab} />
+    <HubTabs formKind={formKind} active={tab} count={data.queue && !data.queue.nextCursor ? data.queue.items.length : undefined} />
     {tab === 'templates' && data.page
       ? <TemplateList key={JSON.stringify([kind, archived, q])} initial={toJson<FormPage>(data.page)} formKind={formKind} grants={grants} archiveCanEdit={isAllowed(auth, 'forms', 'edit')} filters={{ kind, archived, q }} />
-      : data.queue ? <ReviewQueue initial={toJson<Queue>(data.queue)} formKind={formKind} /> : null}
+      : data.queue ? <ReviewQueue canReviewCheckins={canReviewCheckins} initial={toJson<Queue>(data.queue)} formKind={formKind} /> : null}
   </div>;
 }

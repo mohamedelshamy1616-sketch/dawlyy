@@ -15,6 +15,27 @@ export type ClientModuleState = {
   seed: (value: { userId: string } & ClientBootstrap) => void;
 };
 
+type UnreadSnapshot = { userId: string; count: number };
+const UnreadContext = createContext<{
+  snapshot: UnreadSnapshot | null;
+  publish: (snapshot: UnreadSnapshot | null) => void;
+}>({ snapshot: null, publish: () => {} });
+
+export function ClientUnreadSeed({ userId, count }: UnreadSnapshot) {
+  const { publish } = useContext(UnreadContext);
+  useEffect(() => {
+    publish({ userId, count });
+    return () => publish(null);
+  }, [publish, userId, count]);
+  return null;
+}
+
+export function useClientUnread() {
+  const { snapshot } = useContext(UnreadContext);
+  const { userId, modules } = useContext(ModuleContext);
+  return modules?.messages && snapshot?.userId === userId ? snapshot?.count : undefined;
+}
+
 const noop = async () => {};
 const ModuleContext = createContext<ClientModuleState>({
   status: 'loading', modules: null, numerals: 'latn', userId: null, refreshing: false, refresh: noop, seed: () => {},
@@ -40,6 +61,8 @@ type Held = { userId: string | null; modules: ClientModules | null; numerals: 'l
  * key) and is replaced whenever the signed-in user changes.
  */
 export function ClientModuleProvider({ children, initial }: { children: React.ReactNode; initial?: ({ userId: string } & ClientBootstrap) | null }) {
+  const [snapshot, publish] = useState<UnreadSnapshot | null>(null);
+  const unread = useMemo(() => ({ snapshot, publish }), [snapshot]);
   const [held, setHeld] = useState<Held>(() => ({ userId: initial?.userId ?? null, modules: initial?.modules ?? null, numerals: initial?.numerals ?? 'latn' }));
   const [failed, setFailed] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -85,7 +108,7 @@ export function ClientModuleProvider({ children, initial }: { children: React.Re
     status: held.modules ? 'ready' : failed ? 'error' : 'loading',
     modules: held.modules, numerals: held.numerals, userId: held.userId, refreshing, refresh, seed,
   }), [held, failed, refreshing, refresh, seed]);
-  return <ModuleContext.Provider value={value}>{children}</ModuleContext.Provider>;
+  return <ModuleContext.Provider value={value}><UnreadContext.Provider value={unread}>{children}</UnreadContext.Provider></ModuleContext.Provider>;
 }
 
 /** R2a: server-rendered bootstrap handed to the provider by the authenticated layout and every client hub. */

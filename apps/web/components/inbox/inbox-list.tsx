@@ -35,10 +35,10 @@ export function InboxList({ data, numerals = 'latn' }: { data: InboxData; numera
           <VStack gap={1} className="min-w-0 flex-1 basis-48">
             <HStack gap={2} wrap="wrap" vAlign="center">
               <Link href={`/coach/clients/${item.client.id}`} className="focus-ring inline-flex min-h-11 min-w-0 items-center break-words font-semibold">{item.client.displayName}</Link>
-              <Text type="supporting" size="xsm" className="rounded-full bg-muted px-2 py-1">{status(item.reasons[0]?.code === 'checkin_overdue' ? 'overdue' : item.reasons[0]?.code === 'subscription_ended' ? 'expired' : statuses[item.primaryAction])}</Text>
+              <Text type="supporting" size="xsm" className="inline-flex items-center gap-2 rounded-full bg-muted px-2 py-1 before:size-2 before:rounded-full before:bg-current">{status(item.reasons[0]?.code === 'checkin_overdue' ? 'overdue' : item.reasons[0]?.code === 'subscription_ended' ? 'expired' : statuses[item.primaryAction])}</Text>
             </HStack>
             <Text weight="semibold" className="break-words">{item.reasons[0] ? reasonText(item.reasons[0]) : ''}</Text>
-            <Text type="supporting" size="xsm" className="break-words">{item.client.code}{item.reasons.length > 1 ? ` · ${item.reasons.slice(1).map(reasonText).join(' · ')}` : ''}</Text>
+            <Text type="supporting" size="xsm" className="break-words"><bdi dir="ltr">{item.client.code}</bdi>{item.reasons.length > 1 ? ` · ${item.reasons.slice(1).map(reasonText).join(' · ')}` : ''}</Text>
           </VStack>
           <InboxAction item={item} />
         </HStack>

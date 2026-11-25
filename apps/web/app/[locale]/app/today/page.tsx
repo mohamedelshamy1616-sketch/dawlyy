@@ -2,7 +2,7 @@ import { connection } from 'next/server';
 import { setRequestLocale } from 'next-intl/server';
 import { requirePage } from '@/src/server/auth';
 import { loadTodayPageData, type TodayPageData } from '@/src/server/client-today/page-data';
-import { ClientModuleSeed } from '@/components/client-today/client-module-provider';
+import { ClientModuleSeed, ClientUnreadSeed } from '@/components/client-today/client-module-provider';
 import { HubError } from '@/components/client-today/client-hubs';
 import { TodayActions } from '@/components/client-today/today-actions';
 
@@ -22,6 +22,7 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
   return (
     <>
       <ClientModuleSeed userId={data.userId} {...data.bootstrap} />
+      {data.bootstrap.modules.messages ? <ClientUnreadSeed userId={data.userId} count={data.today.unreadMessages} /> : null}
       <TodayActions today={data.today} nutrition={data.nutrition} logs={data.logs} locale={locale === 'ar' ? 'ar' : 'en'} bootstrap={data.bootstrap} />
     </>
   );

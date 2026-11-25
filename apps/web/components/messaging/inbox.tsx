@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Badge } from '@astryxdesign/core/Badge';
 import { Button } from '@astryxdesign/core/Button';
 import { Heading } from '@astryxdesign/core/Heading';
 import { HStack } from '@astryxdesign/core/HStack';
@@ -60,7 +59,7 @@ export function Inbox({ initial }: { initial: InboxPage }) {
               <Link href={`/coach/messages/${item.id}`} className="flex min-h-14 min-w-0 flex-col gap-1 py-3">
                 <HStack gap={2} align="center" wrap="wrap" className="min-w-0">
                   <Text weight="semibold" className="min-w-0 break-words">{item.clientName ?? t('unnamedClient')}</Text>
-                  {item.unread > 0 ? <Badge label={t('unreadCount', { count: item.unread })} variant="blue" /> : null}
+                  {item.unread > 0 ? <span className="rounded-full bg-brand-soft px-2 py-1 font-medium text-brand-soft-foreground">{t('unreadCount', { count: item.unread })}</span> : null}
                 </HStack>
                 <Text type="supporting" className="min-w-0 break-words">{item.lastMessagePreview || t('noPreview')}</Text>
                 <Text type="supporting"><span suppressHydrationWarning>{when(item.lastMessageAt)}</span></Text>
