@@ -177,7 +177,14 @@ describe('complete policy matrix', () => {
   it('S00 public all actors all commands all columns baseline: exact policies and implemented coverage', async () => {
     const actual = await svc((tx) => q<{ name: string }>(tx, sql`select p.polname as name from pg_policy p join pg_class c on c.oid = p.polrelid where c.relnamespace = 'public'::regnamespace order by 1`));
     const required = POLICY_CONTRACTS.map((p) => p.name).sort();
-    expect(actual.map((p) => p.name).sort()).toEqual(required);
+    // Migrations 0009/0010 pt_* policies: exact names; their expressions are pinned by C02 in security.catalog.test.ts.
+    const ptPolicies = [
+      'pt_ledger_entries_read_select', 'pt_ledger_entries_tenant_guard', 'pt_ledger_entries_write_insert',
+      'pt_receipt_actions_read_select', 'pt_receipt_actions_tenant_guard', 'pt_receipt_actions_write_insert',
+      'pt_renewal_requests_read_select', 'pt_renewal_requests_tenant_guard', 'pt_renewal_requests_write_insert', 'pt_renewal_requests_write_update',
+      'pt_visits_read_select', 'pt_visits_tenant_guard', 'pt_visits_write_insert',
+    ];
+    expect(actual.map((p) => p.name).sort()).toEqual([...required, ...ptPolicies].sort());
     expect([...new Set(matrix.flatMap((c) => c.covers.map((p) => p.slice(7))))].sort()).toEqual(required);
     for (const table of tables) for (const command of ['select', 'insert', 'update', 'delete']) expect(matrix.some((c) => c.table === table && c.command === command)).toBe(true);
     expect(POLICY_CONTRACTS.filter((p) => p.impliedBy).map((p) => [p.name, p.impliedBy])).toEqual([

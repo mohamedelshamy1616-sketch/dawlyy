@@ -97,7 +97,7 @@ const checks: { table: string; name: string; expression: string }[] = [
   { table: 'pt_renewal_requests', name: 'pt_renewal_state', expression: "(status = 'open' AND handled_at IS NULL AND handled_by IS NULL) OR (status = 'handled' AND handled_at IS NOT NULL AND handled_by IS NOT NULL)" },
   { table: 'pt_renewal_requests', name: 'pt_renewal_counts', expression: 'delivered >= 0 AND balance >= 0 AND balance <= 2' },
   { table: 'pt_receipt_actions', name: 'pt_receipt_actions_kind_check', expression: "kind IN ('view','confirm','dispute')" },
-  { table: 'pt_receipt_actions', name: 'pt_receipt_actions_note_check', expression: "note IS NULL OR (length(note) <= 500 AND kind <> 'view')" },
+  { table: 'pt_receipt_actions', name: 'pt_receipt_actions_check', expression: "note IS NULL OR (length(note) <= 500 AND kind <> 'view')" },
   { table: 'pt_ledger_entries', name: 'pt_entry_shape', expression: "(kind = 'debit' AND delta = (0 - 1) AND visit_id IS NOT NULL AND reason IS NULL) OR (reason IS NOT NULL AND length(btrim(reason)) >= 1 AND length(btrim(reason)) <= 500 AND ((kind = 'credit' AND delta >= 0 AND delta <= 1000 AND visit_id IS NULL) OR (kind = 'correction' AND delta = 1 AND visit_id IS NOT NULL)))" },
   // 0008: B bounds all four void reasons.
   ...['meal_logs','metric_entries','measurement_sets','workout_sessions'].map(table=>({table,name:`${table}_void_reason_ck`,expression:'length(void_reason) <= 500'})),

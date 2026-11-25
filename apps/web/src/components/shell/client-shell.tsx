@@ -29,8 +29,8 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
         className="mx-auto w-full min-w-0 max-w-xl flex-1 px-4 pt-6 pb-28 outline-none md:max-w-5xl md:px-6 md:pb-10"
       >
         {children}
+        <div id="workout-footer" className="sticky bottom-0 z-20 -mx-4 md:-mx-6" />
       </main>
-      <div id="workout-footer" />
       <div className="client-mobile-nav fixed inset-x-0 bottom-0 z-30 border-t bg-background/90 backdrop-blur-md pb-[env(safe-area-inset-bottom)] md:hidden">
         <ClientTabBar layout="tabs" className="mx-auto max-w-xl" />
       </div>

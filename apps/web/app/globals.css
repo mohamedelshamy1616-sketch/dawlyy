@@ -87,7 +87,7 @@ html[dir="rtl"] [data-astryx-theme] {
   padding-block-end: 1rem;
   scroll-padding-block: 6rem 1rem;
 }
-.client-shell:has(#workout-footer > *) > :is(header, #workout-footer, .client-mobile-nav) {
+.client-shell:has(#workout-footer > *) > :is(header, .client-mobile-nav) {
   flex-shrink: 0;
 }
 .client-shell:has(#workout-footer > *) > .client-mobile-nav {
