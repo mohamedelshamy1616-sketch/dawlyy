@@ -18,10 +18,10 @@ export function clientPackages(tx: Tx, clientId: string) {
 // Prefix sums preserve the original receipt even if another visit or correction is posted.
 function history(subscription?: string) {
   return sql`with history as (
-  select e.visit_id, e.kind, to_char(v.closed_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as date,
+  select e.visit_id, e.subscription_id, e.kind, to_char(v.closed_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as date,
     (sum(e.delta) over w)::int as balance,
     (count(*) filter (where e.kind='debit') over w)::int as session
-  from public.pt_ledger_entries e left join public.pt_visits v using (tenant_id, visit_id)
+  from public.pt_ledger_entries e left join public.pt_visits v using (tenant_id, subscription_id, visit_id)
   ${subscription ? sql`where e.subscription_id=${subscription}` : sql``}
   window w as (partition by e.subscription_id order by e.position rows unbounded preceding)
 )`;
@@ -31,9 +31,9 @@ export function myReceipts(tx: Tx, auth: AuthContext) {
   if (auth.role !== 'client') throw forbidden();
   return tx.execute<ClientReceipt>(sql`${history()}
     select h.visit_id as visit,h.date,h.balance,h.session,a.kind as decision,
-      exists(select 1 from public.pt_receipt_actions where visit_id=h.visit_id and kind='view') as viewed,
-      exists(select 1 from public.pt_ledger_entries where visit_id=h.visit_id and kind='correction') as corrected
-    from history h left join public.pt_receipt_actions a on a.visit_id=h.visit_id and a.kind<>'view'
+      exists(select 1 from public.pt_receipt_actions where subscription_id=h.subscription_id and visit_id=h.visit_id and kind='view') as viewed,
+      exists(select 1 from public.pt_ledger_entries where subscription_id=h.subscription_id and visit_id=h.visit_id and kind='correction') as corrected
+    from history h left join public.pt_receipt_actions a on a.subscription_id=h.subscription_id and a.visit_id=h.visit_id and a.kind<>'view'
     where h.kind='debit' order by h.date::timestamptz desc, h.visit_id`);
 }
 
@@ -41,9 +41,9 @@ export function disputes(tx: Tx, auth: AuthContext) {
   if (auth.role !== 'owner') throw forbidden();
   return tx.execute<PtDispute>(sql`${history()} select h.visit_id as visit,h.date,h.balance,h.session,a.note,
     coalesce(c.display_name, concat_ws(' ', c.first_name,c.last_name)) as name
-    from history h join public.pt_receipt_actions a on a.visit_id=h.visit_id and a.kind='dispute'
+    from history h join public.pt_receipt_actions a on a.subscription_id=h.subscription_id and a.visit_id=h.visit_id and a.kind='dispute'
     join public.clients c on c.id=a.client_id where h.kind='debit' and not exists
-    (select 1 from public.pt_ledger_entries where visit_id=h.visit_id and kind='correction')
+    (select 1 from public.pt_ledger_entries where subscription_id=h.subscription_id and visit_id=h.visit_id and kind='correction')
     order by a.created_at,h.visit_id`);
 }
 
@@ -60,7 +60,7 @@ export async function closeVisit(tx: Tx, auth: AuthContext, subscription: string
   await tx.execute(sql`insert into public.pt_visits(tenant_id,client_id,subscription_id,visit_id)
     select tenant_id,client_id,id,${visit} from public.subscriptions where id=${subscription}
     and (app.is_owner() or client_id in (select app.assigned_client_ids()))
-    on conflict (tenant_id,visit_id) do nothing`);
+    on conflict (tenant_id,subscription_id,visit_id) do nothing`);
   const [receipt] = await tx.execute<PtReceipt>(sql`${history(subscription)} select h.visit_id as visit,h.date,h.balance,h.session
     from history h where h.kind='debit' and h.visit_id=${visit}`);
   if (!receipt) throw notFound();
@@ -71,9 +71,15 @@ export async function respond(tx: Tx, auth: AuthContext, visit: string, kind: 'v
   if (auth.role !== 'client') throw forbidden();
   const [row] = await tx.execute(sql`select visit_id from public.pt_visits where visit_id=${visit}`);
   if (!row) throw notFound();
-  await tx.execute(sql`insert into public.pt_receipt_actions(tenant_id,client_id,subscription_id,visit_id,kind,note)
-    select tenant_id,client_id,subscription_id,visit_id,${kind},${note ?? null} from public.pt_visits where visit_id=${visit}
-    on conflict (tenant_id,visit_id,kind) do nothing`);
+  const wanted = note ?? null;
+  const inserted = await tx.execute(sql`insert into public.pt_receipt_actions(tenant_id,client_id,subscription_id,visit_id,kind,note)
+    select tenant_id,client_id,subscription_id,visit_id,${kind},${wanted} from public.pt_visits where visit_id=${visit}
+    on conflict (tenant_id,subscription_id,visit_id,kind) do nothing returning kind`);
+  if (inserted.length) return;
+  // Replay: identical is a no-op, but a changed note must not look recorded.
+  const [existing] = await tx.execute<{ note: string | null }>(sql`select note from public.pt_receipt_actions
+    where visit_id=${visit} and kind=${kind}`);
+  if (!existing || existing.note !== wanted) throw conflict();
 }
 
 export async function correct(tx: Tx, auth: AuthContext, visit: string, reason: string) {

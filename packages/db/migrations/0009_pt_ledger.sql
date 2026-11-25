@@ -8,7 +8,9 @@ create table public.pt_visits (
   visit_id uuid not null,
   closed_at timestamptz not null default clock_timestamp(),
   closed_by uuid not null default app.uid(),
-  primary key (tenant_id, visit_id),
+  primary key (tenant_id, subscription_id, visit_id),
+  -- A visit id stays unambiguous inside a tenant, so a second subscription claiming it conflicts instead of forking.
+  constraint pt_visit_id_uq unique (tenant_id, visit_id),
   constraint pt_visit_scope_uq unique (tenant_id, client_id, subscription_id, visit_id),
   constraint pt_visit_sub_fk foreign key (tenant_id, client_id, subscription_id) references public.subscriptions(tenant_id, client_id, id) on delete cascade
 );
@@ -26,13 +28,13 @@ create table public.pt_ledger_entries (
   approved_by uuid not null default app.uid(),
   created_at timestamptz not null default clock_timestamp(),
   constraint pt_entry_order_uq unique (subscription_id, position),
-  constraint pt_visit_kind_uq unique (tenant_id, visit_id, kind),
+  constraint pt_visit_kind_uq unique (tenant_id, subscription_id, visit_id, kind),
   constraint pt_entry_sub_fk foreign key (tenant_id, client_id, subscription_id) references public.subscriptions(tenant_id, client_id, id) on delete cascade,
   constraint pt_entry_visit_fk foreign key (tenant_id, client_id, subscription_id, visit_id) references public.pt_visits(tenant_id, client_id, subscription_id, visit_id) on delete cascade,
   constraint pt_entry_shape check (
     (kind = 'debit' and delta = (0 - 1) and visit_id is not null and reason is null)
     or (reason is not null and length(btrim(reason)) >= 1 and length(btrim(reason)) <= 500 and (
-      (kind = 'credit' and delta >= 0 and visit_id is null)
+      (kind = 'credit' and delta >= 0 and delta <= 1000 and visit_id is null)
       or (kind = 'correction' and delta = 1 and visit_id is not null))))
 );
 --> statement-breakpoint
@@ -46,11 +48,11 @@ create table public.pt_receipt_actions (
   kind text not null check (kind in ('view','confirm','dispute')),
   note text check (note is null or (length(note) <= 500 and kind <> 'view')),
   created_at timestamptz not null default clock_timestamp(),
-  primary key (tenant_id, visit_id, kind),
+  primary key (tenant_id, subscription_id, visit_id, kind),
   constraint pt_action_visit_fk foreign key (tenant_id, client_id, subscription_id, visit_id) references public.pt_visits(tenant_id, client_id, subscription_id, visit_id) on delete cascade
 );
 --> statement-breakpoint
-create unique index pt_one_decision on public.pt_receipt_actions(tenant_id,visit_id) where kind <> 'view';
+create unique index pt_one_decision on public.pt_receipt_actions(tenant_id,subscription_id,visit_id) where kind <> 'view';
 --> statement-breakpoint
 alter table public.pt_visits enable row level security;
 --> statement-breakpoint
@@ -99,14 +101,14 @@ begin
       (new.kind = 'debit' and new.client_id in (select app.assigned_client_ids()))) is not true then
     return new;
   end if;
-  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(new.subscription_id::text, 9));
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(new.tenant_id::text || ':' || new.subscription_id::text, 9));
   select coalesce(max(position), 0), coalesce(sum(delta), 0) into last_position, remaining
     from public.pt_ledger_entries where subscription_id = new.subscription_id;
   if (last_position = 0) <> (new.kind = 'credit') or remaining + new.delta < 0 then
     raise exception 'pt balance conflict' using errcode = 'P0001', detail = 'pt:balance';
   end if;
   if new.kind = 'correction' and not exists (select 1 from public.pt_receipt_actions
-      where tenant_id = new.tenant_id and visit_id = new.visit_id and kind = 'dispute') then
+      where tenant_id = new.tenant_id and subscription_id = new.subscription_id and visit_id = new.visit_id and kind = 'dispute') then
     raise exception 'pt dispute required' using errcode = 'P0001', detail = 'pt:dispute';
   end if;
   new.position := last_position + 1;

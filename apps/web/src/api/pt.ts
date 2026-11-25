@@ -22,7 +22,7 @@ export const ptRouter = router();
 ptRouter.use('*', requireAuthMiddleware);
 ptRouter.use('*', requireStaffRole);
 ptRouter.openapi(createRoute({ method: 'post', path: '/subscriptions/{subscriptionId}/opening-credit', request: {
-  params: z.object({ subscriptionId: z.uuid() }), body: body(z.object({ count: z.int().min(0).max(2147483647), reason }).strict()),
+  params: z.object({ subscriptionId: z.uuid() }), body: body(z.object({ count: z.int().min(0).max(1000), reason }).strict()),
 }, responses }), async c => {
   const auth = c.get('auth'), { count, reason } = c.req.valid('json');
   await withAuthTx(auth, tx => openPackage(tx, auth, c.req.valid('param').subscriptionId, count, reason)).catch(ledgerError);

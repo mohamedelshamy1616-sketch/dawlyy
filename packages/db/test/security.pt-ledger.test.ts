@@ -14,7 +14,7 @@ async function fixture(count?: number) {
   const open = (amount: number) => as(f.o1, tx => tx.execute(sql`insert into pt_ledger_entries
     (tenant_id,client_id,subscription_id,kind,delta,reason) values(${scope},'credit',${amount},'Desk count')`));
   const close = (visit: string) => as(f.s1, tx => tx.execute(sql`insert into pt_visits
-    (tenant_id,client_id,subscription_id,visit_id) values(${scope},${visit}) on conflict (tenant_id,visit_id) do nothing`));
+    (tenant_id,client_id,subscription_id,visit_id) values(${scope},${visit}) on conflict (tenant_id,subscription_id,visit_id) do nothing`));
   const entries = () => as(f.ua, tx => q(tx, sql`select kind,delta,visit_id from pt_ledger_entries
     where subscription_id=${f.subA} order by position`));
   if (count !== undefined) await open(count);
@@ -42,6 +42,24 @@ describe('PT ledger under pinned memberships', () => {
     await close(b); await close(a);
     expect(await entries()).toEqual([{ kind: 'credit', delta: 2, visit_id: null },
       { kind: 'debit', delta: -1, visit_id: a }, { kind: 'debit', delta: -1, visit_id: b }]);
+  });
+  it('conflicts when a visit id already belongs to another subscription in the tenant, and the owner close still works', async () => {
+    const { f, scope, close, entries } = await fixture(2);
+    const other = sql`${f.t1},${f.clientB},${f.subB}`;
+    await as(f.o1, tx => tx.execute(sql`insert into pt_ledger_entries(tenant_id,client_id,subscription_id,kind,delta,reason)
+      values(${other},'credit',2,'Desk count')`));
+    const closeOther = (visit: string) => as(f.o1, tx => tx.execute(sql`insert into pt_visits
+      (tenant_id,client_id,subscription_id,visit_id) values(${other},${visit}) on conflict (tenant_id,subscription_id,visit_id) do nothing`));
+    const mine = randomUUID(), squat = randomUUID();
+    await close(mine);
+    await expectCode(closeOther(mine), '23505');
+    await closeOther(squat);
+    await expectCode(close(squat), '23505');
+    await close(mine);
+    await close(randomUUID());
+    expect((await entries()).map(e => [e.kind, e.visit_id === mine])).toEqual([['credit', false], ['debit', true], ['debit', false]]);
+    expect(await as(f.o1, tx => q(tx, sql`select subscription_id from pt_visits where visit_id=${mine}`))).toEqual([{ subscription_id: f.subA }]);
+    expect(scope).toBeDefined();
   });
   it('requires an opening, rejects duplicate funding, and rolls back the losing last-credit visit', async () => {
     const { f, open, close, entries } = await fixture();

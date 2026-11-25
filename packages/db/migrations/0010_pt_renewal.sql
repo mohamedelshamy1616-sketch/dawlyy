@@ -46,7 +46,7 @@ begin
   if new.tenant_id is distinct from app.tenant_id() or (app.is_client() and new.client_id = app.client_id()) is not true then
     return new;
   end if;
-  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(new.subscription_id::text, 9));
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(new.tenant_id::text || ':' || new.subscription_id::text, 9));
   select count(*) filter (where kind = 'credit'), coalesce(sum(delta), 0),
       count(*) filter (where kind = 'debit') - count(*) filter (where kind = 'correction')
     into funded, remaining, done

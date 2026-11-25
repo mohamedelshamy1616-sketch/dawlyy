@@ -10,7 +10,7 @@ import { clientColumns } from '../src/client-columns';
 import { buildFixture, truncateAll } from './fixtures';
 import { buildPrivateFixture } from './factories';
 import { as, svc, q, one, withProbe } from './helpers';
-import { TABLE_GRANTS, POLICY_CONTRACTS, makeRow, insertRow, type MatrixTable } from './matrix';
+import { TABLE_GRANTS, PT_TABLE_GRANTS, POLICY_CONTRACTS, makeRow, insertRow, type MatrixTable } from './matrix';
 
 const root = fileURLToPath(new URL('../../..', import.meta.url));
 const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions', 'pt_renewal_requests'];
@@ -468,6 +468,23 @@ describe('security catalog', () => {
     }
     expect(await svc((tx) => q(tx, sql`select c.relname from pg_class c where c.relnamespace in ('public'::regnamespace,'app'::regnamespace) and c.relkind='S' and case when c.relkind='S' then has_sequence_privilege('dawlyy_rls',c.oid,'USAGE,SELECT,UPDATE') else false end`))).toEqual([]);
     expect(await svc((tx) => q(tx, sql`select c.relname from pg_class c where c.oid in ('app.audit_actions'::regclass,'app.event_types'::regclass) and (has_table_privilege('dawlyy_rls',c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') or has_any_column_privilege('dawlyy_rls',c.oid,'SELECT,INSERT,UPDATE,REFERENCES'))`))).toEqual([]);
+  });
+  for (const [table, grants] of Object.entries(PT_TABLE_GRANTS)) it(`C04pt ${table} dawlyy_rls table and column grants migrated`, async () => {
+    const columns = await svc((tx) => q<{ name: string; ins: boolean; upd: boolean; sel: boolean }>(tx, sql`select attname::text as name,
+      has_column_privilege('dawlyy_rls',attrelid,attnum,'INSERT') as ins, has_column_privilege('dawlyy_rls',attrelid,attnum,'UPDATE') as upd,
+      has_column_privilege('dawlyy_rls',attrelid,attnum,'SELECT') as sel from pg_attribute
+      where attrelid=${'public.' + table}::regclass and attnum>0 and not attisdropped`));
+    expect(columns.filter((c) => c.ins).map((c) => c.name).sort()).toEqual([...grants.insert].sort());
+    expect(columns.filter((c) => c.upd).map((c) => c.name).sort()).toEqual([...grants.update].sort());
+    expect(columns.every((c) => c.sel)).toBe(true);
+    const [table_level] = await svc((tx) => q<Record<string, boolean>>(tx, sql`select has_table_privilege('dawlyy_rls',${'public.' + table},'SELECT') as s,
+      has_table_privilege('dawlyy_rls',${'public.' + table},'INSERT') as i, has_table_privilege('dawlyy_rls',${'public.' + table},'UPDATE') as u,
+      has_table_privilege('dawlyy_rls',${'public.' + table},'DELETE') as d, has_table_privilege('dawlyy_rls',${'public.' + table},'TRUNCATE,REFERENCES,TRIGGER') as o`));
+    expect(table_level).toEqual({ s: grants.table.includes('S'), i: false, u: false, d: false, o: false });
+  });
+  for (const table of ['subscriptions', 'clients'] as const) it(`C04del ${table} has no DELETE grant for dawlyy_rls`, async () => {
+    expect(TABLE_GRANTS[table]).not.toContain('D');
+    expect(await svc((tx) => q(tx, sql`select 1 from pg_class where oid=${'public.' + table}::regclass and has_table_privilege('dawlyy_rls',oid,'DELETE')`))).toEqual([]);
   });
   it('C05 app/public svc SELECT effective denial and PUBLIC ACL migrated', async () => {
     const roles = await svc((tx) => q<{ name: string }>(tx, sql`select rolname as name from pg_roles where rolname in ('dawlyy_app','anon','authenticated','service_role') or (rolname <> 'dawlyy_rls' and pg_has_role('dawlyy_app',oid,'MEMBER'))`));

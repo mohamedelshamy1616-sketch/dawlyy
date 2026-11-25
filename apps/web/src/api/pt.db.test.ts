@@ -28,6 +28,20 @@ describe('PT receipt HTTP contract against the real ledger', () => {
     expect(await close(id)).toEqual(a);
     expect((await close(randomUUID())).status).toBe(409);
   });
+  it('answers a replayed receipt response only when it is identical, and rejects a changed note', async () => {
+    expect((await open(2)).status).toBe(200);
+    const id = randomUUID(); expect((await close(id)).status).toBe(200);
+    const action = (kind: string, body = {}) => post(`receipts/${id}/${kind}`, body, f.a.userId);
+    expect((await action('dispute', { note: 'Wrong session' })).status).toBe(200);
+    expect((await action('dispute', { note: 'Wrong session' })).status).toBe(200);
+    expect((await action('dispute', { note: 'Something else' })).status).toBe(409);
+    expect((await action('dispute')).status).toBe(409);
+    expect((await action('confirm')).status).toBe(409);
+  });
+  it('rejects an opening credit above 1000', async () => {
+    expect((await open(1001)).status).toBe(400);
+    expect((await open(1000)).status).toBe(200);
+  });
   it('returns 409 before opening and with a verified zero balance', async () => {
     const id = randomUUID();
     expect((await close(id)).status).toBe(409); expect((await open(0)).status).toBe(200);

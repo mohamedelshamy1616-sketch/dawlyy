@@ -22,6 +22,17 @@ export const TABLE_GRANTS = {
   notification_deliveries: 'S', push_subscriptions: 'SIUD', idempotency_keys: 'SID',
   media: 'SIUD', audit_log: 'S', events: 'S', job_runs: 'S',
 } as const;
+/**
+ * 0009/0010 PT tables, kept apart from TABLE_GRANTS because the generic matrix would also demand
+ * generated rows for them; their behaviour has dedicated tests. Grants are column-level, so the
+ * table-level privilege is only SELECT and the writable columns are listed from the migration SQL.
+ */
+export const PT_TABLE_GRANTS = {
+  pt_visits: { table: 'S', insert: ['tenant_id', 'client_id', 'subscription_id', 'visit_id'], update: [] },
+  pt_ledger_entries: { table: 'S', insert: ['tenant_id', 'client_id', 'subscription_id', 'visit_id', 'kind', 'delta', 'reason'], update: [] },
+  pt_receipt_actions: { table: 'S', insert: ['tenant_id', 'client_id', 'subscription_id', 'visit_id', 'kind', 'note'], update: [] },
+  pt_renewal_requests: { table: 'S', insert: ['tenant_id', 'client_id', 'subscription_id'], update: ['status'] },
+} as const satisfies Record<string, { table: string; insert: readonly string[]; update: readonly string[] }>;
 /** doc §13.4 S: tables in the independent security matrix. */
 export type MatrixTable = keyof typeof TABLE_GRANTS;
 /** doc §13.4 S01: all required baseline actors, including both inactive pins. */

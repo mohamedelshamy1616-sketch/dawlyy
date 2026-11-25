@@ -2,7 +2,7 @@
 import { VStack } from '@astryxdesign/core/VStack';
 import { Text } from '@astryxdesign/core/Text';
 import { Heading } from '@astryxdesign/core/Heading';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { useClientModules } from '@/components/client-today/client-module-provider';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -26,11 +26,14 @@ import { ExerciseInfo } from './program-view';
 import { HistoryDrawer } from './exercise-history';
 import { FinishSummary } from './finish-summary';
 
+const noopSubscribe = () => () => {};
+const footerElement = () => document.getElementById('workout-footer');
+const serverFooter = () => null;
+
 /** Task 5: session renders entirely from its owner outbox; network refresh is optional. */
 export function WorkoutScreen({ sessionId, initial }: { sessionId: string; initial?: SessionDetail }) {
   const { numerals } = useClientModules();
-  const [footer, setFooter] = useState<HTMLElement | null>(null);
-  useEffect(() => { setFooter(document.getElementById('workout-footer')); }, []);
+  const footer = useSyncExternalStore(noopSubscribe, footerElement, serverFooter);
   const t = useTranslations('workout'); const status = useTranslations('status'); const locale = useLocale(); const { db, sync } = useOutbox();
   const [ready, setReady] = useState(false); const [error, setError] = useState(false); const [deadline, setDeadline] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<'completed' | 'partially_completed' | 'abandoned'>('completed'); const [finishing, setFinishing] = useState(false);
