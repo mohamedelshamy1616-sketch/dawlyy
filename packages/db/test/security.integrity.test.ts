@@ -94,6 +94,8 @@ for (const table of ['meal_logs','measurement_sets'] as const) {
 // 0008: E one flag per scoped source/category and persisted evidence hash.
 unique('red_flags','red_flags_source_category_uq','tenant_id,source,source_id,category,evidence_hash');
 const checks: { table: string; name: string; expression: string }[] = [
+  { table: 'pt_renewal_requests', name: 'pt_renewal_state', expression: "(status = 'open' AND handled_at IS NULL AND handled_by IS NULL) OR (status = 'handled' AND handled_at IS NOT NULL AND handled_by IS NOT NULL)" },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_counts', expression: 'delivered >= 0 AND balance >= 0 AND balance <= 2' },
   { table: 'pt_receipt_actions', name: 'pt_receipt_actions_kind_check', expression: "kind IN ('view','confirm','dispute')" },
   { table: 'pt_receipt_actions', name: 'pt_receipt_actions_note_check', expression: "note IS NULL OR (length(note) <= 500 AND kind <> 'view')" },
   { table: 'pt_ledger_entries', name: 'pt_entry_shape', expression: "(kind = 'debit' AND delta = (0 - 1) AND visit_id IS NOT NULL AND reason IS NULL) OR (reason IS NOT NULL AND length(btrim(reason)) >= 1 AND length(btrim(reason)) <= 500 AND ((kind = 'credit' AND delta >= 0 AND visit_id IS NULL) OR (kind = 'correction' AND delta = 1 AND visit_id IS NOT NULL)))" },
@@ -174,7 +176,7 @@ function update(table:MatrixTable,row:Record<string,unknown>,values:Record<strin
 
 describe('native integrity',()=>{
   // PT inserts have dedicated behavioral tests. Include every new object in the exact catalog comparisons.
-  const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions'];
+  const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions', 'pt_renewal_requests'];
   const scoped = ['tenant_id', 'client_id', 'subscription_id'];
   const visit = [...scoped, 'visit_id'];
   const catalogFks = [...foreignKeys, ...ptTables.map(table => ({
@@ -184,6 +186,7 @@ describe('native integrity',()=>{
     ['pt_ledger_entries','pt_entry_sub_fk',scoped,'subscriptions',['tenant_id','client_id','id']],
     ['pt_ledger_entries','pt_entry_visit_fk',visit,'pt_visits',visit],
     ['pt_receipt_actions','pt_action_visit_fk',visit,'pt_visits',visit],
+    ['pt_renewal_requests','pt_renewal_sub_fk',scoped,'subscriptions',['tenant_id','client_id','id']],
   ] as const).map(([table,name,columns,parent,targets]) => ({ table, name, columns, parent, targets, action: 'c', clear: [] }))];
   const catalogUniques = [...uniques, ...([
     ['pt_visits','pt_visits_pkey',['tenant_id','visit_id'],null],
@@ -194,6 +197,8 @@ describe('native integrity',()=>{
     ['pt_ledger_entries','pt_open_once',['subscription_id'],"kind = 'credit'"],
     ['pt_receipt_actions','pt_receipt_actions_pkey',['tenant_id','visit_id','kind'],null],
     ['pt_receipt_actions','pt_one_decision',['tenant_id','visit_id'],"kind <> 'view'"],
+    ['pt_renewal_requests','pt_renewal_requests_pkey',['id'],null],
+    ['pt_renewal_requests','pt_renewal_open_once',['tenant_id','subscription_id'],"status = 'open'"],
   ] as const).map(([table,name,columns,predicate]) => ({ table, name, columns, predicate }))];
   it('N01 all tables svc SELECT exact FK definitions actions validation and pointer clear columns',async()=>{
     const actual=await svc((tx)=>q<{table:MatrixTable;name:string;columns:string[];parent:MatrixTable;targets:string[];action:string;clear:string[];definition:string;match:string;onupdate:string;validated:boolean;deferrable:boolean;deferred:boolean}>(tx,sql`select ch.relname as table,c.conname as name,pa.relname as parent,c.confdeltype::text as action,c.confupdtype::text as onupdate,c.confmatchtype::text as match,c.convalidated as validated,c.condeferrable as deferrable,c.condeferred as deferred,pg_get_constraintdef(c.oid,true)as definition,array(select a.attname::text from unnest(c.conkey)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.conrelid and a.attnum=k.num order by k.ord)as columns,array(select a.attname::text from unnest(c.confkey)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.confrelid and a.attnum=k.num order by k.ord)as targets,array(select a.attname::text from unnest(c.confdelsetcols)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.conrelid and a.attnum=k.num order by k.ord)as clear from pg_constraint c join pg_class ch on ch.oid=c.conrelid join pg_class pa on pa.oid=c.confrelid where c.contype='f'and ch.relnamespace='public'::regnamespace order by ch.relname,c.conname`));

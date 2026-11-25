@@ -21,7 +21,17 @@
     "empty": "No open session disputes.",
     "saved": "Saved",
     "retry": "Could not save. Try again.",
-    "conflict": "The ledger has changed. Check the latest balance and receipt."
+    "conflict": "The ledger has changed. Check the latest balance and receipt.",
+    "renewal": {
+      "title": "Sessions left: {count, number}",
+      "delivered": "Sessions delivered so far: {count, number}",
+      "request": "Request the same package",
+      "sent": "Request sent. Your coach will follow up.",
+      "open": "Renewal requests",
+      "summary": "Delivered {delivered, number}, left {balance, number}",
+      "sell": "Record package",
+      "handled": "Mark handled"
+    }
   },
   "title": "Billing",
   "subtitle": "Payments, subscriptions and renewal dates in one place.",

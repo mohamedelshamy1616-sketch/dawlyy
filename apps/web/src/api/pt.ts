@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { withAuthTx } from '../server/db';
 import { closeVisit, correct, ledgerError, openPackage, respond } from '../server/pt/ledger';
+import { handleRenewal, requestRenewal } from '../server/pt/renewal';
 import { errors } from '../server/subscriptions/contracts';
 import { validationError } from './errors';
 import type { ApiEnv } from './env';
@@ -51,5 +52,25 @@ ptReceiptsRouter.openapi(createRoute({ method: 'post', path: '/{visitId}/{action
   const auth = c.get('auth'), { visitId, action } = c.req.valid('param'), { note } = c.req.valid('json');
   if (action === 'view' && note !== undefined) throw validationError();
   await withAuthTx(auth, tx => respond(tx, auth, visitId, action, note)).catch(ledgerError);
+  return c.json({ ok: true }, 200);
+});
+
+const renewalResponse = { 200: { description: 'Open or handled renewal request', content: { 'application/json': { schema: z.object({
+  id: z.uuid(), status: z.enum(['open', 'handled']), delivered: z.int(), balance: z.int(), requested: z.string(),
+}) } } }, ...errors };
+// Mounted before ptRouter: the client asks, the owner or assigned coach marks it handled.
+export const ptRenewalsRouter = router();
+ptRenewalsRouter.use('*', requireAuthMiddleware);
+ptRenewalsRouter.openapi(createRoute({ method: 'post', path: '/', request: {
+  body: body(z.object({ subscriptionId: z.uuid() }).strict()),
+}, responses: renewalResponse }), async c => {
+  const auth = c.get('auth');
+  return c.json(await withAuthTx(auth, tx => requestRenewal(tx, auth, c.req.valid('json').subscriptionId)).catch(ledgerError), 200);
+});
+ptRenewalsRouter.openapi(createRoute({ method: 'post', path: '/{renewalId}/handled', request: {
+  params: z.object({ renewalId: z.uuid() }), body: body(z.object({}).strict()),
+}, responses }), async c => {
+  const auth = c.get('auth');
+  await withAuthTx(auth, tx => handleRenewal(tx, auth, c.req.valid('param').renewalId)).catch(ledgerError);
   return c.json({ ok: true }, 200);
 });

@@ -13,16 +13,17 @@ import { as, svc, q, one, withProbe } from './helpers';
 import { TABLE_GRANTS, POLICY_CONTRACTS, makeRow, insertRow, type MatrixTable } from './matrix';
 
 const root = fileURLToPath(new URL('../../..', import.meta.url));
-const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions'];
+const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions', 'pt_renewal_requests'];
 const tenant = 'tenant_id = (SELECT app.tenant_id())';
 const owner = '(SELECT app.is_owner())';
 const assigned = 'client_id IN (SELECT app.assigned_client_ids())';
 const own = '(SELECT app.is_client()) AND client_id = (SELECT app.client_id())';
-const catalogPolicies = [...POLICY_CONTRACTS, ...ptTables.flatMap(table => [
+const renewalCoach = owner + ' OR ' + assigned;
+const catalogPolicies = [...POLICY_CONTRACTS, { table: 'pt_renewal_requests', name: 'pt_renewal_requests_write_update', command: 'update' as const, permissive: true, using: renewalCoach, check: renewalCoach }, ...ptTables.flatMap(table => [
   { table, name: table + '_tenant_guard', command: 'all' as const, permissive: false, using: tenant, check: tenant },
   { table, name: table + '_read_select', command: 'select' as const, permissive: true, using: owner + ' OR ' + assigned + ' OR (' + own + ')', check: null },
   { table, name: table + '_write_insert', command: 'insert' as const, permissive: true, using: null,
-    check: table === 'pt_receipt_actions' ? own : table === 'pt_visits' ? owner + ' OR ' + assigned : owner + " OR (kind = 'debit' AND " + assigned + ')' },
+    check: table === 'pt_receipt_actions' || table === 'pt_renewal_requests' ? own : table === 'pt_visits' ? owner + ' OR ' + assigned : owner + " OR (kind = 'debit' AND " + assigned + ')' },
 ])];
 const tables = Object.keys(TABLE_GRANTS) as MatrixTable[];
 const read = (path: string) => readFileSync(join(root, path), 'utf8');
@@ -369,6 +370,8 @@ const golden: Record<string, Record<string, unknown>> = {
 type Trigger = { table: string; name: string; fn: string; bits: number; columns: string[]; when: string | null; args: string[] };
 const triggers: Trigger[] = [
   { table: 'pt_ledger_entries', name: 'pt_guard_entry', fn: 'app.pt_guard_entry()', bits: 7, columns: [], when: null, args: [] },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_guard', fn: 'app.pt_renewal_guard()', bits: 7, columns: [], when: null, args: [] },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_handle', fn: 'app.pt_renewal_handle()', bits: 19, columns: [], when: null, args: [] },
   { table: 'pt_visits', name: 'pt_close_visit', fn: 'app.pt_close_visit()', bits: 5, columns: [], when: null, args: [] },
 ];
 function trigger(table: string, suffix: string, fn: string, bits: number, args: string[] = [], columns: string[] = [], when: string | null = null): void {
@@ -783,7 +786,8 @@ describe('security catalog', () => {
     for(const file of files('packages/db/migrations').filter((f)=>/000[3-6][^/]*\.sql$/.test(f))) expect(read(file),file).not.toMatch(/CREATE\s+(?:UNIQUE\s+)?INDEX\s+CONCURRENTLY|\bVACUUM\b|ALTER\s+SYSTEM|ALTER\s+TYPE[^;]+ADD\s+VALUE/i);
     const journal=JSON.parse(read('packages/db/migrations/meta/_journal.json')) as {entries:{idx:number;when:number;tag:string}[]};
     // 0008: journal appends reinvent_control at idx 8.
-    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6,7,8,9]);
+    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6,7,8,9,10]);
+    expect(journal.entries[10]!.tag).toBe('0010_pt_renewal');
     expect(journal.entries[9]!.tag).toBe('0009_pt_ledger');
     expect(journal.entries[8]!.tag).toBe('0008_reinvent_control');
     for(let i=1;i<journal.entries.length;i++) expect(journal.entries[i]!.when).toBeGreaterThan(journal.entries[i-1]!.when);

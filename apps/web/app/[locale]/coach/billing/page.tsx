@@ -11,6 +11,8 @@ import { listSubscriptions } from '@/src/server/subscriptions/service';
 import { PageHeader } from '@/src/components/shell/page-header';
 import { BillingOverview } from '@/components/billing/overview';
 import { DisputeCard } from '@/components/pt/ledger';
+import { RenewalRow } from '@/components/pt/renewal';
+import { openRenewals } from '@/src/server/pt/renewal';
 import { disputes } from '@/src/server/pt/ledger';
 
 /** T3b: authenticated billing overview, read through the API's permission and RLS boundary. */
@@ -25,7 +27,11 @@ export default async function BillingPage() {
     return { paymentPage, subscriptionPage, clients: names.map((c) => ({ id: c.id, name: c.displayName ?? `${c.firstName} ${c.lastName ?? ''}`.trim() })), pendingCount: pending?.count ?? 0 };
   });
   const openDisputes = auth.role === 'owner' ? await withAuthTx(auth, tx => disputes(tx, auth)) : [];
+  const renewals = auth.role === 'client' ? [] : await withAuthTx(auth, tx => openRenewals(tx, auth));
   return <div className="min-w-0 space-y-6"><PageHeader title={t('title')} subtitle={t('subtitle')} />
+    {renewals.length > 0 && <section className="grid gap-3"><h2 className="font-semibold">{t('pt.renewal.open')}</h2>
+      {renewals.map(item => <RenewalRow key={item.id} item={item} canSell={isAllowed(auth, 'billing', 'create')} />)}
+    </section>}
     {auth.role === 'owner' && <section className="grid gap-3"><h2 className="font-semibold">{t('pt.disputes')}</h2>
       {openDisputes.length ? openDisputes.map(item => <DisputeCard key={item.visit} item={item} />) : <p>{t('pt.empty')}</p>}
     </section>}

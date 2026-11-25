@@ -6,6 +6,8 @@ import { ClientModuleSeed } from '@/components/client-today/client-module-provid
 import { HubError } from '@/components/client-today/client-hubs';
 import { TodayActions } from '@/components/client-today/today-actions';
 import { ReceiptCard } from '@/components/pt/ledger';
+import { RenewalCard } from '@/components/pt/renewal';
+import { myRenewalsDue } from '@/src/server/pt/renewal';
 import { myReceipts } from '@/src/server/pt/ledger';
 import { withAuthTx } from '@/src/server/db';
 
@@ -22,10 +24,11 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
     console.error('client today failed', error instanceof Error ? error.name : 'unknown');
     return <HubError />;
   }
-  const receipts = auth.role === 'client' ? await withAuthTx(auth, tx => myReceipts(tx, auth)) : [];
+  const [receipts, renewals] = auth.role === 'client' ? await withAuthTx(auth, async tx => [await myReceipts(tx, auth), await myRenewalsDue(tx, auth)] as const) : [[], []] as const;
   return (
     <>
       <ClientModuleSeed userId={data.userId} {...data.bootstrap} />
+      {renewals.map(due => <RenewalCard key={due.subscription} due={due} />)}
       {receipts.map(receipt => <ReceiptCard key={receipt.visit} receipt={receipt} />)}
       <TodayActions today={data.today} nutrition={data.nutrition} logs={data.logs} locale={locale === 'ar' ? 'ar' : 'en'} bootstrap={data.bootstrap} />
     </>
