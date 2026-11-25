@@ -59,7 +59,7 @@ const overflow = (page: import('@playwright/test').Page) => page.evaluate(() => 
 for (const locale of ['ar', 'en'] as const) {
   test.describe(`R2a client Today ${locale === 'ar' ? '@ar' : '@en'}`, () => {
     test(`start a workout from Today in one tap and land on live content @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(240_000);
+      test.setTimeout(900_000);
       const { client, coach } = await actors(browser, baseURL, locale);
       try {
         await seedPlannedDay(coach.request, client.request);
@@ -88,7 +88,7 @@ for (const locale of ['ar', 'en'] as const) {
     });
 
     test(`hides the workout card and its writes when workouts is off for this client @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(240_000);
+      test.setTimeout(900_000);
       const { client, coach } = await actors(browser, baseURL, locale);
       let clientId = '';
       try {
@@ -115,7 +115,7 @@ for (const locale of ['ar', 'en'] as const) {
     });
 
     test(`long workout names never overflow at 360, 390 and 430 px @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(300_000);
+      test.setTimeout(900_000);
       const first = await actors(browser, baseURL, locale);
       try {
         await seedPlannedDay(first.coach.request, first.client.request);

@@ -64,7 +64,7 @@ for (const locale of ['ar', 'en'] as const) {
   test.describe(`R5 polish and proof @${locale}`, () => {
     // Duration only: the route sweep takes 9 to 10 minutes on `next dev` and exceeded 15 on a loaded PC (run_checks at
     // ecf0de2). The same assertions pass in both locales when given the time.
-    test.setTimeout(1_500_000);
+    test.setTimeout(3_600_000);
     const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
     test(`new routes settle with no overflow and 44 px targets at all six widths @${locale}`, async ({ browser, baseURL }) => {

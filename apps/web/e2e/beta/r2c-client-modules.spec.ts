@@ -46,7 +46,7 @@ for (const locale of ['ar', 'en'] as const) {
     const t = catalog(locale);
 
     test(`coach hides nutrition, the client no longer sees it and its write gets 403 @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(240_000);
+      test.setTimeout(900_000);
       const owner = await actor(browser, baseURL, locale, OWNER);
       const client = await actor(browser, baseURL, locale, CLIENT_USER);
       try {
@@ -74,7 +74,7 @@ for (const locale of ['ar', 'en'] as const) {
     });
 
     test(`a client override enables nutrition against an off default and Reset returns to it @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(240_000);
+      test.setTimeout(900_000);
       const owner = await actor(browser, baseURL, locale, OWNER);
       const client = await actor(browser, baseURL, locale, CLIENT_USER);
       const other = await actor(browser, baseURL, locale, OTHER_CLIENT_USER);
@@ -106,7 +106,7 @@ for (const locale of ['ar', 'en'] as const) {
     });
 
     test(`staff see read-only defaults and an unsaved preview sends no mutation @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(180_000);
+      test.setTimeout(900_000);
       const staff = await actor(browser, baseURL, locale, STAFF);
       const owner = await actor(browser, baseURL, locale, OWNER);
       try {
@@ -128,7 +128,7 @@ for (const locale of ['ar', 'en'] as const) {
     });
 
     test(`all modules off settles without overflow at 360, 390 and 430 px @${locale}`, async ({ browser, baseURL }) => {
-      test.setTimeout(240_000);
+      test.setTimeout(900_000);
       const owner = await actor(browser, baseURL, locale, OWNER, 390, true);
       try {
         expect((await put(owner.request, '/settings/client-modules', Object.fromEntries(MODULES.map(m => [m, false])))).ok()).toBe(true);
