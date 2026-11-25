@@ -6,7 +6,7 @@
   {"name": "test-core", "cmd": ["pnpm", "--filter", "@dawlyy/core", "exec", "vitest", "run", "--maxWorkers=1"], "cwd": ".", "timeout": 1800, "heavy": true},
   {"name": "test-db", "cmd": ["python", "tools/run_db_tests.py"], "cwd": ".", "timeout": 5400, "heavy": true},
   {"name": "test-web", "cmd": ["python", "tools/run_db_tests.py", "--web"], "cwd": ".", "timeout": 5400, "heavy": true},
-  {"name": "e2e-ar", "cmd": ["python", "tools/run_e2e.py", "e2e-ar"], "cwd": ".", "timeout": 5400, "heavy": true},
-  {"name": "e2e-en", "cmd": ["python", "tools/run_e2e.py", "e2e-en"], "cwd": ".", "timeout": 5400, "heavy": true}
+  {"name": "e2e-ar", "cmd": ["python", "tools/run_e2e.py", "e2e-ar"], "cwd": ".", "timeout": 10800, "heavy": true},
+  {"name": "e2e-en", "cmd": ["python", "tools/run_e2e.py", "e2e-en"], "cwd": ".", "timeout": 10800, "heavy": true}
  ]
 }

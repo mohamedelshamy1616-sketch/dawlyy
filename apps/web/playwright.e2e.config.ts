@@ -14,10 +14,12 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: 0,
-  timeout: 300_000,
+  timeout: 900_000,
   // The server is `next dev`, which compiles each route on its first visit; on a loaded PC that took 10 to 15 s
-  // per route (trace of e2e-ar-trace2). Assertions are unchanged; only the wait for them is longer.
-  expect: { timeout: 45_000 },
+  // per route (trace of e2e-ar-trace2). On 25 Nov the PC was short of memory (under 1 GB free) and the page that a
+  // successful mutation navigates to took more than 45 s in most full runs, at a different step each time (sampler
+  // log in OPEN_DECISIONS 31). Assertions are unchanged; only the wait for them is longer (45 s to 120 s).
+  expect: { timeout: 120_000 },
   use: {
     baseURL: 'http://localhost:3220',
     browserName: 'chromium',
