@@ -94,6 +94,11 @@ for (const table of ['meal_logs','measurement_sets'] as const) {
 // 0008: E one flag per scoped source/category and persisted evidence hash.
 unique('red_flags','red_flags_source_category_uq','tenant_id,source,source_id,category,evidence_hash');
 const checks: { table: string; name: string; expression: string }[] = [
+  { table: 'pt_renewal_requests', name: 'pt_renewal_state', expression: "(status = 'open' AND handled_at IS NULL AND handled_by IS NULL) OR (status = 'handled' AND handled_at IS NOT NULL AND handled_by IS NOT NULL)" },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_counts', expression: 'delivered >= 0 AND balance >= 0 AND balance <= 2' },
+  { table: 'pt_receipt_actions', name: 'pt_receipt_actions_kind_check', expression: "kind IN ('view','confirm','dispute')" },
+  { table: 'pt_receipt_actions', name: 'pt_receipt_actions_note_check', expression: "note IS NULL OR (length(note) <= 500 AND kind <> 'view')" },
+  { table: 'pt_ledger_entries', name: 'pt_entry_shape', expression: "(kind = 'debit' AND delta = (0 - 1) AND visit_id IS NOT NULL AND reason IS NULL) OR (reason IS NOT NULL AND length(btrim(reason)) >= 1 AND length(btrim(reason)) <= 500 AND ((kind = 'credit' AND delta >= 0 AND visit_id IS NULL) OR (kind = 'correction' AND delta = 1 AND visit_id IS NOT NULL)))" },
   // 0008: B bounds all four void reasons.
   ...['meal_logs','metric_entries','measurement_sets','workout_sessions'].map(table=>({table,name:`${table}_void_reason_ck`,expression:'length(void_reason) <= 500'})),
   // 0008: C client module object permits only known boolean entries (jsonpath's canonical spelling).
@@ -170,10 +175,35 @@ function update(table:MatrixTable,row:Record<string,unknown>,values:Record<strin
 }
 
 describe('native integrity',()=>{
+  // PT inserts have dedicated behavioral tests. Include every new object in the exact catalog comparisons.
+  const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions', 'pt_renewal_requests'];
+  const scoped = ['tenant_id', 'client_id', 'subscription_id'];
+  const visit = [...scoped, 'visit_id'];
+  const catalogFks = [...foreignKeys, ...ptTables.map(table => ({
+    table, name: table + '_tenant_id_tenants_id_fk', columns: ['tenant_id'], parent: 'tenants', targets: ['id'], action: 'c', clear: [],
+  })), ...([
+    ['pt_visits','pt_visit_sub_fk',scoped,'subscriptions',['tenant_id','client_id','id']],
+    ['pt_ledger_entries','pt_entry_sub_fk',scoped,'subscriptions',['tenant_id','client_id','id']],
+    ['pt_ledger_entries','pt_entry_visit_fk',visit,'pt_visits',visit],
+    ['pt_receipt_actions','pt_action_visit_fk',visit,'pt_visits',visit],
+    ['pt_renewal_requests','pt_renewal_sub_fk',scoped,'subscriptions',['tenant_id','client_id','id']],
+  ] as const).map(([table,name,columns,parent,targets]) => ({ table, name, columns, parent, targets, action: 'c', clear: [] }))];
+  const catalogUniques = [...uniques, ...([
+    ['pt_visits','pt_visits_pkey',['tenant_id','visit_id'],null],
+    ['pt_visits','pt_visit_scope_uq',visit,null],
+    ['pt_ledger_entries','pt_ledger_entries_pkey',['id'],null],
+    ['pt_ledger_entries','pt_entry_order_uq',['subscription_id','position'],null],
+    ['pt_ledger_entries','pt_visit_kind_uq',['tenant_id','visit_id','kind'],null],
+    ['pt_ledger_entries','pt_open_once',['subscription_id'],"kind = 'credit'"],
+    ['pt_receipt_actions','pt_receipt_actions_pkey',['tenant_id','visit_id','kind'],null],
+    ['pt_receipt_actions','pt_one_decision',['tenant_id','visit_id'],"kind <> 'view'"],
+    ['pt_renewal_requests','pt_renewal_requests_pkey',['id'],null],
+    ['pt_renewal_requests','pt_renewal_open_once',['tenant_id','subscription_id'],"status = 'open'"],
+  ] as const).map(([table,name,columns,predicate]) => ({ table, name, columns, predicate }))];
   it('N01 all tables svc SELECT exact FK definitions actions validation and pointer clear columns',async()=>{
     const actual=await svc((tx)=>q<{table:MatrixTable;name:string;columns:string[];parent:MatrixTable;targets:string[];action:string;clear:string[];definition:string;match:string;onupdate:string;validated:boolean;deferrable:boolean;deferred:boolean}>(tx,sql`select ch.relname as table,c.conname as name,pa.relname as parent,c.confdeltype::text as action,c.confupdtype::text as onupdate,c.confmatchtype::text as match,c.convalidated as validated,c.condeferrable as deferrable,c.condeferred as deferred,pg_get_constraintdef(c.oid,true)as definition,array(select a.attname::text from unnest(c.conkey)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.conrelid and a.attnum=k.num order by k.ord)as columns,array(select a.attname::text from unnest(c.confkey)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.confrelid and a.attnum=k.num order by k.ord)as targets,array(select a.attname::text from unnest(c.confdelsetcols)with ordinality k(num,ord)join pg_attribute a on a.attrelid=c.conrelid and a.attnum=k.num order by k.ord)as clear from pg_constraint c join pg_class ch on ch.oid=c.conrelid join pg_class pa on pa.oid=c.confrelid where c.contype='f'and ch.relnamespace='public'::regnamespace order by ch.relname,c.conname`));
-    expect(actual.map((r)=>`${r.table}.${r.name}`).sort()).toEqual(foreignKeys.map((r)=>`${r.table}.${r.name}`).sort());
-    for(const expected of foreignKeys){const row=actual.find((r)=>r.name===expected.name)!;const {definition,match,onupdate,validated,deferrable,deferred,...shape}=row;expect(shape,expected.name).toEqual(expected);expect({match,onupdate,validated,deferrable,deferred}).toEqual({match:'s',onupdate:'a',validated:true,deferrable:false,deferred:false});
+    expect(actual.map((r)=>`${r.table}.${r.name}`).sort()).toEqual(catalogFks.map((r)=>`${r.table}.${r.name}`).sort());
+    for(const expected of catalogFks){const row=actual.find((r)=>r.name===expected.name)!;const {definition,match,onupdate,validated,deferrable,deferred,...shape}=row;expect(shape,expected.name).toEqual(expected);expect({match,onupdate,validated,deferrable,deferred}).toEqual({match:'s',onupdate:'a',validated:true,deferrable:false,deferred:false});
       const action=expected.action==='c'?' ON DELETE CASCADE':expected.action==='n'?` ON DELETE SET NULL${expected.clear.length?' ('+expected.clear.join(', ')+')':''}`:'';
       expect(canonical(definition),expected.name).toBe(canonical(`FOREIGN KEY (${expected.columns.join(', ')}) REFERENCES ${expected.parent}(${expected.targets.join(', ')})${action}`));
     }
@@ -181,8 +211,8 @@ describe('native integrity',()=>{
   });
   it('N02 public svc SELECT complete unique/PK ordered-key predicates valid ready',async()=>{
     const actual=await svc((tx)=>q<{table:MatrixTable;name:string;columns:string[];predicate:string|null;valid:boolean;ready:boolean}>(tx,sql`select t.relname as table,c.relname as name,array(select a.attname::text from unnest(i.indkey::smallint[])with ordinality k(num,ord)join pg_attribute a on a.attrelid=t.oid and a.attnum=k.num where k.ord<=i.indnkeyatts order by k.ord)as columns,pg_get_expr(i.indpred,i.indrelid)as predicate,i.indisvalid as valid,i.indisready as ready from pg_index i join pg_class t on t.oid=i.indrelid join pg_class c on c.oid=i.indexrelid where t.relnamespace='public'::regnamespace and i.indisunique order by c.relname`));
-    expect(actual.map((r)=>r.name).sort()).toEqual(uniques.map((r)=>r.name).sort());
-    for(const expected of uniques){const row=actual.find((r)=>r.name===expected.name)!;expect({...row,predicate:canonical(row.predicate)}).toEqual({...expected,predicate:canonical(expected.predicate),valid:true,ready:true});}
+    expect(actual.map((r)=>r.name).sort()).toEqual(catalogUniques.map((r)=>r.name).sort());
+    for(const expected of catalogUniques){const row=actual.find((r)=>r.name===expected.name)!;expect({...row,predicate:canonical(row.predicate)}).toEqual({...expected,predicate:canonical(expected.predicate),valid:true,ready:true});}
   });
   it('N03 affected tables svc SELECT full CHECK set exact expressions validated',async()=>{
     const actual=await svc((tx)=>q<{table:string;name:string;expression:string;validated:boolean}>(tx,sql`select case when n.nspname='app'then 'app.'else ''end||t.relname as table,c.conname as name,pg_get_expr(c.conbin,c.conrelid)as expression,c.convalidated as validated from pg_constraint c join pg_class t on t.oid=c.conrelid join pg_namespace n on n.oid=t.relnamespace where c.contype='c'and n.nspname in ('public','app')order by c.conname`));

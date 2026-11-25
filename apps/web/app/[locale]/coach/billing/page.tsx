@@ -10,6 +10,10 @@ import { listPayments } from '@/src/server/payments/service';
 import { listSubscriptions } from '@/src/server/subscriptions/service';
 import { PageHeader } from '@/src/components/shell/page-header';
 import { BillingOverview } from '@/components/billing/overview';
+import { DisputeCard } from '@/components/pt/ledger';
+import { RenewalRow } from '@/components/pt/renewal';
+import { openRenewals } from '@/src/server/pt/renewal';
+import { disputes } from '@/src/server/pt/ledger';
 
 /** T3b: authenticated billing overview, read through the API's permission and RLS boundary. */
 export default async function BillingPage() {
@@ -22,7 +26,15 @@ export default async function BillingPage() {
     const [pending] = await tx.select({ count: count() }).from(payments).where(and(eq(payments.tenantId, auth.tenantId), eq(payments.state, 'pending')));
     return { paymentPage, subscriptionPage, clients: names.map((c) => ({ id: c.id, name: c.displayName ?? `${c.firstName} ${c.lastName ?? ''}`.trim() })), pendingCount: pending?.count ?? 0 };
   });
+  const openDisputes = auth.role === 'owner' ? await withAuthTx(auth, tx => disputes(tx, auth)) : [];
+  const renewals = auth.role === 'client' ? [] : await withAuthTx(auth, tx => openRenewals(tx, auth));
   return <div className="min-w-0 space-y-6"><PageHeader title={t('title')} subtitle={t('subtitle')} />
+    {renewals.length > 0 && <section className="grid gap-3"><h2 className="font-semibold">{t('pt.renewal.open')}</h2>
+      {renewals.map(item => <RenewalRow key={item.id} item={item} canSell={isAllowed(auth, 'billing', 'create')} />)}
+    </section>}
+    {auth.role === 'owner' && <section className="grid gap-3"><h2 className="font-semibold">{t('pt.disputes')}</h2>
+      {openDisputes.length ? openDisputes.map(item => <DisputeCard key={item.visit} item={item} />) : <p>{t('pt.empty')}</p>}
+    </section>}
     {isAllowed(auth, 'billing', 'create') ? <Link className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground" href="/coach/billing/sell">{t('sell')}</Link> : null}
     <BillingOverview payments={data.paymentPage.items} subscriptions={data.subscriptionPage.items} clients={data.clients} pendingCount={data.pendingCount}
       paymentCursor={data.paymentPage.nextCursor} subscriptionCursor={data.subscriptionPage.nextCursor} />

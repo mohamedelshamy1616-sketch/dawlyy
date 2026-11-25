@@ -17,6 +17,10 @@ import { HUB_TABS } from '@/components/clients/hub-tabs';
 import type { TimelinePage } from '@/components/dashboard/types';
 import { ActivityLog } from '@/components/activity/activity-log';
 import { WeeklyReviewCard } from '@/components/review/weekly-review-card';
+import { clientPackages } from '@/src/server/pt/ledger';
+import { PackageCard } from '@/components/pt/ledger';
+import { RenewalRow } from '@/components/pt/renewal';
+import { openRenewals } from '@/src/server/pt/renewal';
 
 /** R1c: RLS-scoped client hub; the plan and timeline reads run only for callers who hold the matching module grant. */
 export default async function ClientPage({ params, searchParams }: { params: Promise<{ locale: string; clientId: string }>; searchParams: Promise<{ tab?: string | string[] }> }) {
@@ -47,7 +51,7 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
     const plans = access.viewNutrition ? await listNutrition(tx, auth, { kind: 'client', clientId, limit: '1' }) : null;
     const program: PlanSummary | null = programs?.items[0] ? { id: programs.items[0].id, name: programs.items[0].name, status: programs.items[0].currentVersion?.status ?? 'draft' } : null;
     const nutrition: PlanSummary | null = plans?.items[0] ? { id: plans.items[0].id, name: plans.items[0].name, status: plans.items[0].currentStatus ?? 'draft' } : null;
-    return { client, timeline, program, nutrition };
+    return { client, timeline, program, nutrition, ptPackages: await clientPackages(tx, clientId), renewals: await openRenewals(tx, auth, clientId) };
   }).catch((error: unknown) => {
     if (error instanceof ApiError && error.status === 404) notFound();
     throw error;
@@ -56,6 +60,8 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const requested = HUB_TABS.find(value => value === (Array.isArray(tab) ? tab[0] : tab));
   return <div className="grid min-w-0 max-w-full gap-6 [overflow-wrap:anywhere]"><PageHeader title={client.displayName || [client.firstName, client.lastName].filter(Boolean).join(' ')} subtitle={client.code} />
     <Link className="inline-flex min-h-11 items-center underline" href="/coach/clients">{t('back')}</Link>
+    {data.renewals.map(item => <RenewalRow key={item.id} item={item} canSell={isAllowed(auth, 'billing', 'create')} />)}
+    {data.ptPackages.map(pkg => <PackageCard key={pkg.id} pkg={pkg} owner={auth.role === 'owner'} membership={auth.membershipId} />)}
     {isAllowed(auth, 'settings', 'view') && isAllowed(auth, 'clients', 'view') && isAllowed(auth, 'clients', 'edit')
       ? <Link className="inline-flex min-h-11 items-center underline" href={`/coach/clients/${client.id}/client-app`}>{clientApp('hub.clientLink')}</Link> : null}
     <ClientDetail client={client} access={access} initialTab={requested} timeline={data.timeline} program={data.program} nutrition={data.nutrition} activityLog={<ActivityLog key="activity-log" clientId={client.id} />} reviewCard={(auth.role === 'owner' || auth.role === 'staff') && isAllowed(auth, 'clients', 'view') && isAllowed(auth, 'checkins', 'review') ? <WeeklyReviewCard key="weekly-review" clientId={client.id} initial={null} /> : null} />

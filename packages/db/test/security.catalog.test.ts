@@ -13,6 +13,18 @@ import { as, svc, q, one, withProbe } from './helpers';
 import { TABLE_GRANTS, POLICY_CONTRACTS, makeRow, insertRow, type MatrixTable } from './matrix';
 
 const root = fileURLToPath(new URL('../../..', import.meta.url));
+const ptTables = ['pt_visits', 'pt_ledger_entries', 'pt_receipt_actions', 'pt_renewal_requests'];
+const tenant = 'tenant_id = (SELECT app.tenant_id())';
+const owner = '(SELECT app.is_owner())';
+const assigned = 'client_id IN (SELECT app.assigned_client_ids())';
+const own = '(SELECT app.is_client()) AND client_id = (SELECT app.client_id())';
+const renewalCoach = owner + ' OR ' + assigned;
+const catalogPolicies = [...POLICY_CONTRACTS, { table: 'pt_renewal_requests', name: 'pt_renewal_requests_write_update', command: 'update' as const, permissive: true, using: renewalCoach, check: renewalCoach }, ...ptTables.flatMap(table => [
+  { table, name: table + '_tenant_guard', command: 'all' as const, permissive: false, using: tenant, check: tenant },
+  { table, name: table + '_read_select', command: 'select' as const, permissive: true, using: owner + ' OR ' + assigned + ' OR (' + own + ')', check: null },
+  { table, name: table + '_write_insert', command: 'insert' as const, permissive: true, using: null,
+    check: table === 'pt_receipt_actions' || table === 'pt_renewal_requests' ? own : table === 'pt_visits' ? owner + ' OR ' + assigned : owner + " OR (kind = 'debit' AND " + assigned + ')' },
+])];
 const tables = Object.keys(TABLE_GRANTS) as MatrixTable[];
 const read = (path: string) => readFileSync(join(root, path), 'utf8');
 function files(path: string): string[] {
@@ -356,7 +368,12 @@ const golden: Record<string, Record<string, unknown>> = {
   media: { stamp_insert: { owner_user_id: 'uid' }, insert_eq: { reviewed_by: null, reviewed_at: null }, client_insert_eq: { review_note: null }, immutable: ['id','tenant_id','client_id','owner_user_id','bucket','path','kind','purpose','created_at','reviewed_by','reviewed_at'], set_once: ['deleted_at'], client_update: ['mime_type','uploaded_at','bytes','width','height','duration_sec','metadata','deleted_at','review_state'], editable_in: [{ column: 'review_state', states: ['requested','needs_resubmission'], cols: ['mime_type'] }, { column: 'review_state', states: [null,'requested','uploaded','processing','queued_for_review','needs_resubmission','archived'], cols: ['bytes','width','height','duration_sec','metadata','uploaded_at','deleted_at'] }], transitions: { column: 'review_state', insert: [null,'requested','uploaded'], edges: [[null,'uploaded'],['requested','uploaded'],['uploaded','processing'],['uploaded','queued_for_review'],['processing','queued_for_review'],['queued_for_review','approved'],['queued_for_review','needs_resubmission'],['queued_for_review','rejected'],['needs_resubmission','uploaded'],['approved','archived'],['rejected','archived'],['needs_resubmission','archived']] }, client_transitions: { column: 'review_state', insert: [null,'requested','uploaded'], edges: [[null,'uploaded'],['requested','uploaded'],['uploaded','processing'],['uploaded','queued_for_review'],['processing','queued_for_review'],['needs_resubmission','uploaded']] }, on_transition: { column: 'review_state', stamps: { approved: { reviewed_at: 'now', reviewed_by: 'uid' }, needs_resubmission: { reviewed_at: 'now', reviewed_by: 'uid' }, rejected: { reviewed_at: 'now', reviewed_by: 'uid' } } } },
 };
 type Trigger = { table: string; name: string; fn: string; bits: number; columns: string[]; when: string | null; args: string[] };
-const triggers: Trigger[] = [];
+const triggers: Trigger[] = [
+  { table: 'pt_ledger_entries', name: 'pt_guard_entry', fn: 'app.pt_guard_entry()', bits: 7, columns: [], when: null, args: [] },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_guard', fn: 'app.pt_renewal_guard()', bits: 7, columns: [], when: null, args: [] },
+  { table: 'pt_renewal_requests', name: 'pt_renewal_handle', fn: 'app.pt_renewal_handle()', bits: 19, columns: [], when: null, args: [] },
+  { table: 'pt_visits', name: 'pt_close_visit', fn: 'app.pt_close_visit()', bits: 5, columns: [], when: null, args: [] },
+];
 function trigger(table: string, suffix: string, fn: string, bits: number, args: string[] = [], columns: string[] = [], when: string | null = null): void {
   triggers.push({ table, name: `${table}_${suffix}`, fn: `app.${fn}()`, bits, columns: [...columns].sort(), when, args });
 }
@@ -420,12 +437,12 @@ const nativeCommands: Record<string, string> = { select: 'r', insert: 'a', updat
 describe('security catalog', () => {
   it('C01 public svc SELECT table inventory migrated', async () => {
     const actual = await svc((tx) => q(tx, sql`select c.relname as name,c.relrowsecurity as rls,c.relforcerowsecurity as force from pg_class c where c.relnamespace='public'::regnamespace and c.relkind in ('r','p') and not exists(select 1 from pg_depend d where d.classid='pg_class'::regclass and d.objid=c.oid and d.deptype='e') order by c.relname collate "C"`));
-    expect(actual).toEqual(tables.sort().map((name) => ({ name, rls: true, force: false })));
+    expect(actual).toEqual([...tables, ...ptTables].sort().map(name => ({ name, rls: true, force: false })));
   });
   it('C02 public svc SELECT every exact policy expression migrated', async () => {
     const actual = await livePolicies();
-    expect(actual.map((p) => p.name)).toEqual(POLICY_CONTRACTS.map((p) => p.name).sort());
-    for (const expected of POLICY_CONTRACTS) {
+    expect(actual.map((p) => p.name)).toEqual(catalogPolicies.map((p) => p.name).sort());
+    for (const expected of catalogPolicies) {
       const live = actual.find((p) => p.name === expected.name)!;
       expect({ table: live.table, command: live.command, permissive: live.permissive, roles: live.roles, using: expression(live.using), check: expression(live.check) }, expected.name)
         .toEqual({ table: expected.table, command: nativeCommands[expected.command], permissive: expected.permissive, roles: ['dawlyy_rls'], using: expression(expected.using), check: expression(expected.check) });
@@ -434,9 +451,9 @@ describe('security catalog', () => {
   });
   it('C03 public svc SELECT restrictive USING/WITH CHECK migrated', async () => {
     const actual = (await livePolicies()).filter((p) => !p.permissive);
-    expect(actual.map((p) => p.name)).toEqual(tables.map((t) => `${t}_tenant_guard`).sort());
+    expect(actual.map((p) => p.name)).toEqual([...tables, ...ptTables].map((t) => `${t}_tenant_guard`).sort());
     for (const policy of actual) {
-      const expected = POLICY_CONTRACTS.find((p) => p.name === policy.name)!;
+      const expected = catalogPolicies.find((p) => p.name === policy.name)!;
       expect(policy.command).toBe('*'); expect(expression(policy.using)).toEqual(expression(expected.using)); expect(expression(policy.check)).toEqual(expression(expected.check));
     }
   });
@@ -769,7 +786,9 @@ describe('security catalog', () => {
     for(const file of files('packages/db/migrations').filter((f)=>/000[3-6][^/]*\.sql$/.test(f))) expect(read(file),file).not.toMatch(/CREATE\s+(?:UNIQUE\s+)?INDEX\s+CONCURRENTLY|\bVACUUM\b|ALTER\s+SYSTEM|ALTER\s+TYPE[^;]+ADD\s+VALUE/i);
     const journal=JSON.parse(read('packages/db/migrations/meta/_journal.json')) as {entries:{idx:number;when:number;tag:string}[]};
     // 0008: journal appends reinvent_control at idx 8.
-    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6,7,8]);
+    expect(journal.entries.map((e)=>e.idx)).toEqual([0,1,2,3,4,5,6,7,8,9,10]);
+    expect(journal.entries[10]!.tag).toBe('0010_pt_renewal');
+    expect(journal.entries[9]!.tag).toBe('0009_pt_ledger');
     expect(journal.entries[8]!.tag).toBe('0008_reinvent_control');
     for(let i=1;i<journal.entries.length;i++) expect(journal.entries[i]!.when).toBeGreaterThan(journal.entries[i-1]!.when);
     for(const file of files('packages/db/src/schema').filter((f)=>f.endsWith('.ts')&&/pgTable\(/.test(read(f)))) expect(read(file),file).toMatch(/0006/);

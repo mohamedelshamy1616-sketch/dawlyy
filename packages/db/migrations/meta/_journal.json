@@ -64,6 +64,20 @@
       "when": 1794600000000,
       "tag": "0008_reinvent_control",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795600000000,
+      "tag": "0009_pt_ledger",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795700000000,
+      "tag": "0010_pt_renewal",
+      "breakpoints": true
     }
   ]
 }
