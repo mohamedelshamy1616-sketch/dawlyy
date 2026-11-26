@@ -11,7 +11,7 @@ export type MetricRow = { id: string; metric: string; metricKey: string | null; 
 /** Task 8: dated measurements and normalized deltas. */
 export type MeasurementRow = { id: string; localDate: string; createdAt?: string | null; voidedAt?: string | null; replacesId?: string | null; values?: import('@/src/lib/client-corrections/types').MeasurementValue[]; deltas: { type: string; value: number; unit: string; side?: string; absolute: number | null; percent: number | null }[] };
 /** Task 8: temporary signed image references, refreshed through the API when comparing dates. */
-export type PhotoRow = { id: string; localDate: string; poses: { pose: string; mediaId: string; label?: string; url: string }[] };
+export type PhotoRow = { id: string; localDate: string; poses: { pose: string; mediaId: string; label?: string; url?: string }[] };
 /** Task 8: paginated JSON list envelope shared by the tracking controls. */
 export type ListPage<T> = { items: T[]; nextCursor: string | null };
 /** Task 8: API calls retain server error codes for localized presentation. */

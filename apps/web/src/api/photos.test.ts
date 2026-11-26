@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { consents } from '@dawlyy/db/schema';
+import { eq } from 'drizzle-orm';
+import { consents, media } from '@dawlyy/db/schema';
 import { call, setupApiData } from '../test/api-harness';
 import { app } from './index';
 import { trackingFixture } from '../server/tracking/test-fixture';
@@ -40,6 +41,16 @@ describe('Task 8 photo privacy, consent and media extension', () => {
     expect((await call(app, 'DELETE', `/api/v1/photos/${a.id}`, { as: fixture.a.userId })).status).toBe(200);
     expect(z.object({ items: z.array(set) }).parse((await call(app, 'GET', '/api/v1/photos/timeline', { as: fixture.a.userId })).json).items).toHaveLength(0);
     expect((await call(app, 'GET', `/api/v1/media/${a.poses[0]?.mediaId}/url`, { as: fixture.a.userId })).status).toBe(404);
+  });
+  it('returns no download URL for a zero-byte placeholder photo', async () => {
+    await consent(fixture.a.userId);
+    const a = await photo(fixture.a.userId, fixture.a.clientId);
+    const mediaId = a.poses[0]?.mediaId ?? '';
+    await setupApiData(fixture.owner.tenantId, 'photo placeholder', async tx => { await tx.update(media).set({ bytes: 0 }).where(eq(media.id, mediaId)); });
+    const listed = z.object({ items: z.array(z.object({ poses: z.array(z.object({ mediaId: z.string(), url: z.string().optional() })) })) })
+      .parse((await call(app, 'GET', '/api/v1/photos/timeline', { as: fixture.a.userId })).json);
+    expect(listed.items[0]?.poses[0]?.mediaId).toBe(mediaId);
+    expect(listed.items[0]?.poses[0]?.url).toBeUndefined();
   });
   it('accepts form videos and progress images, and refuses unknown purposes and proof videos', async () => {
     await consent(fixture.a.userId);

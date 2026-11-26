@@ -31,7 +31,10 @@
       "summary": "Delivered {delivered, number}, left {balance, number}",
       "sell": "Record package",
       "handled": "Mark handled"
-    }
+    },
+    "sendDispute": "Send dispute",
+    "cancel": "Cancel",
+    "section": "Your PT sessions"
   },
   "title": "Billing",
   "subtitle": "Payments, subscriptions and renewal dates in one place.",

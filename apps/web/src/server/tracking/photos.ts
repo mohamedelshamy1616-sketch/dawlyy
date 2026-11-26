@@ -19,9 +19,10 @@ const liveSet = sql`exists (select 1 from jsonb_array_elements(${progressPhotoSe
 async function signSet(tx: Tx, auth: AuthContext, row: typeof progressPhotoSets.$inferSelect) {
   const poses = [];
   for (const pose of row.poses) {
-    const [asset] = await tx.select({ path: clientColumns.media.path }).from(media).where(and(eq(media.tenantId, auth.tenantId), eq(media.clientId, row.clientId), eq(media.id, pose.mediaId), eq(media.purpose, 'progress_photo'), isNull(media.deletedAt))).limit(1);
+    const [asset] = await tx.select({ path: clientColumns.media.path, bytes: clientColumns.media.bytes }).from(media).where(and(eq(media.tenantId, auth.tenantId), eq(media.clientId, row.clientId), eq(media.id, pose.mediaId), eq(media.purpose, 'progress_photo'), isNull(media.deletedAt))).limit(1);
     // JSON references resolve only through caller RLS; never return a planted id or URL.
-    if (asset) poses.push({ ...pose, ...(await getStorage().createDownload(asset.path, 300)) });
+    // A zero-byte row is a placeholder with no stored file (uploads require sizeBytes >= 1): no URL to sign.
+    if (asset) poses.push(Number(asset.bytes) > 0 ? { ...pose, ...(await getStorage().createDownload(asset.path, 300)) } : pose);
   }
   return { ...row, poses };
 }

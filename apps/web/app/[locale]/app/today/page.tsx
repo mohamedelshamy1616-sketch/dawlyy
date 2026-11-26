@@ -1,5 +1,5 @@
 import { connection } from 'next/server';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { requirePage } from '@/src/server/auth';
 import { loadTodayPageData, type TodayPageData } from '@/src/server/client-today/page-data';
 import { ClientModuleSeed, ClientUnreadSeed } from '@/components/client-today/client-module-provider';
@@ -24,14 +24,20 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
     console.error('client today failed', error instanceof Error ? error.name : 'unknown');
     return <HubError />;
   }
+  const t = await getTranslations('billing.pt');
   const [receipts, renewals] = auth.role === 'client' ? await withAuthTx(auth, async tx => [await myReceipts(tx, auth), await myRenewalsDue(tx, auth)] as const) : [[], []] as const;
   return (
     <>
       <ClientModuleSeed userId={data.userId} {...data.bootstrap} />
       {data.bootstrap.modules.messages ? <ClientUnreadSeed userId={data.userId} count={data.today.unreadMessages} /> : null}
-      {renewals.map(due => <RenewalCard key={due.subscription} due={due} />)}
-      {receipts.map(receipt => <ReceiptCard key={receipt.visit} receipt={receipt} />)}
       <TodayActions today={data.today} nutrition={data.nutrition} logs={data.logs} locale={locale === 'ar' ? 'ar' : 'en'} bootstrap={data.bootstrap} />
+      {renewals.length + receipts.length > 0 ? (
+        <section className="mt-6 grid gap-3" aria-labelledby="pt-sessions">
+          <h2 id="pt-sessions" className="text-lg font-semibold">{t('section')}</h2>
+          {renewals.map(due => <RenewalCard key={due.subscription} due={due} />)}
+          {receipts.map(receipt => <ReceiptCard key={receipt.visit} receipt={receipt} />)}
+        </section>
+      ) : null}
     </>
   );
 }
